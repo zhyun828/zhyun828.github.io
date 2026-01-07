@@ -34,6 +34,8 @@ markdown_extensions:
 nav:
   - 主页: index.md
   - 笔记:
-      - FPGA: notes/fpga.md
-      - 示例: notes/example.md
+      - FPGA / VHDL:
+          - 总览: notes/index.md
+          - FPGA 学习笔记: notes/fpga.md
+
 
