@@ -1,0 +1,26 @@
+site_name: My Notes
+site_url: https://zhyun828.github.io/
+
+theme:
+  name: material
+  language: zh
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - toc:
+      permalink: true
+
+nav:
+  - 主页: index.md
+  - 笔记:
+      - 示例: notes/example.md
