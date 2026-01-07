@@ -1,17 +1,22 @@
-# Welcome to MkDocs
+# ZY 的个人笔记
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+欢迎来到我的个人笔记站 👋  
+这里主要记录我在 **电子信息工程 / 嵌入式 / FPGA / 项目实践** 中的学习与总结。
 
-## Commands
+---
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+## 📚 内容分类
+- 🔌 **FPGA / VHDL**
+- 🧠 **ARM / 嵌入式系统**
+- ⚙️ **数字电路 & 信号处理**
+- 🚀 **课程项目 & 工程实践**
+- 🇫🇷 **法语学习笔记**
 
-## Project layout
+---
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+## ✍️ 使用说明
+- 所有内容使用 **Markdown** 编写  
+- 支持 **代码高亮 / 搜索 / 深色模式**
+- 网站基于 **MkDocs + Material**，自动部署到 GitHub Pages
+
+> 本站长期更新中。
