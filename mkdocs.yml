@@ -4,14 +4,25 @@ site_url: https://zhyun828.github.io/
 theme:
   name: material
   language: zh
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: 深色模式
+    - scheme: slate
+      toggle:
+        icon: material/white-balance-sunny
+        name: 浅色模式
   features:
     - navigation.tabs
     - navigation.sections
     - navigation.expand
     - navigation.top
+    - navigation.footer
     - search.suggest
     - search.highlight
     - content.code.copy
+
 
 markdown_extensions:
   - admonition
