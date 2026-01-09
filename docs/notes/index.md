@@ -1,14 +1,8 @@
-\# FPGA / VHDL
+# 笔记总览
 
+这里是我所有技术笔记的分类入口。
 
-
-这里是我所有 FPGA / VHDL 相关笔记。
-
-
-
-\## 📘 笔记列表
-
-\- \[FPGA 学习笔记](fpga.md)
-
-
-
+## 📂 分类
+- 💡 [FPGA / VHDL](FPGA/index.md)
+- 💻 [C++](C++/index.md)
+- 🔌 [Arduino](Arduino/index.md)
