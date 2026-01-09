@@ -4,5 +4,5 @@
 
 ## 📂 分类
 - 💡 [FPGA / VHDL](FPGA/index.md)
-- 💻 [C++](C++/index.md)
+- 💻 [C++](Cpp/index.md)
 - 🔌 [Arduino](Arduino/index.md)

@@ -38,9 +38,9 @@ nav:
           - 总览: notes/FPGA/index.md
           - 基础知识: notes/FPGA/basics.md
       - C++:
-          - 总览: notes/C++/index.md
-          - 基础语法: notes/C++/basics.md
-          - 面向对象: notes/C++/opp.md
+          - 总览: notes/Cpp/index.md
+          - 基础语法: notes/Cpp/basics.md
+          - 面向对象: notes/Cpp/opp.md
       - Arduino:
           - 总览: notes/Arduino/index.md
           - 基础: notes/Arduino/basics.md
