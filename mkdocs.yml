@@ -43,9 +43,10 @@ nav:
           - 面向对象: notes/Cpp/opp.md
       - Arduino:
           - 总览: notes/Arduino/index.md
-          - 基础: notes/Arduino/basics.md 
-          - 项目: notes/Arduino/projects.md
-          - 项目代码: notes/Arduino/project_codes.md
+          - 基础: notes/Arduino/basics.md
+          - 项目文档: notes/Arduino/projet/projet.md
+          - 项目代码说明: notes/Arduino/projet/code.md
+
 
 
 
