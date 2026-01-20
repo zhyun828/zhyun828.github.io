@@ -35,14 +35,14 @@ nav:
   - 主页: index.md
   - 笔记:
       - FPGA / VHDL:
-          - 总览: notes/FPGA/index.md
+          
           - 基础知识: notes/FPGA/basics.md
       - C++:
-          - 总览: notes/Cpp/index.md
+          
           - 基础语法: notes/Cpp/basics.md
           - 面向对象: notes/Cpp/opp.md
       - Arduino:
-          - 总览: notes/Arduino/index.md
+          
           - 基础: notes/Arduino/basics.md
           - 项目文档: notes/Arduino/projet/projet.md
           - 项目代码说明: notes/Arduino/projet/code.md
