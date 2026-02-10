@@ -24,7 +24,7 @@ std::string::iterator it;
 
 s.insert(it, 'X'); // 在字符串开头插入字符 'X'
 s.insert(pos, count, 'c');// 在字符串的 pos 位置插入 count 个字符 c;只有string类有这个重载版本，其他容器没有
-
+s.find('o', pos); // 查找字符 'o' 的位置，从 pos 开始查找，返回第一个匹配的索引，如果没有找到则返回 string::npos
 
 
 ```
