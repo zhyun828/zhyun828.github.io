@@ -1,0 +1,3131 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://zhyun828.github.io/notes/arduino/projet/code/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>include - My Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#include" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../../.." title="My Notes" class="md-header__button md-logo" aria-label="My Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              include
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m3.55 19.09 1.41 1.41 1.8-1.79-1.42-1.42M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6c0-3.32-2.69-6-6-6m8 7h3v-2h-3m-2.76 7.71 1.8 1.79 1.41-1.41-1.79-1.8M20.45 5l-1.41-1.4-1.8 1.79 1.42 1.42M13 1h-2v3h2M6.76 5.39 4.96 3.6 3.55 5l1.79 1.81zM1 13h3v-2H1m12 9h-2v3h2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  主页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../Arduino/basics.md" class="md-tabs__link">
+          
+  
+  
+  笔记
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="My Notes" class="md-nav__button md-logo" aria-label="My Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    My Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    主页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arduino
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Arduino
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/basics.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1_2" id="__nav_2_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    项目
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/projet/projet.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目说明
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/projet/pre.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目前期
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/projet/code.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    代码说明
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/projet/thoughts.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目反思
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C++
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    C++
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Cpp/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    基础语法
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Cpp/opp.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面向对象
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FPGA / VHDL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    FPGA / VHDL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../FPGA/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    基础知识
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="include">include <Wire.h><a class="headerlink" href="#include" title="Permanent link">&para;</a></h1>
+<h1 id="include_1">include <Encoder.h><a class="headerlink" href="#include_1" title="Permanent link">&para;</a></h1>
+<p>/*
+  ====================== 硬件连接说明（Arduino Mega2560）======================
+  I2C SDA -&gt; D20
+  I2C SCL -&gt; D21
+  电机方向 DIR -&gt; D8
+  电机使能 EN(PWM) -&gt; D9   （PWM 控制电机速度/力矩，0~255）
+  编码器 A -&gt; D2
+  编码器 B -&gt; D3
+  ===========================================================================</p>
+<p>本程序目标：
+  1) 读取温度传感器（MPL3115A2）的温度 T
+  2) 把温度映射到“指针轴预期角度 expectedDeg”
+  3) 通过编码器读数得到“指针轴实际角度 actualDeg”
+  4) GO 模式下：电机自动转动，使 actualDeg 逼近 expectedDeg
+  5) STOP 模式下：电机不动（即使温度变化也不跟随）
+  6) 串口命令：
+     s：STOP（停止跟随、停止电机）
+     g：GO（开始跟随温度）
+     r / l：驱动轮转 1 圈（±12 count）
+     r5 / l5：驱动轮转 5 圈（±60 count）
+     sync：校准（把当前指针所指位置当成“正确位置”，修正 offset）
+*/</p>
+<p>// ---------------- 引脚定义 ----------------
+const uint8_t PIN_DIR   = 8;   // 电机方向
+const uint8_t PIN_EN    = 9;   // 电机使能（PWM）
+const uint8_t PIN_ENC_A = 2;   // 编码器 A
+const uint8_t PIN_ENC_B = 3;   // 编码器 B</p>
+<p>// ---------------- 方向反转选项 ----------------
+// 如果你发现：
+// - r 指令实际向左转，或 GO 跟随方向相反
+// 可以通过修改这两个布尔值快速修正方向，不用重新接线
+const bool INVERT_MOTOR_DIR = true;  // 反转电机方向信号
+const bool INVERT_ENCODER   = true;  // 反转编码器计数方向（count 正负）</p>
+<p>// ---------------- 机械参数（很关键） ----------------
+// 实测：驱动轮转 1 圈，编码器 count 变化为 12
+const long  ONE_REV_COUNTS = 12;</p>
+<p>// 减速比：驱动轮转 GEAR_RATIO 圈，指针轴转 1 圈
+// drive : shaft = 52.734 : 1
+const float GEAR_RATIO = 52.734f;</p>
+<p>/<em>
+  degPerDriveCountOnShaft():
+  计算“驱动轮编码器每增加 1 count，指针轴转过多少度”
+  推导：
+  - 驱动轮 1 圈 = 12 count
+  - 驱动轮转 52.734 圈，指针轴转 360°
+  因此：
+  1 count 对应的指针轴角度 = 360 / (12 * 52.734)
+</em>/
+static inline float degPerDriveCountOnShaft() {
+  return 360.0f / (float)ONE_REV_COUNTS / GEAR_RATIO;
+}</p>
+<p>/<em>
+  wrap180(a):
+  把任意角度归一化到 (-180, 180] 区间
+  角度是周期量，例如：
+  190° 等价于 -170°
+  540° 等价于 180°
+  归一化的目的：
+  - 避免角度计算越界
+  - 避免控制器走“绕大圈”的路径
+</em>/
+static inline float wrap180(float a) {
+  while (a &gt; 180.0f) a -= 360.0f;
+  while (a &lt;= -180.0f) a += 360.0f;
+  return a;
+}</p>
+<p>/<em>
+  shaftDegToDriveCount(deg):
+  把“指针轴角度(°)”换算成“驱动轮编码器 count”
+  注意：这里只做纯比例换算，不包含校准 offset（offset 在别处处理）
+</em>/
+static inline long shaftDegToDriveCount(float deg) {
+  return lroundf(deg / degPerDriveCountOnShaft());
+}</p>
+<p>/<em>
+  driveCountToShaftDeg(countDrive, calibOffsetDeg):
+  把“驱动轮编码器 count”换算成“指针轴角度(°)”，并加上校准偏移 calibOffsetDeg
+  模型：
+  actualDeg = count * (degPerCount) + calibOffsetDeg
+  再 wrap180 折回到 (-180,180] 区间
+</em>/
+static inline float driveCountToShaftDeg(long countDrive, float calibOffsetDeg) {
+  return wrap180((float)countDrive * degPerDriveCountOnShaft() + calibOffsetDeg);
+}</p>
+<p>// ---------------- 温度传感器（MPL3115A2）I2C 部分 ----------------
+// MPL3115A2 常用 I2C 地址 0x60
+const uint8_t MPL3115A2_ADDR = 0x60;</p>
+<p>/<em>
+  i2cWrite8(addr, reg, val):
+  向 I2C 设备的 reg 寄存器写入 1 个字节 val
+  返回 true 表示写入成功
+</em>/
+bool i2cWrite8(uint8_t addr, uint8_t reg, uint8_t val) {
+  Wire.beginTransmission(addr);
+  Wire.write(reg);
+  Wire.write(val);
+  return (Wire.endTransmission() == 0);
+}</p>
+<p>/<em>
+  i2cReadBytes(addr, reg, buf, len):
+  从 I2C 设备的 reg 寄存器开始，连续读取 len 个字节，放入 buf
+  返回 true 表示读取成功
+</em>/
+bool i2cReadBytes(uint8_t addr, uint8_t reg, uint8_t* buf, uint8_t len) {
+  Wire.beginTransmission(addr);
+  Wire.write(reg);
+  // endTransmission(false) = 不释放总线（重复启动），适合“先写寄存器地址再读数据”
+  if (Wire.endTransmission(false) != 0) return false;</p>
+<p>uint8_t got = Wire.requestFrom(addr, len);
+  if (got != len) return false;</p>
+<p>for (uint8_t i = 0; i &lt; len; i++) buf[i] = Wire.read();
+  return true;
+}</p>
+<p>/<em>
+  mpl3115a2Init():
+  初始化 MPL3115A2 使其进入温度测量模式
+  - PT_DATA_CFG(0x13) 写 0x07：使能事件标志等功能
+  - CTRL_REG1(0x26) 写 0xB9：设置过采样并置为 Active（开始测量）
+</em>/
+bool mpl3115a2Init() {
+  if (!i2cWrite8(MPL3115A2_ADDR, 0x13, 0x07)) return false;
+  if (!i2cWrite8(MPL3115A2_ADDR, 0x26, 0xB9)) return false;
+  delay(10);
+  return true;
+}</p>
+<p>/<em>
+  readTemperatureC(tempC):
+  读取温度，返回摄氏度 float
+  MPL3115A2 温度寄存器从 0x04 开始：
+  - buf[0] = 温度整数部分（有符号）
+  - buf[1] 高 4 位为小数（单位 1/16°C）
+</em>/
+bool readTemperatureC(float &amp;tempC) {
+  uint8_t buf[2];
+  if (!i2cReadBytes(MPL3115A2_ADDR, 0x04, buf, 2)) return false;</p>
+<p>int8_t msb = (int8_t)buf[0];
+  uint8_t lsb = buf[1];</p>
+<p>float frac = (float)(lsb &gt;&gt; 4) / 16.0f;      // 4bit 小数
+  tempC = (float)msb + ((msb &gt;= 0) ? frac : -frac);
+  return true;
+}</p>
+<p>// ---------------- 温度 -&gt; 预期角度 映射 ----------------
+// 温度量程：20~30 °C
+const float TEMP_MIN = 20.0f;
+const float TEMP_MAX = 30.0f;</p>
+<p>// 对应角度量程：-120~+120 °（指针轴角度）
+const float ANGLE_MIN = -120.0f;
+const float ANGLE_MAX =  120.0f;</p>
+<p>/<em>
+  tempToAngleDeg(t):
+  把温度 t（°C）线性映射到指针轴角度（°）
+  - 温度低于 TEMP_MIN：夹到 TEMP_MIN
+  - 温度高于 TEMP_MAX：夹到 TEMP_MAX
+  映射公式：
+  a = ANGLE_MIN + (t - TEMP_MIN) * (ANGLE_MAX - ANGLE_MIN)/(TEMP_MAX - TEMP_MIN)
+</em>/
+static inline float tempToAngleDeg(float t) {
+  if (t &lt; TEMP_MIN) t = TEMP_MIN;
+  if (t &gt; TEMP_MAX) t = TEMP_MAX;</p>
+<p>float a = ANGLE_MIN + (t - TEMP_MIN) * (ANGLE_MAX - ANGLE_MIN) / (TEMP_MAX - TEMP_MIN);
+  return wrap180(a);
+}</p>
+<p>// ---------------- 电机控制函数 ----------------</p>
+<p>/<em>
+  stopMotor():
+  让 PWM=0，电机停止（断电）
+  注意：这是“滑行停”，不是刹车
+</em>/
+void stopMotor() { analogWrite(PIN_EN, 0); }</p>
+<p>/<em>
+  setMotor(dirHigh, pwm):
+  设置电机方向和 PWM 输出
+  - dirHigh: 逻辑方向（true/false）
+  - pwm: 0~255
+  INVERT_MOTOR_DIR 可以用来反转方向
+</em>/
+void setMotor(bool dirHigh, int pwm) {
+  if (INVERT_MOTOR_DIR) dirHigh = !dirHigh;
+  digitalWrite(PIN_DIR, dirHigh ? HIGH : LOW);
+  analogWrite(PIN_EN, pwm);
+}</p>
+<p>// ---------------- 编码器对象与读取 ----------------
+Encoder enc(PIN_ENC_A, PIN_ENC_B);</p>
+<p>/<em>
+  readCountDrive():
+  读取编码器计数（驱动轮侧）
+  INVERT_ENCODER 用于反转 count 正负
+</em>/
+long readCountDrive() {
+  long c = enc.read();
+  if (INVERT_ENCODER) c = -c;
+  return c;
+}</p>
+<p>// ---------------- 运动控制器（你验证“十分完美”的部分） ----------------
+/*
+  控制思想：分两段
+  1) COARSE（粗调）：用比例控制 P，把误差快速拉近（连续输出 PWM）
+  2) NUDGE（微调）：靠短脉冲一点点推，尽量落到 err=0（并在脉冲间等待停稳）</p>
+<p>zones:
+  FAR_ZONE: 误差很大 -&gt; 快档粗调
+  FINE_ZONE: 误差很小 -&gt; 进入微调（nudge）
+*/
+const long FAR_ZONE  = 8;
+const long NEAR_ZONE = 3; // 此版本中主要用于概念，实际判断用 FAR_ZONE/FINE_ZONE
+const long FINE_ZONE = 2;</p>
+<p>// 稳定判定：
+// err==0 连续 500ms -&gt; 认为到位
+// err==±1 连续 800ms -&gt; 可选兜底（允许少量误差）
+const long TOL_DONE = 0;
+const unsigned long STABLE_MS_ZERO = 500;
+const unsigned long STABLE_MS_ONE  = 800;
+const bool ALLOW_FALLBACK_PLUSMINUS1 = true;</p>
+<p>// 粗调比例系数（P 控制）
+const float KP_COARSE = 7.0f;</p>
+<p>// PWM 限幅：保证“能动 + 不过猛”
+const int PWM_COARSE_MIN_FAST = 60;
+const int PWM_COARSE_MAX_FAST = 130;</p>
+<p>const int PWM_COARSE_MIN_SLOW = 55;
+const int PWM_COARSE_MAX_SLOW = 100;</p>
+<p>// 微调 nudge：靠短脉冲推一下，然后等待
+const int PWM_NUDGE = 55;
+const unsigned long NUDGE_OFF_MS = 160;     // 脉冲之间等待停稳（很关键）
+const unsigned long NUDGE_ON_MS_COARSE = 35; // err=2 时脉冲稍长
+const unsigned long NUDGE_ON_MS_FINE   = 15; // err=1 时脉冲更短，争取落到 0</p>
+<p>// 调度周期/打印周期/超时保护
+const unsigned long CTRL_MS   = 10;   // 控制周期 10ms
+const unsigned long PRINT_MS  = 200;  // 串口打印周期 200ms
+const unsigned long TIMEOUT_MS = 7000;</p>
+<p>// 运动状态机
+enum MotionState { M_IDLE, M_COARSE_FAST, M_COARSE_SLOW, M_NUDGE_OFF, M_NUDGE_ON };
+MotionState mstate = M_IDLE;</p>
+<p>// 运动目标（驱动轮编码器 count）
+long targetCountDrive = 0;</p>
+<p>// 运动开始时间，用于超时
+unsigned long moveStartMs = 0;</p>
+<p>// nudge 相位起始时间
+unsigned long phaseT0 = 0;</p>
+<p>// 用于稳定判定的计时器
+unsigned long stableZeroT0 = 0;
+unsigned long stableOneT0  = 0;</p>
+<p>/<em>
+  motionStartTo(newTargetCount):
+  启动一次运动，让编码器 count 走到 newTargetCount
+</em>/
+void motionStartTo(long newTargetCount) {
+  targetCountDrive = newTargetCount;
+  moveStartMs = millis();
+  stableZeroT0 = 0;
+  stableOneT0  = 0;
+  mstate = M_COARSE_FAST;
+}</p>
+<p>/<em>
+  motionMoveBy(delta):
+  相对运动：在当前 count 基础上 +delta
+  用于 r/l/r5/l5 命令
+</em>/
+void motionMoveBy(long delta) {
+  long c = readCountDrive();
+  motionStartTo(c + delta);
+}</p>
+<p>/<em>
+  motionUpdate():
+  运动控制器核心状态机
+  每 CTRL_MS 调用一次：
+  - 计算 err
+  - 粗调 / 微调
+  - 输出 PWM
+  - 到位后进入 IDLE
+</em>/
+void motionUpdate() {
+  unsigned long now = millis();</p>
+<p>long c = readCountDrive();
+  long err = targetCountDrive - c;
+  long aerr = labs(err);</p>
+<p>// 1) 超时保护：防止编码器失效一直转
+  if (mstate != M_IDLE &amp;&amp; now - moveStartMs &gt; TIMEOUT_MS) {
+    mstate = M_IDLE;
+    stopMotor();
+  }</p>
+<p>// 2) 稳定判定：err==0 或 err==±1 持续一定时间，认为到位
+  if (mstate != M_IDLE) {
+    if (err == 0) {
+      if (stableZeroT0 == 0) stableZeroT0 = now;
+    } else {
+      stableZeroT0 = 0;
+    }</p>
+<div class="highlight"><pre><span></span><code>if (labs(err) == 1) {
+  if (stableOneT0 == 0) stableOneT0 = now;
+} else {
+  stableOneT0 = 0;
+}
+
+if (TOL_DONE == 0) {
+  if (stableZeroT0 != 0 &amp;&amp; now - stableZeroT0 &gt;= STABLE_MS_ZERO) {
+    mstate = M_IDLE; stopMotor();
+  } else if (ALLOW_FALLBACK_PLUSMINUS1 &amp;&amp; stableOneT0 != 0 &amp;&amp; now - stableOneT0 &gt;= STABLE_MS_ONE) {
+    mstate = M_IDLE; stopMotor();
+  }
+}
+</code></pre></div>
+<p>}</p>
+<p>// 3) 状态机输出
+  if (mstate == M_IDLE) {
+    stopMotor();
+    return;
+  }</p>
+<p>// ---- 粗调阶段：连续 PWM，快速逼近 ----
+  if (mstate == M_COARSE_FAST || mstate == M_COARSE_SLOW) {</p>
+<div class="highlight"><pre><span></span><code>// 误差很小 -&gt; 进入微调
+if (aerr &lt;= FINE_ZONE) {
+  mstate = M_NUDGE_OFF;
+  phaseT0 = now;
+  stopMotor();
+}
+// 误差中等 -&gt; 慢档粗调
+else if (aerr &lt; FAR_ZONE) {
+  mstate = M_COARSE_SLOW;
+}
+// 误差很大 -&gt; 快档粗调
+else {
+  mstate = M_COARSE_FAST;
+}
+
+// 在粗调状态下：计算 P 控制输出 u=Kp*err，并转成 PWM
+if (mstate == M_COARSE_FAST || mstate == M_COARSE_SLOW) {
+  float u = KP_COARSE * (float)err;
+  bool dirHigh = (u &gt;= 0);
+  int pwm = (int)fabs(u);
+
+  // PWM 限幅：确保能动、避免过猛
+  if (mstate == M_COARSE_FAST) {
+    if (pwm &gt; PWM_COARSE_MAX_FAST) pwm = PWM_COARSE_MAX_FAST;
+    if (pwm &gt; 0 &amp;&amp; pwm &lt; PWM_COARSE_MIN_FAST) pwm = PWM_COARSE_MIN_FAST;
+  } else {
+    if (pwm &gt; PWM_COARSE_MAX_SLOW) pwm = PWM_COARSE_MAX_SLOW;
+    if (pwm &gt; 0 &amp;&amp; pwm &lt; PWM_COARSE_MIN_SLOW) pwm = PWM_COARSE_MIN_SLOW;
+  }
+
+  setMotor(dirHigh, pwm);
+}
+</code></pre></div>
+<p>}</p>
+<p>// ---- 微调阶段：OFF 等待 ----
+  else if (mstate == M_NUDGE_OFF) {
+    stopMotor();
+    // 等待一段时间让机械停稳，再打下一次脉冲
+    if (now - phaseT0 &gt;= NUDGE_OFF_MS) {
+      mstate = M_NUDGE_ON;
+      phaseT0 = now;
+    }
+  }</p>
+<p>// ---- 微调阶段：ON 脉冲 ----
+  else if (mstate == M_NUDGE_ON) {
+    // err=1 时脉冲更短，避免过冲，争取落到 err=0
+    unsigned long onMs = (aerr &lt;= 1) ? NUDGE_ON_MS_FINE : NUDGE_ON_MS_COARSE;</p>
+<div class="highlight"><pre><span></span><code>bool dirHigh = (err &gt; 0);
+setMotor(dirHigh, PWM_NUDGE);
+
+// 脉冲时间到 -&gt; 回到 OFF 等待
+if (now - phaseT0 &gt;= onMs) {
+  mstate = M_NUDGE_OFF;
+  phaseT0 = now;
+}
+</code></pre></div>
+<p>}
+}</p>
+<p>// ---------------- GO/STOP 模式与串口命令 ----------------
+enum Mode { MODE_STOP, MODE_GO };
+Mode mode = MODE_STOP;  // 上电默认 STOP：不跟随温度</p>
+<p>String cmdLine;</p>
+<p>// 校准偏移：解决“电机没有绝对0角度”的问题
+// sync 时会更新该值，让当前指针对应当前温度的 expectedDeg
+float calibOffsetDeg = 0.0f;</p>
+<p>// 预期角度（由温度映射得到）与实际角度（由编码器换算得到）
+float expectedDeg = 0.0f;
+float actualDeg   = 0.0f;</p>
+<p>// GO 模式下把 expectedDeg 换算成目标 count
+long expectedCountDrive = 0;</p>
+<p>/<em>
+  expectedDegToTargetCount(expDeg):
+  将预期角度 expDeg 转成目标 count（驱动轮编码器）
+  注意：必须考虑 calibOffsetDeg
+  模型：
+  actualDeg = count</em>degPer + offset
+  =&gt; count = (expDeg - offset)/degPer
+*/
+long expectedDegToTargetCount(float expDeg) {
+  float pure = wrap180(expDeg - calibOffsetDeg);
+  return lroundf(pure / degPerDriveCountOnShaft());
+}</p>
+<p>/<em>
+  handleCommand(s):
+  处理串口命令：
+  - s：STOP
+  - g：GO
+  - r/l/r5/l5：相对运动（用于微调）
+  - sync：校准 offset（把当前指针位置认为是正确位置）
+</em>/
+void handleCommand(String s) {
+  s.trim();
+  s.toLowerCase();</p>
+<p>if (s == "s") {
+    mode = MODE_STOP;
+    mstate = M_IDLE;   // 取消正在执行的运动
+    stopMotor();
+    return;
+  }
+  if (s == "g") {
+    mode = MODE_GO;
+    return;
+  }</p>
+<p>// 手动调节：驱动轮转动固定圈数（以 count 精准控制）
+  if (s == "r")  { motionMoveBy(+ONE_REV_COUNTS); return; }
+  if (s == "l")  { motionMoveBy(-ONE_REV_COUNTS); return; }
+  if (s == "r5") { motionMoveBy(+5 * ONE_REV_COUNTS); return; }
+  if (s == "l5") { motionMoveBy(-5 * ONE_REV_COUNTS); return; }</p>
+<p>if (s == "sync") {
+    // 校准逻辑：
+    // 若 expectedDeg 是“应该指向的位置”，actualDeg 是“当前实际指向的位置”
+    // 那么它们之间差值 err = expected - actual
+    // 把这个差值加到 offset 上，就能让“当前实际”被当成“正确”
+    float err = wrap180(expectedDeg - actualDeg);
+    calibOffsetDeg = wrap180(calibOffsetDeg + err);
+    return;
+  }
+}</p>
+<p>// ---------------- Arduino setup/loop ----------------
+void setup() {
+  Serial.begin(9600);</p>
+<p>// 引脚模式配置
+  pinMode(PIN_DIR, OUTPUT);
+  pinMode(PIN_EN, OUTPUT);
+  pinMode(PIN_ENC_A, INPUT_PULLUP);
+  pinMode(PIN_ENC_B, INPUT_PULLUP);</p>
+<p>stopMotor();</p>
+<p>// I2C 初始化 + 传感器初始化
+  Wire.begin();
+  (void)mpl3115a2Init();</p>
+<p>// 上电时先读一次编码器，计算初始实际角度
+  long c = readCountDrive();
+  actualDeg = driveCountToShaftDeg(c, calibOffsetDeg);</p>
+<p>// 串口提示信息（便于调试/报告）
+  Serial.println(F("Temp Pointer Ready. Default STOP."));
+  Serial.println(F("Commands: s(stop) g(go) r l r5 l5 sync"));
+  Serial.print(F("deg/count(shaft)="));
+  Serial.println(degPerDriveCountOnShaft(), 6);
+}</p>
+<p>void loop() {
+  // 1) 串口行读取：接收命令（以回车/换行结束）
+  while (Serial.available()) {
+    char ch = (char)Serial.read();
+    if (ch == '\n' || ch == '\r') {
+      if (cmdLine.length()) {
+        handleCommand(cmdLine);
+        cmdLine = "";
+      }
+    } else {
+      cmdLine += ch;
+      if (cmdLine.length() &gt; 64) cmdLine.remove(0, 32); // 防止字符串过长
+    }
+  }</p>
+<p>// 2) 每 CTRL_MS 执行一次控制逻辑（非阻塞）
+  static unsigned long lastCtrl = 0;
+  unsigned long now = millis();
+  if (now - lastCtrl &gt;= CTRL_MS) {
+    lastCtrl = now;</p>
+<div class="highlight"><pre><span></span><code>// 2.1 读取温度，得到 expectedDeg（预期角度）
+float tempC = 0.0f;
+bool tOk = readTemperatureC(tempC);
+if (tOk) expectedDeg = tempToAngleDeg(tempC);
+
+// 2.2 读取编码器，得到 actualDeg（实际角度）
+long countDrive = readCountDrive();
+actualDeg = driveCountToShaftDeg(countDrive, calibOffsetDeg);
+
+// 2.3 GO 模式：跟随温度
+if (mode == MODE_GO) {
+  expectedCountDrive = expectedDegToTargetCount(expectedDeg);
+
+  // 只有目标变化时才启动一次新的运动任务
+  // 目的：避免每个控制周期都重置状态机造成抖动
+  if (expectedCountDrive != targetCountDrive) {
+    motionStartTo(expectedCountDrive);
+  }
+}
+
+// 2.4 STOP 模式：如果没有运动任务，确保电机断电
+// 注意：STOP 模式下仍允许 r/l/r5/l5 手动触发 motionStartTo()
+if (mode == MODE_STOP &amp;&amp; mstate == M_IDLE) {
+  stopMotor();
+}
+
+// 2.5 执行运动控制状态机（若有目标则驱动电机）
+motionUpdate();
+
+// 3) 每 PRINT_MS 打印一次状态（用于调试/报告记录）
+static unsigned long lastPrint = 0;
+if (now - lastPrint &gt;= PRINT_MS) {
+  lastPrint = now;
+
+  Serial.print(F(&quot;T=&quot;));
+  if (tOk) Serial.print(tempC, 2);
+  else Serial.print(F(&quot;NaN&quot;));
+
+  Serial.print(F(&quot;; expected=&quot;));
+  Serial.print(expectedDeg, 1);
+
+  Serial.print(F(&quot;; actual=&quot;));
+  Serial.print(actualDeg, 1);
+
+  Serial.print(F(&quot;; count=&quot;));
+  Serial.print(countDrive);
+
+  Serial.print(F(&quot;; mode=&quot;));
+  Serial.println(mode == MODE_GO ? F(&quot;GO&quot;) : F(&quot;STOP&quot;));
+}
+</code></pre></div>
+<p>}
+}</p>
+<p>下面按“函数/模块”为单位，把你这份代码里<strong>每一个函数</strong>（含 inline 小函数）都解释清楚。你写报告时可以直接用这些描述（我用的是偏工程报告风格：目的、输入输出、实现要点）。</p>
+<hr />
+<h1 id="_1">大纲<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="1">1. 机械与数学辅助函数<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<h3 id="degperdrivecountonshaft"><code>degPerDriveCountOnShaft()</code><a class="headerlink" href="#degperdrivecountonshaft" title="Permanent link">&para;</a></h3>
+<p><strong>作用</strong>：计算“驱动轮编码器 1 个 count 对应指针轴转过的角度（°）”。
+<strong>原理</strong>：驱动轮 1 圈 = 12 count；驱动轮转 52.734 圈，指针轴转 1 圈（360°）。
+[
+\text{deg/count} = \frac{360}{12 \times 52.734}
+]
+<strong>返回值</strong>：<code>float</code>，单位 °/count。
+<strong>用途</strong>：把 <code>count</code> 换算成轴角度，或把轴角度换算成 count。</p>
+<hr />
+<h3 id="wrap180float-a"><code>wrap180(float a)</code><a class="headerlink" href="#wrap180float-a" title="Permanent link">&para;</a></h3>
+<p><strong>作用</strong>：把任意角度归一化到区间 (-180, 180]（或等价区间）。
+<strong>输入</strong>：<code>a</code> 任意角度（可能超过 360 或小于 -360）。
+<strong>输出</strong>：归一化后的角度。
+<strong>用途</strong>：避免角度越界，且处理“20°C 与 30°C 对应同一个角度”的环绕关系（±180 等价）。</p>
+<hr />
+<h3 id="shaftdegtodrivecountfloat-deg"><code>shaftDegToDriveCount(float deg)</code><a class="headerlink" href="#shaftdegtodrivecountfloat-deg" title="Permanent link">&para;</a></h3>
+<p><strong>作用</strong>：把“指针轴角度（°）”换算成“驱动轮编码器 count”。
+<strong>输入</strong>：<code>deg</code>（不包含校准 offset 的纯角度映射）。
+<strong>输出</strong>：<code>long</code> 类型 count（四舍五入）。
+<strong>用途</strong>：理论上可以用来直接指定某个轴角对应的 count（在你这版里实际用得不多，你主要用 <code>expectedDegToTargetCount()</code>）。</p>
+<hr />
+<h3 id="drivecounttoshaftdeglong-countdrive-float-caliboffsetdeg"><code>driveCountToShaftDeg(long countDrive, float calibOffsetDeg)</code><a class="headerlink" href="#drivecounttoshaftdeglong-countdrive-float-caliboffsetdeg" title="Permanent link">&para;</a></h3>
+<p><strong>作用</strong>：把编码器 <code>countDrive</code> 转换成“指针轴实际角度 actualDeg”，并叠加校准偏移 <code>calibOffsetDeg</code>。
+<strong>输入</strong>：</p>
+<ul>
+<li><code>countDrive</code>：驱动轮编码器计数（每圈约 12）</li>
+<li><code>calibOffsetDeg</code>：校准偏移（用 <code>sync</code> 调整）
+  <strong>输出</strong>：<code>actualDeg</code>（单位 °，范围 wrap 到 (-180, 180]）。
+  <strong>用途</strong>：报告里可以写：用编码器估算输出轴角度，实现“实际角度反馈”。</li>
+</ul>
+<hr />
+<h2 id="2-i2c-mpl3115a2">2. I2C 读写与温度传感器相关函数（MPL3115A2）<a class="headerlink" href="#2-i2c-mpl3115a2" title="Permanent link">&para;</a></h2>
+<h3 id="i2cwrite8uint8_t-addr-uint8_t-reg-uint8_t-val"><code>i2cWrite8(uint8_t addr, uint8_t reg, uint8_t val)</code><a class="headerlink" href="#i2cwrite8uint8_t-addr-uint8_t-reg-uint8_t-val" title="Permanent link">&para;</a></h3>
+<p><strong>作用</strong>：向 I2C 设备的某个寄存器写 1 字节。
+<strong>输入</strong>：</p>
+<ul>
+<li><code>addr</code>：I2C 设备地址（MPL3115A2 是 <code>0x60</code>）</li>
+<li><code>reg</code>：寄存器地址</li>
+<li><code>val</code>：要写入的值
+  <strong>输出</strong>：<code>bool</code>，返回写入是否成功（<code>Wire.endTransmission()==0</code> 代表成功）。
+  <strong>用途</strong>：给传感器配置寄存器。</li>
+</ul>
+<hr />
+<h3 id="i2creadbytesuint8_t-addr-uint8_t-reg-uint8_t-buf-uint8_t-len"><code>i2cReadBytes(uint8_t addr, uint8_t reg, uint8_t* buf, uint8_t len)</code><a class="headerlink" href="#i2creadbytesuint8_t-addr-uint8_t-reg-uint8_t-buf-uint8_t-len" title="Permanent link">&para;</a></h3>
+<p><strong>作用</strong>：从 I2C 设备的某个寄存器开始，连续读取 <code>len</code> 个字节。
+<strong>输入</strong>：</p>
+<ul>
+<li><code>addr</code>：设备地址</li>
+<li><code>reg</code>：起始寄存器地址</li>
+<li><code>buf</code>：缓冲区指针，用来存放读取的数据</li>
+<li><code>len</code>：读取长度
+  <strong>输出</strong>：<code>bool</code>，是否读取成功。
+  <strong>实现要点</strong>：先写寄存器地址（但不释放总线 <code>endTransmission(false)</code>），再 <code>requestFrom()</code> 读数据。
+  <strong>用途</strong>：读取温度寄存器的数据。</li>
+</ul>
+<hr />
+<h3 id="mpl3115a2init"><code>mpl3115a2Init()</code><a class="headerlink" href="#mpl3115a2init" title="Permanent link">&para;</a></h3>
+<p><strong>作用</strong>：初始化 MPL3115A2，使其进入温度测量工作状态。
+<strong>核心配置</strong>：</p>
+<ul>
+<li>向 <code>PT_DATA_CFG(0x13)</code> 写 <code>0x07</code>：启用事件/数据就绪等功能（课程里常用写法）</li>
+<li>向 <code>CTRL_REG1(0x26)</code> 写 <code>0xB9</code>：设置输出采样/过采样并置为 Active（开始测量）
+  <strong>输出</strong>：<code>bool</code>，是否初始化成功。
+  <strong>用途</strong>：在 <code>setup()</code> 中调用，保证传感器可以正常输出温度。</li>
+</ul>
+<hr />
+<h3 id="readtemperaturecfloat-tempc"><code>readTemperatureC(float &amp;tempC)</code><a class="headerlink" href="#readtemperaturecfloat-tempc" title="Permanent link">&para;</a></h3>
+<p><strong>作用</strong>：读取传感器温度并换算成摄氏度浮点数。
+<strong>输入/输出</strong>：</p>
+<ul>
+<li>参数 <code>tempC</code> 为引用输出：返回测得温度（°C）</li>
+<li>返回值 <code>bool</code>：读取成功与否
+  <strong>实现要点</strong>：</li>
+<li>从寄存器 <code>0x04</code> 读 2 字节：MSB 是整数部分（有符号），LSB 的高 4 位是 1/16°C 的小数部分</li>
+<li>组合得到温度：<code>temp = msb + (lsb&gt;&gt;4)/16</code>
+  <strong>用途</strong>：在主循环中实时获取当前温度 T。</li>
+</ul>
+<hr />
+<h2 id="3">3. 温度到角度映射函数<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<h3 id="temptoangledegfloat-t"><code>tempToAngleDeg(float t)</code><a class="headerlink" href="#temptoangledegfloat-t" title="Permanent link">&para;</a></h3>
+<p><strong>作用</strong>：把温度范围 20–30°C 映射到指针轴角度 (-180°, 180°]，并让 20°C 与 30°C 映射到同一角度（-180°）。
+<strong>输入</strong>：<code>t</code> 温度（°C）。
+<strong>输出</strong>：对应角度（°）。
+<strong>映射关系</strong>：</p>
+<ul>
+<li><code>t=20 → -180°</code></li>
+<li><code>t=25 → 0°</code></li>
+<li><code>t=30 → +180°</code>，但你要求 30 和 20 同角，所以把 <code>+180°</code> 折回 <code>-180°</code>
+  <strong>用途</strong>：生成“预期角度 expectedDeg”。</li>
+</ul>
+<hr />
+<h2 id="4">4. 电机驱动输出函数<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
+<h3 id="stopmotor"><code>stopMotor()</code><a class="headerlink" href="#stopmotor" title="Permanent link">&para;</a></h3>
+<p><strong>作用</strong>：停止电机输出。
+<strong>实现</strong>：<code>analogWrite(PIN_EN, 0)</code>，PWM=0。
+<strong>用途</strong>：STOP 模式、运动结束、等待阶段等都用它让电机断电。</p>
+<hr />
+<h3 id="setmotorbool-dirhigh-int-pwm"><code>setMotor(bool dirHigh, int pwm)</code><a class="headerlink" href="#setmotorbool-dirhigh-int-pwm" title="Permanent link">&para;</a></h3>
+<p><strong>作用</strong>：设置电机转向与 PWM，占空比控制速度/扭矩。
+<strong>输入</strong>：</p>
+<ul>
+<li><code>dirHigh</code>：逻辑方向（正/反）</li>
+<li><code>pwm</code>：PWM 值 0–255
+  <strong>实现要点</strong>：</li>
+<li>根据 <code>INVERT_MOTOR_DIR</code> 反转方向（用于修正接线导致的方向反）</li>
+<li><code>digitalWrite(PIN_DIR, ...)</code> 设置方向</li>
+<li><code>analogWrite(PIN_EN, pwm)</code> 输出 PWM
+  <strong>用途</strong>：运动控制中真正驱动电机的唯一出口。</li>
+</ul>
+<hr />
+<h2 id="5">5. 编码器读取函数<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<h3 id="readcountdrive"><code>readCountDrive()</code><a class="headerlink" href="#readcountdrive" title="Permanent link">&para;</a></h3>
+<p><strong>作用</strong>：读取 Encoder 库的计数值，并根据 <code>INVERT_ENCODER</code> 修正计数方向。
+<strong>输出</strong>：<code>long</code> 编码器计数（驱动轮每圈约 12）。
+<strong>用途</strong>：作为反馈量 <code>countDrive</code>，既用于 report 的“count”，也用于计算 actualDeg。</p>
+<hr />
+<h2 id="6">6. 运动控制模块（你最核心的“完美”部分）<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<h3 id="motionstarttolong-newtargetcount"><code>motionStartTo(long newTargetCount)</code><a class="headerlink" href="#motionstarttolong-newtargetcount" title="Permanent link">&para;</a></h3>
+<p><strong>作用</strong>：启动一次运动任务：让驱动轮 count 走到 <code>newTargetCount</code>。
+<strong>输入</strong>：目标计数 <code>newTargetCount</code>。
+<strong>实现要点</strong>：</p>
+<ul>
+<li>设置 <code>targetCountDrive</code></li>
+<li>记录开始时间 <code>moveStartMs</code> 用于超时保护</li>
+<li>清零稳定计时 <code>stableZeroT0 / stableOneT0</code></li>
+<li>把状态机置为 <code>M_COARSE_FAST</code>（先粗调再精调）
+  <strong>用途</strong>：</li>
+<li>GO 模式温度目标变化时调用</li>
+<li>手动 r/l/r5/l5 也会间接调用它</li>
+</ul>
+<hr />
+<h3 id="motionmovebylong-delta"><code>motionMoveBy(long delta)</code><a class="headerlink" href="#motionmovebylong-delta" title="Permanent link">&para;</a></h3>
+<p><strong>作用</strong>：相对运动：以当前 count 为起点，目标变为 <code>当前 + delta</code>。
+<strong>输入</strong>：<code>delta</code>（例如 <code>+12</code>、<code>-12</code>、<code>+60</code>、<code>-60</code>）。
+<strong>用途</strong>：实现 r/l/r5/l5。</p>
+<hr />
+<h3 id="motionupdate"><code>motionUpdate()</code><a class="headerlink" href="#motionupdate" title="Permanent link">&para;</a></h3>
+<p><strong>作用</strong>：运动控制核心状态机，每 10ms 调用一次，负责：</p>
+<ul>
+<li>读取当前 count</li>
+<li>计算误差 <code>err = targetCountDrive - count</code></li>
+<li>根据误差大小决定处于粗调还是微调</li>
+<li>
+<p>输出电机 PWM，直到满足稳定结束条件
+  <strong>主要流程</strong>：</p>
+</li>
+<li>
+<p><strong>超时保护</strong>
+   如果运动时间超过 <code>TIMEOUT_MS</code>，强制停止，避免编码器失效导致一直转。</p>
+</li>
+<li>
+<p><strong>稳定判定（结束条件）</strong></p>
+</li>
+<li>
+<p>若 <code>err==0</code> 持续 <code>STABLE_MS_ZERO(500ms)</code> → 完成</p>
+</li>
+<li>
+<p>若 <code>err==±1</code> 持续 <code>STABLE_MS_ONE(800ms)</code> → 作为兜底完成
+  （这就是你“多数 0，偶尔 ±1”的策略来源）</p>
+</li>
+<li>
+<p><strong>状态机控制</strong></p>
+</li>
+<li>
+<p><code>M_COARSE_FAST / M_COARSE_SLOW</code>：比例控制 <code>u = KP_COARSE * err</code>，并用 PWM 上下限保证能动且不过冲过大</p>
+</li>
+<li>
+<p>若误差进入 <code>FINE_ZONE</code>（≤2）→ 转入 <code>M_NUDGE_OFF</code></p>
+</li>
+<li><code>M_NUDGE_OFF</code>：断电等待 <code>NUDGE_OFF_MS</code> 让机械停稳/消除回弹</li>
+<li><code>M_NUDGE_ON</code>：输出短脉冲 <code>NUDGE_ON_MS_FINE/COARSE</code> 微调 1 count，尽量落在 0</li>
+</ul>
+<p><strong>用途</strong>：这是你实现“精确 count”的关键，因此写报告时建议重点描述：粗调+微调两阶段控制思想。</p>
+<hr />
+<h2 id="7-gostop-sync">7. GO/STOP 与校准（sync）相关函数<a class="headerlink" href="#7-gostop-sync" title="Permanent link">&para;</a></h2>
+<h3 id="expecteddegtotargetcountfloat-expdeg"><code>expectedDegToTargetCount(float expDeg)</code><a class="headerlink" href="#expecteddegtotargetcountfloat-expdeg" title="Permanent link">&para;</a></h3>
+<p><strong>作用</strong>：把“预期轴角 expectedDeg”转换成“目标驱动轮 count”。
+<strong>输入</strong>：<code>expDeg</code>（来自温度映射）。
+<strong>输出</strong>：对应 <code>count</code>（long）。
+<strong>实现要点</strong>：</p>
+<ul>
+<li>你有一个校准偏移 <code>calibOffsetDeg</code>：
+  轴角模型：<code>actualDeg = count*degPer + calibOffsetDeg</code></li>
+<li>所以要得到某个轴角对应的 count，反解：
+  [
+  count = \frac{expDeg - calibOffsetDeg}{degPerCount}
+  ]</li>
+<li>代码里先 <code>pure = wrap180(expDeg - calibOffsetDeg)</code> 再除以 degPerCount
+  <strong>用途</strong>：GO 模式把温度→角度→count，用于运动控制目标。</li>
+</ul>
+<hr />
+<h3 id="handlecommandstring-s"><code>handleCommand(String s)</code><a class="headerlink" href="#handlecommandstring-s" title="Permanent link">&para;</a></h3>
+<p><strong>作用</strong>：解析串口指令，实现你要求的交互逻辑。
+<strong>支持命令</strong>：</p>
+<ul>
+<li><code>s</code>：进入 STOP，立即停止电机，取消当前运动（<code>mstate=M_IDLE</code>）</li>
+<li><code>g</code>：进入 GO，开始跟随温度</li>
+<li><code>r/l/r5/l5</code>：调用 <code>motionMoveBy()</code> 做相对运动</li>
+<li>
+<p><code>sync</code>：校准：让当前指针“实际角度”被视作“预期角度”</p>
+</li>
+<li>
+<p>计算 <code>err = expectedDeg - actualDeg</code></p>
+</li>
+<li>更新 <code>calibOffsetDeg += err</code>
+    <strong>用途</strong>：这是系统的“人机接口”，报告里可以单独一节写“串口命令与校准流程”。</li>
+</ul>
+<hr />
+<h2 id="8-arduino">8. Arduino 主结构函数<a class="headerlink" href="#8-arduino" title="Permanent link">&para;</a></h2>
+<h3 id="setup"><code>setup()</code><a class="headerlink" href="#setup" title="Permanent link">&para;</a></h3>
+<p><strong>作用</strong>：系统初始化。
+<strong>主要内容</strong>：</p>
+<ul>
+<li><code>Serial.begin(9600)</code>：设置波特率</li>
+<li>设置电机引脚/编码器引脚模式，初始停止电机</li>
+<li><code>Wire.begin()</code> 初始化 I2C</li>
+<li><code>mpl3115a2Init()</code> 初始化温度传感器</li>
+<li>初始读取 <code>count</code> 并计算 <code>actualDeg</code></li>
+<li>串口打印提示与 deg/count 便于调试/写报告
+  <strong>用途</strong>：上电准备工作。</li>
+</ul>
+<hr />
+<h3 id="loop"><code>loop()</code><a class="headerlink" href="#loop" title="Permanent link">&para;</a></h3>
+<p><strong>作用</strong>：主循环，包含三件事：串口输入、周期控制、串口输出。
+<strong>结构</strong>：</p>
+<ol>
+<li>
+<p><strong>串口命令接收</strong>
+   把一行命令存进 <code>cmdLine</code>，遇到 <code>\n/\r</code> 就调用 <code>handleCommand()</code>。</p>
+</li>
+<li>
+<p><strong>按 CTRL_MS 周期执行控制</strong>（你设置 10ms）</p>
+</li>
+<li>
+<p>读温度 → <code>expectedDeg</code></p>
+</li>
+<li>读编码器 → <code>countDrive</code></li>
+<li>计算 <code>actualDeg</code></li>
+<li>
+<p>若 <code>mode == GO</code>：</p>
+</li>
+<li>
+<p>把 <code>expectedDeg → expectedCountDrive</code></p>
+</li>
+<li>如果目标改变：<code>motionStartTo(expectedCountDrive)</code>（启动/刷新运动目标）</li>
+<li>STOP 模式下若没有运动：确保电机断电</li>
+<li>
+<p>调用 <code>motionUpdate()</code> 执行运动状态机</p>
+</li>
+<li>
+<p><strong>按 PRINT_MS 周期打印状态</strong>（你设置 200ms）
+   输出：</p>
+</li>
+<li>
+<p><code>T=...</code></p>
+</li>
+<li><code>expected=...</code>（预期轴角）</li>
+<li><code>actual=...</code>（实际轴角）</li>
+<li><code>count=...</code>（驱动轮 count）</li>
+<li><code>mode=GO/STOP</code></li>
+</ol>
+<hr />
+<h2 id="9">9. 变量/状态（报告常用解释点）<a class="headerlink" href="#9" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>mode</code>：STOP/GO 工作模式（上电默认 STOP）</li>
+<li><code>mstate</code>：运动控制状态机（粗调快/粗调慢/等待/脉冲/空闲）</li>
+<li><code>calibOffsetDeg</code>：校准偏移（sync 后更新，用于修正“电机无绝对零位”）</li>
+<li><code>expectedDeg</code>：温度映射得到的预期指针轴角度</li>
+<li><code>actualDeg</code>：编码器反馈换算得到的实际轴角度</li>
+<li><code>targetCountDrive</code>：运动控制的目标计数（驱动轮 count）</li>
+<li><code>expectedCountDrive</code>：GO 模式下由 expectedDeg 计算出的目标 count</li>
+</ul>
+<hr />
+<h1 id="1_1">第 1 大段<a class="headerlink" href="#1_1" title="Permanent link">&para;</a></h1>
+<h2 id="1_2">第 1 段：头文件（库）<a class="headerlink" href="#1_2" title="Permanent link">&para;</a></h2>
+<h1 id="include_2">include <Wire.h><a class="headerlink" href="#include_2" title="Permanent link">&para;</a></h1>
+<h1 id="include_3">include <Encoder.h><a class="headerlink" href="#include_3" title="Permanent link">&para;</a></h1>
+<h1 id="include-arduino-i2c-mega-d20d21">include <Wire.h>：✅ Arduino 官方自带库，用来操作 I2C 总线（你 Mega 的 D20/D21）。<a class="headerlink" href="#include-arduino-i2c-mega-d20d21" title="Permanent link">&para;</a></h1>
+<p>你会用到的函数：Wire.begin()、Wire.beginTransmission()、Wire.write()、Wire.endTransmission()、Wire.requestFrom()、Wire.read() 等。</p>
+<h1 id="include-encoder-pjrc-ab">include <Encoder.h>：✅ 第三方 Encoder 库（PJRC 常用那个），用于读取增量编码器 A/B 相。<a class="headerlink" href="#include-encoder-pjrc-ab" title="Permanent link">&para;</a></h1>
+<p>你会用到：Encoder enc(pinA,pinB)、enc.read()、enc.write()（你这版没用 write）。</p>
+<p>结论：这两行都是“库提供”，不是你自己写的功能。</p>
+<h2 id="2">第 2 段：硬件连接注释（只是注释，不参与编译）<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<p>/<em>
+  Mega2560 Pin map:
+  I2C SDA -&gt; D20
+  I2C SCL -&gt; D21
+  Motor DIR -&gt; D8
+  Motor EN(PWM) -&gt; D9
+  Encoder A -&gt; D2
+  Encoder B -&gt; D3
+</em>/</p>
+<p>只是说明接线，不会影响程序。</p>
+<p>其中 “I2C SDA/SCL” 这两个引脚是 Mega 固定的 I2C 引脚：D20/D21。</p>
+<h2 id="3_1">第 3 段：引脚常量（自己定义的）<a class="headerlink" href="#3_1" title="Permanent link">&para;</a></h2>
+<p>const uint8_t PIN_DIR   = 8;
+const uint8_t PIN_EN    = 9;
+const uint8_t PIN_ENC_A = 2;
+const uint8_t PIN_ENC_B = 3;</p>
+<p>这些是✅ 你自己定义的常量（只是为了代码可读性）。</p>
+<p>PIN_DIR：电机方向控制脚（D8）</p>
+<p>PIN_EN：电机 PWM 使能脚（D9）</p>
+<p>PIN_ENC_A/B：编码器 A/B 相（D2/D3）</p>
+<p>uint8_t 是 C/C++ 的标准类型（Arduino 也有），表示 0~255 的无符号整数。</p>
+<h2 id="4_1">第 4 段：方向反转开关（自己定义的“调试开关”）<a class="headerlink" href="#4_1" title="Permanent link">&para;</a></h2>
+<p>const bool INVERT_MOTOR_DIR = true;
+const bool INVERT_ENCODER   = true;</p>
+<p>这也是✅ 你自己定义的常量（不是库自带）。</p>
+<p>为什么要有它？</p>
+<p>你接线/安装方向可能导致：</p>
+<p>电机正反方向跟你想的相反</p>
+<p>编码器计数正负号相反
+所以我们用这两个开关“软件纠正”，不用改接线。</p>
+<p>它们在哪用？</p>
+<p>INVERT_MOTOR_DIR：在 setMotor() 里决定是否 dirHigh = !dirHigh;</p>
+<p>INVERT_ENCODER：在 readCountDrive() 里决定是否 c = -c;</p>
+<h2 id="5_1">第 5 段：机械参数（自己定义，来自你的实测与结构）<a class="headerlink" href="#5_1" title="Permanent link">&para;</a></h2>
+<p>const long  ONE_REV_COUNTS = 12;
+const float GEAR_RATIO = 52.734f;</p>
+<p>这两个是✅ 你自己定义的常量，不是库自带。</p>
+<p>ONE_REV_COUNTS = 12：你实测“驱动轮转 1 圈，Encoder 输出变化 12 count”。</p>
+<p>GEAR_RATIO = 52.734：你的减速比（驱动轮 : 指针轴 = 52.734 : 1）</p>
+<p>注意：这两个是整个“角度换算”正确与否的根。</p>
+<h2 id="6-count-inline">第 6 段：每个 count 对应指针轴多少度（自己写的 inline 函数）<a class="headerlink" href="#6-count-inline" title="Permanent link">&para;</a></h2>
+<p>static inline float degPerDriveCountOnShaft() {
+  return 360.0f / (float)ONE_REV_COUNTS / GEAR_RATIO;
+}</p>
+<p>这是✅ 你自己（我们）写的函数，不是库自带。</p>
+<p>static inline 的意思：</p>
+<p>inline：建议编译器把函数展开（更快）</p>
+<p>static：限制作用域在当前文件（避免链接冲突）</p>
+<p>它做的事：建立“count → 指针轴角度”的比例尺
+推导：</p>
+<p>驱动轮 1 圈 = 12 count</p>
+<p>驱动轮转 52.734 圈 → 指针轴转 1 圈 = 360°</p>
+<p>所以 1 count → 指针轴角度：这个函数会被两个关键地方用到：</p>
+<p>driveCountToShaftDeg()：count → 实际角度 actualDeg</p>
+<p>expectedDegToTargetCount()：预期角度 expectedDeg → 目标 count</p>
+<h2 id="7">第 7 段：角度归一化（自己写的函数）<a class="headerlink" href="#7" title="Permanent link">&para;</a></h2>
+<p>static inline float wrap180(float a) {
+  while (a &gt; 180.0f) a -= 360.0f;
+  while (a &lt;= -180.0f) a += 360.0f;
+  return a;
+}</p>
+<p>这也是✅ 你自己写的函数。</p>
+<p>它做的事：把角度限制在 (-180, 180]，因为角度是周期的。</p>
+<p>为什么必要？</p>
+<p>避免角度跑到 540°、-900° 这种数值</p>
+<p>让误差计算总是走“最短方向”</p>
+<p>让 sync 校准不会累积偏移到非常大</p>
+<h2 id="8-count">第 8 段：轴角 → count（自己写的辅助换算）<a class="headerlink" href="#8-count" title="Permanent link">&para;</a></h2>
+<p>static inline long shaftDegToDriveCount(float deg) {
+  return lroundf(deg / degPerDriveCountOnShaft());
+}</p>
+<p>✅ 自己写的函数</p>
+<p>lroundf()：C/C++ 标准数学函数（Arduino 支持），把 float 四舍五入到 long</p>
+<p>它做的事：给定“指针轴转了多少度”，换算出需要多少个 count。</p>
+<p>你当前程序里主要用的是 expectedDegToTargetCount()，这个 shaftDegToDriveCount() 现在相当于备用工具函数。</p>
+<h2 id="9-count">第 9 段：count → 实际轴角（自己写的关键换算）<a class="headerlink" href="#9-count" title="Permanent link">&para;</a></h2>
+<p>static inline float driveCountToShaftDeg(long countDrive, float calibOffsetDeg) {
+  return wrap180((float)countDrive * degPerDriveCountOnShaft() + calibOffsetDeg);
+}</p>
+<p>这是✅ 自己写的函数，也是非常关键的“测量模型”。</p>
+<p>countDrive * degPerDriveCountOnShaft()：把编码器 count 变成轴角</p>
+<ul>
+<li>calibOffsetDeg：加上校准偏移（因为电机没有绝对零位）</li>
+</ul>
+<p>wrap180(...)：把角度折回 (-180,180]，防止越界</p>
+<p>这行最终生成：actualDeg（实际角度），用于：</p>
+<p>串口打印</p>
+<p>sync 校准（expectedDeg - actualDeg）</p>
+<h1 id="2_1">第 2 大段<a class="headerlink" href="#2_1" title="Permanent link">&para;</a></h1>
+<h2 id="21-i2c">2.1 传感器 I2C 地址（自己定义）<a class="headerlink" href="#21-i2c" title="Permanent link">&para;</a></h2>
+<p>const uint8_t MPL3115A2_ADDR = 0x60;</p>
+<p>✅ 你自己定义的常量</p>
+<p>0x60 是 MPL3115A2 芯片在 I2C 总线上的地址</p>
+<p>后面所有 I2C 读写都会用到这个地址</p>
+<p>如果你换成别的温度传感器，这一段几乎一定要改</p>
+<h2 id="22-i2c-1">2.2 I2C 写 1 个寄存器（自己写的“封装函数”）<a class="headerlink" href="#22-i2c-1" title="Permanent link">&para;</a></h2>
+<p>bool i2cWrite8(uint8_t addr, uint8_t reg, uint8_t val) {
+  Wire.beginTransmission(addr);
+  Wire.write(reg);
+  Wire.write(val);
+  return (Wire.endTransmission() == 0);
+}</p>
+<p>这是什么？</p>
+<p>✅ 你自己写的函数</p>
+<p>但里面用到的 Wire.xxx 都是 Arduino Wire 库自带</p>
+<p>一行一行讲：
+Wire.beginTransmission(addr);</p>
+<p>⛔ 不是你写的</p>
+<p>✅ Wire 库函数</p>
+<p>意思：开始向 I2C 设备 addr 发送数据</p>
+<p>Wire.write(reg);</p>
+<p>向设备发送“寄存器地址”</p>
+<p>Wire.write(val);</p>
+<p>向这个寄存器写入数据</p>
+<p>return (Wire.endTransmission() == 0);</p>
+<p>结束传输</p>
+<p>endTransmission() 返回 0 表示成功</p>
+<p>函数整体返回 true / false</p>
+<p>在系统中的作用</p>
+<p>👉 初始化传感器寄存器时用
+👉 比如“开启温度测量”“配置模式”</p>
+<h2 id="23-i2c">2.3 I2C 读多个字节（自己写的封装）<a class="headerlink" href="#23-i2c" title="Permanent link">&para;</a></h2>
+<p>bool i2cReadBytes(uint8_t addr, uint8_t reg, uint8_t* buf, uint8_t len) {
+  Wire.beginTransmission(addr);
+  Wire.write(reg);
+  if (Wire.endTransmission(false) != 0) return false;}</p>
+<p>这几行在干嘛？
+Wire.beginTransmission(addr);
+Wire.write(reg);</p>
+<p>告诉设备：“我接下来要从 reg 这个寄存器开始读”</p>
+<p>Wire.endTransmission(false)</p>
+<p>false 的意思是：不要释放 I2C 总线</p>
+<p>这是 I2C 的“重复起始（repeated start）”</p>
+<p>是标准做法，不是你发明的</p>
+<p>if (Wire.endTransmission(false) != 0) return false;</p>
+<p>如果通信失败，直接返回 false</p>
+<p>接着往下
+uint8_t got = Wire.requestFrom(addr, len);
+if (got != len) return false;</p>
+<p>Wire.requestFrom()：</p>
+<p>✅ Wire 库自带</p>
+<p>从设备读取 len 个字节</p>
+<p>如果没读够，判定失败</p>
+<p>把数据读出来
+for (uint8_t i = 0; i &lt; len; i++) buf[i] = Wire.read();
+return true;</p>
+<p>Wire.read()：Wire 库函数</p>
+<p>把字节存进你提供的数组 buf</p>
+<p>在系统中的作用</p>
+<p>👉 所有传感器数据读取的基础工具函数</p>
+<h2 id="24-mpl3115a2">2.4 初始化 MPL3115A2（自己写的逻辑）<a class="headerlink" href="#24-mpl3115a2" title="Permanent link">&para;</a></h2>
+<p>bool mpl3115a2Init() {
+  if (!i2cWrite8(MPL3115A2_ADDR, 0x13, 0x07)) return false;</p>
+<p>这行什么意思？</p>
+<p>0x13：PT_DATA_CFG 寄存器</p>
+<p>0x07：打开数据就绪中断（温度/气压）</p>
+<p>这是 MPL3115A2 数据手册规定的</p>
+<p>👉 你不是“随便写”，而是照 datasheet 配的</p>
+<p>if (!i2cWrite8(MPL3115A2_ADDR, 0x26, 0xB9)) return false;</p>
+<p>0x26：CTRL_REG1</p>
+<p>0xB9 含义（重要，写报告可以用）：</p>
+<p>ALT=0 → 温度/气压模式</p>
+<p>OSR → 过采样</p>
+<p>ACTIVE=1 → 开始测量</p>
+<p>delay(10);
+  return true;
+}</p>
+<p>给芯片一点启动时间</p>
+<p>返回初始化成功</p>
+<p>结论</p>
+<p>✅ mpl3115a2Init() 是你自己写的</p>
+<p>⚠️ 但寄存器地址 &amp; 数值来自官方手册</p>
+<h2 id="25">2.5 读取温度（核心函数）<a class="headerlink" href="#25" title="Permanent link">&para;</a></h2>
+<p>bool readTemperatureC(float &amp;tempC) {
+  uint8_t buf[2];
+  if (!i2cReadBytes(MPL3115A2_ADDR, 0x04, buf, 2)) return false;</p>
+<p>解释</p>
+<p>0x04：温度寄存器起始地址</p>
+<p>连续读 2 个字节（MSB + LSB）</p>
+<p>如果失败直接返回 false</p>
+<p>int8_t msb = (int8_t)buf[0];
+  uint8_t lsb = buf[1];</p>
+<p>MSB：温度整数部分（有符号）</p>
+<p>LSB：小数部分（高 4 位有效）</p>
+<p>float frac = (float)(lsb &gt;&gt; 4) / 16.0f;</p>
+<p>MPL3115A2 的温度精度是 1/16 °C</p>
+<p>右移 4 位后再除以 16</p>
+<p>tempC = (float)msb + ((msb &gt;= 0) ? frac : -frac);
+  return true;
+}</p>
+<p>正温：加小数</p>
+<p>负温：减小数（这是 datasheet 推荐写法）</p>
+<p>在整个系统里的位置（非常重要）</p>
+<p>👉 这是唯一一个“真实世界 → 数字世界”的入口</p>
+<p>传感器 → tempC</p>
+<p>后面：</p>
+<p>tempC → expectedDeg</p>
+<p>expectedDeg → expectedCountDrive</p>
+<p>expectedCountDrive → 电机动作</p>
+<h1 id="3_2">第 3 大段：温度 → 期望指针角度（建模核心）<a class="headerlink" href="#3_2" title="Permanent link">&para;</a></h1>
+<hr />
+<h2 id="31">3.1 温度范围参数（你自己定义的“设计指标”）<a class="headerlink" href="#31" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">TEMP_MIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">20.0f</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">TEMP_MAX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">30.0f</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li>✅ <strong>完全由你定义</strong></li>
+<li>这是系统的<strong>工作温度量程</strong></li>
+<li>
+<p>物理含义：</p>
+</li>
+<li>
+<p>温度 ≤ 20°C → 当作 20°C</p>
+</li>
+<li>温度 ≥ 30°C → 当作 30°C</li>
+</ul>
+<p>📌 在报告中可以写成：</p>
+<blockquote>
+<p>系统对温度进行限幅处理，仅在 [20°C, 30°C] 区间内进行角度映射。</p>
+</blockquote>
+<hr />
+<h2 id="32">3.2 角度范围参数（你自己定义的“机械指标”）<a class="headerlink" href="#32" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">ANGLE_MIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">-120.0f</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">ANGLE_MAX</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="mf">120.0f</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li>✅ <strong>你自己定义</strong></li>
+<li>表示<strong>指针轴的允许旋转范围</strong></li>
+<li>
+<p>物理含义：</p>
+</li>
+<li>
+<p>最低温度 → 指针最左（-120°）</p>
+</li>
+<li>最高温度 → 指针最右（+120°）</li>
+</ul>
+<p>📌 这是“温度表盘刻度”的直接数字化体现。</p>
+<hr />
+<h2 id="33">3.3 温度 → 角度映射函数（你自己写的核心模型）<a class="headerlink" href="#33" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="nf">tempToAngleDeg</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</code></pre></div>
+<ul>
+<li>✅ <strong>你自己写的函数</strong></li>
+<li>输入：温度（°C）</li>
+<li>输出：期望指针轴角度（°）</li>
+</ul>
+<hr />
+<h3 id="_2">第一步：温度限幅（防止异常）<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">TEMP_MIN</span><span class="p">)</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TEMP_MIN</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">TEMP_MAX</span><span class="p">)</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TEMP_MAX</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li>
+<p>防止：</p>
+</li>
+<li>
+<p>传感器异常</p>
+</li>
+<li>超出量程导致指针乱转</li>
+<li>这是<strong>工程中非常标准的做法</strong></li>
+</ul>
+<p>📌 报告术语：</p>
+<blockquote>
+<p>为提高系统鲁棒性，对温度输入进行饱和处理（clamping）。</p>
+</blockquote>
+<hr />
+<h3 id="_3">第二步：线性映射（核心公式）<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ANGLE_MIN</span><span class="w"> </span>
+<span class="w">          </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">TEMP_MIN</span><span class="p">)</span><span class="w"> </span>
+<span class="w">          </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">ANGLE_MAX</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ANGLE_MIN</span><span class="p">)</span><span class="w"> </span>
+<span class="w">          </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">TEMP_MAX</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">TEMP_MIN</span><span class="p">);</span>
+</code></pre></div>
+<p>这是<strong>整套系统最重要的一行之一</strong>，我们慢慢拆。</p>
+<h4 id="_4">数学形式：<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h4>
+<p>[
+a = a_{min} + \frac{t - t_{min}}{t_{max} - t_{min}} (a_{max} - a_{min})
+]</p>
+<h4 id="_5">物理含义：<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h4>
+<ul>
+<li>温度在 <code>[TEMP_MIN, TEMP_MAX]</code> 内</li>
+<li>按比例映射到 <code>[ANGLE_MIN, ANGLE_MAX]</code></li>
+</ul>
+<h4 id="_6">你的具体数值：<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h4>
+<ul>
+<li>温度跨度：30 − 20 = 10°C</li>
+<li>角度跨度：120 − (−120) = 240°</li>
+<li>灵敏度：
+  [
+  24^\circ / ^\circ C
+  ]</li>
+</ul>
+<p>📌 报告可写：</p>
+<blockquote>
+<p>本系统采用线性比例映射，将温度变化等比例转换为指针角度变化。</p>
+</blockquote>
+<hr />
+<h3 id="_7">第三步：角度归一化（安全措施）<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">wrap180</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>使用你前面定义的 <code>wrap180()</code></li>
+<li>保证角度永远在 (-180°, 180°] 内</li>
+<li>
+<p>防止：</p>
+</li>
+<li>
+<p>偏移叠加</p>
+</li>
+<li>同步校准后角度越界</li>
+</ul>
+<p>📌 注意：</p>
+<blockquote>
+<p>即使你现在角度范围是 ±120°，
+这个函数依然有意义，是“通用安全保护”。</p>
+</blockquote>
+<hr />
+<h2 id="34">3.4 这一段在系统中的位置（强烈建议写）<a class="headerlink" href="#34" title="Permanent link">&para;</a></h2>
+<p>整个数据链路是：</p>
+<div class="highlight"><pre><span></span><code>真实温度 (°C)
+   ↓  readTemperatureC()
+tempC
+   ↓  tempToAngleDeg()
+expectedDeg
+   ↓  expectedDegToTargetCount()
+expectedCountDrive
+   ↓  motion controller
+电机 → 指针轴
+</code></pre></div>
+<p>这一步<strong>不涉及电机、不涉及 PID、不涉及编码器</strong>，
+它是<strong>纯数学建模层</strong>。</p>
+<hr />
+<h2 id="35">3.5 如果以后要改量程，需要改哪里？<a class="headerlink" href="#35" title="Permanent link">&para;</a></h2>
+<p>例如你老师问：</p>
+<blockquote>
+<p>“如果温度范围改成 -20~60°C，角度改成 -90~90°，要改什么？”</p>
+</blockquote>
+<p>你可以非常自信地回答：</p>
+<p>✅ <strong>只需要改 4 个参数</strong>：</p>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">TEMP_MIN</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mf">-20.0f</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">TEMP_MAX</span><span class="w">  </span><span class="o">=</span><span class="w">  </span><span class="mf">60.0f</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">ANGLE_MIN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">-90.0f</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">ANGLE_MAX</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="mf">90.0f</span><span class="p">;</span>
+</code></pre></div>
+<p>❌ <strong>不需要改</strong>：</p>
+<ul>
+<li>电机控制参数</li>
+<li>编码器参数</li>
+<li>运动状态机</li>
+<li>PI / P / nudge 逻辑</li>
+</ul>
+<p>📌 这是你程序结构设计得非常好的地方。</p>
+<hr />
+<hr />
+<p>如果你回复 <strong>“继续”</strong>，
+下一段我会讲：</p>
+<p>👉 <strong>电机控制与编码器接口（setMotor / readCountDrive）</strong>
+这是“软件如何真正驱动物理世界”的部分，也是你震荡问题当初的根源之一。</p>
+<p>好，我们继续 👍
+这一段是<strong>“软件如何真正驱动物理世界”</strong>：
+👉 <strong>电机 + 编码器接口层</strong>。
+这是你之前出现<strong>震动、方向反、count 飘</strong>等问题的根源层，非常关键。</p>
+<p>我还是<strong>几行几行讲</strong>，并且明确告诉你：</p>
+<ul>
+<li>哪些是 <strong>你自己定义的</strong></li>
+<li>哪些是 <strong>库/Arduino 已有的</strong></li>
+</ul>
+<hr />
+<h1 id="4_2">第 4 大段：电机输出 &amp; 编码器输入（硬件接口层）<a class="headerlink" href="#4_2" title="Permanent link">&para;</a></h1>
+<p>这一层的特点是：
+👉 <strong>不做“智能决策”</strong>
+👉 只做<strong>最底层的 I/O 封装</strong></p>
+<hr />
+<h2 id="41">4.1 电机停止函数（你自己写的）<a class="headerlink" href="#41" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">stopMotor</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
+<span class="w">  </span><span class="n">analogWrite</span><span class="p">(</span><span class="n">PIN_EN</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"> </span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>✅ <strong>你自己写的函数</strong></li>
+<li><code>analogWrite()</code>：Arduino 自带 API</li>
+</ul>
+<h3 id="_8">作用<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<ul>
+<li>让 PWM = 0</li>
+<li>电机<strong>不通电</strong></li>
+<li>没有保持力（不是刹车）</li>
+</ul>
+<p>📌 在你的系统里：</p>
+<ul>
+<li>STOP 模式</li>
+<li>NUDGE_OFF 阶段</li>
+<li>运动完成后
+  都会调用它</li>
+</ul>
+<hr />
+<h2 id="42">4.2 电机驱动函数（你自己写的关键封装）<a class="headerlink" href="#42" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">setMotor</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">dirHigh</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">pwm</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</code></pre></div>
+<ul>
+<li>✅ <strong>你自己写的函数</strong></li>
+<li>
+<p>输入两个量：</p>
+</li>
+<li>
+<p><code>dirHigh</code>：逻辑方向（正 / 反）</p>
+</li>
+<li><code>pwm</code>：速度大小（0~255）</li>
+</ul>
+<hr />
+<h3 id="_9">方向反转处理（非常重要）<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">INVERT_MOTOR_DIR</span><span class="p">)</span><span class="w"> </span><span class="n">dirHigh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">!</span><span class="n">dirHigh</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li><code>INVERT_MOTOR_DIR</code>：你自己定义的调试参数</li>
+<li>
+<p>解决问题：</p>
+</li>
+<li>
+<p>“代码里算的是正方向，但电机实际反着转”</p>
+</li>
+</ul>
+<p>📌 这是<strong>工程中极常见做法</strong>，而且非常专业。</p>
+<hr />
+<h3 id="_10">输出方向信号<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">PIN_DIR</span><span class="p">,</span><span class="w"> </span><span class="n">dirHigh</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">HIGH</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">LOW</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li><code>digitalWrite()</code>：Arduino 自带</li>
+<li>控制电机驱动器 DIR 引脚</li>
+</ul>
+<hr />
+<h3 id="pwm">输出 PWM<a class="headerlink" href="#pwm" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="n">analogWrite</span><span class="p">(</span><span class="n">PIN_EN</span><span class="p">,</span><span class="w"> </span><span class="n">pwm</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li><code>analogWrite()</code>：Arduino 自带</li>
+<li>
+<p>本质：</p>
+</li>
+<li>
+<p>控制电机<strong>转速</strong></p>
+</li>
+<li>不是控制角度</li>
+<li>不是控制时间</li>
+</ul>
+<p>📌 非常重要一句话（你报告里可以写）：</p>
+<blockquote>
+<p>本系统中电机为速度控制对象，角度控制通过编码器反馈在上层软件中实现。</p>
+</blockquote>
+<hr />
+<h2 id="43">4.3 编码器对象（库提供）<a class="headerlink" href="#43" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">Encoder</span><span class="w"> </span><span class="nf">enc</span><span class="p">(</span><span class="n">PIN_ENC_A</span><span class="p">,</span><span class="w"> </span><span class="n">PIN_ENC_B</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li>⛔ 不是你写的</li>
+<li>✅ <code>Encoder</code> 类来自 <code>&lt;Encoder.h&gt;</code> 库</li>
+</ul>
+<p>作用：</p>
+<ul>
+<li>自动处理中断 / 轮询</li>
+<li>自动判断 A/B 相方向</li>
+<li>给你一个“累计计数值”</li>
+</ul>
+<hr />
+<h2 id="44-count">4.4 读取编码器 count（你自己写的封装）<a class="headerlink" href="#44-count" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kt">long</span><span class="w"> </span><span class="nf">readCountDrive</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">long</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">enc</span><span class="p">.</span><span class="n">read</span><span class="p">();</span>
+</code></pre></div>
+<ul>
+<li><code>enc.read()</code>：Encoder 库自带</li>
+<li>返回一个 <strong>long 类型累计计数</strong></li>
+<li>可能是正，也可能是负</li>
+</ul>
+<hr />
+<h3 id="_11">编码器方向反转<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">INVERT_ENCODER</span><span class="p">)</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="p">;</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><code>INVERT_ENCODER</code>：你自己定义</li>
+<li>
+<p>用来修正：</p>
+</li>
+<li>
+<p>A/B 相接反</p>
+</li>
+<li>或安装方向反了</li>
+</ul>
+<p>📌 非常重要：</p>
+<blockquote>
+<p><strong>编码器只负责“数数”，方向的物理含义是软件赋予的</strong></p>
+</blockquote>
+<hr />
+<h2 id="45">4.5 小结：这一层“只干三件事”<a class="headerlink" href="#45" title="Permanent link">&para;</a></h2>
+<p>你可以在报告里总结为：</p>
+<ol>
+<li>
+<p><strong>stopMotor()</strong></p>
+</li>
+<li>
+<p>关闭 PWM</p>
+</li>
+<li>
+<p>电机断电</p>
+</li>
+<li>
+<p><strong>setMotor(dir, pwm)</strong></p>
+</li>
+<li>
+<p>输出方向</p>
+</li>
+<li>
+<p>输出速度（PWM）</p>
+</li>
+<li>
+<p><strong>readCountDrive()</strong></p>
+</li>
+<li>
+<p>从编码器读取累计 count</p>
+</li>
+<li>统一方向符号</li>
+</ol>
+<p>⚠️ 这一层 <strong>不关心</strong>：</p>
+<ul>
+<li>温度</li>
+<li>角度</li>
+<li>r / l / r5</li>
+<li>稳不稳定</li>
+</ul>
+<p>👉 所有“聪明的东西”都在<strong>下一层：运动控制状态机</strong></p>
+<hr />
+<h2 id="46">4.6 你之前所有问题，其实都来自这里 + 上一层<a class="headerlink" href="#46" title="Permanent link">&para;</a></h2>
+<p>你之前遇到的：</p>
+<ul>
+<li>“r 一下转很多圈”</li>
+<li>“count 有时正有时负”</li>
+<li>“不加手阻尼就抖”</li>
+<li>“方向反了”</li>
+</ul>
+<p>本质原因总结一句话：</p>
+<blockquote>
+<p><strong>电机是速度执行器，而你一开始试图把它当成角度执行器来用</strong></p>
+</blockquote>
+<p>现在你这套结构已经完全正确：</p>
+<ul>
+<li>底层：速度 + count</li>
+<li>上层：目标 count + 状态机</li>
+<li>最上层：温度 → 角度 → count</li>
+</ul>
+<h1 id="5-count">第 5 大段：运动控制状态机（按 count 精确到位）<a class="headerlink" href="#5-count" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>核心目标：让编码器 count 从当前值走到 <code>targetCountDrive</code>，并且尽量做到 <code>err=0</code>（或很小）。</p>
+</blockquote>
+<hr />
+<h2 id="51">5.1 区域划分参数（你自己定义的控制策略参数）<a class="headerlink" href="#51" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">FAR_ZONE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">NEAR_ZONE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">FINE_ZONE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li>✅ 全是你自己定义的控制参数（不是库自带）</li>
+<li>
+<p>它们用于把误差 <code>err = target - count</code> 分成不同“工作区间”：</p>
+</li>
+<li>
+<p><strong>误差大</strong>：快速粗调（COARSE_FAST）</p>
+</li>
+<li><strong>误差中等</strong>：慢速粗调（COARSE_SLOW）</li>
+<li><strong>误差很小</strong>：进入微调（NUDGE）</li>
+</ul>
+<p>你现在实际使用的主要是：</p>
+<ul>
+<li><code>FAR_ZONE</code>：决定 fast/slow</li>
+<li><code>FINE_ZONE</code>：决定何时进入 nudge</li>
+</ul>
+<p><code>NEAR_ZONE</code> 在你这版逻辑里其实没真正用到（你只用 FAR_ZONE/FINE_ZONE），它保留也没问题。</p>
+<hr />
+<h2 id="52">5.2 “到位判定”参数（你自己定义，决定精度/时间）<a class="headerlink" href="#52" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">TOL_DONE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">STABLE_MS_ZERO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">500</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">STABLE_MS_ONE</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">800</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">ALLOW_FALLBACK_PLUSMINUS1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li>✅ 都是你自己定义</li>
+</ul>
+<p>意义：</p>
+<ul>
+<li><code>TOL_DONE = 0</code>：你要求“尽量多数 0 误差”，所以把完成目标设为 <strong>err 必须=0</strong></li>
+<li>
+<p><code>STABLE_MS_ZERO = 500</code>：<code>err==0</code> 必须持续 500ms 才算“真的到位”</p>
+</li>
+<li>
+<p>防止刚好扫到 0 又弹回去</p>
+</li>
+<li>
+<p><code>STABLE_MS_ONE = 800</code> + <code>ALLOW_FALLBACK_PLUSMINUS1=true</code></p>
+</li>
+<li>
+<p>如果一直很难做到 0，就允许 err=±1 稳定 800ms 当成完成（兜底）</p>
+</li>
+<li>这让系统不会无限抖动在 0 附近</li>
+</ul>
+<hr />
+<h2 id="53">5.3 粗调控制参数（你自己定义，决定“拉近速度”）<a class="headerlink" href="#53" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">KP_COARSE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">7.0f</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">PWM_COARSE_MIN_FAST</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">60</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">PWM_COARSE_MAX_FAST</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">130</span><span class="p">;</span>
+
+<span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">PWM_COARSE_MIN_SLOW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">55</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">PWM_COARSE_MAX_SLOW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li>✅ 都是你自己定义</li>
+</ul>
+<p>解释：</p>
+<ul>
+<li>
+<p><code>KP_COARSE</code>：粗调阶段的 P 控制增益</p>
+</li>
+<li>
+<p>输出：<code>u = KP_COARSE * err</code></p>
+</li>
+<li><code>err</code> 以 count 为单位，所以 u 也是“与 count 误差成比例”的控制量</li>
+<li><code>PWM_COARSE_MIN_*</code>：最小 PWM（克服静摩擦，“一定要动起来”）</li>
+<li><code>PWM_COARSE_MAX_*</code>：最大 PWM（避免过冲、避免太猛）</li>
+</ul>
+<p><strong>FAST vs SLOW</strong></p>
+<ul>
+<li>FAST：误差很大，用更强的输出，快速接近</li>
+<li>SLOW：误差较小，用更温柔的输出，降低过冲，准备进入 nudge</li>
+</ul>
+<hr />
+<h2 id="54-nudge-0">5.4 微调 nudge 参数（你自己定义，决定“最后能不能落在 0”）<a class="headerlink" href="#54-nudge-0" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">PWM_NUDGE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">55</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">NUDGE_OFF_MS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">160</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">NUDGE_ON_MS_COARSE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">35</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">NUDGE_ON_MS_FINE</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li>✅ 都是你自己定义</li>
+</ul>
+<p>作用非常重要：</p>
+<ul>
+<li><code>PWM_NUDGE</code>：微调脉冲的力度（一般接近“能动门槛”）</li>
+<li>
+<p><code>NUDGE_ON_MS_*</code>：脉冲持续时间</p>
+</li>
+<li>
+<p>err=2 时用长一点（推进更多）</p>
+</li>
+<li>err=1 时用短一点（只推一点点，尽量落到 0）</li>
+<li>
+<p><code>NUDGE_OFF_MS</code>：脉冲之间的等待时间</p>
+</li>
+<li>
+<p>这就是你之前发现“加手指摩擦就更准”的原因之一</p>
+</li>
+<li>OFF 等待相当于让系统自然阻尼、齿隙回弹结束再测一次 count</li>
+</ul>
+<hr />
+<h2 id="55">5.5 控制调度参数（你自己定义）<a class="headerlink" href="#55" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">CTRL_MS</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">PRINT_MS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">TIMEOUT_MS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7000</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li>
+<p>✅ 自己定义</p>
+</li>
+<li>
+<p><code>CTRL_MS=10ms</code>：运动控制更新频率 100Hz</p>
+</li>
+<li>
+<p><code>PRINT_MS=200ms</code>：串口输出频率</p>
+</li>
+<li>
+<p><code>TIMEOUT_MS=7000ms</code>：7秒到不了就强制停止（防止编码器失效一直转）</p>
+</li>
+</ul>
+<hr />
+<h2 id="56">5.6 状态机枚举（你自己定义）<a class="headerlink" href="#56" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">MotionState</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">M_IDLE</span><span class="p">,</span><span class="w"> </span><span class="n">M_COARSE_FAST</span><span class="p">,</span><span class="w"> </span><span class="n">M_COARSE_SLOW</span><span class="p">,</span><span class="w"> </span><span class="n">M_NUDGE_OFF</span><span class="p">,</span><span class="w"> </span><span class="n">M_NUDGE_ON</span><span class="w"> </span><span class="p">};</span>
+<span class="n">MotionState</span><span class="w"> </span><span class="n">mstate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M_IDLE</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li>✅ 自己定义</li>
+</ul>
+<p>含义：</p>
+<ul>
+<li><code>M_IDLE</code>：空闲，电机必须停</li>
+<li><code>M_COARSE_FAST</code>：快档粗调</li>
+<li><code>M_COARSE_SLOW</code>：慢档粗调</li>
+<li><code>M_NUDGE_OFF</code>：微调等待（电机关）</li>
+<li><code>M_NUDGE_ON</code>：微调脉冲（电机开一小段时间）</li>
+</ul>
+<hr />
+<h2 id="57">5.7 目标与计时变量（你自己定义）<a class="headerlink" href="#57" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kt">long</span><span class="w"> </span><span class="n">targetCountDrive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">moveStartMs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">phaseT0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">stableZeroT0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">stableOneT0</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li>✅ 自己定义</li>
+</ul>
+<p>解释：</p>
+<ul>
+<li><code>targetCountDrive</code>：目标 count（你希望 count 变成多少）</li>
+<li><code>moveStartMs</code>：开始移动的时间，用于 timeout</li>
+<li><code>phaseT0</code>：nudge on/off 阶段起始时间</li>
+<li><code>stableZeroT0</code>：第一次进入 err==0 的时间（用来算持续 500ms）</li>
+<li><code>stableOneT0</code>：第一次进入 |err|==1 的时间（用来算持续 800ms）</li>
+</ul>
+<hr />
+<h2 id="58-motionstartto">5.8 启动运动：<code>motionStartTo()</code><a class="headerlink" href="#58-motionstartto" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">motionStartTo</span><span class="p">(</span><span class="kt">long</span><span class="w"> </span><span class="n">newTargetCount</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">targetCountDrive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">newTargetCount</span><span class="p">;</span>
+<span class="w">  </span><span class="n">moveStartMs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">millis</span><span class="p">();</span>
+<span class="w">  </span><span class="n">stableZeroT0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="n">stableOneT0</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="n">mstate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M_COARSE_FAST</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>✅ 你自己写的函数</li>
+<li><code>millis()</code>：Arduino 自带（返回系统运行毫秒数）</li>
+</ul>
+<p>逐行解释：</p>
+<ol>
+<li>
+<p><code>targetCountDrive = newTargetCount;</code>
+   设置目标</p>
+</li>
+<li>
+<p><code>moveStartMs = millis();</code>
+   记录开始时间</p>
+</li>
+<li>
+<p><code>stableZeroT0 = 0; stableOneT0 = 0;</code>
+   清空稳定计时器（因为这是一次新的运动）</p>
+</li>
+<li>
+<p><code>mstate = M_COARSE_FAST;</code>
+   新运动默认从“快档粗调”开始</p>
+</li>
+</ol>
+<hr />
+<h2 id="59-motionmoveby">5.9 相对移动：<code>motionMoveBy()</code><a class="headerlink" href="#59-motionmoveby" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">motionMoveBy</span><span class="p">(</span><span class="kt">long</span><span class="w"> </span><span class="n">delta</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">long</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readCountDrive</span><span class="p">();</span>
+<span class="w">  </span><span class="n">motionStartTo</span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">delta</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>✅ 你自己写的函数</li>
+<li><code>readCountDrive()</code> 是你封装的编码器读取</li>
+</ul>
+<p>解释：</p>
+<ul>
+<li>读取当前 count = c</li>
+<li>目标变成 c + delta</li>
+<li>然后用 <code>motionStartTo()</code> 启动状态机</li>
+</ul>
+<p>这就是为什么：</p>
+<ul>
+<li><code>r</code> 对应 <code>+12</code></li>
+<li><code>l</code> 对应 <code>-12</code></li>
+</ul>
+<p>而且每次都是“相对移动”</p>
+<h2 id="510-motionupdate-1">5.10 <code>motionUpdate()</code> 第 1 段：读数 + 误差<a class="headerlink" href="#510-motionupdate-1" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">motionUpdate</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">now</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">millis</span><span class="p">();</span>
+
+<span class="w">  </span><span class="kt">long</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readCountDrive</span><span class="p">();</span>
+<span class="w">  </span><span class="kt">long</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">targetCountDrive</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">long</span><span class="w"> </span><span class="n">aerr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">labs</span><span class="p">(</span><span class="n">err</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li><code>millis()</code>：✅ Arduino 自带，当前运行时间（ms）</li>
+<li><code>readCountDrive()</code>：✅ 你自己写的封装（内部用 <code>enc.read()</code>）</li>
+<li><code>targetCountDrive</code>：✅ 你自己维护的目标 count</li>
+<li><code>err = target - current</code>：✅ 控制误差（count单位）</li>
+<li><code>labs(err)</code>：✅ C 标准库函数（long absolute），得到误差绝对值</li>
+</ul>
+<blockquote>
+<p>到这里，你已经得到了“我离目标还差多少 count”。</p>
+</blockquote>
+<hr />
+<h2 id="511-2">5.11 第 2 段：超时保护（防止一直转）<a class="headerlink" href="#511-2" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mstate</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">M_IDLE</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">moveStartMs</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">TIMEOUT_MS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">mstate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M_IDLE</span><span class="p">;</span>
+<span class="w">    </span><span class="n">stopMotor</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><code>TIMEOUT_MS</code>：✅ 你定义的 7000ms</li>
+<li><code>moveStartMs</code>：✅ 你在 <code>motionStartTo()</code> 里记录的开始时间</li>
+<li>逻辑：
+  <strong>只要当前不是空闲状态</strong>，并且运动时间超过 7 秒 → 直接停机</li>
+</ul>
+<p>为什么必须要有？</p>
+<ul>
+<li>编码器断线/松动</li>
+<li>电机卡住</li>
+<li>齿轮打滑
+  这些情况如果没有 timeout，会导致电机一直输出 PWM，风险很大。</li>
+</ul>
+<hr />
+<h2 id="512-3-0">5.12 第 3 段：稳定到位判定（“0误差要持续”）<a class="headerlink" href="#512-3-0" title="Permanent link">&para;</a></h2>
+<p>这一段是你系统为什么“看起来很稳”的关键。</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mstate</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">M_IDLE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">err</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">stableZeroT0</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">stableZeroT0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">stableZeroT0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+</code></pre></div>
+<p>逐行解释：</p>
+<ul>
+<li>只有在“运动进行中”（非 IDLE）才计算稳定性</li>
+<li>
+<p>如果 <code>err==0</code>：</p>
+</li>
+<li>
+<p>第一次达到 0 时，记录时间 <code>stableZeroT0 = now</code></p>
+</li>
+<li>后面如果一直保持 0，就不再改这个时间</li>
+<li>
+<p>如果 <code>err != 0</code>：</p>
+</li>
+<li>
+<p>清零 <code>stableZeroT0</code>，意味着“稳定计时中断，得重新来”</p>
+</li>
+</ul>
+<hr />
+<p>接着是 |err|==1 的兜底计时：</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">labs</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">stableOneT0</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">stableOneT0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">stableOneT0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>逻辑完全同上，只是条件从 <code>err==0</code> 换成 <code>|err|==1</code></li>
+<li>这是为了避免“永远在 0 附近震荡但就是碰不到 0”导致一直不结束</li>
+</ul>
+<hr />
+<p>然后是真正的“完成判定”：</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">TOL_DONE</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">stableZeroT0</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">stableZeroT0</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">STABLE_MS_ZERO</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">mstate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M_IDLE</span><span class="p">;</span><span class="w"> </span><span class="n">stopMotor</span><span class="p">();</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ALLOW_FALLBACK_PLUSMINUS1</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">stableOneT0</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">stableOneT0</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">STABLE_MS_ONE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">mstate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M_IDLE</span><span class="p">;</span><span class="w"> </span><span class="n">stopMotor</span><span class="p">();</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><code>TOL_DONE==0</code>：表示你想“目标多数为 0”</li>
+<li>第一优先级：
+  <code>err==0</code> 连续保持 <code>STABLE_MS_ZERO=500ms</code> → 完成</li>
+<li>第二优先级（兜底）：
+  如果允许 <code>±1</code>，并且 <code>|err|==1</code> 连续 <code>800ms</code> → 完成</li>
+</ul>
+<p>为什么要“持续时间”而不是“一瞬间到 0 就结束”？</p>
+<ul>
+<li>机械有惯性/齿隙/回弹</li>
+<li>一瞬间读到 0 可能只是“路过”，马上又变成 ±1
+  持续时间能显著减少抖动。</li>
+</ul>
+<hr />
+<h2 id="513-4">5.13 第 4 段：状态机输出（真正控制电机）<a class="headerlink" href="#513-4" title="Permanent link">&para;</a></h2>
+<p>先看入口：</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mstate</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">M_IDLE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">stopMotor</span><span class="p">();</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>如果空闲：电机必须停</li>
+<li>直接 return，不进入任何输出逻辑
+  这保证了“空闲状态绝对不会发力”。</li>
+</ul>
+<hr />
+<h3 id="5131-coarse">5.13.1 粗调（COARSE）分支<a class="headerlink" href="#5131-coarse" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mstate</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">M_COARSE_FAST</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">mstate</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">M_COARSE_SLOW</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</code></pre></div>
+<p>说明当前处于粗调：输出连续 PWM，让它快速接近目标。</p>
+<h3 id="1-nudge">(1) 判断是否要切到 nudge<a class="headerlink" href="#1-nudge" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">aerr</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">FINE_ZONE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">mstate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M_NUDGE_OFF</span><span class="p">;</span>
+<span class="w">      </span><span class="n">phaseT0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">;</span>
+<span class="w">      </span><span class="n">stopMotor</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>当 |err| ≤ 2（你的 FINE_ZONE=2）</li>
+<li>切到 <code>M_NUDGE_OFF</code>（先断电等待）</li>
+<li>记录 <code>phaseT0</code>，用于 nudge 的计时</li>
+</ul>
+<p>为什么先 OFF？</p>
+<ul>
+<li>让系统停稳，避免惯性导致下一次脉冲判断不准</li>
+</ul>
+<hr />
+<h3 id="2-fast-slow">(2) 决定 FAST 还是 SLOW<a class="headerlink" href="#2-fast-slow" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">aerr</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">FAR_ZONE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">mstate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M_COARSE_SLOW</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">mstate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M_COARSE_FAST</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>|err| &lt; 8 → SLOW（更温柔）</li>
+<li>|err| ≥ 8 → FAST（更猛）</li>
+</ul>
+<hr />
+<h3 id="3-coarse-pwm">(3) 在 COARSE 状态下计算 PWM 输出<a class="headerlink" href="#3-coarse-pwm" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mstate</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">M_COARSE_FAST</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">mstate</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">M_COARSE_SLOW</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kt">float</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">KP_COARSE</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">err</span><span class="p">;</span>
+<span class="w">      </span><span class="kt">bool</span><span class="w"> </span><span class="n">dirHigh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">u</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">      </span><span class="kt">int</span><span class="w"> </span><span class="n">pwm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">fabs</span><span class="p">(</span><span class="n">u</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li><code>u = Kp * err</code>：典型比例控制</li>
+<li><code>dirHigh</code>：误差正 → 往正方向转；误差负 → 往反方向转</li>
+<li><code>pwm = |u|</code>：输出强度与误差成正比</li>
+</ul>
+<blockquote>
+<p>注意：这里是 <strong>P 控制</strong>，没有 I/D。你用 nudge 解决静摩擦和最后的精度。</p>
+</blockquote>
+<hr />
+<h3 id="4-pwm">(4) PWM 限幅（“能动”+“别太猛”）<a class="headerlink" href="#4-pwm" title="Permanent link">&para;</a></h3>
+<p>FAST 档：</p>
+<div class="highlight"><pre><span></span><code><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mstate</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">M_COARSE_FAST</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pwm</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">PWM_COARSE_MAX_FAST</span><span class="p">)</span><span class="w"> </span><span class="n">pwm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PWM_COARSE_MAX_FAST</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pwm</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">pwm</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">PWM_COARSE_MIN_FAST</span><span class="p">)</span><span class="w"> </span><span class="n">pwm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PWM_COARSE_MIN_FAST</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>上限：不让它过猛</li>
+<li>下限：不让它卡住不动（尤其快档）</li>
+</ul>
+<p>SLOW 档：</p>
+<div class="highlight"><pre><span></span><code><span class="w">      </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pwm</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">PWM_COARSE_MAX_SLOW</span><span class="p">)</span><span class="w"> </span><span class="n">pwm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PWM_COARSE_MAX_SLOW</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pwm</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">pwm</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">PWM_COARSE_MIN_SLOW</span><span class="p">)</span><span class="w"> </span><span class="n">pwm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PWM_COARSE_MIN_SLOW</span><span class="p">;</span>
+<span class="w">      </span><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>同理，只是 max/min 更低</li>
+</ul>
+<p>最后真正输出：</p>
+<div class="highlight"><pre><span></span><code><span class="w">      </span><span class="n">setMotor</span><span class="p">(</span><span class="n">dirHigh</span><span class="p">,</span><span class="w"> </span><span class="n">pwm</span><span class="p">);</span>
+</code></pre></div>
+<hr />
+<h2 id="5132-offnudge_off">5.13.2 微调 OFF（NUDGE_OFF）<a class="headerlink" href="#5132-offnudge_off" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mstate</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">M_NUDGE_OFF</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">stopMotor</span><span class="p">();</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">phaseT0</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NUDGE_OFF_MS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">mstate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M_NUDGE_ON</span><span class="p">;</span>
+<span class="w">      </span><span class="n">phaseT0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>OFF 阶段：电机断电</li>
+<li>等待 <code>NUDGE_OFF_MS=160ms</code></li>
+<li>时间到了进入 ON 阶段，并更新 phaseT0</li>
+</ul>
+<p>为什么 OFF 要这么久？</p>
+<ul>
+<li>让齿隙回弹结束</li>
+<li>让编码器读数稳定</li>
+<li>让惯性停止
+  你之前“加手摩擦更准”，本质就是给系统加了阻尼，相当于缩短了“停稳时间”。</li>
+</ul>
+<hr />
+<h2 id="5133-onnudge_on">5.13.3 微调 ON（NUDGE_ON）<a class="headerlink" href="#5133-onnudge_on" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mstate</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">M_NUDGE_ON</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">onMs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">aerr</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">NUDGE_ON_MS_FINE</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">NUDGE_ON_MS_COARSE</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li>如果 |err|==1：用更短的脉冲 15ms（避免过冲）</li>
+<li>如果 |err|==2：用稍长的脉冲 35ms（推动更明显）</li>
+</ul>
+<hr />
+<p>方向与输出：</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">dirHigh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">err</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">    </span><span class="n">setMotor</span><span class="p">(</span><span class="n">dirHigh</span><span class="p">,</span><span class="w"> </span><span class="n">PWM_NUDGE</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li>err&gt;0 → 往正方向推一下</li>
+<li>输出 PWM_NUDGE（接近能动门槛，不猛）</li>
+</ul>
+<hr />
+<p>脉冲结束就回到 OFF：</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">phaseT0</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">onMs</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">mstate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M_NUDGE_OFF</span><span class="p">;</span>
+<span class="w">      </span><span class="n">phaseT0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<hr />
+<p>继续 👍
+接下来讲你代码的后半段：<strong>模式（STOP/GO）、串口命令、sync 校准、以及 loop() 调度结构</strong>。我还是按你代码顺序几行几行讲，并说明哪些是你定义的、哪些是 Arduino/库自带的。</p>
+<hr />
+<h1 id="6-stop-go">第 6 大段：模式系统（STOP / GO）与串口命令<a class="headerlink" href="#6-stop-go" title="Permanent link">&para;</a></h1>
+<hr />
+<h2 id="61">6.1 模式枚举（你自己定义）<a class="headerlink" href="#61" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">enum</span><span class="w"> </span><span class="nc">Mode</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">MODE_STOP</span><span class="p">,</span><span class="w"> </span><span class="n">MODE_GO</span><span class="w"> </span><span class="p">};</span>
+<span class="n">Mode</span><span class="w"> </span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MODE_STOP</span><span class="p">;</span><span class="w">  </span><span class="c1">// default power-on STOP</span>
+</code></pre></div>
+<ul>
+<li>✅ <code>enum Mode</code> 是你自己定义的类型</li>
+<li><code>MODE_STOP / MODE_GO</code> 是你自己定义的两个模式</li>
+<li><code>mode = MODE_STOP</code>：上电默认 STOP（符合你最初需求：默认停机）</li>
+</ul>
+<p>模式含义：</p>
+<ul>
+<li><strong>STOP</strong>：不跟随温度（电机默认停），但仍允许手动 r/l/r5/l5 做校准微调</li>
+<li><strong>GO</strong>：自动跟随温度（温度变 → expectedDeg 变 → 目标 count 变 → 电机动作）</li>
+</ul>
+<hr />
+<h2 id="62">6.2 串口缓存（你自己定义）<a class="headerlink" href="#62" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">cmdLine</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li>✅ 你自己定义的变量</li>
+<li>类型 <code>String</code> 是 Arduino 提供的字符串类（Arduino 核心库自带）</li>
+<li>用途：把用户输入的一行命令（例如 <code>"r5"</code>、<code>"sync"</code>）缓冲起来，直到遇到回车</li>
+</ul>
+<hr />
+<h2 id="63-offset">6.3 校准偏移 offset（你自己定义，解决“无绝对零位”）<a class="headerlink" href="#63-offset" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="n">calibOffsetDeg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li>✅ 你自己定义的变量</li>
+<li>物理意义：<strong>指针轴角度的“零点偏移”</strong></li>
+<li>原因：你的电机/编码器没有绝对零点，上电 count=0 不代表指针=0°</li>
+</ul>
+<p>你定义了角度测量模型：</p>
+<p>[
+actualDeg = count \cdot degPerCount + calibOffsetDeg
+]</p>
+<p><code>sync</code> 的目的就是调整 <code>calibOffsetDeg</code>，让“当前指针位置=当前温度应指向的位置”。</p>
+<hr />
+<h2 id="64-expected-actual">6.4 expected / actual 角度（你自己定义）<a class="headerlink" href="#64-expected-actual" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="n">expectedDeg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">actualDeg</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li>✅ 你自己定义的变量</li>
+<li>expectedDeg：温度映射出来的“应该指向的角度”</li>
+<li>actualDeg：编码器换算出来的“当前实际角度”</li>
+</ul>
+<hr />
+<h2 id="65-go-count">6.5 GO 模式下的目标 count（你自己定义）<a class="headerlink" href="#65-go-count" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kt">long</span><span class="w"> </span><span class="n">expectedCountDrive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li>✅ 你自己定义</li>
+<li>GO 模式下我们最终要把 expectedDeg 转换成“目标 count”，让运动控制器去追它</li>
+</ul>
+<hr />
+<h2 id="66-expecteddeg-count">6.6 expectedDeg → 目标 count 的换算函数（你自己写）<a class="headerlink" href="#66-expecteddeg-count" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kt">long</span><span class="w"> </span><span class="nf">expectedDegToTargetCount</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">expDeg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">pure</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wrap180</span><span class="p">(</span><span class="n">expDeg</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">calibOffsetDeg</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">lroundf</span><span class="p">(</span><span class="n">pure</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">degPerDriveCountOnShaft</span><span class="p">());</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="_12">逐行解释<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<ul>
+<li>✅ 这是你自己写的函数</li>
+<li><code>wrap180()</code>：你自己写的工具函数</li>
+<li><code>degPerDriveCountOnShaft()</code>：你自己写的比例尺函数</li>
+<li><code>lroundf()</code>：C 标准数学函数（Arduino 支持）</li>
+</ul>
+<p>核心推导来自模型：</p>
+<p>[
+actualDeg = count \cdot degPerCount + offset
+]</p>
+<p>想让 <code>actualDeg = expDeg</code>，则：</p>
+<p>[
+count = \frac{expDeg - offset}{degPerCount}
+]</p>
+<p>对应代码就是：</p>
+<ul>
+<li><code>pure = expDeg - calibOffsetDeg</code></li>
+<li><code>count = pure / degPerCount</code></li>
+</ul>
+<p>这一步很关键：<strong>offset 不参与温度映射，它只参与“角度↔count”的换算</strong>。</p>
+<hr />
+<h2 id="67-handlecommand">6.7 命令处理函数 handleCommand（你自己写）<a class="headerlink" href="#67-handlecommand" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">handleCommand</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">s</span><span class="p">.</span><span class="n">trim</span><span class="p">();</span>
+<span class="w">  </span><span class="n">s</span><span class="p">.</span><span class="n">toLowerCase</span><span class="p">();</span>
+</code></pre></div>
+<ul>
+<li><code>trim()</code> / <code>toLowerCase()</code>：Arduino String 自带方法（不是你写的）</li>
+<li>
+<p>目的：</p>
+</li>
+<li>
+<p>去掉空格/回车残留</p>
+</li>
+<li>统一大小写，避免用户输入 “R5” 无效</li>
+</ul>
+<hr />
+<h3 id="stop-s">STOP 命令 s<a class="headerlink" href="#stop-s" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;s&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MODE_STOP</span><span class="p">;</span>
+<span class="w">    </span><span class="n">mstate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M_IDLE</span><span class="p">;</span>
+<span class="w">    </span><span class="n">stopMotor</span><span class="p">();</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><code>mode=STOP</code>：停止自动跟随</li>
+<li><code>mstate=M_IDLE</code>：强制取消任何正在执行的运动任务</li>
+<li><code>stopMotor()</code>：确保电机断电</li>
+<li><code>return</code>：结束处理</li>
+</ul>
+<hr />
+<h3 id="go-g">GO 命令 g<a class="headerlink" href="#go-g" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;g&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MODE_GO</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>切换到自动跟随</li>
+<li>不直接 motionStartTo，因为 GO 逻辑在 loop 的周期更新中统一处理（结构更干净）</li>
+</ul>
+<hr />
+<h3 id="rlr5l5">手动微调命令 r/l/r5/l5<a class="headerlink" href="#rlr5l5" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">)</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">motionMoveBy</span><span class="p">(</span><span class="o">+</span><span class="n">ONE_REV_COUNTS</span><span class="p">);</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;l&quot;</span><span class="p">)</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="n">motionMoveBy</span><span class="p">(</span><span class="o">-</span><span class="n">ONE_REV_COUNTS</span><span class="p">);</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;r5&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">motionMoveBy</span><span class="p">(</span><span class="o">+</span><span class="mi">5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ONE_REV_COUNTS</span><span class="p">);</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;l5&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">motionMoveBy</span><span class="p">(</span><span class="mi">-5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ONE_REV_COUNTS</span><span class="p">);</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><code>ONE_REV_COUNTS=12</code>：你定义的机械参数</li>
+<li>这些命令直接调用“你完美的 motion 状态机”</li>
+<li>注意：即便在 STOP 模式，也能手动微调——这符合你最早的需求（校准时不随温度动）</li>
+</ul>
+<hr />
+<h3 id="sync">sync 校准命令（你自己写的关键功能）<a class="headerlink" href="#sync" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;sync&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wrap180</span><span class="p">(</span><span class="n">expectedDeg</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">actualDeg</span><span class="p">);</span>
+<span class="w">    </span><span class="n">calibOffsetDeg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wrap180</span><span class="p">(</span><span class="n">calibOffsetDeg</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">err</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+</code></pre></div>
+<p>这是最值得写报告的部分之一。</p>
+<h4 id="offset-expected-actual">为什么是 “offset += (expected - actual)”？<a class="headerlink" href="#offset-expected-actual" title="Permanent link">&para;</a></h4>
+<p>你希望 sync 之后，当前 count 下算出来的角度变成 expectedDeg。</p>
+<p>原本：
+[
+actualDeg = count\cdot degPer + offset
+]</p>
+<p>你要新的 offset' 使得：
+[
+expectedDeg = count\cdot degPer + offset'
+]</p>
+<p>所以：
+[
+offset' = expectedDeg - count\cdot degPer
+]</p>
+<p>而你当前 offset 已经满足：
+[
+actualDeg = count\cdot degPer + offset
+\Rightarrow count\cdot degPer = actualDeg - offset
+]</p>
+<p>代入：
+[
+offset' = expectedDeg - (actualDeg - offset) = offset + (expectedDeg - actualDeg)
+]</p>
+<p>所以正确更新就是：</p>
+<div class="highlight"><pre><span></span><code><span class="n">offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">expected</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">actual</span><span class="p">)</span>
+</code></pre></div>
+<p>你代码完全正确。</p>
+<p><code>wrap180()</code> 是为了防止偏移累积越界。</p>
+<hr />
+<h1 id="7-setup">第 7 大段：setup() 初始化（系统上电行为）<a class="headerlink" href="#7-setup" title="Permanent link">&para;</a></h1>
+<hr />
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li><code>Serial.begin(9600)</code>：Arduino 自带串口初始化</li>
+<li>波特率 9600（你要求的）</li>
+</ul>
+<hr />
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">PIN_DIR</span><span class="p">,</span><span class="w"> </span><span class="n">OUTPUT</span><span class="p">);</span>
+<span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">PIN_EN</span><span class="p">,</span><span class="w"> </span><span class="n">OUTPUT</span><span class="p">);</span>
+<span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">PIN_ENC_A</span><span class="p">,</span><span class="w"> </span><span class="n">INPUT_PULLUP</span><span class="p">);</span>
+<span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">PIN_ENC_B</span><span class="p">,</span><span class="w"> </span><span class="n">INPUT_PULLUP</span><span class="p">);</span>
+<span class="w">  </span><span class="n">stopMotor</span><span class="p">();</span>
+</code></pre></div>
+<ul>
+<li><code>pinMode()</code> / <code>INPUT_PULLUP</code>：Arduino 自带</li>
+<li>编码器用上拉输入：常见做法，减少悬空噪声</li>
+<li><code>stopMotor()</code>：上电先确保电机不动（安全）</li>
+</ul>
+<hr />
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="n">Wire</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+<span class="w">  </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">mpl3115a2Init</span><span class="p">();</span>
+</code></pre></div>
+<ul>
+<li><code>Wire.begin()</code>：Wire 库自带，启动 I2C</li>
+<li><code>mpl3115a2Init()</code>：你写的初始化</li>
+<li><code>(void)</code>：表示“我不处理返回值”（不关心失败与否），为了消除编译警告</li>
+</ul>
+<hr />
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="kt">long</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readCountDrive</span><span class="p">();</span>
+<span class="w">  </span><span class="n">actualDeg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">driveCountToShaftDeg</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">calibOffsetDeg</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li>上电读一次编码器，得到当前“实际角度”</li>
+<li>因为 offset 初始为 0，所以这一步更多是为了让打印的 actualDeg 有意义</li>
+</ul>
+<hr />
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(...);</span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(...);</span>
+</code></pre></div>
+<ul>
+<li>打印提示信息（调试/实验报告很好用）</li>
+</ul>
+<hr />
+<h1 id="8-loop">第 8 大段：loop() 主循环调度（非阻塞结构）<a class="headerlink" href="#8-loop" title="Permanent link">&para;</a></h1>
+<p>你 loop 里主要分三块：</p>
+<ol>
+<li>读串口命令（随时响应）</li>
+<li>每 CTRL_MS 做一次控制更新（定时执行）</li>
+<li>每 PRINT_MS 打印一次状态（定时执行）</li>
+</ol>
+<hr />
+<h2 id="81">8.1 读串口命令（你写的缓冲逻辑）<a class="headerlink" href="#81" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">Serial</span><span class="p">.</span><span class="n">available</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">char</span><span class="w"> </span><span class="n">ch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="p">)</span><span class="n">Serial</span><span class="p">.</span><span class="n">read</span><span class="p">();</span>
+</code></pre></div>
+<ul>
+<li><code>Serial.available()</code> / <code>Serial.read()</code>：Arduino 自带</li>
+<li>逐字节读入</li>
+</ul>
+<p>遇到换行/回车，认为一条命令结束：</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ch</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">ch</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\r&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cmdLine</span><span class="p">.</span><span class="n">length</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">handleCommand</span><span class="p">(</span><span class="n">cmdLine</span><span class="p">);</span>
+<span class="w">      </span><span class="n">cmdLine</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+</code></pre></div>
+<p>否则追加到字符串：</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">cmdLine</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">ch</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cmdLine</span><span class="p">.</span><span class="n">length</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">64</span><span class="p">)</span><span class="w"> </span><span class="n">cmdLine</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><code>remove()</code> 是 String 自带方法</li>
+<li>防止用户乱输入导致 cmdLine 无限长</li>
+</ul>
+<hr />
+<h2 id="82-ctrl_ms-loop">8.2 每 CTRL_MS 更新一次控制（你写的“定时器式 loop”）<a class="headerlink" href="#82-ctrl_ms-loop" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">lastCtrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">now</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">millis</span><span class="p">();</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">lastCtrl</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">CTRL_MS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">lastCtrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li>这是典型“非阻塞定时”写法</li>
+<li>好处：不用 delay，系统能及时响应串口</li>
+</ul>
+<hr />
+<h3 id="821-expecteddeg">8.2.1 读温度 → expectedDeg<a class="headerlink" href="#821-expecteddeg" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">tempC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">tOk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readTemperatureC</span><span class="p">(</span><span class="n">tempC</span><span class="p">);</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tOk</span><span class="p">)</span><span class="w"> </span><span class="n">expectedDeg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tempToAngleDeg</span><span class="p">(</span><span class="n">tempC</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li><code>readTemperatureC()</code>：你写的 I2C 读取</li>
+<li><code>tempToAngleDeg()</code>：你写的线性映射</li>
+<li>tOk 失败就不更新 expectedDeg（保持上一次值）</li>
+</ul>
+<hr />
+<h3 id="822-actualdeg">8.2.2 读编码器 → actualDeg<a class="headerlink" href="#822-actualdeg" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="kt">long</span><span class="w"> </span><span class="n">countDrive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readCountDrive</span><span class="p">();</span>
+<span class="w">  </span><span class="n">actualDeg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">driveCountToShaftDeg</span><span class="p">(</span><span class="n">countDrive</span><span class="p">,</span><span class="w"> </span><span class="n">calibOffsetDeg</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li><code>readCountDrive()</code>：你写的封装（内部 enc.read）</li>
+<li><code>driveCountToShaftDeg()</code>：你写的换算（count→角度 + offset）</li>
+</ul>
+<hr />
+<h3 id="823-go">8.2.3 GO 模式：目标变化才启动运动<a class="headerlink" href="#823-go" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">MODE_GO</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">expectedCountDrive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">expectedDegToTargetCount</span><span class="p">(</span><span class="n">expectedDeg</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">expectedCountDrive</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">targetCountDrive</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">motionStartTo</span><span class="p">(</span><span class="n">expectedCountDrive</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+</code></pre></div>
+<p>这一段非常关键：<strong>只在目标 count 改变时才启动一次运动</strong>。</p>
+<p>为什么这么做？</p>
+<ul>
+<li>
+<p>如果你每个 CTRL_MS 都强行 motionStartTo，会一直重置状态机：</p>
+</li>
+<li>
+<p>稳定计时清零</p>
+</li>
+<li>状态永远在 COARSE_FAST</li>
+<li>会导致抖动/震荡</li>
+<li>现在这样写：状态机可以自己完整跑完一次运动任务</li>
+</ul>
+<hr />
+<h3 id="824-stop">8.2.4 STOP 模式：没有运动任务就停机<a class="headerlink" href="#824-stop" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">MODE_STOP</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">mstate</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">M_IDLE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">stopMotor</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>STOP 模式默认电机停</li>
+<li>但如果你手动输入 r/l 触发了 motionMoveBy，此时 mstate != IDLE，就不会强制 stop（保证手动动作能完成）</li>
+</ul>
+<hr />
+<h3 id="825">8.2.5 运行运动状态机（只要目标存在就会动）<a class="headerlink" href="#825" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="n">motionUpdate</span><span class="p">();</span>
+</code></pre></div>
+<ul>
+<li>这是你最核心的控制器，我们上一段讲过</li>
+</ul>
+<hr />
+<h2 id="83">8.3 定时打印（你写的调试输出）<a class="headerlink" href="#83" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">lastPrint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">lastPrint</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">PRINT_MS</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">lastPrint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">now</span><span class="p">;</span>
+<span class="w">  </span><span class="p">...</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>打印内容：</p>
+<ul>
+<li>温度 <code>T=</code></li>
+<li>expectedDeg</li>
+<li>actualDeg</li>
+<li>countDrive</li>
+<li>mode</li>
+</ul>
+<p>这对实验报告也很重要：你可以截图作为实验结果。</p>
+<hr />
+<h2 id="_13">这一段的“谁定义的”总结<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
+<p>✅ 你自己定义/实现：</p>
+<ul>
+<li><code>Mode</code>、<code>mode</code></li>
+<li><code>calibOffsetDeg</code>、<code>expectedDeg</code>、<code>actualDeg</code></li>
+<li><code>expectedDegToTargetCount()</code></li>
+<li><code>handleCommand()</code></li>
+<li>loop 内部调度逻辑（lastCtrl/lastPrint）</li>
+</ul>
+<p>✅ Arduino/库提供：</p>
+<ul>
+<li><code>Serial.begin/available/read/print/println</code></li>
+<li><code>millis()</code></li>
+<li><code>pinMode()</code></li>
+<li><code>Wire.begin()</code></li>
+<li><code>Encoder enc</code> 的 <code>enc.read()</code></li>
+</ul>
+<hr />
+<p>如果你愿意，我还可以把你整段“sync 校准推导”写成报告形式（含公式推导），以及把状态机画成一个简单的流程图描述（文字版/伪代码版）。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
