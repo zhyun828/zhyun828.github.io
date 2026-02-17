@@ -8,6 +8,47 @@ r = b;   // ❌ 不是改引用对象
 //等价于
 a = b;
 ```
+# makefile
+## 普通编译
+```bash
+g++ test.cpp -o test -std=c++17 -Wall -Wextra
+```
+```makefile
+CXX = g++ # 定义编译器CXX 是 make 的惯例变量名（C++ compiler）
+CXXFLAGS = -Wall -Wextra -g -MMD -MP 
+#编译选项
+# | 参数      | 作用              |
+# | -Wall   | 打开常见警告          |
+# | -Wextra | 打开更多警告          |
+# | -g      | 生成调试信息（给 gdb 用） |
+# | -MMD    | 自动生成 .d 依赖文件    |
+# | -MP     | 避免删除头文件时报错      |
+TARGET = test # 最终生成的可执行文件名最终会生成：./test
+SRCS = main.cpp Surcharge.cpp # 所有源文件如果你再加一个文件：SRCS = main.cpp Surcharge.cpp utils.cpp 后面会自动适配。
+OBJS = $(SRCS:.cpp=.o) # 变量替换意思是：main.cpp → main.o Surcharge.cpp → Surcharge.o
+# $(变量:旧后缀=新后缀)
+DEPS = $(SRCS:.cpp=.d) # 生成依赖文件名main.d Surcharge.d .d 文件是 -MMD 自动生成的依赖文件。
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $@ $(OBJS)
+# 等价于g++ -Wall -Wextra -g -MMD -MP -o test main.o Surcharge.o
+# | 符号 | 意义              |
+# | -- | --------------- |
+# | $@ | 当前目标名（这里是 test） |
+# | $< | 第一个依赖文件         |
+# | $^ | 所有依赖文件          |
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@  
+# 模式匹配规则 意思是：任何 .o 文件 都可以由 对应的 .cpp 文件 生成
+# 等价于g++ -Wall -Wextra -g -MMD -MP -c main.cpp -o main.o  其中 -c 表示只编译，不链接
+
+-include $(DEPS) # 自动包含依赖，意思是：包含所有 .d 文件。前面的 - 表示：如果 .d 文件不存在，不报错
+
+.PHONY: clean
+# 伪目标 clean 的意思是：告诉 make clean 不是一个文件名，而是一个命令。否则如果目录里有个叫 clean 的文件就会冲突。
+clean:
+	rm -f $(OBJS) $(DEPS) $(TARGET)
+```
+
 # 数据类型
 | 数据类型 | 说明           | 内存大小（字节） |
 | -------- | -------------- | -------------- |
@@ -50,11 +91,94 @@ namespace 是用于封装同一领域的一组实体。命名空间就是给名�
 是一个指针，指向“当前正在使用这个函数的那个对象”
 
 # 构造函数 
-是类的一种特殊成员函数，用于在创建对象时初始化对象。构造函数的名称与类名相同，并且没有返回类型。
+是类的一种特殊成员函数，用于在创建对象时初始化对象。构造函数的名称与类名相同，并且没有返回类型。在不定义构造函数时，编译器会自动生成一个默认构造函数（无参数）。如果定义了带参数的构造函数，编译器将不再生成默认构造函数，因此如果需要无参数构造函数，必须显式定义它。
+## 当父类 没有默认构造函数 时
+例如：
+```cpp
+class A {
+public:
+    A(int x) {}// A 只有一个带参数的构造函数，没有默认构造函数，所以编译器不会自动生成默认构造函数。如果是class A {int x;}，编译器会自动生成一个默认构造函数 A() {}，就不会报错;
+};
+```
+如果你写：
+```cpp
+class C : public A {
+};
+```
+然后：
+```cpp
+C c;
+```
+会报错 ❌
 
+# explicit 单参数构造函数都加 explicit
+```cpp
+// 如果你写：
+Traveler(const std::string& s);
+// 你可以这样写：
+Traveler t = "Alice";
+// 因为：
+"Alice" → std::string → Traveler
+// 发生了 隐式转换（implicit conversion）。
+// 如果你加上：
+explicit Traveler(const std::string& s);
+// 就禁止这种隐式转换。
+// 现在必须写：
+Traveler t("Alice");  // 正确
+Traveler t = "Alice"; // ❌ 不允许
+```
 # 析构函数 
 类的一种特殊成员函数，用于在对象生命周期结束时执行清理操作。析构函数的名称与类名相同，但前面加上波浪号（~），并且没有返回类型和参数。
+没有写析构函数时，编译器会自动生成一个默认析构函数，负责销毁对象时释放资源。 
+一定要写析构函数的情况：
+## 类里有 new 
+```cpp
+class A {
+    int* p;
+public:
+    A() {
+        p = new int(5);
+    }
+};
+// 如果你不写析构函数：
+// ❌ 内存泄漏
+// 必须写：
+~A() {
+    delete p;
+}
+```
+## 类被继承，并且你会用“基类指针删除子类”
+这是继承里最危险的坑。
+例如：
+```cpp
+class Base {
+public:
+    ~Base() {
+        std::cout << "Base destructor\n";
+    }
+};
 
+class Derived : public Base {
+public:
+    ~Derived() {
+        std::cout << "Derived destructor\n";
+    }
+};
+
+// 然后：
+Base* p = new Derived();
+delete p;
+
+// 输出是：
+Base destructor
+
+// 正确做法
+// 如果类会被继承，应该写：
+class Base {
+public:
+    virtual ~Base() {}
+};
+```
 # 迭代器
 迭代器 = 位置
 | 容器                      | 迭代器底层          |
@@ -87,41 +211,6 @@ auto it = mp.find(key);
 //等价于
 unordered_map<int, string>::iterator it = mp.find(key);
 ```
-
-# 容器选择
-vector<int> nums; // 创建一个存储整数的动态数组 vector nums;   // ❌ 非法，不知道装什么类型
-vector不是一个普通的类，而是一个模板类template <typename T>;class vector { ... };
-unordered_map 是一个 “双模板参数”的模板类 template <typename K, typename V>它是一个 哈希表（hash table），本质是：键 → 值（key → value）
-unordered_set 是一个 “单模板参数”的模板类 template <typename T>它是一个 哈希集合（hash set），本质是：元素 → 存在与否（element → existence）
-无序不代表不能遍历，unordered_map 和 unordered_set 都支持迭代器，可以用 for(auto& p : mp) 来遍历 unordered_map，p.first 是 key，p.second 是 value；可以用 for(auto& x : us) 来遍历 unordered_set，x 是元素值。
-```c
-#include <unordered_set>
-using namespace std;
-unordered_map //需要 hash 函数 比如string,int. vector没有hash函数，所以不能用unordered_map
-vector<int> nums; // 创建一个存储整数的动态数组
-unordered_set<char> us ={'a','e','i','o','u','A','E','I','O','U'};// 初始化列表 不会自动排序
-unordered_map<string, int> cnt = {{"apple", 2},{"banana", 3}};// 初始化列表 不会自动排序
-unordered_map<int, int> mp = {{1, 10},{2, 20},{5, 50}};// 初始化列表 不会自动排序 ，哈希表在创建时value的值不确定，访问时会自动创建一个默认值（0）并返回它
-set<int> s = {5, 1, 3, 2};// 初始化set 元素会自动排序，自动排序后：{1,2,3,5}
-map<int, string> mp2 = {{1, "one"},{3, "three"},{2, "two"}};// 初始化列表，元素会自动排序，自动排序后：{1: "one", 2: "two", 3: "three"}
-
-mp[5] = 10;// 访问 mp 中键为 5 的值，并把值设为10，如果不存在则创建一个默认值（0）并返回它，
-
-for (auto& p : mp) {/*p.first   // key    p.second  // value*/}// 遍历p.first  == 1, 2, 5；p.second == 10, 20, 50
-
-for (int x : s) {/*从小到大*/}// 遍历 set
-mp.find() //只能找 key，不能找 value,找value只能遍历 for(auto& p : mp） if（p.second == value{}
-if (mp.count(5)) {int v = mp[5];}// 查找 mp 中是否存在键为 5 的元素，如果存在则返回 1，否则返回 0；如果存在则访问 mp[5] 的值并赋给 v
-if (us.count('a')) {}// 查找
-auto it = us.find('a');// 查找 us 中是否存在元素 'a'，如果存在则返回一个指向该元素的迭代器，否则返回 us.end()
-
-us.insert('b');// 插入元素 'b' 到 us 中，如果 'b' 已经存在则不插入
-us.erase('a');// 删除元素 'a' 从 us 中，如果 'a' 不存在则不执行任何操作
-
-sort(nums.begin(), nums.end());// 排序，排序后 nums 中的元素将按照从小到大的顺序排列
-sort(nums.begin(), nums.end(), greater<int>());// 排序，排序后 nums 中的元素将按照从大到小的顺序排列
-```
-红黑树是一种“自己会保持平衡的二叉搜索树”它保证：查找 / 插入 / 删除永远是 O(log n)
 
 # 双指针
 
@@ -161,6 +250,17 @@ O(log n) —— 对数时间 例如红黑树（set / map）；二分查找；堆
 红黑树：O(log n)
 暴力循环：O(n)
 
+# 空间复杂度
+算法运行时额外占用的内存大小
+```c
+vector<int> v(n);// O(n) 需要一个长度为 n 的数组来存储元素
+int sum(int n) {
+    int s = 0;
+    for(int i=1;i<=n;i++)
+        s += i;
+    return s;
+}// O(1) 只需要常数空间来存储变量 s 和 i
+```
 # STL 是什么？
 STL（Standard Template Library）= C++ 标准库里的一套通用数据结构 + 算法
 
@@ -183,7 +283,10 @@ vector<T> v(n, value);
 创建一个长度为 n 的数组，
 每个元素都初始化为 value
 
-# 最大公约数思想：可以用辗转相除法int r = a%b;a = b;b = r;
+# 最大公约数思想
+可以用辗转相除法int r = a%b;a = b;b = r;
+最大公约数（GCD, Greatest Common Divisor）的函数通常写成：
+gcd(a, b)
 
 # 面向对象 = 用“对象”来组织数据 + 操作这些数据的方法
 ```c
@@ -193,9 +296,47 @@ vector<T> v(n, value);
 ``` 
 这里s是一个对象，erase 和 push_back 是操作这个对象的方法
 
+# 链表操作
+| 类型    | 模型          |
+| ----- | ----------- |
+| 删除    | 找前驱         |
+| 插入    | 先接后断        |
+| 反转    | 三指针         |
+| 中点    | 快慢指针        |
+| 倒数第 n | 双指针间距       |
+| 合并    | dummy + 尾指针 |
 
+# 二叉树 Binary Tree DFS（Depth First Search）深度优先
+        1
+       / \
+      2   3
+     / \   \
+    4   5   6
+前序遍历（根左右） 1 2 4 5 3 6
+中序遍历（左根右） 4 2 5 1 3 6
+后序遍历（左右根） 4 5 2 6 3 1
+```c 
+//递归代码对比
+void dfs(TreeNode* root) {
+    if (!root) return;
 
-##  运算符重载
+    // 前序位置
+    cout << root->val;
+
+    dfs(root->left);
+
+    // 中序位置
+    cout << root->val;
+
+    dfs(root->right);
+
+    // 后序位置
+    cout << root->val;
+}
+```
+
+# 运算符重载 
+
 C++ 里面没有^运算符
 2^31   // ❌ 不是 2 的 31 次方， 而是按位异或 
  2  = 00010
@@ -213,3 +354,207 @@ pow(2, 31)   // <cmath>✅ 2 的 31 次方，1 << 31也是 2 的 31 次方
 3.  外部运算符重载 = 把运算符写成一个“普通函数”，不属于类，但可以作用在类对象上是一个 普通函数.所有操作数 都作为参数, 没有 this 指针,通常写在类外面 <const T operator+(T const& a, T const& b);>
 
 4.  内部重载z1.operator+(z2);特点：是类的成员函数,左操作数 = this,右操作数 = 参数
+
+# 抽象类
+在 C++ 中：只要一个类中包含至少一个纯虚函数（pure virtual function），这个类就是抽象类
+纯虚函数写法：virtual 返回类型 函数名() = 0;
+这里的 = 0 不是“等于 0”，而是：C++ 规定：=0 表示这个函数是纯虚函数（pure virtual function）
+## 抽象类的核心特点
+1️⃣ 不能创建对象
+```cpp
+class Animal {
+public:
+    virtual void speak() = 0;  // 纯虚函数
+};
+Animal a; // ❌ 错误，不能创建抽象类对象
+```
+2️⃣ 可以作为基类
+3️⃣ 子类必须实现所有纯虚函数，否则子类也是抽象类
+## 工程风格示例
+```cpp
+class Device {
+public:
+    virtual void init() = 0;
+    virtual void start() = 0;
+    virtual void stop() = 0;
+
+    virtual ~Device() {}   // 必须有虚析构函数
+};
+// 实现：
+class UART : public Device {
+public:
+    void init() override { cout << "UART init\n"; }
+    void start() override { cout << "UART start\n"; }
+    void stop() override { cout << "UART stop\n"; }
+};
+// 然后在主程序里：
+Device* dev = new UART();
+dev->init();
+// 这就是：面向接口编程
+```
+# 继承
+继承的核心思想是：如果一个类是另一个类的“特殊情况”，那就可以用继承。
+比如：
+狗 是 动物
+车 是 交通工具
+学生 是 人
+```csharp
+Student is a Person
+Dog is an Animal
+```
+在 C++ 里就是：
+```cpp
+class Student : public Person
+```
+
+```cpp
+class C : public A
+```
+意思是：
+C 继承 A，C 自动拥有 A 的所有 public 成员
+这个 public 是：继承方式
+| 写法        | 意义                      |
+| --------- | ----------------------- |
+| public    | 保持父类的 public 仍然是 public |
+| protected | 父类 public 变成 protected  |
+| private   | 父类 public 变成 private    |
+如果不写 public默认是：private 继承
+
+好，这个是 C++ 面向对象三大特性之一：
+
+> 封装、继承、多态
+
+# 多态
+多态（Polymorphism）字面意思：
+> 多种形态
+在 C++ 里指：
+> 同一个接口，不同对象，表现不同的行为
+
+举个例子：
+```cpp
+Animal* a = new Dog();
+Animal* b = new Cat();
+
+a->speak();   // 汪
+b->speak();   // 喵
+```
+同样是 `speak()`但行为不同。这就是多态。
+## 实现多态的三个条件
+1️⃣ 继承
+2️⃣ 虚函数（virtual）
+3️⃣ 基类指针或引用调用
+缺一个都不是真正的运行时多态。
+## 完整示例代码
+```cpp
+#include <iostream>
+using namespace std;
+class Animal {
+public:
+    virtual void speak() {     // 虚函数
+        cout << "Animal sound" << endl;
+    }
+};
+class Dog : public Animal {
+public:
+    void speak() override {
+        cout << "Dog: Woof" << endl;
+    }
+};
+class Cat : public Animal {
+public:
+    void speak() override {
+        cout << "Cat: Meow" << endl;
+    }
+};
+int main() {
+    Animal* a1 = new Dog();
+    Animal* a2 = new Cat();
+
+    a1->speak();   // 调用 Dog 的版本
+    a2->speak();   // 调用 Cat 的版本
+
+    delete a1;
+    delete a2;
+}
+```
+## 如果没有 virtual 会怎样？
+```cpp
+class Animal {
+public:
+    void speak() {   // 没有 virtual
+        cout << "Animal sound" << endl;
+    }
+};
+```
+那就会变成：
+```
+Animal sound
+Animal sound
+```
+
+## 多态分两种
+1. 编译时多态（静态多态）
+* 函数重载
+* 运算符重载
+* 模板
+例子：
+```cpp
+int add(int a, int b);
+double add(double a, double b);
+```
+编译时就确定调用哪个。
+
+2. 运行时多态（动态多态）
+* 通过 virtual 实现
+* 通过基类指针调用
+
+## 底层原理
+多态靠的是：
+> 虚函数表（vtable）
+
+每个有 virtual 的类都会有：vtable
+对象内部存一个：vptr（指向虚函数表的指针）
+当你调用：a->speak();
+实际流程是：
+通过 vptr 找到 vtable
+→ 找到函数地址
+→ 调用真正函数 Dog::speak()
+
+这就是动态绑定（Dynamic Binding）。
+
+## 多态的好处（工程角度）
+在你以后做嵌入式架构时：
+假设你做：
+* UART 驱动
+* SPI 驱动
+* CAN 驱动
+你可以：
+```cpp
+Device* dev = new UART();
+dev->init();
+```
+主程序根本不关心具体是什么设备。
+这叫：
+> 面向接口编程
+
+## 什么是多态？
+
+多态是指同一接口在不同对象上表现出不同的行为。在 C++ 中通常通过继承和虚函数实现运行时多态，依赖虚函数表进行动态绑定。
+
+## 十、和抽象类的关系
+
+抽象类通常用来实现多态。
+
+流程是：
+
+```
+抽象类定义接口
+↓
+子类实现接口
+↓
+基类指针调用
+↓
+产生多态
+```
+
+

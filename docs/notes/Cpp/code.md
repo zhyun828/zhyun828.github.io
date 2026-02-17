@@ -60,7 +60,8 @@ for (int i = 0; i < s.size(); i++) {
 连续线性结构 → front/back，抽象结构 → top，树 / 哈希 → begin/end
 
 stack<>适合：需要频繁在末尾添加/删除元素的场景，且只需要访问栈顶元素。 头文件`<stack>`，底层通常使用 `deque` 实现，提供了 `push`、`pop` 和 `top` 等成员函数。
-queue<>适合：只能先进先出（FIFO）头文件`<queue>`，底层通常使用 `deque` 实现，提供了 `push`、`pop` 和 `front` 等成员函数。 priority_queue<>适合：需要按照优先级访问元素的场景。头文件`<queue>`，底层通常使用堆（heap）实现，提供了 `push`、`pop` 和 `top` 等成员函数。
+queue<>适合：只能先进先出（FIFO）头文件`<queue>`，底层通常使用 `deque` 实现，提供了 `push`、`pop` 和 `front` 等成员函数。 
+priority_queue<>适合：需要按照优先级访问元素的场景。头文件`<queue>`，底层通常使用堆（heap）实现，提供了 `push`、`pop` 和 `top` 等成员函数。
 deque<>适合：需要频繁在两端添加/删除元素的场景，且需要频繁访问元素的场景。头文件`<deque>`，底层使用双端队列实现，提供了 `push_back`、`push_front`、`pop_back`、`pop_front` 等成员函数。
 vector<>适合：需要频繁访问元素的场景，且不需要频繁在中间添加/删除元素。 deque<>适合：需要频繁在两端添加/删除元素的场景，且需要频繁访问元素的场景。 头文件`<vector>`，底层使用动态数组实现，提供了 `push_back`、`pop_back` 等成员函数，并且支持随机访问。
 list<>适合：需要频繁在中间添加/删除元素的场景，且不需要频繁访问元素的场景。头文件`<list>`，底层使用双向链表实现，提供了 `push_back`、`push_front`、`pop_back`、`pop_front` 等成员函数，并且支持双向迭代器。
@@ -108,5 +109,6 @@ auto it = find(nums.begin(), nums.end(), 3);// 在 v 中查找元素 3，返回�
 int c = count(nums.begin(), nums.end(), 3);// 统计 v 中元素 3 出现的次数，返回一个整数
 sort(nums.begin(), nums.end());// 排序，排序后 nums 中的元素将按照从小到大的顺序排列
 sort(nums.begin(), nums.end(), greater<int>());// 排序，排序后 nums 中的元素将按照从大到小的顺序排列
+auto it = max_element(nums.begin(), nums.end());// 查找 v 中的最大元素，返回一个指向最大元素的迭代器 *it 是最大元素的值
 ```
 红黑树是一种“自己会保持平衡的二叉搜索树”它保证：查找 / 插入 / 删除永远是 O(log n)
