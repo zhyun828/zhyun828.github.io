@@ -1,3 +1,95 @@
+# C++ 基础知识点总结
+## 头文件
+| 头文件               | 主要内容    | 常用函数 / 对象                                    | 典型用途  |
+| ----------------- | ------- | -------------------------------------------- | ----- |
+| `<iostream>`      | 标准输入输出  | `cin` `cout` `cerr` `endl`                   | 基础 IO |
+| `<iomanip>`       | 输出格式控制  | `setprecision` `setw` `setfill` `fixed`      | 浮点格式  |
+| `<fstream>`       | 文件读写    | `ifstream` `ofstream`                        | 文件操作  |
+| `<vector>`        | 动态数组    | `push_back` `size` `begin`                   | 刷题最常用 |
+| `<string>`        | 字符串     | `substr` `size` `find`                       | 文本处理  |
+| `<deque>`         | 双端队列    | `push_front` `push_back`                     | 单调队列  |
+| `<list>`          | 双向链表    | `push_back` `erase`                          | 频繁插删  |
+| `<queue>`         | 队列      | `push` `pop` `front`                         | BFS   |
+| `<stack>`         | 栈       | `push` `pop` `top`                           | 括号匹配  |
+| `<set>`           | 有序集合    | `insert` `find`                              | 去重+排序 |
+| `<unordered_set>` | 无序集合    | `insert` `count`                             | 哈希查找  |
+| `<map>`           | 有序键值对   | `insert` `find`                              | 排序映射  |
+| `<unordered_map>` | 无序键值对   | `[]` `find`                                  | 高频统计  |
+| `<algorithm>`     | 算法库     | `sort` `reverse` `max` `min` `binary_search` | 排序+查找 |
+| `<numeric>`       | 数值算法    | `accumulate` `iota`                          | 求和    |
+| `<functional>`    | 函数对象    | `greater` `less`                             | 自定义排序 |
+| `<cmath>`         | 数学函数    | `sqrt` `pow` `abs` `sin`                     | 数学运算  |
+| `<cstdlib>`       | C标准库    | `rand` `abs`                                 | 随机数   |
+| `<cstring>`       | C字符串/内存 | `memset` `memcpy` `strlen`                   | 嵌入式常用 |
+| `<cstdint>`       | 固定宽度整数  | `uint32_t` `int64_t`                         | 嵌入式   |
+| `<utility>`       | 二元组     | `pair` `make_pair`                           | 返回两个值 |
+| `<tuple>`         | 多元组     | `tuple`                                      | 多返回值  |
+| `<bitset>`        | 位集合     | `bitset<32>`                                 | 位运算题  |
+| `<memory>`        | 智能指针    | `shared_ptr` `unique_ptr`                    | 现代C++ |
+| `<thread>`        | 多线程     | `thread`                                     | 并发    |
+| `<mutex>`         | 互斥锁     | `mutex` `lock_guard`                         | 线程安全  |
+| `<chrono>`        | 时间      | `steady_clock`                               | 计时    |
+| `<filesystem>`    | 文件系统    | `path` `exists`                              | 路径管理  |
+| `<cstdio>`        | C输入输出   | `printf` `scanf`                             | 串口调试  |
+| `<bits/stdc++.h>` | 全部STL   | —                                            | 竞赛专用  |
+## 类型转换
+| 转换方式               | 头文件          | 作用                     | 示例                                |
+| ------------------ | ------------ | ---------------------- | --------------------------------- |
+| `stoi`             | `<string>`   | string → int           | `int x = stoi("123");`            |
+| `stol`             | `<string>`   | string → long          | `long x = stol("123");`           |
+| `stoll`            | `<string>`   | string → long long     | `long long x = stoll("123");`     |
+| `stof`             | `<string>`   | string → float         | `float x = stof("1.23");`         |
+| `stod`             | `<string>`   | string → double        | `double x = stod("1.23");`        |
+| `to_string`        | `<string>`   | 数字 → string            | `string s = to_string(123);`      |
+| `atoi`             | `<cstdlib>`  | C字符串 → int             | `int x = atoi("123");`            |
+| `atol`             | `<cstdlib>`  | C字符串 → long            |                                   |
+| `atoll`            | `<cstdlib>`  | C字符串 → long long       |                                   |
+| `strtol`           | `<cstdlib>`  | C字符串 → long（更安全）       |                                   |
+| `strtod`           | `<cstdlib>`  | C字符串 → double          |                                   |
+| `from_chars`       | `<charconv>` | string → 数字（高性能）       |                                   |
+| `to_chars`         | `<charconv>` | 数字 → char数组            |                                   |
+| `static_cast`      | 无需头文件        | 编译期安全转换                | `int x = static_cast<int>(3.14);` |
+| `dynamic_cast`     | `<typeinfo>` | 多态类型安全转换               |                                   |
+| `const_cast`       | 无需           | 去除 const               |                                   |
+| `reinterpret_cast` | 无需           | 强制类型转换（危险）             |                                   |
+| C风格 `(int)x`       | 无需           | 强制转换                   |                                   |
+| `abs`              | `<cmath>`    | 数值类型转换为正               |                                   |
+| `floor`            | `<cmath>`    | 向下取整                   |                                   |
+| `ceil`             | `<cmath>`    | 向上取整                   |                                   |
+| `round`            | `<cmath>`    | 四舍五入                   |                                   |
+| `lround`           | `<cmath>`    | 四舍五入为 long             |                                   |
+| `toupper`          | `<cctype>`   | char → 大写              |                                   |
+| `tolower`          | `<cctype>`   | char → 小写              |                                   |
+| `bitset::to_ulong` | `<bitset>`   | bitset → unsigned long |                                   |
+| `to_integer`       | `<cstddef>`  | byte → 整数              |                                   |
+
+## 输入输出控制
+| 控制符               | 作用       |
+| ----------------- | -------- |
+| `fixed`           | 使用固定小数格式 |
+| `setprecision(n)` | 保留 n 位小数 |
+```c
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int main() {
+    double x = 3.1415926;
+
+    cout << fixed << setprecision(2) << x << endl;
+}
+```
+如果 没有 fixed
+cout << setprecision(2) << x;
+表示的是：
+保留 2 位有效数字（不是小数位！）
+科学计数法输出
+cout << scientific << setprecision(3) << x;
+控制宽度
+cout << setw(10) << x << endl;
+表示字段宽度 10
+填充字符
+cout << setfill('*') << setw(10) << x << endl;
 # 引用
 引用 = 别名
 必须在定义时初始化，一旦绑定，不能再绑其他变量了，引用不能为空
