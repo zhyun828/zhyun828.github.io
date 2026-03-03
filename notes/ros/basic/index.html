@@ -1,0 +1,2021 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://zhyun828.github.io/notes/ros/basic/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
+    
+    
+      
+        <title>Basic - My Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#catkin" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="My Notes" class="md-header__button md-logo" aria-label="My Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Basic
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m3.55 19.09 1.41 1.41 1.8-1.79-1.42-1.42M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6c0-3.32-2.69-6-6-6m8 7h3v-2h-3m-2.76 7.71 1.8 1.79 1.41-1.41-1.79-1.8M20.45 5l-1.41-1.4-1.8 1.79 1.42 1.42M13 1h-2v3h2M6.76 5.39 4.96 3.6 3.55 5l1.79 1.81zM1 13h3v-2H1m12 9h-2v3h2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  主页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Arduino/basics.md" class="md-tabs__link">
+          
+  
+  
+  笔记
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="My Notes" class="md-nav__button md-logo" aria-label="My Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    My Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    主页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arduino
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Arduino
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/basics.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1_2" id="__nav_2_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    项目
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/projet.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目说明
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/pre.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目前期
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/code.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    代码说明
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/thoughts.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目反思
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C++
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    C++
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cpp/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    基础语法
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cpp/opp.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面向对象
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FPGA / VHDL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    FPGA / VHDL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FPGA/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    基础知识
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#catkin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        catkin 是什么？
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source-catkin_wsdevelsetupbash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        source ~/catkin_ws/devel/setup.bash
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        基本命令
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="基本命令">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#roscore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        roscore（最重要）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rosrun" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rosrun（运行节点）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rosnode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rosnode（管理节点）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rostopic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rostopic（查看话题）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常见完整实战流程
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        完整流程：
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        workspace 是什么？
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmakeliststxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CMakeLists.txt
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workspace_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        workspace 的标准结构
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ros-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        什么是 ROS package？
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#package" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一个 package 里一般有什么？
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#package_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        创建 package
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ros日志系统
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ros_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ROS 三种通信方式
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roslaunch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        roslaunch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        调试
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        自定义消息
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="自定义消息">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        目标结构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1-custom_messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1）新建消息包 custom_messages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-msg-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2）创建 msg 文件并写 4 种字段类型
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-custom_messagespackagexml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3）修改 custom_messages/package.xml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-custom_messagescmakeliststxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4）修改 custom_messages/CMakeLists.txt
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5）编译并验证消息生成
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-first_pkg-custom_messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6）让 first_pkg 依赖 custom_messages（关键）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-talkercpp-listenercpp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7）改 talker.cpp / listener.cpp 使用新消息
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-ppt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8）重新编译并运行（对应 PPT 的运行/调试思路）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        最常见的两个坑（提前避雷）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tf-transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TF--Transform
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TF--Transform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1tf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1）什么是TF
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2tf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2）TF 的优势
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3tf-broadcaster-listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3）TF 里有两类节点：Broadcaster / Listener
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4tf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4）tf 的核心结构：变换树
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-tf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5）怎么用 tf 树来“跨机器人/跨传感器”转换
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6tf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6）tf 常用命令行工具
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7rviz-tf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7）rviz 里看 tf
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8tf-frame" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8）TF 里常见 frame 的含义
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#slam-simultaneous-localization-and-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SLAM -- Simultaneous Localization and Mapping 同时定位与建图
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Basic</h1>
+
+<h2 id="catkin">catkin 是什么？<a class="headerlink" href="#catkin" title="Permanent link">&para;</a></h2>
+<p>catkin 是 ROS 的构建系统
+ 用来生成：
+可执行程序
+库
+接口（message / service）
+catkin_make 必须在 catkin_ws 工作空间根目录下运行</p>
+<h2 id="source-catkin_wsdevelsetupbash">source ~/catkin_ws/devel/setup.bash<a class="headerlink" href="#source-catkin_wsdevelsetupbash" title="Permanent link">&para;</a></h2>
+<p>让当前终端环境认识新建的 workspace
+每开一个新终端都要 source 一下
+否则找不到包，无法 rosrun</p>
+<h2 id="_1">基本命令<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h3 id="roscore">roscore（最重要）<a class="headerlink" href="#roscore" title="Permanent link">&para;</a></h3>
+<p>📌 作用
+它会启动：
+ROS Master
+Parameter Server
+rosout（日志系统）
+📌 原理
+当一个节点启动时，它会：
+向 Master 注册
+说明自己发布什么 topic
+说明自己订阅什么 topic
+如果你不启动 roscore：
+❌ 所有节点都会报错
+❌ 无法建立通信</p>
+<h3 id="rosrun">rosrun（运行节点）<a class="headerlink" href="#rosrun" title="Permanent link">&para;</a></h3>
+<p>📌 语法
+rosrun <package> <executable>
+例如：
+rosrun turtlesim turtlesim_node
+意思是：
+在 turtlesim 包里
+运行 turtlesim_node 这个可执行程序
+📌 它做了什么？
+找到这个 package
+找到可执行文件
+启动为一个 ROS Node
+📌 你要注意
+它只能运行：
+✔ 已经编译过的节点
+✔ 已经 source 过的工作空间
+否则找不到包。</p>
+<h3 id="rosnode">rosnode（管理节点）<a class="headerlink" href="#rosnode" title="Permanent link">&para;</a></h3>
+<p>这是调试神器。
+🔹 查看所有节点
+rosnode list
+会显示：
+/rosout
+/turtlesim
+/teleop
+🔹 查看某个节点详情
+rosnode info /turtlesim
+你会看到：
+发布哪些 topics
+订阅哪些 topics
+提供哪些 services
+这在调试通信时非常重要。
+🔹 杀死节点
+rosnode kill /node_name
+等价于 ctrl+c，但更干净。
+🔹 ping 测试
+rosnode ping /node_name
+测试是否还能连通。</p>
+<h3 id="rostopic">rostopic（查看话题）<a class="headerlink" href="#rostopic" title="Permanent link">&para;</a></h3>
+<p>Topic 是 ROS 核心。
+这个命令你必须熟练。
+🔹 查看当前所有 topic
+rostopic list
+会看到：
+/cmd_vel
+/scan
+/rosout
+🔹 查看某个 topic 的数据
+rostopic echo /topic_name
+例如：
+rostopic echo /turtle1/pose
+会不断打印位置信息。
+这相当于：
+抓包监听
+🔹 查看 topic 详细信息
+rostopic info /topic_name
+会告诉你：
+谁在发布
+谁在订阅
+消息类型
+🔹 查看消息类型
+rostopic type /topic_name
+例如：
+geometry_msgs/Twist
+🔹 手动发布消息（非常重要）
+rostopic pub /topic_name message_type "data"
+例如：
+rostopic pub /turtle1/cmd_vel geometry_msgs/Twist '{linear: {x: 0.2}}'
+这相当于：
+你自己模拟一个控制器
+🔹 持续发布
+rostopic pub -r 10 ...
+表示 10Hz 发布。
+否则默认只发一次。</p>
+<h3 id="_2">常见完整实战流程<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p>打开三个终端：
+终端1
+roscore
+终端2
+rosrun turtlesim turtlesim_node
+终端3
+rostopic pub -r 10 /turtle1/cmd_vel geometry_msgs/Twist '{angular: {z: 0.5}}'
+小乌龟会持续转圈。</p>
+<h2 id="_3">完整流程：<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>1️⃣ 写代码
+src/hello.cpp
+2️⃣ 修改 CMakeLists.txt</p>
+<p>添加 add_executable</p>
+<p>3️⃣ 编译
+cd ~/catkin_ws
+catkin_make</p>
+<p>4️⃣ source 环境
+source devel/setup.bash</p>
+<p>5️⃣ 运行
+rosrun first_pkg hello</p>
+<p>Debug 模式（第25页）
+如果你想调试：
+cd build
+cmake ../src -DCMAKE_BUILD_TYPE=Debug
+然后可以用 Eclipse 或 GDB 调试。</p>
+<h2 id="workspace">workspace 是什么？<a class="headerlink" href="#workspace" title="Permanent link">&para;</a></h2>
+<p>一个 workspace = 一个 ROS 工作区
+里面放的是一整套 相关 ROS 代码</p>
+<h2 id="cmakeliststxt">CMakeLists.txt<a class="headerlink" href="#cmakeliststxt" title="Permanent link">&para;</a></h2>
+<p>必须添加
+<div class="highlight"><pre><span></span><code><span class="nb">add_executable</span><span class="p">(</span><span class="s">hello</span><span class="w"> </span><span class="s">src/hello.cpp</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">hello</span><span class="w"> </span><span class="o">${</span><span class="nv">catkin_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
+</code></pre></div>
+否则：
+不会生成可执行文件,rosrun找不到节点</p>
+<h2 id="workspace_1">workspace 的标准结构<a class="headerlink" href="#workspace_1" title="Permanent link">&para;</a></h2>
+<p>catkin_ws/
+├── src/        ← 你写代码的地方（最重要）
+│   ├── CMakeLists.txt
+│   ├── package_1/
+│   ├── package_2/
+│
+├── build/      ← 编译中间文件（不用碰）
+├── devel/      ← 生成的可执行程序、环境
+└── install/   ← 可选，安装空间</p>
+<h2 id="ros-package">什么是 ROS package？<a class="headerlink" href="#ros-package" title="Permanent link">&para;</a></h2>
+<p>package 是 ROS 中最小的构建单位
+一个 package = 一个 ROS 小项目</p>
+<h2 id="package">一个 package 里一般有什么？<a class="headerlink" href="#package" title="Permanent link">&para;</a></h2>
+<p>my_pkg/
+├── src/        ← C++ 源文件
+├── include/    ← 头文件
+├── msg/        ← 自定义消息（以后）
+├── srv/        ← 自定义服务（以后）
+├── launch/     ← 启动文件（以后）
+├── package.xml ← 身份证 + 依赖声明(包名、版本、作者、许可证、依赖等)
+└── CMakeLists.txt ← 编译说明书</p>
+<h2 id="package_1">创建 package<a class="headerlink" href="#package_1" title="Permanent link">&para;</a></h2>
+<p><catkin_create_pkg first_pkg std_msgs rospy roscpp>创建一个叫 first_pkg 的包
+它依赖：</p>
+<p>roscpp（C++）</p>
+<p>rospy（Python）</p>
+<p>std_msgs（标准消息）</p>
+<h2 id="ros">ros日志系统<a class="headerlink" href="#ros" title="Permanent link">&para;</a></h2>
+<p>ROS 提供：
+ROS_DEBUG
+ROS_INFO
+ROS_WARN
+ROS_ERROR
+ROS_FATAL</p>
+<p>日志会存储在：</p>
+<p>~/.ros/log</p>
+<h2 id="ros_1">ROS 三种通信方式<a class="headerlink" href="#ros_1" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>适合场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Topic</td>
+<td>单向、连续数据流（传感器数据）</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>一问一答（即时）</td>
+</tr>
+<tr>
+<td>Action</td>
+<td>长时间任务（可反馈、可取消）</td>
+</tr>
+<tr>
+<td>1️⃣ Topic</td>
+<td></td>
+</tr>
+<tr>
+<td>发布 / 订阅</td>
+<td></td>
+</tr>
+<tr>
+<td>异步</td>
+<td></td>
+</tr>
+<tr>
+<td>可多个订阅者</td>
+<td></td>
+</tr>
+<tr>
+<td>👉 典型：激光雷达、相机</td>
+<td></td>
+</tr>
+<tr>
+<td>2️⃣ Service</td>
+<td></td>
+</tr>
+<tr>
+<td>请求 / 响应</td>
+<td></td>
+</tr>
+<tr>
+<td>同步</td>
+<td></td>
+</tr>
+<tr>
+<td>阻塞式</td>
+<td></td>
+</tr>
+<tr>
+<td>👉 典型：请求当前状态</td>
+<td></td>
+</tr>
+<tr>
+<td>3️⃣ Action</td>
+<td></td>
+</tr>
+<tr>
+<td>长时间任务</td>
+<td></td>
+</tr>
+<tr>
+<td>可反馈进度</td>
+<td></td>
+</tr>
+<tr>
+<td>可取消</td>
+<td></td>
+</tr>
+<tr>
+<td>👉 典型：导航到目标点</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="roslaunch">roslaunch<a class="headerlink" href="#roslaunch" title="Permanent link">&para;</a></h2>
+<p><div class="highlight"><pre><span></span><code><span class="nt">&lt;launch&gt;</span>
+<span class="w">  </span><span class="nt">&lt;node</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;talker&quot;</span>
+<span class="w">        </span><span class="na">pkg=</span><span class="s">&quot;first_pkg&quot;</span>
+<span class="w">        </span><span class="na">type=</span><span class="s">&quot;talker&quot;</span>
+<span class="w">        </span><span class="na">output=</span><span class="s">&quot;screen&quot;</span><span class="nt">/&gt;</span>
+<span class="w">  </span><span class="nt">&lt;node</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;listener&quot;</span>
+<span class="w">        </span><span class="na">pkg=</span><span class="s">&quot;first_pkg&quot;</span>
+<span class="w">        </span><span class="na">type=</span><span class="s">&quot;listener&quot;</span>
+<span class="w">        </span><span class="na">output=</span><span class="s">&quot;screen&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/launch&gt;</span>
+</code></pre></div>
+运行
+<div class="highlight"><pre><span></span><code>roslaunch<span class="w"> </span>first_pkg<span class="w"> </span>talker_listener.launch
+</code></pre></div>
+不用开多个终端，可以统一管理系统
+一个 launch 文件可以启动：10 个节点、RViz、Gazebo、参数服务器、重映射
+可以设置参数
+<param name="rate" value="10"/>
+可以重映射 topic
+<remap from="chatter" to="my_topic"/>
+可以指定 namespace，适合多机器人系统。</p>
+<h2 id="_4">调试<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>示例</th>
+<th>用什么命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>节点</td>
+<td>/talker</td>
+<td>rosnode</td>
+</tr>
+<tr>
+<td>节点</td>
+<td>/listener</td>
+<td>rosnode</td>
+</tr>
+<tr>
+<td>topic</td>
+<td>/chatter</td>
+<td>rostopic</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>/opt/ros/noetic/setup.bash<span class="w"> </span><span class="c1">#把官方安装的 ROS 加入当前终端的环境变量</span>
+<span class="nb">source</span><span class="w"> </span>~/catkin_ws/devel/setup.bash
+
+rosnode<span class="w"> </span>list<span class="w"> </span><span class="c1">#看有哪些节点在运行</span>
+rosnode<span class="w"> </span>info<span class="w"> </span>/listener<span class="w"> </span>
+rosnode<span class="w"> </span>info<span class="w"> </span>/talker<span class="w"> </span><span class="c1">#看某个节点更详细信息（订阅/发布了什么）</span>
+
+rostopic<span class="w"> </span>list<span class="w"> </span><span class="c1">#看有哪些topic</span>
+rostopic<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>/chatter<span class="w"> </span><span class="c1">#看 “chatter” 正在发布什么内容（实时打印）</span>
+rostopic<span class="w"> </span>hz<span class="w"> </span>/chatter<span class="w"> </span><span class="c1">#看 “chatter” 发布频率</span>
+rostopic<span class="w"> </span>bw<span class="w"> </span>/chatter<span class="w"> </span><span class="c1">#看 “chatter” 发布带宽</span>
+rostopic<span class="w"> </span>info<span class="w"> </span>/chatter<span class="w"> </span><span class="c1">#看 “chatter” 的发布者和订阅者</span>
+
+rosmsg<span class="w"> </span>show<span class="w"> </span>std_msgs/String<span class="w"> </span><span class="c1">#看 std_msgs/String 这个消息类型的结构</span>
+rqt_graph<span class="w"> </span><span class="c1">#可视化节点和 topic 关系,图形化调试你应该看到：/talker -&gt; /chatter -&gt; /listener</span>
+rqt_console<span class="w"> </span><span class="c1">#图形化看 topic 内容：rqt_console / rqt_logger_level,看 ROS_INFO/ROS_WARN/ROS_ERROR 输出，并能过滤,还可以动态改日志等级</span>
+
+<span class="c1">#录制与回放,录下来之后慢放、回放、复现 bug。</span>
+rosbag<span class="w"> </span>record<span class="w"> </span>-O<span class="w"> </span>test_chatter.bag<span class="w"> </span>/chatter<span class="w"> </span><span class="c1">#录制 chatter：</span>
+rosbag<span class="w"> </span>play<span class="w"> </span>test_chatter.bag<span class="w"> </span><span class="c1">#回放</span>
+rosbag<span class="w"> </span>info<span class="w"> </span>test_chatter.bag<span class="w"> </span><span class="c1">#查看 bag 文件信息</span>
+
+<span class="c1">#看参数</span>
+rosparam<span class="w"> </span>list<span class="w"> </span><span class="c1">#列出所有参数</span>
+rosparam<span class="w"> </span>get<span class="w"> </span>/rosdistro<span class="w"> </span><span class="c1">#查看某个参数</span>
+</code></pre></div>
+<h2 id="_5">自定义消息<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>① 创建消息包--catkin_create_pkg custom_messages std_msgs message_generation message_runtime
+② 编写 .msg 文件--std_msgs/Header header  int32 robot_id...
+③ 修改消息包--package.xml-<build_depend>message_generation</build_depend><exec_depend>message_runtime</exec_depend>
+④ 修改消息包--CMakeLists.txt-find_package、add_message_files、generate_messages 、catkin_package
+⑤ 编译生成消息代码--catkin_make  source devel/setup.bash 验证：rosmsg show custom_messages/RobotStatus
+⑥ 在其他包中声明依赖<build_depend>custom_messages</build_depend><exec_depend>custom_messages</exec_depend> 修改 first_pkg/CMakeLists.txt--find_package
+⑦ 在节点中 include 并使用--#include "custom_messages/RobotStatus.h"
+⑧ 再次编译并运行--catkin_make source devel/setup.bash</p>
+<p>把<strong>自定义消息单独放在一个新包里</strong>（比如 <code>custom_messages</code>）</p>
+<h3 id="_6">目标结构<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>custom_messages</code>：只负责定义 <code>.msg</code>（生成 C++/Python 代码）</li>
+<li><code>first_pkg</code>：你的 <code>talker.cpp / listener.cpp</code> 使用 <code>custom_messages/RobotStatus</code> 来发布/订阅</li>
+</ul>
+<h3 id="1-custom_messages">1）新建消息包 custom_messages<a class="headerlink" href="#1-custom_messages" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>~/catkin_ws/src
+catkin_create_pkg<span class="w"> </span>custom_messages<span class="w"> </span>std_msgs<span class="w"> </span>message_generation<span class="w"> </span>message_runtime<span class="w"> </span><span class="c1">##创建一个包叫custom_messages，并且这个包依赖：、std_msgs、message_generation、message_runtime</span>
+</code></pre></div>
+<blockquote>
+<p>这里我直接把 message_generation/runtime 也写进依赖列表里，后面你在 package.xml 里仍要确认存在。</p>
+</blockquote>
+<h3 id="2-msg-4">2）创建 msg 文件并写 4 种字段类型<a class="headerlink" href="#2-msg-4" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>~/catkin_ws/src/custom_messages
+mkdir<span class="w"> </span>-p<span class="w"> </span>msg
+code<span class="w"> </span>msg/RobotStatus.msg
+</code></pre></div>
+把 <code>msg/RobotStatus.msg</code> 写成下面这样（4 种类型 + Header）：
+<div class="highlight"><pre><span></span><code>std_msgs/Header header
+int32 robot_id
+bool is_ready
+float32 battery
+string note
+</code></pre></div>
+这里包含：
+* <code>int32</code>（整型）
+* <code>bool</code>（布尔）
+* <code>float32</code>（浮点）
+* <code>string</code>（你要的字符串）
+* 以及常用的 <code>std_msgs/Header</code>（带时间戳和 frame_id）</p>
+<h3 id="3-custom_messagespackagexml">3）修改 custom_messages/package.xml<a class="headerlink" href="#3-custom_messagespackagexml" title="Permanent link">&para;</a></h3>
+<p>打开 <code>~/catkin_ws/src/custom_messages/package.xml</code>，确保有这些依赖（重点是 generation/runtime）：
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;buildtool_depend&gt;</span>catkin<span class="nt">&lt;/buildtool_depend&gt;</span><span class="w"> </span>意思：是这个包用<span class="w"> </span>catkin<span class="w"> </span>构建系统，几乎所有<span class="w"> </span>ROS1<span class="w"> </span>包都有
+
+<span class="nt">&lt;build_depend&gt;</span>std_msgs<span class="nt">&lt;/build_depend&gt;</span>
+<span class="nt">&lt;build_depend&gt;</span>message_generation<span class="nt">&lt;/build_depend&gt;</span>意思：编译时需要<span class="w"> </span>message_generation因为你要从<span class="w"> </span>.msg<span class="w"> </span>文件生成<span class="w"> </span>C++<span class="w"> </span>代码。
+
+<span class="nt">&lt;exec_depend&gt;</span>std_msgs<span class="nt">&lt;/exec_depend&gt;</span>
+<span class="nt">&lt;exec_depend&gt;</span>message_runtime<span class="nt">&lt;/exec_depend&gt;</span>意思：运行时需要<span class="w"> </span>message_runtime也就是说：生成的消息在运行时要用这个库。
+</code></pre></div></p>
+<blockquote>
+<p>编译期要 <code>message_generation</code>，运行期要 <code>message_runtime</code>。</p>
+</blockquote>
+<h3 id="4-custom_messagescmakeliststxt">4）修改 custom_messages/CMakeLists.txt<a class="headerlink" href="#4-custom_messagescmakeliststxt" title="Permanent link">&para;</a></h3>
+<p>打开 <code>~/catkin_ws/src/custom_messages/CMakeLists.txt</code>，按下面写（或对照改）：
+1. find_package 加 message_generation
+<div class="highlight"><pre><span></span><code><span class="nb">find_package</span><span class="p">(</span><span class="s">catkin</span><span class="w"> </span><span class="s">REQUIRED</span><span class="w"> </span><span class="s">COMPONENTS</span>
+<span class="w">  </span><span class="s">std_msgs</span>
+<span class="w">  </span><span class="s">message_generation</span>
+<span class="p">)</span><span class="w"> </span><span class="err">意思：编译这个包需要</span><span class="w"> </span><span class="err">std_msgs</span><span class="w"> </span><span class="err">和</span><span class="w"> </span><span class="err">message_generation</span>
+</code></pre></div>
+2. 声明 msg 文件
+<div class="highlight"><pre><span></span><code><span class="nb">add_message_files</span><span class="p">(</span>
+<span class="w">  </span><span class="s">FILES</span>
+<span class="w">  </span><span class="s">RobotStatus.msg</span>
+<span class="p">)</span><span class="w"> </span><span class="err">我有一个消息文件叫</span><span class="w"> </span><span class="err">RobotStatus.msg，请把它加入生成流程</span>
+</code></pre></div>
+3. generate_messages 依赖 std_msgs
+<div class="highlight"><pre><span></span><code><span class="nb">generate_messages</span><span class="p">(</span>
+<span class="w">  </span><span class="s">DEPENDENCIES</span>
+<span class="w">  </span><span class="s">std_msgs</span>
+<span class="p">)</span><span class="err">根据</span><span class="w"> </span><span class="err">msg</span><span class="w"> </span><span class="err">文件生成</span><span class="w"> </span><span class="err">C++</span><span class="w"> </span><span class="err">/</span><span class="w"> </span><span class="err">Python</span><span class="w"> </span><span class="err">代码，并且它依赖</span><span class="w"> </span><span class="err">std_msgs（因为</span><span class="w"> </span><span class="err">RobotStatus.msg</span><span class="w"> </span><span class="err">里用到了</span><span class="w"> </span><span class="err">std_msgs/Header）</span>
+</code></pre></div>
+4. catkin_package 导出 message_runtime
+<div class="highlight"><pre><span></span><code><span class="nb">catkin_package</span><span class="p">(</span>
+<span class="w">  </span><span class="s">CATKIN_DEPENDS</span><span class="w"> </span><span class="s">std_msgs</span><span class="w"> </span><span class="s">message_runtime</span>
+<span class="p">)</span><span class="err">意思：其他包如果依赖我，就自动继承</span><span class="w"> </span><span class="err">std_msgs</span><span class="w"> </span><span class="err">和</span><span class="w"> </span><span class="err">message_runtime，这叫：依赖传播</span>
+</code></pre></div></p>
+<h3 id="5">5）编译并验证消息生成<a class="headerlink" href="#5" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>~/catkin_ws
+catkin_make
+<span class="nb">source</span><span class="w"> </span>devel/setup.bash
+</code></pre></div>
+验证消息 ROS 能看到：
+<div class="highlight"><pre><span></span><code>rosmsg<span class="w"> </span>show<span class="w"> </span>custom_messages/RobotStatus
+</code></pre></div>
+你应该能看到字段列表（header/robot_id/is_ready/battery/note）。</p>
+<h3 id="6-first_pkg-custom_messages">6）让 first_pkg 依赖 custom_messages（关键）<a class="headerlink" href="#6-first_pkg-custom_messages" title="Permanent link">&para;</a></h3>
+<p>你现在的 talker/listener 在 <code>first_pkg</code> 里，所以 <code>first_pkg</code> 必须“依赖” <code>custom_messages</code>。
+1. 修改 first_pkg/package.xml
+在 <code>first_pkg/package.xml</code> 加：
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;build_depend&gt;</span>custom_messages<span class="nt">&lt;/build_depend&gt;</span>
+<span class="nt">&lt;exec_depend&gt;</span>custom_messages<span class="nt">&lt;/exec_depend&gt;</span>
+</code></pre></div>
+（保留你原来的 roscpp/std_msgs 等依赖）</p>
+<ol>
+<li>修改 first_pkg/CMakeLists.txt
+在 find_package 里加入 custom_messages：
+<div class="highlight"><pre><span></span><code><span class="nb">find_package</span><span class="p">(</span><span class="s">catkin</span><span class="w"> </span><span class="s">REQUIRED</span><span class="w"> </span><span class="s">COMPONENTS</span>
+<span class="w">  </span><span class="s">roscpp</span>
+<span class="w">  </span><span class="s">std_msgs</span>
+<span class="w">  </span><span class="s">custom_messages</span>
+<span class="p">)</span>
+</code></pre></div>
+include 路径（通常已有）：
+<div class="highlight"><pre><span></span><code><span class="nb">include_directories</span><span class="p">(</span>
+<span class="w">  </span><span class="o">${</span><span class="nv">catkin_INCLUDE_DIRS</span><span class="o">}</span>
+<span class="p">)</span>
+</code></pre></div><blockquote>
+<p>只要 first_pkg 正确依赖了 custom_messages，<code>${catkin_INCLUDE_DIRS}</code> 里就会包含自定义消息生成的头文件路径。</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="7-talkercpp-listenercpp">7）改 talker.cpp / listener.cpp 使用新消息<a class="headerlink" href="#7-talkercpp-listenercpp" title="Permanent link">&para;</a></h3>
+<ol>
+<li>talker.cpp（发布 custom_messages/RobotStatus）
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ros/ros.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;custom_messages/RobotStatus.h&quot;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="n">argv</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">ros</span><span class="o">::</span><span class="n">init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;talker&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">ros</span><span class="o">::</span><span class="n">NodeHandle</span><span class="w"> </span><span class="n">nh</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">ros</span><span class="o">::</span><span class="n">Publisher</span><span class="w"> </span><span class="n">pub</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nh</span><span class="p">.</span><span class="n">advertise</span><span class="o">&lt;</span><span class="n">custom_messages</span><span class="o">::</span><span class="n">RobotStatus</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;robot_status&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="w">    </span><span class="n">ros</span><span class="o">::</span><span class="n">Rate</span><span class="w"> </span><span class="n">rate</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">ros</span><span class="o">::</span><span class="n">ok</span><span class="p">())</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">custom_messages</span><span class="o">::</span><span class="n">RobotStatus</span><span class="w"> </span><span class="n">msg</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">msg</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">stamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ros</span><span class="o">::</span><span class="n">Time</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
+<span class="w">        </span><span class="n">msg</span><span class="p">.</span><span class="n">header</span><span class="p">.</span><span class="n">frame_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;base_link&quot;</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">msg</span><span class="p">.</span><span class="n">robot_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="n">msg</span><span class="p">.</span><span class="n">is_ready</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">count</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">        </span><span class="n">msg</span><span class="p">.</span><span class="n">battery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">12.3f</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">0.01f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w">      </span><span class="c1">// 演示用</span>
+<span class="w">        </span><span class="n">msg</span><span class="p">.</span><span class="n">note</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="s">&quot;hello #&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">count</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">ROS_INFO</span><span class="p">(</span><span class="s">&quot;id=%d ready=%s battery=%.2f note=%s&quot;</span><span class="p">,</span>
+<span class="w">                 </span><span class="n">msg</span><span class="p">.</span><span class="n">robot_id</span><span class="p">,</span>
+<span class="w">                 </span><span class="n">msg</span><span class="p">.</span><span class="n">is_ready</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;false&quot;</span><span class="p">,</span>
+<span class="w">                 </span><span class="n">msg</span><span class="p">.</span><span class="n">battery</span><span class="p">,</span>
+<span class="w">                 </span><span class="n">msg</span><span class="p">.</span><span class="n">note</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+
+<span class="w">        </span><span class="n">pub</span><span class="p">.</span><span class="n">publish</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">ros</span><span class="o">::</span><span class="n">spinOnce</span><span class="p">();</span>
+<span class="w">        </span><span class="n">rate</span><span class="p">.</span><span class="n">sleep</span><span class="p">();</span>
+<span class="w">        </span><span class="o">++</span><span class="n">count</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></li>
+<li>listener.cpp（订阅并打印）
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ros/ros.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;custom_messages/RobotStatus.h&quot;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">cb</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">custom_messages</span><span class="o">::</span><span class="n">RobotStatus</span><span class="o">::</span><span class="n">ConstPtr</span><span class="o">&amp;</span><span class="w"> </span><span class="n">msg</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">ROS_INFO</span><span class="p">(</span><span class="s">&quot;I heard: id=%d ready=%s battery=%.2f note=%s stamp=%.3f frame=%s&quot;</span><span class="p">,</span>
+<span class="w">             </span><span class="n">msg</span><span class="o">-&gt;</span><span class="n">robot_id</span><span class="p">,</span>
+<span class="w">             </span><span class="n">msg</span><span class="o">-&gt;</span><span class="n">is_ready</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;false&quot;</span><span class="p">,</span>
+<span class="w">             </span><span class="n">msg</span><span class="o">-&gt;</span><span class="n">battery</span><span class="p">,</span>
+<span class="w">             </span><span class="n">msg</span><span class="o">-&gt;</span><span class="n">note</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span>
+<span class="w">             </span><span class="n">msg</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">stamp</span><span class="p">.</span><span class="n">toSec</span><span class="p">(),</span>
+<span class="w">             </span><span class="n">msg</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">frame_id</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="n">argv</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">ros</span><span class="o">::</span><span class="n">init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;listener&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">ros</span><span class="o">::</span><span class="n">NodeHandle</span><span class="w"> </span><span class="n">nh</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">ros</span><span class="o">::</span><span class="n">Subscriber</span><span class="w"> </span><span class="n">sub</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nh</span><span class="p">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s">&quot;robot_status&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">cb</span><span class="p">);</span>
+<span class="w">    </span><span class="n">ros</span><span class="o">::</span><span class="n">spin</span><span class="p">();</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></li>
+</ol>
+<h3 id="8-ppt">8）重新编译并运行（对应 PPT 的运行/调试思路）<a class="headerlink" href="#8-ppt" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>~/catkin_ws
+catkin_make
+<span class="nb">source</span><span class="w"> </span>devel/setup.bash
+</code></pre></div>
+终端1：
+<div class="highlight"><pre><span></span><code>roscore
+</code></pre></div>
+终端2：
+<div class="highlight"><pre><span></span><code>rosrun<span class="w"> </span>first_pkg<span class="w"> </span>talker
+</code></pre></div>
+终端3：
+<div class="highlight"><pre><span></span><code>rosrun<span class="w"> </span>first_pkg<span class="w"> </span>listener
+</code></pre></div>
+或者直接看 topic：
+<div class="highlight"><pre><span></span><code>rostopic<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>/robot_status
+</code></pre></div></p>
+<h3 id="_7">最常见的两个坑（提前避雷）<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>忘了 source</strong>
+   新开终端一定要：</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>~/catkin_ws/devel/setup.bash
+</code></pre></div>
+<ol>
+<li><strong>first_pkg 没把 custom_messages 加进依赖</strong>
+   会出现：找不到 <code>custom_messages/RobotStatus.h</code> 或 rosrun 找不到类型。</li>
+</ol>
+<h2 id="tf-transform">TF--Transform<a class="headerlink" href="#tf-transform" title="Permanent link">&para;</a></h2>
+<h3 id="1tf">1）什么是TF<a class="headerlink" href="#1tf" title="Permanent link">&para;</a></h3>
+<p>TF是一个“变换系统”，让你可以在任意时刻把某个坐标系下的数据转换到另一个坐标系下。
+假设你有一个机器人：
+世界坐标 world/map
+机器人本体 base_link / base_footprint
+传感器坐标 laser/camera
+末端执行器 gripper
+头部 head
+它们的位置关系是：
+world
+   ↓
+base_link
+   ↓
+laser
+如果激光雷达检测到一个点：(1.0, 0.5)，这个坐标是相对于 laser 坐标系，但你可能需要：转换到 world 坐标系
+TF 维护：一个坐标树（Frame Tree）
+它不断发布：坐标变换（Transform）
+比如：world → base_link  base_link → laser
+然后自动帮你计算：world → laser
+TF 的本质就是：4×4 齐次变换矩阵
+T = [ R  t ]
+    [ 0  1 ]</p>
+<h3 id="2tf">2）TF 的优势<a class="headerlink" href="#2tf" title="Permanent link">&para;</a></h3>
+<p>分布式：没有单点故障（不是只有一个节点维护全部变换）
+链式变换不丢精度/不丢信息：你不用自己一段段拼矩阵
+不需要中间坐标系的数据转换成本：tf 能自动沿树找到路径并算合成变换
+用户不用纠结“我的数据在哪个 frame”：你只要给出 frame_id，tf 帮你转换到需要的坐标系
+能存历史（缓存）：你可以查“过去某时刻”对应的变换</p>
+<h3 id="3tf-broadcaster-listener">3）TF 里有两类节点：Broadcaster / Listener<a class="headerlink" href="#3tf-broadcaster-listener" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Broadcaster（发布者）
+负责发布“坐标系之间的变换”发布到 topic：/tf（动态变换）</li>
+<li>Listener（监听者）
+订阅 /tf，把听到的变换缓存起来（直到缓存长度上限）然后提供查询：lookupTransform(...)</li>
+</ol>
+<h3 id="4tf">4）tf 的核心结构：变换树<a class="headerlink" href="#4tf" title="Permanent link">&para;</a></h3>
+<p>tf 会把所有 frame 组织成一棵或多棵树：树上每条边：一个 transform（父→子）
+树的任意两点：只要在同一棵树里，就能找到路径并计算变换
+可以有多个不相连的树（多个 TF 子系统）
+变换只能在同一棵树内生效（不同树无法互相转换）</p>
+<h3 id="5-tf">5）怎么用 tf 树来“跨机器人/跨传感器”转换<a class="headerlink" href="#5-tf" title="Permanent link">&para;</a></h3>
+<p>用 robot1 的激光数据给 robot2 导航
+这时你需要把点从：/robot1/laser → 转到 → /robot2/base 或 /map
+在 tf 树里，从 source frame 往上走到公共祖先（例如 /map）再从公共祖先往下走到 target frame，中间会包含正向变换和逆变换</p>
+<h3 id="6tf">6）tf 常用命令行工具<a class="headerlink" href="#6tf" title="Permanent link">&para;</a></h3>
+<p>view_frames：把 tf 树画成 PDF -- rosrun tf view_frames   /n  evince frames.pdf
+tf_echo：实时打印两个 frame 的变换--rosrun tf tf_echo <reference> <target>
+tf_monitor：监控 tf 发布频率/延迟--rosrun tf tf_monitor
+static_transform_publisher：发布静态变换，用于固定安装的传感器（比如 base_link 到 laser_link 是固定的）或临时补一条 map→odom</p>
+<h3 id="7rviz-tf">7）rviz 里看 tf<a class="headerlink" href="#7rviz-tf" title="Permanent link">&para;</a></h3>
+<p>rosrun rviz rviz -d <code>rospack find turtle_tf</code>/rviz/turtle_rviz.rviz</p>
+<h3 id="8tf-frame">8）TF 里常见 frame 的含义<a class="headerlink" href="#8tf-frame" title="Permanent link">&para;</a></h3>
+<p>odom：只用里程计积分得到的坐标系（连续但会漂）
+base_footprint：机器人底座在地面投影（z=0），常用于地面移动机器人
+base_link：机器人本体坐标系（通常在质心或旋转中心附近）
+base_laser_link：激光雷达安装坐标系
+map
+ └── odom
+      └── base_footprint
+            └── base_link
+                  └── base_laser_link</p>
+<h3 id="slam-simultaneous-localization-and-mapping">SLAM -- Simultaneous Localization and Mapping 同时定位与建图<a class="headerlink" href="#slam-simultaneous-localization-and-mapping" title="Permanent link">&para;</a></h3>
+<p>机器人在一个未知环境中，一边画地图，一边确定自己在地图上的位置。
+map -&gt; odom：由 SLAM/定位（AMCL）发布（会慢慢调整，纠正漂移）
+odom -&gt; base_link：由里程计发布（连续但会漂移）
+base_link -&gt; sensor：传感器安装位姿（通常固定）
+只要 tf 树连通，就能查：lookupTransform("map","base_link")
+或命令行：tf_echo map base_link
+得到机器人的全局位置。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
