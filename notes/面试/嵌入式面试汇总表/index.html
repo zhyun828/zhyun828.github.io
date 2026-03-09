@@ -1,0 +1,3769 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://zhyun828.github.io/notes/%E9%9D%A2%E8%AF%95/%E5%B5%8C%E5%85%A5%E5%BC%8F%E9%9D%A2%E8%AF%95%E6%B1%87%E6%80%BB%E8%A1%A8/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.4">
+    
+    
+      
+        <title>嵌入式面试问题分类汇总（精简版） - My Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="My Notes" class="md-header__button md-logo" aria-label="My Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              嵌入式面试问题分类汇总（精简版）
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m3.55 19.09 1.41 1.41 1.8-1.79-1.42-1.42M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6c0-3.32-2.69-6-6-6m8 7h3v-2h-3m-2.76 7.71 1.8 1.79 1.41-1.41-1.79-1.8M20.45 5l-1.41-1.4-1.8 1.79 1.42 1.42M13 1h-2v3h2M6.76 5.39 4.96 3.6 3.55 5l1.79 1.81zM1 13h3v-2H1m12 9h-2v3h2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  主页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Arduino/basics.md" class="md-tabs__link">
+          
+  
+  
+  笔记
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="My Notes" class="md-nav__button md-logo" aria-label="My Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    My Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    主页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    笔记
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    笔记
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arduino
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Arduino
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/basics.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1_2" id="__nav_2_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    项目
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/projet.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目说明
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/pre.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目前期
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/code.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    代码说明
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/thoughts.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目反思
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C++
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    C++
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cpp/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    基础语法
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cpp/opp.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面向对象
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FPGA / VHDL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    FPGA / VHDL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FPGA/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    基础知识
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📌 分类速查表
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一、存储与启动（5题）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="一、存储与启动（5题）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-flash-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Flash Memory 是什么？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-bootloader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Bootloader 是什么？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 裸机编程是什么？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-gpio-timer-pwm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. GPIO / Timer / PWM 分别做什么？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-nvic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 中断控制器（NVIC）是什么？
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二、单片机基础（8题）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二、单片机基础（8题）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 单片机中断基本流程？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 中断向量表是什么？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 中断与轮询区别？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-gpio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. GPIO 开漏输出是什么？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-adc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. ADC 关键指标有哪些？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#11-dma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. DMA 是什么？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-watchdog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. 看门狗定时器（Watchdog）怎么用？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. 低功耗模式有哪些？
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三、通信协议（7题）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三、通信协议（7题）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#14-uart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. UART 是什么？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-i2c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. I2C 原理与特点？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-spi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. SPI 全双工通信？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-can" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. CAN 总线优势？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#18-i2s" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. I2S 用于什么？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. 传感器通信协议怎么描述？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20-pwm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20. PWM 在哪些场景用？
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rtos20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四、RTOS与并发（20题）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="四、RTOS与并发（20题）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-rtos-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21. RTOS vs 裸机？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-rtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22. RTOS 调度器怎么工作？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23. 优先级反转是什么？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        24. 任务间通信方式？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        25. 互斥锁 vs 信号量？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        26. 任务栈管理要注意什么？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-freertos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        27. FreeRTOS 核心概念？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        28. 中断嵌套和优先级？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#29" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        29. 死锁原因与避免？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#30-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        30. 信号量二值 vs 计数？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        31. 条件变量适用什么场景？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        32. 消息队列原理？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-linux-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        33. Linux 进程vs线程？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        34. 线程同步工具？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        35. 死锁检测与恢复？
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cc15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        五、C/C++语言（15题）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="五、C/C++语言（15题）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#36" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        36. 指针和数组区别？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-const-volatile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        37. const 和 volatile？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        38. 堆和栈区别？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#39" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        39. 内存泄漏怎么检测？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#40" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        40. 位操作常用技巧？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        41. 大端小端？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-padding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        42. 结构体对齐与padding？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-c-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        43. C 和 C++ 在嵌入式选哪个？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-vs-inline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        44. 宏 vs inline函数？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-strcpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        45. strcpy 溢出防护？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        46. 递归注意事项？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#47-static" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        47. 命名空间和static？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#48" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        48. 类的封装和继承？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#49" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        49. 模板和泛型？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#50" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        50. 异常处理开销？
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linux9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        六、嵌入式Linux（9题）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="六、嵌入式Linux（9题）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        51. Linux 启动流程？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        52. 进程 vs 线程详解？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-ipc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        53. IPC 通信方式（进程间）？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        54. 系统调用是什么？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        55. Linux 常用命令？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#56-tcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        56. TCP 三次握手和四次挥手？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#57-selectpollepoll" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        57. select/poll/epoll 区别？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#58-ioreactor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        58. 非阻塞IO和Reactor模型？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#59" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        59. 网络字节序转换？
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        七、网络编程（13题）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="七、网络编程（13题）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#60-tcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        60. TCP 服务器五步建立？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#61-tcp-vs-udp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        61. TCP vs UDP 选择？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-tcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        62. TCP 粘包/拆包？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-socket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        63. Socket 连接建立过程？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-socket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        64. Socket 地址结构？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65-listen-backlog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        65. Listen 的 backlog 参数？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#66-tcp-keepalive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        66. TCP KeepAlive 机制？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#67-udp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        67. UDP 服务器？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#68-epoll" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        68. Epoll 高效的原因？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#69" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        69. 阻塞、非阻塞、异步的区别？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#70-socket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        70. Socket 超时和错误处理？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#71-vs-ftp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        71. 控制连接 vs 数据连接（FTP）？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-http-keep-alive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        72. HTTP Keep-Alive ?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        八、硬件设计（8题）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="八、硬件设计（8题）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#73-pcb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        73. PCB 设计基础？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        74. 上拉下拉电阻作用？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#75" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        75. 调试工具：万用表、示波器、逻辑分析仪？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#76-ldo-vs-dcdc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        76. 电源设计：LDO vs DCDC？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#77-emiemc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        77. EMI/EMC 设计？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#78" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        78. 晶体振荡器选择？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#79-tvs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        79. 防护电路：TVS、齐纳二极管？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#80" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        80. 热管理：散热、降频、休眠？
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        九、工程实践（8题）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="九、工程实践（8题）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        81. 交叉编译是什么？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-hal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        82. HAL层设计目的？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-ota" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        83. OTA升级工程方案？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#84-padding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        84. 内存对齐和padding？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#85" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        85. 编译优化选项？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#86-linker-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        86. 链接脚本（Linker Script）？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#87-gdb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        87. GDB调试技巧？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#88" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        88. 性能分析和优化？
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        十、实战高频场景（5题）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十、实战高频场景（5题）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#89" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        89. 按键消抖实现？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#90-ring-buffer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        90. 环形缓冲（Ring Buffer）实现？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#91-pid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        91. PID 控制基础？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        92. 故障排查方法？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        93. 通信协议设计？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#94-fsm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        94. 状态机（FSM）在嵌入式的应用？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#95" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        95. 国际化和本地化考虑？
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        快速查询表
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        面试应试技巧
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="面试应试技巧">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ 回答要点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ 常见错误避免
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ 加分技巧
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="_1">嵌入式面试问题分类汇总（精简版）<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>快速导航</strong>：10大类、50+道高频题<br />
+<strong>使用建议</strong>：每题先背"主回答"（30–60秒），再背1–2条追问；按分类按需复习</p>
+</blockquote>
+<hr />
+<h2 id="_2">📌 分类速查表<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>题数</th>
+<th>核心知识点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#一存储与启动5题">一、存储与启动</a></td>
+<td>5</td>
+<td>Flash、Bootloader、中断向量表</td>
+</tr>
+<tr>
+<td><a href="#二单片机基础8题">二、单片机基础</a></td>
+<td>8</td>
+<td>GPIO、Timer、PWM、NVIC</td>
+</tr>
+<tr>
+<td><a href="#三通信协议7题">三、通信协议</a></td>
+<td>7</td>
+<td>UART、I2C、SPI、CAN、I2S</td>
+</tr>
+<tr>
+<td><a href="#四rtos与并发20题">四、RTOS与并发</a></td>
+<td>20</td>
+<td>调度、优先级反转、信号量、互斥锁</td>
+</tr>
+<tr>
+<td><a href="#五cc语言15题">五、C/C++语言</a></td>
+<td>15</td>
+<td>指针、堆栈、struct、class、volatile</td>
+</tr>
+<tr>
+<td><a href="#六嵌入式linux9题">六、嵌入式Linux</a></td>
+<td>9</td>
+<td>启动流程、进程线程、系统调用</td>
+</tr>
+<tr>
+<td><a href="#七网络编程13题">七、网络编程</a></td>
+<td>13</td>
+<td>TCP/UDP、socket、epoll、粘包</td>
+</tr>
+<tr>
+<td><a href="#八硬件设计8题">八、硬件设计</a></td>
+<td>8</td>
+<td>ADC、DMA、上拉下拉、低功耗</td>
+</tr>
+<tr>
+<td><a href="#九工程实践8题">九、工程实践</a></td>
+<td>8</td>
+<td>交叉编译、HAL、OTA、内存对齐</td>
+</tr>
+<tr>
+<td><a href="#十实战高频5题">十、实战高频</a></td>
+<td>5</td>
+<td>按键消抖、环形缓冲、故障排查</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5">一、存储与启动（5题）<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<h3 id="1-flash-memory">1. Flash Memory 是什么？<a class="headerlink" href="#1-flash-memory" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>Flash Memory（闪存）是非易失性存储器，断电不丢数据。常见两种：
+- <strong>NOR Flash</strong>：适合代码存储、支持XIP（eXecute In Place）随机读
+- <strong>NAND Flash</strong>：容量大、适合批量存储、常用于SSD/eMMC</p>
+<p>嵌入式中用于存储 Bootloader、应用程序、参数等。</p>
+</blockquote>
+<p><strong>追问1</strong>：NOR vs NAND 怎么选？<br />
+<strong>答</strong>：需要直接执行代码/随机读多→NOR；大容量/顺序读写→NAND（配文件系统/坏块管理）。SSD用NAND。</p>
+<p><strong>追问2</strong>：Flash与RAM/ROM的区别？<br />
+<strong>答</strong>：RAM易失性，掉电丢数据；ROM只读难编程；Flash非易失可多次擦写，兼两者优点。</p>
+<hr />
+<h3 id="2-bootloader">2. Bootloader 是什么？<a class="headerlink" href="#2-bootloader" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>Bootloader是上电后执行的第一段程序，流程：
+<div class="highlight"><pre><span></span><code>上电 → CPU从固定地址取指 → Bootloader运行
+→ 初始化时钟/DDR/串口/存储
+→ 加载应用到RAM → 跳转执行应用
+</code></pre></div>
+通常还带固件升级功能（串口/USB/OTA）。</p>
+</blockquote>
+<p><strong>追问1</strong>：升级如何防止变砖？<br />
+<strong>答</strong>：双分区A/B切换、升级包CRC/签名校验、断点续传、回滚机制。</p>
+<p><strong>追问2</strong>：Bootloader占多少空间？<br />
+<strong>答</strong>：一般16-128KB；大小取决于功能复杂度和硬件初始化量。</p>
+<hr />
+<h3 id="3">3. 裸机编程是什么？<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>Bare Metal（裸机）是无操作系统，程序直接跑硬件上。
+- <strong>结构</strong>：<code>main()</code> → <code>while(1)</code> 主循环 + 中断
+- <strong>优点</strong>：简单、资源占用小、确定性强
+- <strong>缺点</strong>：复杂度上升难维护、多任务支持差</p>
+</blockquote>
+<p><strong>追问1</strong>：复杂逻辑怎么组织？<br />
+<strong>答</strong>：有限状态机(FSM)、事件队列、定时器驱动任务切片；ISR只做"置标志/搬数据"，复杂处理放主循环。</p>
+<p><strong>追问2</strong>：什么时候用裸机，什么时候用RTOS？<br />
+<strong>答</strong>：简单单任务、资源极限→裸机；多任务、实时要求高→RTOS。</p>
+<hr />
+<h3 id="4-gpio-timer-pwm">4. GPIO / Timer / PWM 分别做什么？<a class="headerlink" href="#4-gpio-timer-pwm" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>GPIO</strong>：通用输入输出，按键/LED常见应用</li>
+<li><strong>Timer</strong>：计数/定时/捕获比较、触发中断、PWM基础</li>
+<li><strong>PWM</strong>：脉宽调制，通过占空比输出等效模拟量（电机/LED/舵机）</li>
+</ul>
+</blockquote>
+<p><strong>追问1</strong>：PWM频率和分辨率如何权衡？<br />
+<strong>答</strong>：频率高→噪声小但分辨率可能下降；分辨率由计数范围决定。按负载选频率，尽量提高ARR/PSC范围。</p>
+<p><strong>追问2</strong>：舵机为何用50Hz？<br />
+<strong>答</strong>：脉宽1-2ms映射角度，周期20ms（50Hz）是业界标准，便于同步控制。</p>
+<hr />
+<h3 id="5-nvic">5. 中断控制器（NVIC）是什么？<a class="headerlink" href="#5-nvic" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>NVIC（Nested Vectored Interrupt Controller）用于ARM Cortex-M系列：
+- <strong>功能</strong>：中断使能、优先级管理、向量跳转、中断嵌套
+- <strong>抢占优先级 vs 响应优先级</strong>：前者决定能否抢占，后者决定同级顺序</p>
+</blockquote>
+<p><strong>追问1</strong>：中断里能做复杂计算吗？<br />
+<strong>答</strong>：不建议。ISR原则是短小快速，只做"读寄存器/清标志/置事件"，复杂处理放任务。</p>
+<p><strong>追问2</strong>：优先级怎么设置？<br />
+<strong>答</strong>：硬实时事件高优先级，中断嵌套层数不超过3-4层避免栈爆炸。</p>
+<hr />
+<h2 id="8">二、单片机基础（8题）<a class="headerlink" href="#8" title="Permanent link">&para;</a></h2>
+<h3 id="6">6. 单片机中断基本流程？<a class="headerlink" href="#6" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p><div class="highlight"><pre><span></span><code>中断触发 → 保存现场(PC/LR/寄存器)
+→ 进入ISR → 处理事件+清中断标志
+→ 恢复现场 → 返回主程序
+</code></pre></div>
+ISR是被动触发，实时性最强。</p>
+</blockquote>
+<p><strong>追问1</strong>：ISR里最忌讳什么？<br />
+<strong>答</strong>：长时间阻塞（printf、sleep、等锁），会破坏实时性。用信号量/队列通知任务处理。</p>
+<p><strong>追问2</strong>：中断嵌套和优先级反转关系？<br />
+<strong>答</strong>：嵌套指中断被中断打断；优先级反转是低优先级任务阻塞高优先的情况（RTOS概念）。</p>
+<hr />
+<h3 id="7">7. 中断向量表是什么？<a class="headerlink" href="#7" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>向量表保存各中断/异常入口地址，CPU根据中断号查表跳转ISR。
+- <strong>位置</strong>：Flash起始地址
+- <strong>结构</strong>：[MSP, Reset_Handler, NMI_Handler, HardFault_Handler, ...]</p>
+</blockquote>
+<p><strong>追问1</strong>：向量表能重定位吗？<br />
+<strong>答</strong>：支持，通过VTOR（Vector Table Offset Register）；用于Bootloader/APP分区切换。</p>
+<p><strong>追问2</strong>：如何手动修改向量表？<br />
+<strong>答</strong>：直接定义数组或使用编译器属性（<code>__attribute__</code>），指向各ISR函数。</p>
+<hr />
+<h3 id="8_1">8. 中断与轮询区别？<a class="headerlink" href="#8_1" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>轮询</strong>：主循环不断检查状态，占用CPU、延迟高、浪费功耗</li>
+<li><strong>中断</strong>：事件驱动，效率高、响应快、适合实时场景</li>
+</ul>
+<p>缺点：中断频繁可能导致系统不稳定。</p>
+</blockquote>
+<p><strong>追问1</strong>：什么时候反而用轮询？<br />
+<strong>答</strong>：事件极频繁且处理时间短；启动自检读状态；避免中断抖动。</p>
+<p><strong>追问2</strong>：按键如何消抖？<br />
+<strong>答</strong>：中断里只置标志，主循环/定时器延时10-20ms确认；或定时器100Hz采样滤波。</p>
+<hr />
+<h3 id="9-gpio">9. GPIO 开漏输出是什么？<a class="headerlink" href="#9-gpio" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>开漏输出只能拉低不能主动拉高，需要外部上拉电阻形成高电平。
+- <strong>优点</strong>：可驱动多个输出线"线与"、支持不同电压
+- <strong>应用</strong>：I2C、IIC、故障诊断输出</p>
+</blockquote>
+<p><strong>追问1</strong>：为什么I2C要用开漏？<br />
+<strong>答</strong>：多个从设备共享SDA/SCL，开漏实现"线与"逻辑，任意设备拉低就低。</p>
+<p><strong>追问2</strong>：上拉电阻多大合适？<br />
+<strong>答</strong>：一般10kΩ，需平衡驱动能力与功耗；高速通信可用更小值。</p>
+<hr />
+<h3 id="10-adc">10. ADC 关键指标有哪些？<a class="headerlink" href="#10-adc" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>分辨率</strong>：如12bit可表示4096个等级</li>
+<li><strong>采样率</strong>：每秒采样次数（kS/s或MS/s）</li>
+<li><strong>精度</strong>：转换结果误差</li>
+<li><strong>通道数</strong>：可接传感器个数</li>
+<li><strong>转换时间</strong>：单次转换耗时</li>
+</ul>
+</blockquote>
+<p><strong>追问1</strong>：怎么提高测量精度？<br />
+<strong>答</strong>：增加采样次数求平均、硬件配RC滤波、校准偏移和增益系数。</p>
+<hr />
+<h3 id="11-dma">11. DMA 是什么？<a class="headerlink" href="#11-dma" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>DMA（Direct Memory Access）在外设和内存间直接传输数据，无需CPU参与。
+- <strong>优点</strong>：CPU负担小、传输快、功耗低
+- <strong>应用</strong>：ADC连续采样、UART大数据接收、Flash编程</p>
+</blockquote>
+<p><strong>追问1</strong>：DMA+中断怎么组织？<br />
+<strong>答</strong>：外设触发DMA搬数据到buffer，DMA完成/半满时中断通知，ISR只发信号给任务处理。</p>
+<hr />
+<h3 id="12-watchdog">12. 看门狗定时器（Watchdog）怎么用？<a class="headerlink" href="#12-watchdog" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>看门狗是防死机装置：倒计时定时器，程序需定期"喂狗"（重载计数器），否则复位系统。
+- <strong>适用场景</strong>：长时间运行不能人工复位的设备
+- <strong>喂狗周期</strong>：通常设为超时时间的1/3到1/2</p>
+</blockquote>
+<p><strong>追问1</strong>：喂狗周期多少合理？<br />
+<strong>答</strong>：若看门狗设1秒，喂狗周期应&lt;500ms，留出余量防止误触发。</p>
+<hr />
+<h3 id="13">13. 低功耗模式有哪些？<a class="headerlink" href="#13" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>Sleep</strong>：CPU停止，外设继续，唤醒快</li>
+<li><strong>Stop</strong>：大部分时钟关闭，功耗更低，外设可保留</li>
+<li><strong>Standby</strong>：几乎全关，只保留最小唤醒电路，功耗最低</li>
+</ul>
+</blockquote>
+<p><strong>追问1</strong>：什么时候选哪种模式？<br />
+<strong>答</strong>：短暂空闲→Sleep；长时间空闲/低功耗设备→Stop/Standby；按实际休眠时间权衡唤醒延迟。</p>
+<hr />
+<h2 id="7_1">三、通信协议（7题）<a class="headerlink" href="#7_1" title="Permanent link">&para;</a></h2>
+<h3 id="14-uart">14. UART 是什么？<a class="headerlink" href="#14-uart" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>UART（Universal Asynchronous Receiver/Transmitter）异步串口通信：
+- <strong>线</strong>：TX、RX（有时+RTS/CTS硬件流控）
+- <strong>特点</strong>：简单、低速、常用于调试和GPS
+- <strong>波特率</strong>：常见9600/115200，MCU需和外设一致</p>
+</blockquote>
+<p><strong>追问1</strong>：如何支持硬件流控？<br />
+<strong>答</strong>：添加RTS/CTS线；发送方可根据CTS拉低/拉高调整发送速率。</p>
+<p><strong>追问2</strong>：串口收包不丢数据怎么做？<br />
+<strong>答</strong>：用中断或DMA+环形缓冲，按帧头/长度/校验解析；ISR不做重逻辑。</p>
+<hr />
+<h3 id="15-i2c">15. I2C 原理与特点？<a class="headerlink" href="#15-i2c" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>I2C（Inter-Integrated Circuit）两线同步总线：
+- <strong>线</strong>：SCL（时钟）、SDA（数据），开漏输出需上拉
+- <strong>特点</strong>：多主多从、软件灵活、集成简单
+- <strong>速率</strong>：100kHz（标准）、400kHz（快速）、1MHz（高速）</p>
+</blockquote>
+<p><strong>追问1</strong>：I2C为什么要上拉电阻？<br />
+<strong>答</strong>：开漏输出，上拉到高电平；多设备线与共享。</p>
+<p><strong>追问2</strong>：同步和异步区别？<br />
+<strong>答</strong>：同步有时钟信号同步（SPI/I2C）；异步依赖波特率计时（UART）。</p>
+<hr />
+<h3 id="16-spi">16. SPI 全双工通信？<a class="headerlink" href="#16-spi" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>SPI（Serial Peripheral Interface）高速同步全双工：
+- <strong>线</strong>：SCLK（时钟）、MOSI（主→从）、MISO（从→主）、CS（片选）
+- <strong>特点</strong>：速度快、协议简单、支持全双工
+- <strong>应用</strong>：Flash、显示屏、高速ADC</p>
+</blockquote>
+<p><strong>追问1</strong>：为什么需要CS片选？<br />
+<strong>答</strong>：总线可挂多个从设备，CS选择目标并界定传输边界。</p>
+<p><strong>追问2</strong>：多从设备怎么接？<br />
+<strong>答</strong>：每从一条CS线；MOSI/MISO/SCLK并联；主机按序拉低对应CS通信。
+Chip Select，片选信号，用于选择SPI总线上的从设备。</p>
+<hr />
+<h3 id="17-can">17. CAN 总线优势？<a class="headerlink" href="#17-can" title="Permanent link">&para;</a></h3>
+<p>的地位
+<strong>主回答</strong></p>
+<blockquote>
+<p>CAN（Controller Area Network）多主差分高可靠总线：
+- <strong>特点</strong>：自仲裁、抗干扰强、错误检测、广泛用于汽车/工业
+- <strong>速率</strong>：常见500kbps、1Mbps
+- <strong>帧</strong>：标准帧(11位ID)、扩展帧(29位ID)</p>
+</blockquote>
+<p><strong>追问1</strong>：ID低优先级高怎么理解？<br />
+<strong>答</strong>：仲裁时ID小的优先级高；同时发送时ID小的赢得总线。</p>
+<p><strong>追问2</strong>：CAN错误如何处理？<br />
+<strong>答</strong>：错误主动/被动模式、自动重传、帧检验校验。</p>
+<hr />
+<h3 id="18-i2s">18. I2S 用于什么？<a class="headerlink" href="#18-i2s" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>I2S（Inter-IC Sound）音频数据传输协议：
+- <strong>线</strong>：BCLK（位时钟）、LRCLK（声道时钟）、SD（数据）
+- <strong>应用</strong>：连接音频Codec、DAC/ADC
+- <strong>格式</strong>：Philips I2S、Left-Justified、Right-Justified</p>
+</blockquote>
+<p><strong>追问1</strong>：为什么需要LRCLK？<br />
+<strong>答</strong>：区分左右声道，LRCLK决定数据属于哪个声道。</p>
+<hr />
+<h3 id="19">19. 传感器通信协议怎么描述？<a class="headerlink" href="#19" title="Permanent link">&para;</a></h3>
+<p><strong>主回答模板</strong></p>
+<blockquote>
+<p>我从四点说：
+1. <strong>协议</strong>：SPI/I2C/UART/CAN
+2. <strong>速率</strong>：如I2C 400kHz、SPI 8MHz、UART 115200
+3. <strong>帧格式</strong>：帧头+ID+长度+负载+校验(CRC)
+4. <strong>可靠性</strong>：超时重传、环形缓冲、DMA、中断策略</p>
+</blockquote>
+<p><strong>追问1</strong>：数据偶尔错误怎么办？<br />
+<strong>答</strong>：加CRC校验、超时重传、软件滤波去毛刺；检查硬件：线长、上拉、终端电阻。</p>
+<hr />
+<h3 id="20-pwm">20. PWM 在哪些场景用？<a class="headerlink" href="#20-pwm" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>电机调速</strong>：占空比→速度</li>
+<li><strong>LED调光</strong>：占空比→亮度</li>
+<li><strong>舵机控制</strong>：脉宽→角度（通常50Hz, 1-2ms）</li>
+<li><strong>蜂鸣器</strong>：频率→音调</li>
+</ul>
+</blockquote>
+<p><strong>追问1</strong>：多组PWM同步如何实现？<br />
+<strong>答</strong>：同一定时器多通道或软件同步机制。</p>
+<hr />
+<h2 id="rtos20">四、RTOS与并发（20题）<a class="headerlink" href="#rtos20" title="Permanent link">&para;</a></h2>
+<h3 id="21-rtos-vs">21. RTOS vs 裸机？<a class="headerlink" href="#21-rtos-vs" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>裸机</strong>：while(1)+中断，简单但难维护、多任务支持差</li>
+<li><strong>RTOS</strong>：多任务、优先级调度、同步互斥、可维护强但资源占用大</li>
+</ul>
+<p>选择：简单→裸机；复杂实时→RTOS</p>
+</blockquote>
+<p><strong>追问</strong>：RTOS和Windows/Linux根本区别？<br />
+<strong>答</strong>：RTOS保证实时性（任务必须deadline前完成）；通用OS只尽量快。</p>
+<hr />
+<h3 id="22-rtos">22. RTOS 调度器怎么工作？<a class="headerlink" href="#22-rtos" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>调度器按优先级从就绪队列选择最高优先级任务执行：
+- <strong>抢占式</strong>：高优先级可打断低优先级（实时性好）
+- <strong>协作式</strong>：任务主动让出CPU（简单但实时性弱）</p>
+<p>任务状态：Running → Ready → Blocked → Suspended</p>
+</blockquote>
+<p><strong>追问1</strong>：如何避免优先级反转？<br />
+<strong>答</strong>：优先级继承或天花板机制。</p>
+<p><strong>追问2</strong>：定时器中断也通过调度吗？<br />
+<strong>答</strong>：定时器中断触发调度器重新选择就绪任务。</p>
+<hr />
+<h3 id="23">23. 优先级反转是什么？<a class="headerlink" href="#23" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>低优先级任务持有资源，高优先级任务等待，中优先级又一直运行，导致高优先被拖延。</p>
+<p><strong>解决</strong>：优先级继承（低优先临时继承高优先级直到释放资源）或优先级天花板。</p>
+</blockquote>
+<p><strong>追问</strong>：如何检测优先级反转？<br />
+<strong>答</strong>：通过日志/trace分析任务调度顺序，观察高优先任务被延迟时长超预期。</p>
+<hr />
+<h3 id="24">24. 任务间通信方式？<a class="headerlink" href="#24" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>消息队列</strong>：任意数据传递</li>
+<li><strong>信号量</strong>：事件同步、资源计数</li>
+<li><strong>互斥锁</strong>：保护共享资源</li>
+<li><strong>事件标志组</strong>：多事件组合同步</li>
+<li><strong>条件变量</strong>：线程等待条件</li>
+</ul>
+</blockquote>
+<p><strong>追问</strong>：哪个用于生产者-消费者？<br />
+<strong>答</strong>：消息队列最直接；或信号量+手动缓冲。</p>
+<hr />
+<h3 id="25-vs">25. 互斥锁 vs 信号量？<a class="headerlink" href="#25-vs" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>Mutex</strong>：互斥，有"所有权"概念，通常初值1，进入临界区lock，离开unlock</li>
+<li><strong>Semaphore</strong>：计数，用于资源控制或事件通知，初值可为N</li>
+</ul>
+<p>用途：保护共享变量→Mutex；事件同步→Semaphore；资源池→Semaphore</p>
+</blockquote>
+<p><strong>追问</strong>：Mutex死锁怎么避免？<br />
+<strong>答</strong>：固定加锁顺序、超时机制、trylock。</p>
+<hr />
+<h3 id="26">26. 任务栈管理要注意什么？<a class="headerlink" href="#26" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>栈大小</strong>：按局部变量+调用深度估计，留余量</li>
+<li><strong>栈溢出检测</strong>：FreeRTOS有uxTaskGetStackHighWaterMark()</li>
+<li><strong>栈初值</strong>：通常填0xA5或0xCC便于识别</li>
+<li><strong>位置</strong>：通常在SRAM末尾</li>
+</ul>
+</blockquote>
+<p><strong>追问</strong>：栈溢出有什么后果？<br />
+<strong>答</strong>：覆盖其他数据、系统崩溃、难以定位的bug。</p>
+<hr />
+<h3 id="27-freertos">27. FreeRTOS 核心概念？<a class="headerlink" href="#27-freertos" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>Task</strong>：独立执行流，有栈、优先级、状态</li>
+<li><strong>Scheduler</strong>：根据优先级调度就绪任务</li>
+<li><strong>Tick</strong>：系统时钟中断，通常1ms一次</li>
+<li><strong>Context Switch</strong>：任务切换，保存/恢复上下文</li>
+</ul>
+</blockquote>
+<p><strong>追问</strong>：怎么检测任务CPU占用率？<br />
+<strong>答</strong>：FreeRTOS可配置运行时统计，定时器中断计累计运行时间。</p>
+<hr />
+<h3 id="28">28. 中断嵌套和优先级？<a class="headerlink" href="#28" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>中断嵌套</strong>：高优先级中断打断低优先级ISR执行</li>
+<li><strong>避免过度嵌套</strong>：设置合理优先级分层、控制ISR时长</li>
+<li><strong>系统稳定</strong>：通常不超过3-4层嵌套</li>
+</ul>
+</blockquote>
+<p><strong>追问</strong>：ISR里能调用FreeRTOS API吗？<br />
+<strong>答</strong>：只能调用带"FromISR"后缀的函数（如xQueueSendFromISR）。</p>
+<hr />
+<h3 id="29">29. 死锁原因与避免？<a class="headerlink" href="#29" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p><strong>四个必要条件</strong>（破坏任一可避免）：
+1. 互斥：资源独占
+2. 占有且等待：持有锁再等新锁
+3. 不可剥夺：无法强制释放
+4. 循环等待：任务循环等待</p>
+<p><strong>避免</strong>：固定加锁顺序、超时、trylock、拆分粒度</p>
+</blockquote>
+<p><strong>追问</strong>：哪个条件最好破坏？<br />
+<strong>答</strong>：循环等待和占有且等待最实际；通过顺序和timout可同时破坏两个。</p>
+<hr />
+<h3 id="30-vs">30. 信号量二值 vs 计数？<a class="headerlink" href="#30-vs" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>二值信号量</strong>：初值1，只能0/1，用于互斥或简单事件</li>
+<li><strong>计数信号量</strong>：初值N，用于资源池或多个事件累计</li>
+</ul>
+</blockquote>
+<p><strong>追问</strong>：资源池怎么用信号量？<br />
+<strong>答</strong>：初值=资源数，获取时-1，释放时+1；0时等待表示资源耗尽。</p>
+<hr />
+<h3 id="31">31. 条件变量适用什么场景？<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>生产者-消费者模式：消费者等待条件（队列非空），生产者发送信号唤醒。
+- <strong>优点</strong>：避免忙等或轮询
+- <strong>配套</strong>：通常和Mutex搭配</p>
+</blockquote>
+<p><strong>追问</strong>：Condition Variable vs Semaphore用哪个？<br />
+<strong>答</strong>：CV更灵活但复杂；Semaphore简单直接，多数场景够用。</p>
+<hr />
+<h3 id="32">32. 消息队列原理？<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>环形缓冲结构，生产者写入消息，消费者读取：
+- 满时生产者可阻塞或返回，空时消费者阻塞等待
+- 通常用于任务间数据传递和事件通知</p>
+</blockquote>
+<p><strong>追问</strong>：队列溢出怎么处理？<br />
+<strong>答</strong>：可选覆盖旧数据、阻塞发送方、丢弃新数据。</p>
+<hr />
+<h3 id="33-linux-vs">33. Linux 进程vs线程？<a class="headerlink" href="#33-linux-vs" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>进程</strong>：资源分配单位，独立地址空间，切换开销大</li>
+<li><strong>线程</strong>：调度单位，共享地址空间，切换快但需同步</li>
+</ul>
+<p>安全性：进程隔离强；线程共享内存需谨慎。</p>
+</blockquote>
+<p><strong>追问</strong>：什么时候用进程？<br />
+<strong>答</strong>：需要隔离、互不影响→进程；任务分工明确但资源共享→线程。</p>
+<hr />
+<h3 id="34">34. 线程同步工具？<a class="headerlink" href="#34" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>Mutex</strong>：互斥锁，保护临界区</li>
+<li><strong>Condition Variable</strong>：条件等待</li>
+<li><strong>Semaphore</strong>：计数同步</li>
+<li><strong>RWLock</strong>：读写锁，多读单写</li>
+<li><strong>Barrier</strong>：同步栅栏</li>
+</ul>
+</blockquote>
+<p><strong>追问</strong>：读写锁什么时候用？<br />
+<strong>答</strong>：读频繁写稀少，多个读者并行不冲突。</p>
+<hr />
+<h3 id="35">35. 死锁检测与恢复？<a class="headerlink" href="#35" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>检测</strong>：系统记录资源分配图，检测环路</li>
+<li><strong>恢复</strong>：终止部分进程、强制释放资源</li>
+</ul>
+<p>实际多采用<strong>预防</strong>（银行家算法、资源有序分配）而非检测恢复。</p>
+</blockquote>
+<hr />
+<h2 id="cc15">五、C/C++语言（15题）<a class="headerlink" href="#cc15" title="Permanent link">&para;</a></h2>
+<h3 id="36">36. 指针和数组区别？<a class="headerlink" href="#36" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>指针</strong>：变量存储地址，可改指向、可为空、sizeof=指针大小</li>
+<li><strong>数组</strong>：连续内存块，固定大小、数组名不可改、sizeof=整体大小</li>
+</ul>
+<p>数组名在表达式中退化为指针，但本质不同。</p>
+</blockquote>
+<p><strong>追问1</strong>：函数参数里数组会退化吗？<br />
+<strong>答</strong>：会退化为指针，因此sizeof(arr)在函数里得指针大小，需另传数组长度。</p>
+<p><strong>追问2</strong>：函数指针怎么用？<br />
+<strong>答</strong>：<code>int (*func_ptr)(int, int) = &amp;add;</code>用于回调函数、驱动接口。</p>
+<hr />
+<h3 id="37-const-volatile">37. const 和 volatile？<a class="headerlink" href="#37-const-volatile" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>const</strong>：编译期只读，放Flash节省RAM</li>
+<li><strong>volatile</strong>：禁优化，每次都从内存读写；用于硬件寄存器、中断变量、多线程</li>
+</ul>
+<p>两者可组合：<code>const volatile int reg = ...;</code></p>
+</blockquote>
+<p><strong>追问1</strong>：const int <em>p vs int * const p？<br />
+</em><em>答</em>*：前者数据不可改；后者指针不可改。</p>
+<p><strong>追问2</strong>：为什么中断变量要volatile？<br />
+<strong>答</strong>：中断改变变量，编译器可能优化掉读写导致看不到最新值。</p>
+<hr />
+<h3 id="38">38. 堆和栈区别？<a class="headerlink" href="#38" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>栈</th>
+<th>堆</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>管理</td>
+<td>自动</td>
+<td>手动malloc/free</td>
+</tr>
+<tr>
+<td>大小</td>
+<td>小（KB）</td>
+<td>大（MB）</td>
+</tr>
+<tr>
+<td>速度</td>
+<td>快</td>
+<td>慢</td>
+</tr>
+<tr>
+<td>易失性</td>
+<td>函数返回失效</td>
+<td>手动释放</td>
+</tr>
+<tr>
+<td>风险</td>
+<td>溢出崩溃</td>
+<td>泄漏、碎片</td>
+</tr>
+</tbody>
+</table>
+<p>嵌入式优先用栈，避免malloc。</p>
+</blockquote>
+<p><strong>追问</strong>：栈溢出症状？<br />
+<strong>答</strong>：覆盖其他变量、异常跳转、系统崩溃。</p>
+<hr />
+<h3 id="39">39. 内存泄漏怎么检测？<a class="headerlink" href="#39" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>静态分析</strong>：代码审查找malloc无对应free</li>
+<li><strong>运行时工具</strong>：valgrind、asan(Address Sanitizer)</li>
+<li><strong>嵌入式方案</strong>：内存池统计、日志追踪</li>
+</ul>
+<p>预防：尽量用栈/静态、RAII模式(C++)、内存池。</p>
+</blockquote>
+<p><strong>追问</strong>：为什么嵌入式不推荐malloc？<br />
+<strong>答</strong>：碎片化、实时性不确定、资源紧张、不利于功耗管理。</p>
+<hr />
+<h3 id="40">40. 位操作常用技巧？<a class="headerlink" href="#40" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<div class="highlight"><pre><span></span><code><span class="c1">// 置第n位为1</span>
+<span class="n">x</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
+
+<span class="c1">// 清第n位</span>
+<span class="n">x</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="o">~</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
+
+<span class="c1">// 翻转第n位</span>
+<span class="n">x</span><span class="w"> </span><span class="o">^=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
+
+<span class="c1">// 检查第n位</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+</blockquote>
+<p><strong>追问</strong>：如何一次设置多位？<br />
+<strong>答</strong>：<code>x |= 0b1111000;</code> 或 <code>x |= (0xF &lt;&lt; 4);</code></p>
+<hr />
+<h3 id="41">41. 大端小端？<a class="headerlink" href="#41" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>大端(Big Endian)</strong>：低地址存高字节，网络字节序</li>
+<li><strong>小端(Little Endian)</strong>：低地址存低字节，大多数MCU/PC</li>
+</ul>
+<p>STM32小端；网络通信需htonl/ntohl转换。</p>
+</blockquote>
+<p><strong>追问</strong>：怎么判断机器字节序？<br />
+<strong>答</strong>：</p>
+<blockquote>
+<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x12345678</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">x</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">0x78</span><span class="p">)</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;小端</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</code></pre></div>
+</blockquote>
+<hr />
+<h3 id="42-padding">42. 结构体对齐与padding？<a class="headerlink" href="#42-padding" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>编译器自动插入填充字节对齐，提高访问效率。
+<div class="highlight"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">Foo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">char</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w">    </span><span class="c1">// offset 0</span>
+<span class="w">  </span><span class="c1">// 3字节填充</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w">     </span><span class="c1">// offset 4</span>
+<span class="w">  </span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="p">;</span><span class="w">    </span><span class="c1">// offset 8</span>
+<span class="w">  </span><span class="c1">// 7字节填充</span>
+<span class="p">};</span><span class="w"> </span><span class="c1">// sizeof = 16字节</span>
+</code></pre></div></p>
+<p>通信需要：<code>#pragma pack(1)</code> 或 <code>__attribute__((packed))</code></p>
+</blockquote>
+<p><strong>追问</strong>：union节省内存吗？<br />
+<strong>答</strong>：是，成员共用内存，大小=最大成员；用于协议解析。</p>
+<hr />
+<h3 id="43-c-c">43. C 和 C++ 在嵌入式选哪个？<a class="headerlink" href="#43-c-c" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>C</strong>：贴近硬件、代码紧凑、生态成熟、驱动首选</li>
+<li><strong>C++</strong>：OOP、模板、可维护好、业务复杂推荐</li>
+</ul>
+<p>实际：底层驱动用C，应用逻辑用C++；要控制异常、RTTI、STL开销。</p>
+</blockquote>
+<p><strong>追问</strong>：虚函数开销大吗？<br />
+<strong>答</strong>：有虚表查询开销，但相对可控；关键路径避免或确保频率不极高。</p>
+<hr />
+<h3 id="44-vs-inline">44. 宏 vs inline函数？<a class="headerlink" href="#44-vs-inline" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>宏</strong>：预处理文本替换，无类型检查，可能有副作用</li>
+<li><strong>inline</strong>：编译期内联，有类型检查，更安全</li>
+</ul>
+<p>用宏做常量、条件编译；函数逻辑用inline。</p>
+</blockquote>
+<p><strong>追问</strong>：宏怎么写才安全？<br />
+<strong>答</strong>：参数加括号、整体加括号、避免副作用。</p>
+<hr />
+<h3 id="45-strcpy">45. strcpy 溢出防护？<a class="headerlink" href="#45-strcpy" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p><div class="highlight"><pre><span></span><code><span class="c1">// 不安全</span>
+<span class="n">strcpy</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span><span class="w"> </span><span class="n">src</span><span class="p">);</span>
+
+<span class="c1">// 安全版本</span>
+<span class="n">strncpy</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span><span class="w"> </span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span><span class="mi">-1</span><span class="p">);</span>
+<span class="n">dest</span><span class="p">[</span><span class="k">sizeof</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span><span class="mi">-1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+</code></pre></div>
+或用strlcpy（若可用）、或手动计算长度。</p>
+</blockquote>
+<p><strong>追问</strong>：为什么要-1？<br />
+<strong>答</strong>：预留\0位置，确保字符串正常结尾。</p>
+<hr />
+<h3 id="46">46. 递归注意事项？<a class="headerlink" href="#46" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>必须有终止条件</strong>，否则无限递归</li>
+<li><strong>栈消耗</strong>：每次调用压栈，嵌入式栈小要谨慎</li>
+<li><strong>替代方案</strong>：循环+显式栈/队列</li>
+</ul>
+<p>递归深度通常&lt;10为安全。</p>
+</blockquote>
+<p><strong>追问</strong>：怎样用迭代替代递归？<br />
+<strong>答</strong>：斐波那契、树遍历等可用显式栈DFS替代。</p>
+<hr />
+<h3 id="47-static">47. 命名空间和static？<a class="headerlink" href="#47-static" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>namespace</strong>：组织符号、防冲突（C++）</li>
+<li><strong>static</strong>：文件作用域（C）或类成员（C++）</li>
+<li><strong>外部链接</strong>：全局符号其他文件可见</li>
+<li><strong>内部链接</strong>：static限制本文件</li>
+</ul>
+</blockquote>
+<p><strong>追问</strong>：为什么头文件不写using namespace std?<br />
+<strong>答</strong>：会污染全局命名空间，导致冲突。</p>
+<hr />
+<h3 id="48">48. 类的封装和继承？<a class="headerlink" href="#48" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>封装</strong>：private/public/protected隐藏实现</li>
+<li><strong>继承</strong>：代码复用、多态基础</li>
+<li><strong>多态</strong>：虚函数实现运行时多态</li>
+</ul>
+<p>嵌入式尽量用组合而非深继承。</p>
+</blockquote>
+<p><strong>追问</strong>：虚函数表怎么工作？<br />
+<strong>答</strong>：每个类有虚表指针，指向虚函数地址数组；调用时动态查表跳转。</p>
+<hr />
+<h3 id="49">49. 模板和泛型？<a class="headerlink" href="#49" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>模板在编译期实例化生成具体代码，适合容器/算法库。</p>
+<p>缺点：编译复杂、二进制膨胀；嵌入式谨慎用。</p>
+</blockquote>
+<p><strong>追问</strong>：模板代码会膨胀吗？<br />
+<strong>答</strong>：会，每个类型实例化一份代码。控制模板层数和实例数。</p>
+<hr />
+<h3 id="50">50. 异常处理开销？<a class="headerlink" href="#50" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>C++异常有性能开销（栈展开、类型识别）。</p>
+<p>嵌入式典型做法：
+- 关闭异常（-fno-exceptions）
+- 用返回值/错误码而非throw
+- 关键路径避免异常</p>
+</blockquote>
+<hr />
+<h2 id="linux9">六、嵌入式Linux（9题）<a class="headerlink" href="#linux9" title="Permanent link">&para;</a></h2>
+<h3 id="51-linux">51. Linux 启动流程？<a class="headerlink" href="#51-linux" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<div class="highlight"><pre><span></span><code>1. Bootloader(U-Boot)
+   ├─ 初始化硬件、时钟、DDR
+   └─ 加载内核到内存
+
+2. Kernel启动
+   ├─ 初始化MMU、内存管理
+   ├─ 加载设备驱动
+   └─ 启动第一个用户进程init
+
+3. Init进程
+   ├─ 挂载文件系统
+   ├─ 启动系统服务
+   └─ 系统进入正常运行
+</code></pre></div>
+</blockquote>
+<p><strong>追问</strong>：Kernel代替Bootloader跳转吗？<br />
+<strong>答</strong>：是；Bootloader加载kernel到RAM，然后跳转到kernel_entry。</p>
+<hr />
+<h3 id="52-vs">52. 进程 vs 线程详解？<a class="headerlink" href="#52-vs" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<table>
+<thead>
+<tr>
+<th>比较</th>
+<th>进程</th>
+<th>线程</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>地址空间</strong></td>
+<td>独立</td>
+<td>共享</td>
+</tr>
+<tr>
+<td><strong>切换开销</strong></td>
+<td>大</td>
+<td>小</td>
+</tr>
+<tr>
+<td><strong>隔离</strong></td>
+<td>强</td>
+<td>弱</td>
+</tr>
+<tr>
+<td><strong>创建速度</strong></td>
+<td>慢</td>
+<td>快</td>
+</tr>
+<tr>
+<td><strong>通信</strong></td>
+<td>IPC复杂</td>
+<td>直接共享内存</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p><strong>追问</strong>：什么时候多进程比多线程好？<br />
+<strong>答</strong>：需要强隔离与独立性；一个进程奔溃不影响其他。</p>
+<hr />
+<h3 id="53-ipc">53. IPC 通信方式（进程间）？<a class="headerlink" href="#53-ipc" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>管道</strong>：单向、简单、用于parent-child</li>
+<li><strong>消息队列</strong>：有结构、可多进程</li>
+<li><strong>共享内存</strong>：最快、需同步机制</li>
+<li><strong>信号量</strong>：计数同步</li>
+<li><strong>Socket</strong>：网络通信、本地IPC</li>
+<li><strong>信号</strong>：异步通知</li>
+</ul>
+</blockquote>
+<p><strong>追问</strong>：管道怎么实现双向通信？<br />
+<strong>答</strong>：两条管道，或全双工socket。</p>
+<hr />
+<h3 id="54">54. 系统调用是什么？<a class="headerlink" href="#54" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>用户进程请求内核服务的接口，从用户态切到内核态：
+<div class="highlight"><pre><span></span><code>用户程序 → system call(触发中断/陷入)
+→ 内核处理 → 返回用户态
+</code></pre></div></p>
+<p>常见：open/read/write/fork/exec/socket等。</p>
+</blockquote>
+<p><strong>追问</strong>：用户态和内核态为什么分离？<br />
+<strong>答</strong>：隔离与安全，防止用户程序破坏系统。</p>
+<hr />
+<h3 id="55-linux">55. Linux 常用命令？<a class="headerlink" href="#55-linux" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p><strong>进程</strong>：ps/top/kill/pgrep<br />
+<strong>网络</strong>：ping/ip/ss/netstat/tcpdump<br />
+<strong>文件</strong>：ls/cd/sed/grep/find/awk<br />
+<strong>性能</strong>：free/df/iostat/vmstat<br />
+<strong>日志</strong>：dmesg/journalctl/tail/less</p>
+</blockquote>
+<p><strong>追问</strong>：怎么看某端口占用？<br />
+<strong>答</strong>：<code>ss -lntp | grep :端口号</code> 或 <code>netstat -lntp</code>。</p>
+<hr />
+<h3 id="56-tcp">56. TCP 三次握手和四次挥手？<a class="headerlink" href="#56-tcp" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p><strong>三次握手</strong>：SYN → SYN+ACK → ACK，建立连接<br />
+<strong>四次挥手</strong>：FIN → ACK → FIN → ACK，关闭连接</p>
+<p>挥手四次因为TCP全双工，双方各关闭发送方向。</p>
+</blockquote>
+<p><strong>追问</strong>：TIME_WAIT持续多久？<br />
+<strong>答</strong>：2MSL（Maximum Segment Lifetime），防止旧报文影响新连接。</p>
+<hr />
+<h3 id="57-selectpollepoll">57. select/poll/epoll 区别？<a class="headerlink" href="#57-selectpollepoll" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>select</strong>：轮询所有fd，&lt;=1024个，O(n)</li>
+<li><strong>poll</strong>：不限fd数，仍O(n)轮询</li>
+<li><strong>epoll</strong>：事件驱动，O(1)查询，适合高并发</li>
+</ul>
+<p>连接少用select/poll；连接多用epoll。</p>
+</blockquote>
+<p><strong>追问</strong>：epoll的LT和ET？<br />
+<strong>答</strong>：LT(水平)持续通知有数据；ET(边沿)只通知状态变化边界。</p>
+<hr />
+<h3 id="58-ioreactor">58. 非阻塞IO和Reactor模型？<a class="headerlink" href="#58-ioreactor" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>非阻塞：立刻返回，没数据返回EAGAIN<br />
+配合epoll形成Reactor模式：
+<div class="highlight"><pre><span></span><code>Main loop:
+  events = epoll_wait(...)
+  for each event:
+    if readable: read_callback()
+    if writable: write_callback()
+</code></pre></div></p>
+</blockquote>
+<p><strong>追问</strong>：什么时候用Reactor vs Proactor？<br />
+<strong>答</strong>：Reactor事件通知就绪，应用读写；Proactor操作系统代为读写。Linux多Reactor。</p>
+<hr />
+<h3 id="59">59. 网络字节序转换？<a class="headerlink" href="#59" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>网络字节序通常大端。转换函数：
+- <code>htonl/htons</code>：主机→网络(32/16位)
+- <code>ntohl/ntohs</code>：网络→主机</p>
+<p>STM32小端，网络通信要转。</p>
+</blockquote>
+<p><strong>追问</strong>：怎样写字节序无关的代码？<br />
+<strong>答</strong>：收数据时用转换函数，或自己定义bswap_32等。</p>
+<hr />
+<h2 id="13_1">七、网络编程（13题）<a class="headerlink" href="#13_1" title="Permanent link">&para;</a></h2>
+<h3 id="60-tcp">60. TCP 服务器五步建立？<a class="headerlink" href="#60-tcp" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<div class="highlight"><pre><span></span><code><span class="mf">1.</span><span class="w"> </span><span class="n">socket</span><span class="p">()</span><span class="w">     </span><span class="c1">// 创建套接字</span>
+<span class="mf">2.</span><span class="w"> </span><span class="n">bind</span><span class="p">()</span><span class="w">       </span><span class="c1">// 绑定IP+端口</span>
+<span class="mf">3.</span><span class="w"> </span><span class="n">listen</span><span class="p">()</span><span class="w">     </span><span class="c1">// 进入监听</span>
+<span class="mf">4.</span><span class="w"> </span><span class="n">accept</span><span class="p">()</span><span class="w">     </span><span class="c1">// 接收连接，返回已连接socket</span>
+<span class="mf">5.</span><span class="w"> </span><span class="n">recv</span><span class="o">/</span><span class="n">send</span><span class="p">()</span><span class="w">  </span><span class="c1">// 收发数据，close()关闭</span>
+</code></pre></div>
+</blockquote>
+<p><strong>追问1</strong>：listen和accept区别？<br />
+<strong>答</strong>：listen把socket变监听态；accept从监听队列取连接，返回新socket专供该客户端。</p>
+<p><strong>追问2</strong>：并发服务器怎么做？<br />
+<strong>答</strong>：多进程/多线程处理每个连接，或epoll事件驱动。</p>
+<hr />
+<h3 id="61-tcp-vs-udp">61. TCP vs UDP 选择？<a class="headerlink" href="#61-tcp-vs-udp" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>TCP</th>
+<th>UDP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>连接</td>
+<td>虚连接</td>
+<td>无连接</td>
+</tr>
+<tr>
+<td>可靠</td>
+<td>有重传</td>
+<td>不保证</td>
+</tr>
+<tr>
+<td>速度</td>
+<td>较慢</td>
+<td>快</td>
+</tr>
+<tr>
+<td>适用</td>
+<td>数据完整优先</td>
+<td>实时延迟优先</td>
+</tr>
+</tbody>
+</table>
+<p>实时音视频/IoT→UDP；文件传输/邮件→TCP。</p>
+</blockquote>
+<p><strong>追问</strong>：UDP怎么保证可靠？<br />
+<strong>答</strong>：应用层加序号、ACK、重传、超时判定。</p>
+<hr />
+<h3 id="62-tcp">62. TCP 粘包/拆包？<a class="headerlink" href="#62-tcp" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>TCP无消息边界，多次send可能被合并或拆分。</p>
+<p>解决方案：
+1. <strong>固定长度</strong>：每帧固定大小
+2. <strong>分隔符</strong>：帧尾加特殊字符
+3. <strong>长度字段(推荐)</strong>：Header | Length | Payload | CRC</p>
+</blockquote>
+<p><strong>追问</strong>：UDP会粘包吗？<br />
+<strong>答</strong>：不会，UDP保留报文边界；但可能丢包、乱序。</p>
+<hr />
+<h3 id="63-socket">63. Socket 连接建立过程？<a class="headerlink" href="#63-socket" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>客户端：
+<div class="highlight"><pre><span></span><code><span class="n">socket</span><span class="p">()</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="n">connect</span><span class="p">()</span><span class="w">  </span><span class="c1">// SYN</span>
+<span class="w">          </span><span class="err">←</span><span class="w"> </span><span class="n">SYN</span><span class="o">+</span><span class="n">ACK</span>
+<span class="w">          </span><span class="err">→</span><span class="w"> </span><span class="n">ACK</span>
+</code></pre></div>
+服务器accept()返回，获得已连接socket。</p>
+</blockquote>
+<p><strong>追问</strong>：connect超时多久？<br />
+<strong>答</strong>：通常75秒或系统默认；可用setsockopt设SO_RCVTIMEO/SO_SNDTIMEO。</p>
+<hr />
+<h3 id="64-socket">64. Socket 地址结构？<a class="headerlink" href="#64-socket" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<div class="highlight"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr_in</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">sa_family_t</span><span class="w"> </span><span class="n">sin_family</span><span class="p">;</span><span class="w">    </span><span class="c1">// AF_INET</span>
+<span class="w">  </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">sin_port</span><span class="p">;</span><span class="w">         </span><span class="c1">// 端口(网络字节序)</span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">in_addr</span><span class="w"> </span><span class="n">sin_addr</span><span class="p">;</span><span class="w">   </span><span class="c1">// IP</span>
+<span class="w">  </span><span class="kt">char</span><span class="w"> </span><span class="n">sin_zero</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span><span class="w">          </span><span class="c1">// 填充</span>
+<span class="p">};</span>
+</code></pre></div>
+</blockquote>
+<p><strong>追问</strong>：为什么要填充？<br />
+<strong>答</strong>：和struct sockaddr保持大小一致。</p>
+<hr />
+<h3 id="65-listen-backlog">65. Listen 的 backlog 参数？<a class="headerlink" href="#65-listen-backlog" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>backlog表示监听队列长度，超过客户端连接被拒绝。</p>
+<p>实际队列长度 = min(backlog, /proc/sys/net/core/somaxconn)</p>
+</blockquote>
+<p><strong>追问</strong>：连接过多导什么问题？<br />
+<strong>答</strong>：新连接被拒绝、客户端收RST。</p>
+<hr />
+<h3 id="66-tcp-keepalive">66. TCP KeepAlive 机制？<a class="headerlink" href="#66-tcp-keepalive" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>长连接空闲时定期发送心跳，检测连接是否断开：
+- SO_KEEPALIVE套接字选项启用
+- TCP_KEEPIDLE/INTVL/CNT调整参数</p>
+</blockquote>
+<p><strong>追问</strong>：应用层心跳和TCP KeepAlive怎么选？<br />
+<strong>答</strong>：KeepAlive更底层通用；应用层心跳更可控，可附带业务数据。</p>
+<hr />
+<h3 id="67-udp">67. UDP 服务器？<a class="headerlink" href="#67-udp" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<div class="highlight"><pre><span></span><code><span class="mf">1.</span><span class="w"> </span><span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span><span class="w"> </span><span class="n">SOCK_DGRAM</span><span class="p">)</span>
+<span class="mf">2.</span><span class="w"> </span><span class="n">bind</span><span class="p">()</span>
+<span class="mf">3.</span><span class="w"> </span><span class="n">recvfrom</span><span class="p">()</span><span class="w">  </span><span class="c1">// 接收数据包+源地址</span>
+<span class="mf">4.</span><span class="w"> </span><span class="n">sendto</span><span class="p">()</span><span class="w">    </span><span class="c1">// 发送到源地址</span>
+<span class="n">无需listen</span><span class="o">/</span><span class="n">accept</span>
+</code></pre></div>
+</blockquote>
+<p><strong>追问</strong>：怎么给UDP加可靠性？<br />
+<strong>答</strong>：应用层序号确认、超时重传、丢包检测。</p>
+<hr />
+<h3 id="68-epoll">68. Epoll 高效的原因？<a class="headerlink" href="#68-epoll" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>基于事件</strong>：内核通知就绪fd，不用轮询所有fd</li>
+<li><strong>红黑树管理</strong>：高效查询和删除</li>
+<li><strong>就绪列表</strong>：O(1)获取就绪事件</li>
+<li><strong>mmap</strong>：内核缓冲区和用户空间共享，无拷贝</li>
+</ul>
+</blockquote>
+<p><strong>追问</strong>：EPollET怎么用？<br />
+<strong>答</strong>：必须非阻塞且一次读空/写尽，避免遗漏事件。</p>
+<hr />
+<h3 id="69">69. 阻塞、非阻塞、异步的区别？<a class="headerlink" href="#69" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>阻塞</strong>：调用不返回直到操作完成</li>
+<li><strong>非阻塞</strong>：立刻返回，通常需轮询或事件通知</li>
+<li><strong>异步</strong>：发起后立刻返回，通过回调/信号/事件通知结果</li>
+</ul>
+<p>select/epoll属非阻塞+事件驱动；aio属异步。</p>
+</blockquote>
+<p><strong>追问</strong>：Linux用异步IO吗？<br />
+<strong>答</strong>：libaio可用，但复杂；多数用epoll非阻塞。</p>
+<hr />
+<h3 id="70-socket">70. Socket 超时和错误处理？<a class="headerlink" href="#70-socket" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<div class="highlight"><pre><span></span><code><span class="c1">// 设置接收超时</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">timeval</span><span class="w"> </span><span class="n">tv</span><span class="p">;</span>
+<span class="n">tv</span><span class="p">.</span><span class="n">tv_sec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="n">setsockopt</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span><span class="w"> </span><span class="n">SOL_SOCKET</span><span class="p">,</span><span class="w"> </span><span class="n">SO_RCVTIMEO</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tv</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">tv</span><span class="p">));</span>
+
+<span class="c1">// 检查错误</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">recv</span><span class="p">(...)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">errno</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">EAGAIN</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 超时</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 其他错误</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+</blockquote>
+<p><strong>追问</strong>：连接中断怎么快速检测？<br />
+<strong>答</strong>：send返回-1 EPIPE；或用select、SO_KEEPALIVE。</p>
+<hr />
+<h3 id="71-vs-ftp">71. 控制连接 vs 数据连接（FTP）？<a class="headerlink" href="#71-vs-ftp" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>FTP有两条连接：
+- <strong>控制连接</strong>：端口21，传命令
+- <strong>数据连接</strong>：端口20(被动模式其他)，传文件</p>
+<p>主动/被动模式：谁发起数据连接。</p>
+</blockquote>
+<p><strong>追问</strong>：为什么要分离？<br />
+<strong>答</strong>：控制继续发命令，数据独立传输更灵活。</p>
+<hr />
+<h3 id="72-http-keep-alive">72. HTTP Keep-Alive ?<a class="headerlink" href="#72-http-keep-alive" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>HTTP/1.0 默认每请求一个连接、HTTP/1.1 默认Keep-Alive复用连接</p>
+<p>优势：减少连接建立开销、服务器资源利用率更高</p>
+</blockquote>
+<p><strong>追问</strong>：什么时候关闭连接？<br />
+<strong>答</strong>：超时、客户端/服务器显式关闭、连接数限制。</p>
+<hr />
+<h2 id="8_2">八、硬件设计（8题）<a class="headerlink" href="#8_2" title="Permanent link">&para;</a></h2>
+<h3 id="73-pcb">73. PCB 设计基础？<a class="headerlink" href="#73-pcb" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>布线</strong>：关键信号单独布线、避免过孔干扰</li>
+<li><strong>地和电源</strong>：大面积铺地、电源多点供电</li>
+<li><strong>阻抗控制</strong>：高速信号设计特征阻抗</li>
+<li><strong>信号完整性</strong>：端接电阻、过孔最小化、串终或并终</li>
+</ul>
+</blockquote>
+<p><strong>追问</strong>：什么时候用串终传电阻？<br />
+<strong>答</strong>：发送端速率高、传输线长、源阻抗低；并终配50Ω。</p>
+<hr />
+<h3 id="74">74. 上拉下拉电阻作用？<a class="headerlink" href="#74" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>上拉</strong>：拉到VCC，默认高电平，常用于按键/I2C</li>
+<li><strong>下拉</strong>：拉到GND，默认低电平</li>
+<li><strong>作用</strong>：避免引脚悬空、支持线与逻辑</li>
+</ul>
+<p>电阻值通常10k，高速可更小。</p>
+</blockquote>
+<p><strong>追问</strong>：开漏为什么要上拉？<br />
+<strong>答</strong>：开漏输出无法主动拉高，上拉电阻和外部设备"线与"实现共享。</p>
+<hr />
+<h3 id="75">75. 调试工具：万用表、示波器、逻辑分析仪？<a class="headerlink" href="#75" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>万用表</strong>：测电压/电流/电阻，DC/AC</li>
+<li><strong>示波器</strong>：观察波形，触发捕获、FFT频谱分析</li>
+<li><strong>逻辑分析仪</strong>：数字信号捕获，协议解析(SPI/I2C/UART)</li>
+</ul>
+<p>配合使用定位硬件问题。</p>
+</blockquote>
+<p><strong>追问</strong>：逻辑分析仪能测模拟信号吗？<br />
+<strong>答</strong>：不能，只捕获高低电平；示波器能看波形。</p>
+<hr />
+<h3 id="76-ldo-vs-dcdc">76. 电源设计：LDO vs DCDC？<a class="headerlink" href="#76-ldo-vs-dcdc" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>LDO</strong>：简单、低纹波、効率低(输入-输出压差损耗)、用于辅助电源</li>
+<li><strong>DCDC</strong>：高效、发热小、电磁干扰、用于主电源</li>
+</ul>
+<p>一般DCDC+LDO级联。</p>
+</blockquote>
+<p><strong>追问</strong>：怎么选LDO参数？<br />
+<strong>答</strong>：输入输出电压、最大电流、纹波要求、静态功耗。</p>
+<hr />
+<h3 id="77-emiemc">77. EMI/EMC 设计？<a class="headerlink" href="#77-emiemc" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>EMI(电磁干扰)/EMC(电磁兼容)：
+- <strong>抑制源</strong>：滤波、隔离、屏蔽
+- <strong>加强抗扰度</strong>：绕线、磁珠、TVS保护、地平面
+- <strong>规范</strong>：CE/FCC认证标准</p>
+</blockquote>
+<p><strong>追问</strong>：磁珠作用？<br />
+<strong>答</strong>：高频滤波，阻抗随频率变化，隔离数字/模拟部分。</p>
+<hr />
+<h3 id="78">78. 晶体振荡器选择？<a class="headerlink" href="#78" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>频率精度</strong>：±ppm级，越小越准</li>
+<li><strong>频率范围</strong>：MCU工作频率需匹配</li>
+<li><strong>负载容量</strong>：电容选择需配匹</li>
+<li><strong>温漂</strong>：极限温度范围偏差</li>
+</ul>
+<p>通常8MHz或24MHz。</p>
+</blockquote>
+<p><strong>追问</strong>：晶体连接电容多大？<br />
+<strong>答</strong>：通常10-50pF，根据晶体负载容量标注。</p>
+<hr />
+<h3 id="79-tvs">79. 防护电路：TVS、齐纳二极管？<a class="headerlink" href="#79-tvs" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>TVS</strong>：快速响应瞬间浪涌，两端保护</li>
+<li><strong>齐纳</strong>：恒压稳压，单向</li>
+<li><strong>TVS常用于</strong>：GPIO、通信口、电源输入</li>
+</ul>
+<p>选择参数：反向待机电压、浪涌电流。</p>
+</blockquote>
+<p><strong>追问</strong>：ESD防护怎么做？<br />
+<strong>答</strong>：ESD二极管/芯片、布线避免长走线、大面积地。</p>
+<hr />
+<h3 id="80">80. 热管理：散热、降频、休眠？<a class="headerlink" href="#80" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>散热</strong>：散热片、风扇、空间设计</li>
+<li><strong>降频</strong>：温度高time base降频减热</li>
+<li><strong>休眠</strong>：长期不用切低功耗模式</li>
+<li><strong>监测</strong>：温度传感器告警</li>
+</ul>
+</blockquote>
+<p><strong>追问</strong>：MCU温度如何监测？<br />
+<strong>答</strong>：内部温度传感器ADC采集，或外部NTC热敏电阻。</p>
+<hr />
+<h2 id="8_3">九、工程实践（8题）<a class="headerlink" href="#8_3" title="Permanent link">&para;</a></h2>
+<h3 id="81">81. 交叉编译是什么？<a class="headerlink" href="#81" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>在一种平台上编译代码，在另一种架构平台运行。</p>
+<p>例如：PC(x86) × arm-none-eabi-gcc → 编译 → STM32(ARM)运行</p>
+<p>需要交叉编译工具链、库、头文件。</p>
+</blockquote>
+<p><strong>追问</strong>：怎么配置工程？<br />
+<strong>答</strong>：CMake/Makefile指定-march、-mthumb；或使用嵌入式IDE自动配置。</p>
+<hr />
+<h3 id="82-hal">82. HAL层设计目的？<a class="headerlink" href="#82-hal" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>Hardware Abstraction Layer 屏蔽硬件差异：
+- 应用不直接操作寄存器，调用统一接口
+- 换芯片：只修改HAL，上层代码不变
+- 分工清晰：驱动开发者维护HAL，应用开发者调用</p>
+<p>例：GPIO初始化统一为gpio_init(pin, direction)。</p>
+</blockquote>
+<p><strong>追问</strong>：HAL代码怎么组织？<br />
+<strong>答</strong>：hal/gpio.h、hal/uart.h等接口；platform/stm32/gpio.c等实现。</p>
+<hr />
+<h3 id="83-ota">83. OTA升级工程方案？<a class="headerlink" href="#83-ota" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<div class="highlight"><pre><span></span><code>新固件下载 → Flash备用区写入
+         ↓
+         校验(CRC/SHA)成功?
+         ↓YES      ↓NO回滚
+         更新启动标志位    保持旧版本
+         下次上电: 新程序启动
+</code></pre></div>
+<p>双分区/三分区策略保证可靠性。</p>
+</blockquote>
+<p><strong>追问</strong>：升级中掉电怎么办？<br />
+<strong>答</strong>：校验失败自动回滚到旧版本，或断点续传重新升级。</p>
+<hr />
+<h3 id="84-padding">84. 内存对齐和padding？<a class="headerlink" href="#84-padding" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>数据按特定字节边界存储，提高CPU访问效率。
+<div class="highlight"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">X</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">char</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w">      </span><span class="c1">// offset 0, 1字节</span>
+<span class="w">  </span><span class="c1">// padding 3字节(4字节对齐align)</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w">       </span><span class="c1">// offset 4</span>
+<span class="p">};</span><span class="w"> </span><span class="c1">// total 8字节</span>
+</code></pre></div></p>
+<p>通信/协议需消除padding：<code>#pragma pack(1)</code>。</p>
+</blockquote>
+<p><strong>追问</strong>：大对象怎么省内存？<br />
+<strong>答</strong>：重排成员（大在前小在后）、压包、或union共用。</p>
+<hr />
+<h3 id="85">85. 编译优化选项？<a class="headerlink" href="#85" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><code>-O0</code>：不优化，调试友好</li>
+<li><code>-O1/O2/O3</code>：优化级别递增，编译时间变长</li>
+<li><code>-Os</code>：优化大小，嵌入式常用</li>
+<li><code>-Ofast</code>：忽略IEEE浮点标准，速度最快</li>
+</ul>
+<p>通常发布用-O2或-Os。</p>
+</blockquote>
+<p><strong>追问</strong>：-O会影响调试吗？<br />
+<strong>答</strong>：会，变量优化掉、指令顺序改变；调试版用-O0。</p>
+<hr />
+<h3 id="86-linker-script">86. 链接脚本（Linker Script）？<a class="headerlink" href="#86-linker-script" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>链接脚本定义程序内存布局：
+<div class="highlight"><pre><span></span><code>MEMORY {
+  FLASH (rx)  : ORIGIN = 0x08000000, LENGTH = 256K
+  RAM (rwx)   : ORIGIN = 0x20000000, LENGTH = 64K
+}
+
+SECTIONS {
+  .text : { *(.text*) } &gt; FLASH
+  .data : { *(.data*) } &gt; RAM AT &gt; FLASH
+}
+</code></pre></div></p>
+</blockquote>
+<p><strong>追问</strong>：怎样把代码放到指定地址？<br />
+<strong>答</strong>：<code>__attribute__((section(".custom_section")))</code> + 链接脚本映射。</p>
+<hr />
+<h3 id="87-gdb">87. GDB调试技巧？<a class="headerlink" href="#87-gdb" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<div class="highlight"><pre><span></span><code>arm-none-eabi-gdb app.elf
+(gdb) target remote :3333   // 连JTAG/SWD调试器
+(gdb) load                   // 烧写程序
+(gdb) break main             // 设断点
+(gdb) continue/next/step     // 执行
+(gdb) print var              // 查变量
+(gdb) backtrace              // 看堆栈
+</code></pre></div>
+</blockquote>
+<p><strong>追问</strong>：怎么远程调试？<br />
+<strong>答</strong>：OpenOCD开调试服务器，gdb通过网络连接。</p>
+<hr />
+<h3 id="88">88. 性能分析和优化？<a class="headerlink" href="#88" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>代码覆盖率</strong>：哪些分支未测到</li>
+<li><strong>执行时间分析</strong>：gprof、perf找热点</li>
+<li><strong>内存占用</strong>：nm、size工具查符号大小</li>
+<li><strong>功耗分析</strong>：示波器测电坏功耗、模型计算</li>
+</ul>
+<p>按优先级优化热点代码。</p>
+</blockquote>
+<p><strong>追问</strong>：怎么减少代码体积？<br />
+<strong>答</strong>：-Os优化、干掉未用函数(--gc-sections)、压缩数据、STL谨慎用。</p>
+<hr />
+<h2 id="5_1">十、实战高频场景（5题）<a class="headerlink" href="#5_1" title="Permanent link">&para;</a></h2>
+<h3 id="89">89. 按键消抖实现？<a class="headerlink" href="#89" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<div class="highlight"><pre><span></span><code><span class="c1">// 方案一：延时确认</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">KEY_DOWN</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">delay_ms</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span><span class="w">     </span><span class="c1">// 延时消抖</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">KEY_DOWN</span><span class="p">)</span><span class="w">     </span><span class="c1">// 再次确认</span>
+<span class="w">    </span><span class="n">handle_key</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="c1">// 方案二：定时采样(50ms周期)</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">THRESHOLD</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">KEY_DOWN</span><span class="p">)</span><span class="w"> </span><span class="n">cnt</span><span class="o">++</span><span class="p">;</span>
+<span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">THRESHOLD</span><span class="p">)</span>
+<span class="w">  </span><span class="n">handle_key</span><span class="p">();</span>
+</code></pre></div>
+</blockquote>
+<p><strong>追问</strong>：硬件消抖用什么元件？<br />
+<strong>答</strong>：RC滤波电路，时间常数RC&gt;&gt;按键抖动时间(~5ms)。</p>
+<hr />
+<h3 id="90-ring-buffer">90. 环形缓冲（Ring Buffer）实现？<a class="headerlink" href="#90-ring-buffer" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<div class="highlight"><pre><span></span><code><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+<span class="w">  </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">write_index</span><span class="p">,</span><span class="w"> </span><span class="n">read_index</span><span class="p">,</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">RingBuffer</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">ring_put</span><span class="p">(</span><span class="n">RingBuffer</span><span class="w"> </span><span class="o">*</span><span class="n">rb</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">rb</span><span class="o">-&gt;</span><span class="n">buffer</span><span class="p">[</span><span class="n">rb</span><span class="o">-&gt;</span><span class="n">write_index</span><span class="o">++</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rb</span><span class="o">-&gt;</span><span class="n">write_index</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">)</span><span class="w"> </span><span class="n">rb</span><span class="o">-&gt;</span><span class="n">write_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="n">rb</span><span class="o">-&gt;</span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">uint8_t</span><span class="w"> </span><span class="nf">ring_get</span><span class="p">(</span><span class="n">RingBuffer</span><span class="w"> </span><span class="o">*</span><span class="n">rb</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rb</span><span class="o">-&gt;</span><span class="n">buffer</span><span class="p">[</span><span class="n">rb</span><span class="o">-&gt;</span><span class="n">read_index</span><span class="o">++</span><span class="p">];</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rb</span><span class="o">-&gt;</span><span class="n">read_index</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">)</span><span class="w"> </span><span class="n">rb</span><span class="o">-&gt;</span><span class="n">read_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="n">rb</span><span class="o">-&gt;</span><span class="n">count</span><span class="o">--</span><span class="p">;</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+</blockquote>
+<p><strong>追问</strong>：满了怎么办？<br />
+<strong>答</strong>：覆盖旧数据、丢弃新数据或阻塞；根据应用选择。</p>
+<hr />
+<h3 id="91-pid">91. PID 控制基础？<a class="headerlink" href="#91-pid" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<div class="highlight"><pre><span></span><code><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">setpoint</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">current</span><span class="p">;</span>
+<span class="n">P_output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">KP</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">error</span><span class="p">;</span>
+<span class="n">I_output</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">KI</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">error</span><span class="p">;</span>
+<span class="n">D_output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">KD</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">prev_error</span><span class="p">);</span>
+<span class="n">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">P_output</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">I_output</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">D_output</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li><strong>P</strong>：响应速度、超调大</li>
+<li><strong>I</strong>：消除稳态误差（积分）</li>
+<li><strong>D</strong>：抑制超调（微分阻尼）</li>
+</ul>
+<p>应用：电机速度环、PLC温度控制。</p>
+</blockquote>
+<p><strong>追问</strong>：积分积累怎么限制？<br />
+<strong>答</strong>：积分限幅、条件积分（只在偏差小时积分）、抗积分饱和。</p>
+<hr />
+<h3 id="92">92. 故障排查方法？<a class="headerlink" href="#92" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p><strong>系统卡死</strong>：
+1. 看门狗是否复位？
+2. 串口日志到哪停？
+3. 栈溢出？(<code>uxTaskGetStackHighWaterMark()</code>)
+4. 死锁？(gdb看各线程阻塞在哪)</p>
+<p><strong>高CPU</strong>：top/htop找病症进程，strace追系统调用，perf profile找热点。</p>
+<p><strong>内存泄漏</strong>：valgrind运行，查未释放块。</p>
+</blockquote>
+<p><strong>追问</strong>：没有调试器怎么办？<br />
+<strong>答</strong>：大量日志打印、LED指示、遥测数据上报、后处理分析日志。</p>
+<hr />
+<h3 id="93">93. 通信协议设计？<a class="headerlink" href="#93" title="Permanent link">&para;</a></h3>
+<p><strong>主回答模板</strong></p>
+<blockquote>
+<p>我从四点描述：</p>
+<ol>
+<li><strong>协议层次</strong>：物理层(UART/SPI/...)、链路层(帧格式)、应用层(命令格式)</li>
+<li><strong>帧格式</strong>：
+   <div class="highlight"><pre><span></span><code>[帧头 1byte] [命令 1byte] [长度 2byte] [数据 N byte] [CRC 2byte]
+0xAA          0xXX        Length        Payload      CRC16
+</code></pre></div></li>
+<li><strong>可靠性</strong>：</li>
+<li>CRC校验检错，重传机制</li>
+<li>超时处理，连续帧号识别重复</li>
+<li>流控：卡发送方速率匹配接收方处理能力</li>
+<li><strong>测试</strong>：构造异常包、抖动测试、压力测试</li>
+</ol>
+</blockquote>
+<p><strong>追问</strong>：怎么处理字节流中的帧头？<br />
+<strong>答</strong>：状态机逐字节解析，匹配帧头进入数据收集状态。</p>
+<hr />
+<h3 id="94-fsm">94. 状态机（FSM）在嵌入式的应用？<a class="headerlink" href="#94-fsm" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<p>例如蓝牙配对流程：
+<div class="highlight"><pre><span></span><code>[未配对] --收到配对请求--&gt; [配对中]
+                         |
+                   --输入配对码--&gt;
+                         |
+                         v
+                   [校验成功] --YES--&gt; [已配对]
+                         |
+                        NO
+                         v
+                   [配对失败] --重试--&gt; [配对中]
+</code></pre></div></p>
+<p>优势：逻辑清晰，易维护和扩展。</p>
+</blockquote>
+<p><strong>追问</strong>：超时怎么处理？<br />
+<strong>答</strong>：每状态设超时计数器，超时时复位或重试。</p>
+<hr />
+<h3 id="95">95. 国际化和本地化考虑？<a class="headerlink" href="#95" title="Permanent link">&para;</a></h3>
+<p><strong>主回答</strong></p>
+<blockquote>
+<ul>
+<li><strong>字符编码</strong>：UTF-8通用</li>
+<li><strong>时间</strong>：格林威治时间(UTC)+local offset</li>
+<li><strong>存储</strong>：大小端转换、网络字节序</li>
+<li><strong>显示</strong>：RTL(右到左)语言支持、字体</li>
+</ul>
+<p>实际产品需多语言字符串表、locale支持。</p>
+</blockquote>
+<p><strong>追问</strong>：怎样存储多语言字符串？<br />
+<strong>答</strong>：字符串ID映射到资源表，根据locale选不同翻译版本。</p>
+<hr />
+<h2 id="_3">快速查询表<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>关键词</th>
+<th>复习重点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bootloader升级防砖</td>
+<td>双分区、校验、回滚</td>
+<td>方案设计</td>
+</tr>
+<tr>
+<td>RTOS优先级反转</td>
+<td>优先级继承、天花板</td>
+<td>解决方案</td>
+</tr>
+<tr>
+<td>TCP粘包拆包</td>
+<td>长度字段、帧格式</td>
+<td>协议设计</td>
+</tr>
+<tr>
+<td>内存泄漏检测</td>
+<td>valgrind、asan</td>
+<td>工具使用</td>
+</tr>
+<tr>
+<td>GPIO开漏</td>
+<td>线与、上拉</td>
+<td>硬件原理</td>
+</tr>
+<tr>
+<td>中断要点</td>
+<td>短小快速、置标志</td>
+<td>ISR设计</td>
+</tr>
+<tr>
+<td>跨平台网络</td>
+<td>字节序转换、htonl</td>
+<td>应用层</td>
+</tr>
+<tr>
+<td>调试工具</td>
+<td>gdb、strace、valgrind</td>
+<td>命令行操作</td>
+</tr>
+<tr>
+<td>低功耗模式</td>
+<td>Sleep/Stop/Standby</td>
+<td>MCU选择</td>
+</tr>
+<tr>
+<td>协议设计</td>
+<td>帧格式、CRC、超时</td>
+<td>端到端可靠</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_4">面试应试技巧<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<h3 id="_5">✅ 回答要点<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>先说主要概念</strong>（20秒）</li>
+<li><strong>再说应用场景</strong>（20秒）</li>
+<li><strong>准备1-2个追问</strong>（30秒预留）</li>
+<li><strong>举项目中的例子</strong>（加分）</li>
+</ol>
+<h3 id="_6">✅ 常见错误避免<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<ul>
+<li>❌ 单纯背书，没有理解</li>
+<li>❌ 夸大自己经验，被深问卡住</li>
+<li>❌ 忽视细节（如CRC格式、超时时间）</li>
+<li>❌ 遇到不会的问题紧张，应坦诚"没接触过"</li>
+</ul>
+<h3 id="_7">✅ 加分技巧<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<ul>
+<li>✓ 主动解释设计权衡和trade-off</li>
+<li>✓ 提及踩过的坑和解决方案</li>
+<li>✓ 对标准（CE/FCC）、性能指标有数字概念</li>
+<li>✓ 能联想到类似问题的通用解法</li>
+</ul>
+<hr />
+<p><strong>编辑日期</strong>：2026-03-09<br />
+<strong>难度分布</strong>：初级(30%) / 中级(50%) / 进阶(20%)<br />
+<strong>预计复习时间</strong>：20小时深度掌握 / 5小时快速回顾</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
