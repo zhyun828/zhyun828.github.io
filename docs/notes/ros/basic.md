@@ -145,11 +145,18 @@ cmake ../src -DCMAKE_BUILD_TYPE=Debug
 ## CMakeLists.txt
 必须添加
 ```cmake
-add_executable(hello src/hello.cpp)
-target_link_libraries(hello ${catkin_LIBRARIES})
+add_executable(SubscriberNode src/SubscriberNode.cpp) 
+把 src/SubscriberNode.cpp 编译成一个可执行程序把 src/SubscriberNode.cpp 编译成一个可执行程序,名字叫 SubscriberNode,编译后会生成：devel/lib/tp2/SubscriberNode,所以你才能运行：rosrun tp2 SubscriberNode
+
+target_link_libraries(SubscriberNode ${catkin_LIBRARIES}) 
+把 ROS 的库链接进你的程序例如：
+roscpp、std_msgs、geometry_msgs、turtlesim,否则编译会报错：undefined reference to ros::init,因为程序找不到 ROS 的函数实现。
+
+add_dependencies(SubscriberNode ${catkin_EXPORTED_TARGETS}) 
+保证 SubscriberNode 在 ROS 生成代码之后再编译
+在 ROS 中，.msg、.srv 和 .action 这类接口文件对应的代码不是手写出来的，而是在编译阶段自动生成的，生成结果包括 C++ 头文件和 Python 模块，比如 std_msgs/String.h。因此，只要你的节点依赖这些自动生成的接口代码，就必须先完成消息生成流程，再编译节点本身；否则编译器在构建节点时找不到对应头文件，就会报 fatal error: std_msgs/String.h: No such file 这类错误。
 ```
-否则：
-不会生成可执行文件,rosrun找不到节点
+
 
 ## workspace 的标准结构
 catkin_ws/
@@ -187,17 +194,7 @@ rospy（Python）
 
 std_msgs（标准消息）
 
-## ros日志系统
-ROS 提供：
-ROS_DEBUG
-ROS_INFO
-ROS_WARN
-ROS_ERROR
-ROS_FATAL
 
-日志会存储在：
-
-~/.ros/log
 
 ## ROS 三种通信方式
 | 类型      | 适合场景            |
