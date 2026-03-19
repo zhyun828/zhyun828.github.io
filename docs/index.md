@@ -4,7 +4,7 @@ A focused knowledge base for embedded systems, robotics, C++, FPGA, and intervie
 
 This site keeps the current repository structure intact while surfacing the most useful pages through a clearer navigation experience.
 
-[Browse Notes](notes/Cpp/basics.md){ .md-button .md-button--primary }
+[Browse Notes](notes/index.md){ .md-button .md-button--primary }
 [Interview Prep](notes/面试/快速检索表.md){ .md-button }
 
 > Most technical notes are written in Chinese, while this home page is kept in English for a concise overview.
@@ -17,7 +17,7 @@ This site keeps the current repository structure intact while surfacing the most
 
     Follow the temperature-indicator project from requirements and presentation notes to code walkthroughs and reflections.
 
-    [Open the Arduino project](notes/Arduino/projet/projet.md)
+    [Open the notes overview](notes/index.md)
 
 -   __C++ and software foundations__
 
@@ -47,10 +47,9 @@ This site keeps the current repository structure intact while surfacing the most
 
 ## Featured pages
 
+- [Notes overview](notes/index.md)
 - [Arduino temperature indicator project](notes/Arduino/projet/projet.md)
 - [C++ design patterns](notes/Cpp/cpp_设计模式详解_扩展版.md)
 - [BeagleBone linear slide control project](notes/embedded_system/TP/README.md)
 - [Embedded interview quick index](notes/面试/快速检索表.md)
-
-
 

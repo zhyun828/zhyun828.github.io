@@ -1,224 +1,285 @@
-## catkin 是什么？
-catkin 是 ROS 的构建系统
- 用来生成：
-可执行程序
-库
-接口（message / service）
-catkin_make 必须在 catkin_ws 工作空间根目录下运行
+# ROS 基础笔记
 
-## source ~/catkin_ws/devel/setup.bash
-让当前终端环境认识新建的 workspace
-每开一个新终端都要 source 一下
-否则找不到包，无法 rosrun
+## catkin 是什么？
+
+`catkin` 是 ROS 的构建系统，主要用来生成：
+
+- 可执行程序
+- 库
+- 接口（`message / service`）
+
+`catkin_make` 必须在 `catkin_ws` 工作空间根目录下运行。
+
+## `source ~/catkin_ws/devel/setup.bash`
+
+这条命令的作用是让当前终端“认识”新建的 workspace。
+
+- 每开一个新终端都要 `source` 一次
+- 否则终端找不到包，也无法 `rosrun`
 
 ## 基本命令
-### roscore（最重要）
-📌 作用
-它会启动：
-ROS Master
-Parameter Server
-rosout（日志系统）
-📌 原理
-当一个节点启动时，它会：
-向 Master 注册
-说明自己发布什么 topic
-说明自己订阅什么 topic
-如果你不启动 roscore：
-❌ 所有节点都会报错
-❌ 无法建立通信
 
-### rosrun（运行节点）
-📌 语法
+### `roscore`（最重要）
+
+作用：
+
+- 启动 ROS Master
+- 启动 Parameter Server
+- 启动 `rosout`（日志系统）
+
+原理上，当一个节点启动时，它会向 Master 注册，并说明：
+
+- 自己发布什么 topic
+- 自己订阅什么 topic
+
+如果不启动 `roscore`：
+
+- 所有节点都会报错
+- 节点之间无法建立通信
+
+### `rosrun`（运行节点）
+
+语法：
+
+```bash
 rosrun <package> <executable>
-例如：
-rosrun turtlesim turtlesim_node
-意思是：
-在 turtlesim 包里
-运行 turtlesim_node 这个可执行程序
-📌 它做了什么？
-找到这个 package
-找到可执行文件
-启动为一个 ROS Node
-📌 你要注意
-它只能运行：
-✔ 已经编译过的节点
-✔ 已经 source 过的工作空间
-否则找不到包。
+```
 
-### rosnode（管理节点）
-这是调试神器。
-🔹 查看所有节点
+例如：
+
+```bash
+rosrun turtlesim turtlesim_node
+```
+
+意思是：在 `turtlesim` 包里，运行 `turtlesim_node` 这个可执行程序。
+
+它做的事包括：
+
+- 找到对应 package
+- 找到可执行文件
+- 把它启动成一个 ROS Node
+
+注意：
+
+- 只能运行已经编译过的节点
+- 也必须先 `source` 过对应工作空间
+
+否则会出现“找不到包”的问题。
+
+### `rosnode`（管理节点）
+
+这是非常常用的调试工具。
+
+查看所有节点：
+
+```bash
 rosnode list
-会显示：
+```
+
+常见输出类似：
+
+```text
 /rosout
 /turtlesim
 /teleop
-🔹 查看某个节点详情
-rosnode info /turtlesim
-你会看到：
-发布哪些 topics
-订阅哪些 topics
-提供哪些 services
-这在调试通信时非常重要。
-🔹 杀死节点
-rosnode kill /node_name
-等价于 ctrl+c，但更干净。
-🔹 ping 测试
-rosnode ping /node_name
-测试是否还能连通。
-
-### rostopic（查看话题）
-Topic 是 ROS 核心。
-这个命令你必须熟练。
-🔹 查看当前所有 topic
-rostopic list
-会看到：
-/cmd_vel
-/scan
-/rosout
-🔹 查看某个 topic 的数据
-rostopic echo /topic_name
-例如：
-rostopic echo /turtle1/pose
-会不断打印位置信息。
-这相当于：
-抓包监听
-🔹 查看 topic 详细信息
-rostopic info /topic_name
-会告诉你：
-谁在发布
-谁在订阅
-消息类型
-🔹 查看消息类型
-rostopic type /topic_name
-例如：
-geometry_msgs/Twist
-🔹 手动发布消息（非常重要）
-rostopic pub /topic_name message_type "data"
-例如：
-rostopic pub /turtle1/cmd_vel geometry_msgs/Twist '{linear: {x: 0.2}}'
-这相当于：
-你自己模拟一个控制器
-🔹 持续发布
-rostopic pub -r 10 ...
-表示 10Hz 发布。
-否则默认只发一次。
-
-### 常见完整实战流程
-打开三个终端：
-终端1
-roscore
-终端2
-rosrun turtlesim turtlesim_node
-终端3
-rostopic pub -r 10 /turtle1/cmd_vel geometry_msgs/Twist '{angular: {z: 0.5}}'
-小乌龟会持续转圈。
-
-## 完整流程：
-
-1️⃣ 写代码
-src/hello.cpp
-2️⃣ 修改 CMakeLists.txt
-
-添加 add_executable
-
-3️⃣ 编译
-cd ~/catkin_ws
-catkin_make
-
-4️⃣ source 环境
-source devel/setup.bash
-
-5️⃣ 运行
-rosrun first_pkg hello
-
-Debug 模式（第25页）
-如果你想调试：
-cd build
-cmake ../src -DCMAKE_BUILD_TYPE=Debug
-然后可以用 Eclipse 或 GDB 调试。
-
-## workspace 是什么？
-一个 workspace = 一个 ROS 工作区
-里面放的是一整套 相关 ROS 代码
-
-## CMakeLists.txt
-必须添加
-```cmake
-add_executable(SubscriberNode src/SubscriberNode.cpp) 
-把 src/SubscriberNode.cpp 编译成一个可执行程序把 src/SubscriberNode.cpp 编译成一个可执行程序,名字叫 SubscriberNode,编译后会生成：devel/lib/tp2/SubscriberNode,所以你才能运行：rosrun tp2 SubscriberNode
-
-target_link_libraries(SubscriberNode ${catkin_LIBRARIES}) 
-把 ROS 的库链接进你的程序例如：
-roscpp、std_msgs、geometry_msgs、turtlesim,否则编译会报错：undefined reference to ros::init,因为程序找不到 ROS 的函数实现。
-
-add_dependencies(SubscriberNode ${catkin_EXPORTED_TARGETS}) 
-保证 SubscriberNode 在 ROS 生成代码之后再编译
-在 ROS 中，.msg、.srv 和 .action 这类接口文件对应的代码不是手写出来的，而是在编译阶段自动生成的，生成结果包括 C++ 头文件和 Python 模块，比如 std_msgs/String.h。因此，只要你的节点依赖这些自动生成的接口代码，就必须先完成消息生成流程，再编译节点本身；否则编译器在构建节点时找不到对应头文件，就会报 fatal error: std_msgs/String.h: No such file 这类错误。
 ```
 
+查看某个节点详情：
+
+```bash
+rosnode info /turtlesim
+```
+
+可以看到：
+
+- 发布哪些 topics
+- 订阅哪些 topics
+- 提供哪些 services
+
+其他常见命令：
+
+```bash
+rosnode kill /node_name   # 杀掉节点
+rosnode ping /node_name   # 测试节点是否还能连通
+```
+
+### `rostopic`（查看话题）
+
+Topic 是 ROS 的核心通信方式，这组命令必须熟练。
+
+查看当前所有 topic：
+
+```bash
+rostopic list
+```
+
+查看某个 topic 的实时数据：
+
+```bash
+rostopic echo /topic_name
+```
+
+例如：
+
+```bash
+rostopic echo /turtle1/pose
+```
+
+这可以理解成一种“抓包监听”。
+
+其他常见命令：
+
+```bash
+rostopic info /topic_name
+rostopic type /topic_name
+rostopic pub /topic_name message_type "data"
+rostopic pub -r 10 /topic_name message_type "data"
+```
+
+例子：
+
+```bash
+rostopic pub /turtle1/cmd_vel geometry_msgs/Twist '{linear: {x: 0.2}}'
+```
+
+其中：
+
+- `info` 会告诉你谁在发布、谁在订阅、消息类型是什么
+- `type` 用来查看消息类型，比如 `geometry_msgs/Twist`
+- `pub` 可以手动发布消息，相当于自己模拟一个控制器
+- `-r 10` 表示以 `10 Hz` 持续发布；不写时默认只发一次
+
+### 常见完整实战流程
+
+打开三个终端：
+
+1. 终端 1：
+   ```bash
+   roscore
+   ```
+2. 终端 2：
+   ```bash
+   rosrun turtlesim turtlesim_node
+   ```
+3. 终端 3：
+   ```bash
+   rostopic pub -r 10 /turtle1/cmd_vel geometry_msgs/Twist '{angular: {z: 0.5}}'
+   ```
+
+这样小乌龟就会持续转圈。
+
+## 完整流程
+
+1. 写代码，例如 `src/hello.cpp`
+2. 修改 `CMakeLists.txt`，添加 `add_executable`
+3. 编译
+
+   ```bash
+   cd ~/catkin_ws
+   catkin_make
+   ```
+
+4. `source` 环境
+
+   ```bash
+   source devel/setup.bash
+   ```
+
+5. 运行
+
+   ```bash
+   rosrun first_pkg hello
+   ```
+
+如果想用 Debug 模式，可以：
+
+```bash
+cd build
+cmake ../src -DCMAKE_BUILD_TYPE=Debug
+```
+
+然后再用 Eclipse 或 GDB 调试。
+
+## workspace 是什么？
+
+一个 `workspace` 可以理解成一个 ROS 工作区，里面放的是一整套相关 ROS 代码。
+
+## `CMakeLists.txt`
+
+常见节点至少要加下面三项：
+
+```cmake
+add_executable(SubscriberNode src/SubscriberNode.cpp)
+target_link_libraries(SubscriberNode ${catkin_LIBRARIES})
+add_dependencies(SubscriberNode ${catkin_EXPORTED_TARGETS})
+```
+
+- `add_executable(...)`：把 `src/SubscriberNode.cpp` 编译成可执行程序 `SubscriberNode`，之后才能 `rosrun tp2 SubscriberNode`
+- `target_link_libraries(...)`：把 `roscpp`、`std_msgs`、`geometry_msgs` 等 ROS 库链接进来，否则会报 `undefined reference to ros::init` 之类的链接错误
+- `add_dependencies(...)`：保证消息 / 服务等自动生成的代码先准备好，再编译节点；否则可能找不到 `std_msgs/String.h` 这类头文件
 
 ## workspace 的标准结构
+
+```text
 catkin_ws/
 ├── src/        ← 你写代码的地方（最重要）
 │   ├── CMakeLists.txt
 │   ├── package_1/
-│   ├── package_2/
-│
-├── build/      ← 编译中间文件（不用碰）
-├── devel/      ← 生成的可执行程序、环境
-└── install/   ← 可选，安装空间
+│   └── package_2/
+├── build/      ← 编译中间文件（一般不用手动改）
+├── devel/      ← 生成的可执行程序和环境脚本
+└── install/    ← 可选，安装空间
+```
 
 ## 什么是 ROS package？
-package 是 ROS 中最小的构建单位
-一个 package = 一个 ROS 小项目
+
+`package` 是 ROS 中最小的构建单位，可以把它理解成一个独立的 ROS 小项目。
 
 ## 一个 package 里一般有什么？
 
+```text
 my_pkg/
 ├── src/        ← C++ 源文件
 ├── include/    ← 头文件
-├── msg/        ← 自定义消息（以后）
-├── srv/        ← 自定义服务（以后）
-├── launch/     ← 启动文件（以后）
-├── package.xml ← 身份证 + 依赖声明(包名、版本、作者、许可证、依赖等)
+├── msg/        ← 自定义消息
+├── srv/        ← 自定义服务
+├── launch/     ← 启动文件
+├── package.xml ← 包信息与依赖声明
 └── CMakeLists.txt ← 编译说明书
+```
 
 ## 创建 package
-<catkin_create_pkg first_pkg std_msgs rospy roscpp>创建一个叫 first_pkg 的包
-它依赖：
 
-roscpp（C++）
+```bash
+catkin_create_pkg first_pkg std_msgs rospy roscpp
+```
 
-rospy（Python）
+这会创建一个叫 `first_pkg` 的包，并声明这些依赖：
 
-std_msgs（标准消息）
-
-
+- `roscpp`：C++ 接口
+- `rospy`：Python 接口
+- `std_msgs`：标准消息类型
 
 ## ROS 三种通信方式
-| 类型      | 适合场景            |
-| ------- | --------------- |
-| Topic   | 单向、连续数据流（传感器数据） |
-| Service | 一问一答（即时）        |
-| Action  | 长时间任务（可反馈、可取消）  |
-1️⃣ Topic
-发布 / 订阅
-异步
-可多个订阅者
-👉 典型：激光雷达、相机
-2️⃣ Service
-请求 / 响应
-同步
-阻塞式
-👉 典型：请求当前状态
-3️⃣ Action
-长时间任务
-可反馈进度
-可取消
-👉 典型：导航到目标点
 
-## roslaunch
+| 类型 | 适合场景 |
+| ---- | -------- |
+| Topic | 单向、连续数据流（传感器数据） |
+| Service | 一问一答（即时） |
+| Action | 长时间任务（可反馈、可取消） |
+
+1. Topic
+   发布 / 订阅、异步、可以有多个订阅者
+   典型场景：激光雷达、相机
+2. Service
+   请求 / 响应、同步、阻塞式
+   典型场景：请求当前状态
+3. Action
+   长时间任务、可反馈进度、可取消
+   典型场景：导航到目标点
+
+## `roslaunch`
+
 ```xml
 <launch>
   <node name="talker"
@@ -231,51 +292,63 @@ std_msgs（标准消息）
         output="screen"/>
 </launch>
 ```
-运行
+
+运行：
+
 ```bash
 roslaunch first_pkg talker_listener.launch
 ```
-不用开多个终端，可以统一管理系统
-一个 launch 文件可以启动：10 个节点、RViz、Gazebo、参数服务器、重映射
-可以设置参数
-<param name="rate" value="10"/>
-可以重映射 topic
-<remap from="chatter" to="my_topic"/>
-可以指定 namespace，适合多机器人系统。
+
+优点：
+
+- 不用开多个终端，可以统一管理系统
+- 一个 launch 文件可以同时启动多个节点、RViz、Gazebo、参数服务器等
+- 可以设置参数：`<param name="rate" value="10" />`
+- 可以重映射 topic：`<remap from="chatter" to="my_topic" />`
+- 可以指定 namespace，适合多机器人系统
 
 ## 调试
-| 类型    | 示例        | 用什么命令    |
-| ----- | --------- | -------- |
-| 节点    | /talker   | rosnode  |
-| 节点    | /listener | rosnode  |
-| topic | /chatter  | rostopic |
+
+| 类型 | 示例 | 用什么命令 |
+| ---- | ---- | ---------- |
+| 节点 | `/talker` | `rosnode` |
+| 节点 | `/listener` | `rosnode` |
+| topic | `/chatter` | `rostopic` |
+
+常用调试命令：
 
 ```bash
-source /opt/ros/noetic/setup.bash #把官方安装的 ROS 加入当前终端的环境变量
+source /opt/ros/noetic/setup.bash
 source ~/catkin_ws/devel/setup.bash
 
-rosnode list #看有哪些节点在运行
-rosnode info /listener 
-rosnode info /talker #看某个节点更详细信息（订阅/发布了什么）
+rosnode list
+rosnode info /listener
+rosnode info /talker
 
-rostopic list #看有哪些topic
-rostopic echo /chatter #看 “chatter” 正在发布什么内容（实时打印）
-rostopic hz /chatter #看 “chatter” 发布频率
-rostopic bw /chatter #看 “chatter” 发布带宽
-rostopic info /chatter #看 “chatter” 的发布者和订阅者
+rostopic list
+rostopic echo /chatter
+rostopic hz /chatter
+rostopic bw /chatter
+rostopic info /chatter
 
-rosmsg show std_msgs/String #看 std_msgs/String 这个消息类型的结构
-rqt_graph #可视化节点和 topic 关系,图形化调试你应该看到：/talker -> /chatter -> /listener
-rqt_console #图形化看 topic 内容：rqt_console / rqt_logger_level,看 ROS_INFO/ROS_WARN/ROS_ERROR 输出，并能过滤,还可以动态改日志等级
+rosmsg show std_msgs/String
+rqt_graph
+rqt_console
+```
 
-#录制与回放,录下来之后慢放、回放、复现 bug。
-rosbag record -O test_chatter.bag /chatter #录制 chatter：
-rosbag play test_chatter.bag #回放
-rosbag info test_chatter.bag #查看 bag 文件信息
+录制与回放（录下来之后慢放、回放、复现 bug）：
 
-#看参数
-rosparam list #列出所有参数
-rosparam get /rosdistro #查看某个参数
+```bash
+rosbag record -O test_chatter.bag /chatter
+rosbag play test_chatter.bag
+rosbag info test_chatter.bag
+```
+
+查看参数：
+
+```bash
+rosparam list
+rosparam get /rosdistro
 ```
 
 ## 自定义消息

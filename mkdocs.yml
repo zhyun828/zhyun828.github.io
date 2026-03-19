@@ -16,6 +16,7 @@ theme:
         name: 浅色模式
   features:
     - navigation.tabs
+    - navigation.indexes
     - navigation.sections
     - navigation.expand
     - navigation.top
@@ -37,6 +38,7 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Notes:
+      - Overview: notes/index.md
       - Arduino & Control:
           - Arduino Basics: notes/Arduino/basics.md
           - Temperature Indicator Project:

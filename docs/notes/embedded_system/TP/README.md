@@ -1,6 +1,7 @@
 # BeagleBone linear slide control project
 
 This package contains a complete reference implementation for the TP5-style project:
+
 - state machine: STOP / START / RUN / IDLE
 - pthread + mutex shared status
 - PWM motor command
@@ -12,6 +13,7 @@ This package contains a complete reference implementation for the TP5-style proj
 - LIS331HH I2C accelerometer driver integration
 
 ## Files
+
 - `main.c`
 - `mode.h` / `mode.c`
 - `gpio.h` / `gpio.c`
@@ -21,6 +23,7 @@ This package contains a complete reference implementation for the TP5-style proj
 - `Makefile`
 
 ## Important adjustments before running on your board
+
 1. Check the PWM sysfs path in `pwm.h`
 2. Check the GPIO numbers used for the two limit switches in `gpio.h`
 3. Recalibrate `COUNT_TO_METER` in `mode.c`

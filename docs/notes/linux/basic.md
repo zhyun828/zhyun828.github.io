@@ -1,20 +1,41 @@
-# mkdir -p ~/catkin_ws/src
-mkdir = make directory（创建文件夹）
--p = parents（父目录）
-含义是：
-如果中间的目录不存在，就一起帮我创建
-没有 -p
-mkdir catkin_ws/src
-如果 catkin_ws 不存在，会直接报错
-~ = 你的 家目录等价于：/home/你的用户名mkdir -p ~/catkin_ws/src等价于：
+# Linux 基础命令速记
+
+## `mkdir -p ~/catkin_ws/src`
+
+```bash
+mkdir -p ~/catkin_ws/src
+```
+
+- `mkdir` = make directory，创建文件夹。
+- `-p` = parents，表示中间目录不存在时也一起创建。
+- 如果不加 `-p`，直接执行 `mkdir catkin_ws/src`，而 `catkin_ws` 又不存在，就会直接报错。
+- `~` 表示当前用户的家目录。
+
+等价写法：
+
+```bash
 mkdir -p /home/你的用户名/catkin_ws/src
-# nano test.cpp
-用来打开编辑文本，如果没有，则创建新文件
+```
 
-# ls列出当前目录里的文件和文件夹
+## `nano test.cpp`
 
-#
-| 符号   | 含义         |
-| ---- | ---------- |
-| .  | 当前目录       |
-| .. | 上一级目录（父目录） |
+```bash
+nano test.cpp
+```
+
+用于打开并编辑文本文件；如果文件不存在，则会新建该文件。
+
+## `ls`
+
+```bash
+ls
+```
+
+用于列出当前目录中的文件和文件夹。
+
+## 常见路径符号
+
+| 符号 | 含义 |
+| ---- | ---- |
+| `.`  | 当前目录 |
+| `..` | 上一级目录（父目录） |

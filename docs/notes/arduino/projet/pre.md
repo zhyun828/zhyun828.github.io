@@ -1,15 +1,16 @@
+# 温度指示项目答辩笔记
 
-## 📄 对应页
+## 对应页
 
-* **Lecture des données**
-* **Rotation du moteur et initialisation de l’angle**
-* **Commandes et modes de fonctionnement**
+- **Lecture des données**
+- **Rotation du moteur et initialisation de l’angle**
+- **Commandes et modes de fonctionnement**
 
 ---
 
-## 🇨🇳 中文（你的版本，轻微整理）
+## 中文版（轻微整理）
 
-### 🔹 数据读取（Lecture des données）
+### 数据读取（Lecture des donnees）
 
 首先，温度由 **MPL3115A2 温度传感器** 通过 **I²C 通信** 读取，
 得到稳定的温度值后，再线性转换为目标角度。
@@ -19,15 +20,15 @@
 
 通过实验我们得到：
 
-* 驱动轮旋转一圈，对应 **12 个编码器计数**
-* 指针轴旋转 **360°**，需要 **52.734 圈驱动轮**
+- 驱动轮旋转一圈，对应 **12 个编码器计数**
+- 指针轴旋转 **360°**，需要 **52.734 圈驱动轮**
 
 因此，我们可以通过这个关系式，
 来控制电机旋转到对应的角度。
 
 ---
 
-### 🔹 电机旋转与角度初始化
+### 电机旋转与角度初始化
 
 （Rotation du moteur et initialisation de l’angle）
 
@@ -39,8 +40,8 @@
 
 用户可以通过串口命令手动调整指针位置：
 
-* `r / l`：正向或反向旋转一圈
-* `r5 / l5`：正向或反向旋转五圈
+- `r / l`：正向或反向旋转一圈
+- `r5 / l5`：正向或反向旋转五圈
 
 当指针被调整到正确位置后，
 使用 **`sync`** 命令，
@@ -48,7 +49,7 @@
 
 ---
 
-### 🔹 命令与工作模式
+### 命令与工作模式
 
 （Commandes et modes de fonctionnement）
 
@@ -72,9 +73,9 @@
 
 ---
 
-## 🇫🇷 法语版本（**简单词汇 + 口语化**）
+## 法语版本（简单词汇 + 口语化）
 
-### 🔹 Lecture des données
+### Lecture des donnees
 
 > D’abord, la température est mesurée par le capteur **MPL3115A2**
 > grâce à une communication **I²C**.
@@ -90,8 +91,8 @@
 >
 > Expérimentalement, on a obtenu que :
 >
-> * un tour du volant d’entraînement correspond à **12 counts**,
-> * et **52,734 tours** du volant correspondent à **360 degrés**
+> * un tour du volant d'entrainement correspond a **12 counts**,
+> * et **52,734 tours** du volant correspondent a **360 degres**
 >   de rotation de l’aiguille.
 >
 > Grâce à cette relation,
@@ -100,7 +101,7 @@
 
 ---
 
-### 🔹 Rotation du moteur et initialisation de l’angle
+### Rotation du moteur et initialisation de l'angle
 
 > Le moteur n’a **pas de position zéro physique**.
 >
@@ -110,7 +111,7 @@
 >
 > L’utilisateur peut ajuster manuellement la position de l’aiguille avec des commandes série :
 >
-> * `r / l` pour une rotation d’un tour,
+> * `r / l` pour une rotation d'un tour,
 > * `r5 / l5` pour une rotation de cinq tours.
 >
 > Une fois la position correcte atteinte,
@@ -120,7 +121,7 @@
 
 ---
 
-### 🔹 Commandes et modes de fonctionnement
+### Commandes et modes de fonctionnement
 
 > Le système fonctionne avec deux modes principaux.
 >
@@ -138,7 +139,7 @@
 > En mode **GO**,
 > le système suit en continu les variations de température.
 >
-> À chaque changement de température,le programme recalcule l’angle cible,
+> A chaque changement de temperature, le programme recalcule l'angle cible,
 > et le moteur ne bouge que si la consigne change.
 
 ---

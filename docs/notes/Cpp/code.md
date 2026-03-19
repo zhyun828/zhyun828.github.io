@@ -1,118 +1,167 @@
-## <cctype.h>
-对于一个s[i]='3'的字符，想要得到它对应的整数3，可以使用以下方法 
-```c
+# C++ 代码速记
+
+## `<cctype.h>`
+
+如果 `s[i] = '3'`，想得到对应整数 `3`，常见写法是：
+
+```cpp
 int x = s[i] - '0';
 ```
-```c
-isdigit(c) // 判断字符 c 是否为数字字符（0-9），返回一个非零值（true）如果是数字，否则返回 0（false） 
-isalpha(c) // 判断字符 c 是否为字母字符（a-z 或 A-Z），返回一个非零值（true）如果是字母，否则返回 0（false） 
-isspace(c) // 判断字符 c 是否为空白字符（空格、制表符、换行符等），返回一个非零值（true）如果是空白字符，否则返回 0（false） 
-tolower(c) // 将字符 c 转换为小写字母，如果 c 是大写字母则转换，否则返回 c 本身 
-toupper(c) // 将字符 c 转换为大写字母，如果 c 是小写字母则转换，否则返回 c 本身 ```
+
+常用字符判断 / 转换函数：
+
+```cpp
+isdigit(c);  // 判断是否为数字字符
+isalpha(c);  // 判断是否为字母字符
+isspace(c);  // 判断是否为空白字符
+tolower(c);  // 转成小写
+toupper(c);  // 转成大写
 ```
+
 ## 字符串
-```c
-string s1 ;//创建一个空字符串
-string  s2 = "hello"; //创建一个字符串并初始化
-string s3=to_string(123); //将整数 123 转换为字符串 "123"
-s1.reserve(s2.size()); //预分配(s2.size())个字符的空间
-s1.push_back('h'); //在字符串末尾添加一个字符
-s1+= "ello"; //在字符串末尾添加一个字符串
-cout << sizeof(s) << endl;//输出字符串对象占用的内存大小
-//取前 n 个字符取后 n 个字符
+
+```cpp
+string s1;                     // 创建空字符串
+string s2 = "hello";           // 创建并初始化
+string s3 = to_string(123);    // 整数转字符串
+
+s1.reserve(s2.size());         // 预分配空间
+s1.push_back('h');             // 末尾加一个字符
+s1 += "ello";                  // 末尾加一个字符串
+
 string s = "ABCDEFG";
-string first3 = s.substr(0, 3);   // "ABC"
-string last3 = s.substr(s.size() - 3, 3);  // "EFG"
-s.erase(2, 3);   // 从下标2开始删3个// 结果： "ABFG"
-s.erase(n);   // 保留前 n 个字符，删除剩余的
-s.empty();   // 判断字符串是否为空，bool类型
-s.clear();   // 清空字符串
-for (char c : s) // 用char c遍历字符串s中的每个字符
-reverse(s.begin(), s.end());      // 反转字符
-reverse(words.begin(), words.end()); // 反转字符串顺序。其中words是一个字符串数组vector<string> words
+string first3 = s.substr(0, 3);             // "ABC"
+string last3 = s.substr(s.size() - 3, 3);   // "EFG"
 
-auto it = s.begin();// 获取字符串的迭代器，指向字符串的第一个字符 
-// 等价于
-std::string::iterator it;
+s.erase(2, 3);                 // 从下标 2 开始删 3 个，结果 "ABFG"
+s.erase(n);                    // 保留前 n 个字符，删除剩余部分
+s.empty();                     // 判断是否为空
+s.clear();                     // 清空字符串
 
-s.insert(it, 'X'); // 在字符串开头插入字符 'X'
-s.insert(pos, count, 'c');// 在字符串的 pos 位置插入 count 个字符 c;只有string类有这个重载版本，其他容器没有
-s.find('o', pos); // 查找字符 'o' 的位置，从 pos 开始查找，返回第一个匹配的索引，如果没有找到则返回 string::npos
-s.append(count, 'c'); // 在字符串末尾添加 count 个字符 c;只有string类有这个重载版本，其他容器没有
-s.back()//back() 是：vector，string，deque的成员函数，返回一个引用，指向容器中的最后一个元素（栈顶）
-st.empty()//empty() 是：vector，string，deque，set，map，unordered_set，unordered_map的成员函数，返回一个布尔值，表示容器是否为空
+reverse(s.begin(), s.end());               // 反转字符
+reverse(words.begin(), words.end());       // 反转字符串数组顺序
+
+auto it = s.begin();            // 迭代器，指向第一个字符
+std::string::iterator it2;      // 等价写法
+
+s.insert(it, 'X');              // 开头插入字符
+s.insert(pos, count, 'c');      // 在 pos 位置插入 count 个字符 c
+s.find('o', pos);               // 从 pos 开始查找字符 'o'
+s.append(count, 'c');           // 末尾追加 count 个字符 c
+s.back();                       // 取最后一个元素
+st.empty();                     // 判断容器是否为空
 ```
+
+补充：
+
+- `for (char c : s)` 可以遍历字符串中的每个字符。
+- `sizeof(s)` 输出的是字符串对象本身占用的大小，不是字符串内容长度；内容长度要用 `s.size()`。
+
 ## 循环
-```c
-vector<int> candies(5, 10); // 创建一个长度为 5 的数组，每个元素都初始化为 10
-for (int x : candies){}把 candies 里的每一个元素，依次取出来，赋给 x
 
-string::iterator it;
+```cpp
+vector<int> candies(5, 10);  // 创建长度为 5、元素都为 10 的数组
+
+for (int x : candies) {
+    // candies 里的每个元素依次赋给 x
+}
+
 for (auto it = s.begin(); it != s.end(); ++it) {
-    cout << *it << endl;}
-//等价于
+    cout << *it << endl;
+}
+
+// 等价于
 for (int i = 0; i < s.size(); i++) {
-    cout << s[i] << endl;}
-
+    cout << s[i] << endl;
+}
 ```
+
 ## 容器选择
-只有一个接口的容器用push/pop，其他的用push_back和pop_back
-几乎所有的容器都有empty和size函数，只有vector，string，deque有capacity函数
-连续线性结构 → front/back，抽象结构 → top，树 / 哈希 → begin/end
 
-stack<>适合：需要频繁在末尾添加/删除元素的场景，且只需要访问栈顶元素。 头文件`<stack>`，底层通常使用 `deque` 实现，提供了 `push`、`pop` 和 `top` 等成员函数。
-queue<>适合：只能先进先出（FIFO）头文件`<queue>`，底层通常使用 `deque` 实现，提供了 `push`、`pop` 和 `front` 等成员函数。 
-priority_queue<>适合：需要按照优先级访问元素的场景。头文件`<queue>`，底层通常使用堆（heap）实现，提供了 `push`、`pop` 和 `top` 等成员函数。
-deque<>适合：需要频繁在两端添加/删除元素的场景，且需要频繁访问元素的场景。头文件`<deque>`，底层使用双端队列实现，提供了 `push_back`、`push_front`、`pop_back`、`pop_front` 等成员函数。
-vector<>适合：需要频繁访问元素的场景，且不需要频繁在中间添加/删除元素。 deque<>适合：需要频繁在两端添加/删除元素的场景，且需要频繁访问元素的场景。 头文件`<vector>`，底层使用动态数组实现，提供了 `push_back`、`pop_back` 等成员函数，并且支持随机访问。
-list<>适合：需要频繁在中间添加/删除元素的场景，且不需要频繁访问元素的场景。头文件`<list>`，底层使用双向链表实现，提供了 `push_back`、`push_front`、`pop_back`、`pop_front` 等成员函数，并且支持双向迭代器。
-set<>适合：需要存储唯一元素并进行快速查找的场景。头文件`<set>`，底层使用红黑树实现，提供了 `insert`、`erase`、`find` 等成员函数，并且自动排序元素。 
-map<>适合：需要存储键值对并进行快速查找的场景。头文件`<map>`，底层使用红黑树实现，提供了 `insert`、`erase`、`find` 等成员函数，并且自动排序键值对。
-unordered_set<>适合：需要存储唯一元素并进行快速查找的场景，但不关心元素的顺序。 头文件`<unordered_set>`，底层使用哈希表实现，提供了 `insert`、`erase`、`find` 等成员函数，并且不保证元素的顺序。
-unordered_map<>适合：需要存储键值对并进行快速查找的场景，但不关心键值对的顺序。头文件`<unordered_map>`，底层使用哈希表实现，提供了 `insert`、`erase`、`find` 等成员函数，并且不保证键值对的顺序。 
-bitset<>适合：需要存储大量布尔值并进行位操作的场景。头文件`<bitset>`，底层使用固定大小的位数组实现，提供了 `set`、`reset`、`test` 等成员函数，并且支持位操作。
+通用经验：
 
+- 只有一个接口的容器常用 `push/pop`
+- 其他顺序容器更常用 `push_back/pop_back`
+- 几乎所有容器都有 `empty()` 和 `size()`
+- 只有 `vector`、`string`、`deque` 有 `capacity()`
+- 连续线性结构更常见 `front/back`
+- 抽象结构更常见 `top`
+- 树 / 哈希结构更常见 `begin/end`
 
-vector<int> nums; // 创建一个存储整数的动态数组 vector nums;   // ❌ 非法，不知道装什么类型
-vector不是一个普通的类，而是一个模板类template <typename T>;class vector { ... };
-unordered_map 是一个 “双模板参数”的模板类 template <typename K, typename V>它是一个 哈希表（hash table），本质是：键 → 值（key → value）
-unordered_set 是一个 “单模板参数”的模板类 template <typename T>它是一个 哈希集合（hash set），本质是：元素 → 存在与否（element → existence）
-bitset 不会动态扩容，只能在编译时指定大小 template <size_t N> 是一串固定长度的 0/1 位
-```c
+容器特点速记：
+
+- `stack<>`：适合频繁在末尾添加 / 删除，只访问栈顶；头文件 `<stack>`；底层通常是 `deque`
+- `queue<>`：先进先出；头文件 `<queue>`；底层通常是 `deque`
+- `priority_queue<>`：按优先级访问；头文件 `<queue>`；底层通常是堆
+- `deque<>`：两端插删快，也支持较频繁访问；头文件 `<deque>`
+- `vector<>`：随机访问快，但中间插删不擅长；头文件 `<vector>`
+- `list<>`：中间插删方便，但随机访问差；头文件 `<list>`
+- `set<>`：唯一元素 + 自动排序；头文件 `<set>`；底层通常是红黑树
+- `map<>`：键值对 + 自动排序；头文件 `<map>`；底层通常是红黑树
+- `unordered_set<>`：唯一元素 + 哈希查找，不保证顺序；头文件 `<unordered_set>`
+- `unordered_map<>`：键值对 + 哈希查找，不保证顺序；头文件 `<unordered_map>`
+- `bitset<>`：固定大小位数组；头文件 `<bitset>`
+
+模板类速记：
+
+- `vector` 不是普通类，而是模板类：`template <typename T> class vector { ... };`
+- `unordered_map` 是双模板参数：`template <typename K, typename V>`
+- `unordered_set` 是单模板参数：`template <typename T>`
+- `bitset` 不会动态扩容，大小在编译期就确定：`template <size_t N>`
+
+```cpp
 #include <unordered_set>
 using namespace std;
 
-vector<int> nums; // 创建一个存储整数的动态数组，vector没有count和find函数
-unordered_set<char> us ={'a','e','i','o','u','A','E','I','O','U'};// 初始化列表 不会自动排序
-unordered_set<int> s(nums.begin(), nums.end());// 通过迭代器范围构造一个 unordered_set，包含 nums 中的所有元素
-unordered_map<string, int> cnt = {{"apple", 2},{"banana", 3}};// 初始化列表 不会自动排序
-unordered_map<int, int> mp = {{1, 10},{2, 20},{5, 50}};// 初始化列表 不会自动排序 ，哈希表在创建时value的值不确定，访问时会自动创建一个默认值（0）并返回它
-set<int> s = {5, 1, 3, 2};// 初始化set 元素会自动排序，自动排序后：{1,2,3,5}
-map<int, string> mp2 = {{1, "one"},{3, "three"},{2, "two"}};// 初始化列表，元素会自动排序，自动排序后：{1: "one", 2: "two", 3: "three"}
-bitset<8> bs("10101010"); // 创建一个长度为 8 的 bitset，并用字符串 "10101010" 初始化它
-bs.set(); // 将 bitset 中的所有位设置为 1
-bs.reset(); // 将 bitset 中的所有位重置为 0
-bs.test(i);   // 查看第 i 位是否为 1，返回一个布尔值
-mp[5] = 10;// 访问 mp 中键为 5 的值，并把值设为10，如果不存在则创建一个默认值（0）并返回它，
+vector<int> nums;  // 正确：必须写元素类型
+// vector nums;    // 错误：不知道装什么类型
 
-for (auto& p : mp) {s.insert(p.first);s.insert(p.second);}// 遍历 mp 中的每个键值对 p，将键 p.first 和值 p.second 插入到 set s 中
+unordered_set<char> us = {'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
+unordered_set<int> s(nums.begin(), nums.end());
+unordered_map<string, int> cnt = {{"apple", 2}, {"banana", 3}};
+unordered_map<int, int> mp = {{1, 10}, {2, 20}, {5, 50}};
+set<int> s2 = {5, 1, 3, 2};               // 自动排序为 {1, 2, 3, 5}
+map<int, string> mp2 = {{1, "one"}, {3, "three"}, {2, "two"}};
 
-for (int x : s) {/*从小到大*/}// 遍历 set
+bitset<8> bs("10101010");
+bs.set();
+bs.reset();
+bs.test(i);
 
-if (mp.count(5)) {int v = mp[5];}// 查找 mp 中是否存在键为 5 的元素，如果存在则返回 1，否则返回 0；如果存在则访问 mp[5] 的值并赋给 v
-if (us.count('a')) {}// 查找
-auto it = us.find('a');// 查找 us 中是否存在元素 'a'，如果存在则返回一个指向该元素的迭代器，否则返回 us.end()
+mp[5] = 10;  // 不存在时会自动创建默认值再赋值
 
-us.insert('b');// 插入元素 'b' 到 us 中，如果 'b' 已经存在则不插入
-us.erase('a');// 删除元素 'a' 从 us 中，如果 'a' 不存在则不执行任何操作
+for (auto& p : mp) {
+    // p.first 是 key，p.second 是 value
+}
 
-nums.begin() 指向的是“第一个元素”，所以可以访问 nums.begin() 的值，如果需要访问第一个元素的值，可以使用 nums.front() 或者 *nums.begin()。
-nums.end() 指向的是“最后一个元素的下一个位置”所以不能访问 nums.end() 的值，如果需要访问最后一个元素的值，可以使用 nums.back() 或者 *(nums.end() - 1)。
+for (int x : s2) {
+    // set 默认从小到大遍历
+}
 
-auto it = find(nums.begin(), nums.end(), 3);// 在 nums 中查找元素 3，返回一个指向第一个匹配元素的迭代器，如果没有找到则返回 nums.end()
-int c = count(nums.begin(), nums.end(), 3);// 统计 nums 中元素 3 出现的次数，返回一个整数
-sort(nums.begin(), nums.end());// 排序，排序后 nums 中的元素将按照从小到大的顺序排列
-sort(nums.begin(), nums.end(), greater<int>());// 排序，排序后 nums 中的元素将按照从大到小的顺序排列
-auto it = max_element(nums.begin(), nums.end());// 查找 nums 中的最大元素，返回一个指向最大元素的迭代器 *it 是最大元素的值
+if (mp.count(5)) {
+    int v = mp[5];
+}
+
+if (us.count('a')) {}
+auto it3 = us.find('a');
+
+us.insert('b');
+us.erase('a');
+
+auto it4 = find(nums.begin(), nums.end(), 3);
+int c = count(nums.begin(), nums.end(), 3);
+sort(nums.begin(), nums.end());
+sort(nums.begin(), nums.end(), greater<int>());
+auto it5 = max_element(nums.begin(), nums.end());
 ```
-红黑树是一种“自己会保持平衡的二叉搜索树”它保证：查找 / 插入 / 删除永远是 O(log n)
+
+补充：
+
+- `vector` 没有 `count()` 和成员版 `find()`。
+- `unordered_map` / `unordered_set` 虽然“无序”，但照样支持迭代器遍历。
+- `mp.find()` 只能按 `key` 找，不能直接按 `value` 找；找 `value` 往往要自己遍历。
+- `nums.begin()` 指向第一个元素；`nums.end()` 指向“最后一个元素的下一个位置”，不能直接取值。
+
+最后记一句：
+
+> 红黑树是一种“自己会保持平衡的二叉搜索树”，因此查找 / 插入 / 删除通常都是 `O(log n)`。
