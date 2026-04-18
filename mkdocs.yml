@@ -26,6 +26,9 @@ theme:
     - search.highlight
     - content.code.copy
 
+extra_css:
+  - stylesheets/home.css
+
 markdown_extensions:
   - admonition
   - attr_list
@@ -39,34 +42,37 @@ nav:
   - Home: index.md
   - Notes:
       - Overview: notes/index.md
-      - Arduino & Control:
-          - Arduino Basics: notes/Arduino/basics.md
-          - Temperature Indicator Project:
-              - Project Overview: notes/Arduino/projet/projet.md
-              - Presentation Notes: notes/Arduino/projet/pre.md
-              - Code Walkthrough: notes/Arduino/projet/code.md
-              - Reflection Notes: notes/Arduino/projet/thoughts.md
-      - C++ & Software:
-          - C++ Basics: notes/Cpp/basics.md
-          - Object-Oriented Programming: notes/Cpp/opp.md
-          - Code Snippets: notes/Cpp/code.md
-          - Design Patterns: notes/Cpp/cpp_设计模式详解_扩展版.md
-      - Robotics & Linux:
-          - Linux Basics: notes/linux/basic.md
-          - ROS Basics: notes/ros/basic.md
-          - ROS Communication Code: notes/ros/code.md
-          - Gazebo Basics: notes/gazebo/basic.md
-      - FPGA & Digital Logic:
-          - FPGA Basics: notes/FPGA/basics.md
-      - STM32 & MCU:
-          - STM32 Knowledge Notes: notes/stm32/stm32_knowledge_notes.md
-          - STM32 Peripherals: notes/stm32/外设.md
-          - STM32 Registers: notes/stm32/寄存器.md
-      - Embedded Systems:
-          - Overview: notes/embedded_system/basic.md
-          - BeagleBone Linear Slide Project: notes/embedded_system/TP/README.md
-  - Interview Prep:
-      - Quick Index: notes/面试/快速检索表.md
-      - Categorized Question Bank: notes/面试/嵌入式面试汇总表.md
-      - Deep-Dive Answers: notes/面试/高频题深度解析.md
-      - Project Q&A: notes/面试/项目经历问答面试.md
+      - 面试:
+          - 快速检索表: notes/面试/快速检索表.md
+          - 嵌入式面试汇总表: notes/面试/嵌入式面试汇总表.md
+          - 高频题深度解析: notes/面试/高频题深度解析.md
+          - 项目经历问答面试: notes/面试/项目经历问答面试.md
+      - Arduino:
+          - basics: notes/Arduino/basics.md
+          - projet:
+              - projet: notes/Arduino/projet/projet.md
+              - pre: notes/Arduino/projet/pre.md
+              - code: notes/Arduino/projet/code.md
+              - thoughts: notes/Arduino/projet/thoughts.md
+      - Cpp:
+          - basics: notes/Cpp/basics.md
+          - opp: notes/Cpp/opp.md
+          - code: notes/Cpp/code.md
+          - 设计模式详解: notes/Cpp/cpp_设计模式详解_扩展版.md
+      - embedded_system:
+          - basic: notes/embedded_system/basic.md
+          - TP:
+              - README: notes/embedded_system/TP/README.md
+      - FPGA:
+          - basics: notes/FPGA/basics.md
+      - gazebo:
+          - basic: notes/gazebo/basic.md
+      - linux:
+          - basic: notes/linux/basic.md
+      - ros:
+          - basic: notes/ros/basic.md
+          - code: notes/ros/code.md
+      - stm32:
+          - stm32_knowledge_notes: notes/stm32/stm32_knowledge_notes.md
+          - 外设: notes/stm32/外设.md
+          - 寄存器: notes/stm32/寄存器.md

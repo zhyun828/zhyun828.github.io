@@ -1,49 +1,61 @@
 # Notes 总览
 
-这里汇总了站点里的技术笔记，保留原有仓库结构，同时补上一个可直接访问的 `notes` 入口页，方便从总览跳到具体主题。
+这里保留你原来的目录分类，不再重新组合主题。为了更方便浏览，我把入口整理成卡片式概览，点击后仍然进入原有笔记结构。
 
-## 主要方向
+<div class="info-grid info-grid--categories">
 
-### Arduino 与控制
+<div class="category-card" markdown="1">
+### 面试
+面试快速检索、汇总表、高频题解析与项目问答。
+[进入分类](面试/快速检索表.md){ .chip-link }
+</div>
 
-- [Arduino 基础](Arduino/basics.md)
-- [项目总览](Arduino/projet/projet.md)
-- [答辩/展示笔记](Arduino/projet/pre.md)
-- [代码讲解](Arduino/projet/code.md)
-- [设计思路与调试总结](Arduino/projet/thoughts.md)
+<div class="category-card" markdown="1">
+### Arduino
+Arduino 基础、项目总览、展示说明、代码讲解与调试总结。
+[进入分类](Arduino/basics.md){ .chip-link }
+</div>
 
-### C++ 与软件基础
+<div class="category-card" markdown="1">
+### Cpp
+C++ 基础、补充笔记、代码速记与设计模式详解。
+[进入分类](Cpp/basics.md){ .chip-link }
+</div>
 
-- [C++ 基础知识点总结](Cpp/basics.md)
-- [C++ 补充笔记](Cpp/opp.md)
-- [C++ 代码速记](Cpp/code.md)
-- [C++ 设计模式详解（扩展版）](Cpp/cpp_设计模式详解_扩展版.md)
+<div class="category-card" markdown="1">
+### embedded_system
+嵌入式系统基础与 BeagleBone 线性滑台控制项目。
+[进入分类](embedded_system/basic.md){ .chip-link }
+</div>
 
-### Robotics / Linux / ROS
+<div class="category-card" markdown="1">
+### FPGA
+FPGA 学习笔记与相关基础内容。
+[进入分类](FPGA/basics.md){ .chip-link }
+</div>
 
-- [Linux 基础命令速记](linux/basic.md)
-- [ROS 基础](ros/basic.md)
-- [ROS 常用代码片段](ros/code.md)
-- [Gazebo 基础](gazebo/basic.md)
+<div class="category-card" markdown="1">
+### gazebo
+Gazebo 仿真基础内容。
+[进入分类](gazebo/basic.md){ .chip-link }
+</div>
 
-### FPGA 与嵌入式系统
+<div class="category-card" markdown="1">
+### linux
+Linux 基础命令和常用操作整理。
+[进入分类](linux/basic.md){ .chip-link }
+</div>
 
-- [FPGA 学习笔记](FPGA/basics.md)
-- [STM32 知识整理](stm32/stm32_knowledge_notes.md)
-- [STM32 常见外设缩写](stm32/外设.md)
-- [STM32 常见寄存器表](stm32/寄存器.md)
-- [嵌入式系统笔记](embedded_system/basic.md)
-- [BeagleBone 线性滑台控制项目](embedded_system/TP/README.md)
+<div class="category-card" markdown="1">
+### ros
+ROS 基础与常用代码片段。
+[进入分类](ros/basic.md){ .chip-link }
+</div>
 
-### 面试整理
+<div class="category-card" markdown="1">
+### stm32
+STM32 知识整理、外设速查与寄存器笔记。
+[进入分类](stm32/stm32_knowledge_notes.md){ .chip-link }
+</div>
 
-- [快速检索表](面试/快速检索表.md)
-- [分类汇总](面试/嵌入式面试汇总表.md)
-- [高频题深度解析](面试/高频题深度解析.md)
-- [项目经历问答](面试/项目经历问答面试.md)
-
-## 使用建议
-
-1. 先从当前最需要的方向进入，比如项目、C++、ROS 或面试。
-2. 长文档优先看总览、流程和代码块，再回看细节注释。
-3. 如果只想快速定位命令、概念或接口，建议直接用站内搜索。
+</div>
