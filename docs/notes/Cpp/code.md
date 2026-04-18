@@ -153,6 +153,7 @@ int c = count(nums.begin(), nums.end(), 3);
 sort(nums.begin(), nums.end());
 sort(nums.begin(), nums.end(), greater<int>());
 auto it5 = max_element(nums.begin(), nums.end());
+ceil(nums.size() / 2.0);// 目的是向上取整，得到一半长度的下标；如果直接写 nums.size() / 2 就是向下取整了
 ```
 
 补充：

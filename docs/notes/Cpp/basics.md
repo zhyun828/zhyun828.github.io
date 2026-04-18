@@ -194,6 +194,7 @@ clean:
 | `double` | 双精度浮点数     | 8              |
 | `char`   | 字符           | 1              |
 | `bool`   | 布尔值（true/false） | 1              |
+| `long long` | 长长整数(至少-2^63~2^63 - 1)       | 8              |
 
 ```cpp
 int number = 1; // 整数
@@ -396,7 +397,7 @@ auto it = us.find('a');
 us.insert('b');
 us.erase('a');
 
-sort(nums.begin(), nums.end());
+sort(nums.begin(), nums.end());//sort在algorithm库
 sort(nums.begin(), nums.end(), greater<int>());
 ```
 
