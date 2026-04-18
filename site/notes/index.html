@@ -79,11 +79,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#notes" class="md-skip">
-          跳转至
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -262,6 +257,8 @@
         <div class="md-main__inner md-grid">
           
             
+              
+                
               
               <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
                 <div class="md-sidebar__scrollwrap">
@@ -1820,7 +1817,9 @@
             
             
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -1828,8 +1827,6 @@
 <nav class="md-nav md-nav--secondary" aria-label="目录">
   
   
-  
-    
   
   
 </nav>
@@ -1844,67 +1841,57 @@
               <article class="md-content__inner md-typeset">
                 
                   
+  
 
 
 
-<h1 id="notes">Notes 总览<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h1>
-<p>这里保留你原来的目录分类，不再重新组合主题。为了更方便浏览，我把入口整理成卡片式概览，点击后仍然进入原有笔记结构。</p>
-<div class="info-grid info-grid--categories">
 
-<div class="category-card" markdown="1">
-### 面试
-面试快速检索、汇总表、高频题解析与项目问答。
-[进入分类](面试/快速检索表.md){ .chip-link }
-</div>
-
-<div class="category-card" markdown="1">
-### Arduino
-Arduino 基础、项目总览、展示说明、代码讲解与调试总结。
-[进入分类](Arduino/basics.md){ .chip-link }
-</div>
-
-<div class="category-card" markdown="1">
-### Cpp
-C++ 基础、补充笔记、代码速记与设计模式详解。
-[进入分类](Cpp/basics.md){ .chip-link }
-</div>
-
-<div class="category-card" markdown="1">
-### embedded_system
-嵌入式系统基础与 BeagleBone 线性滑台控制项目。
-[进入分类](embedded_system/basic.md){ .chip-link }
-</div>
-
-<div class="category-card" markdown="1">
-### FPGA
-FPGA 学习笔记与相关基础内容。
-[进入分类](FPGA/basics.md){ .chip-link }
-</div>
-
-<div class="category-card" markdown="1">
-### gazebo
-Gazebo 仿真基础内容。
-[进入分类](gazebo/basic.md){ .chip-link }
-</div>
-
-<div class="category-card" markdown="1">
-### linux
-Linux 基础命令和常用操作整理。
-[进入分类](linux/basic.md){ .chip-link }
-</div>
-
-<div class="category-card" markdown="1">
-### ros
-ROS 基础与常用代码片段。
-[进入分类](ros/basic.md){ .chip-link }
-</div>
-
-<div class="category-card" markdown="1">
-### stm32
-STM32 知识整理、外设速查与寄存器笔记。
-[进入分类](stm32/stm32_knowledge_notes.md){ .chip-link }
-</div>
-
+<div class="notes-shell">
+  <section class="portfolio-section">
+    <div class="section-header">
+      <p class="section-eyebrow">Directory</p>
+      <h1 class="notes-title">Notes</h1>
+      <p class="notes-lead">&#25353;&#21407;&#26377;&#30446;&#24405;&#20998;&#31867;&#27983;&#35272;&#20840;&#37096;&#23398;&#20064;&#31508;&#35760;&#12290;</p>
+    </div>
+    <div class="category-grid">
+      <a class="category-card" href="/notes/%E9%9D%A2%E8%AF%95/%E5%BF%AB%E9%80%9F%E6%A3%80%E7%B4%A2%E8%A1%A8/">
+        <h3>&#38754;&#35797;</h3>
+        <p>&#24555;&#36895;&#26816;&#32034;&#12289;&#27719;&#24635;&#34920;&#12289;&#39640;&#39057;&#39064;&#35299;&#26512;&#19982;&#39033;&#30446;&#38382;&#31572;&#12290;</p>
+      </a>
+      <a class="category-card" href="/notes/Arduino/basics/">
+        <h3>Arduino</h3>
+        <p>&#22522;&#30784;&#20869;&#23481;&#12289;&#39033;&#30446;&#24635;&#35272;&#12289;&#23637;&#31034;&#35828;&#26126;&#12289;&#20195;&#30721;&#35762;&#35299;&#19982;&#35843;&#35797;&#24635;&#32467;&#12290;</p>
+      </a>
+      <a class="category-card" href="/notes/Cpp/basics/">
+        <h3>Cpp</h3>
+        <p>C++ &#22522;&#30784;&#12289;&#34917;&#20805;&#31508;&#35760;&#12289;&#20195;&#30721;&#29255;&#27573;&#19982;&#35774;&#35745;&#27169;&#24335;&#12290;</p>
+      </a>
+      <a class="category-card" href="/notes/embedded_system/basic/">
+        <h3>embedded_system</h3>
+        <p>&#23884;&#20837;&#24335;&#31995;&#32479;&#22522;&#30784;&#19982; BeagleBone &#32447;&#24615;&#28369;&#21488;&#25511;&#21046;&#39033;&#30446;&#12290;</p>
+      </a>
+      <a class="category-card" href="/notes/FPGA/basics/">
+        <h3>FPGA</h3>
+        <p>FPGA &#23398;&#20064;&#31508;&#35760;&#19982;&#30456;&#20851;&#22522;&#30784;&#20869;&#23481;&#12290;</p>
+      </a>
+      <a class="category-card" href="/notes/gazebo/basic/">
+        <h3>gazebo</h3>
+        <p>Gazebo &#20223;&#30495;&#22522;&#30784;&#20869;&#23481;&#12290;</p>
+      </a>
+      <a class="category-card" href="/notes/linux/basic/">
+        <h3>linux</h3>
+        <p>Linux &#22522;&#30784;&#21629;&#20196;&#21644;&#24120;&#29992;&#25805;&#20316;&#25972;&#29702;&#12290;</p>
+      </a>
+      <a class="category-card" href="/notes/ros/basic/">
+        <h3>ros</h3>
+        <p>ROS &#22522;&#30784;&#19982;&#24120;&#29992;&#20195;&#30721;&#29255;&#27573;&#12290;</p>
+      </a>
+      <a class="category-card" href="/notes/stm32/stm32_knowledge_notes/">
+        <h3>stm32</h3>
+        <p>STM32 &#30693;&#35782;&#25972;&#29702;&#12289;&#22806;&#35774;&#36895;&#26597;&#19982;&#23492;&#23384;&#22120;&#31508;&#35760;&#12290;</p>
+      </a>
+    </div>
+  </section>
 </div>
 
 
@@ -1913,8 +1900,13 @@ STM32 知识整理、外设速查与寄存器笔记。
 
 
 
+  
+  
 
 
+
+
+  
 
 
 
@@ -1937,6 +1929,8 @@ STM32 知识整理、外设速查与寄存器笔记。
         <footer class="md-footer">
   
     
+      
+        
       
       <nav class="md-footer__inner md-grid" aria-label="页脚" >
         
