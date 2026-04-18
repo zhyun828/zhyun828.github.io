@@ -29,6 +29,9 @@
 ### FPGA 与嵌入式系统
 
 - [FPGA 学习笔记](FPGA/basics.md)
+- [STM32 知识整理](stm32/stm32_knowledge_notes.md)
+- [STM32 常见外设缩写](stm32/外设.md)
+- [STM32 常见寄存器表](stm32/寄存器.md)
 - [嵌入式系统笔记](embedded_system/basic.md)
 - [BeagleBone 线性滑台控制项目](embedded_system/TP/README.md)
 
@@ -36,7 +39,6 @@
 
 - [快速检索表](面试/快速检索表.md)
 - [分类汇总](面试/嵌入式面试汇总表.md)
-- [50 题题库](面试/嵌入式面试问题.md)
 - [高频题深度解析](面试/高频题深度解析.md)
 - [项目经历问答](面试/项目经历问答面试.md)
 

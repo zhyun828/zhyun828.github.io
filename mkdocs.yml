@@ -58,12 +58,15 @@ nav:
           - Gazebo Basics: notes/gazebo/basic.md
       - FPGA & Digital Logic:
           - FPGA Basics: notes/FPGA/basics.md
+      - STM32 & MCU:
+          - STM32 Knowledge Notes: notes/stm32/stm32_knowledge_notes.md
+          - STM32 Peripherals: notes/stm32/外设.md
+          - STM32 Registers: notes/stm32/寄存器.md
       - Embedded Systems:
           - Overview: notes/embedded_system/basic.md
           - BeagleBone Linear Slide Project: notes/embedded_system/TP/README.md
   - Interview Prep:
       - Quick Index: notes/面试/快速检索表.md
       - Categorized Question Bank: notes/面试/嵌入式面试汇总表.md
-      - 50 Interview Questions: notes/面试/嵌入式面试问题.md
       - Deep-Dive Answers: notes/面试/高频题深度解析.md
       - Project Q&A: notes/面试/项目经历问答面试.md

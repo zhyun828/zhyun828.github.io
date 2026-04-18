@@ -1,6 +1,7 @@
 # STM32 学习知识点整理
 
 > 这份笔记根据本次对话里提到的问题整理，按知识结构重新排序，方便背诵和查阅。
+> 说明：原来的“本对话问题整理_新版.md”中的问题已经按题型并入本文，统一保留在文中的补充问题索引里，后续继续在这一份总文档上迭代即可。
 
 # 1. 基础概念
 
@@ -851,7 +852,169 @@ function "Key_Init" declared implicitly
 - 硬件触发：外设事件自动搬
 - 软件触发：程序手动开始搬
 
-# 21. 最后总结（超短背诵版）
+# 21. 按问题类型归并的补充问题索引
+
+这一节把原来单独整理的对话问题，按题型并入当前 STM32 总笔记中，便于后续继续补充答案或回查。
+
+## 21.1 C / C++ 基础与标准库
+
+- 内联函数和宏定义的区别与使用场景
+- `void MyI2C_W_SCL(uint8_t Bitvalue){ GPIO_WriteBit(GPIOB,GPIO_Pin_10,(BitAction)Bitvalue); Delay_us(10); }` 为什么可以写成 `(BitAction)Bitvalue`
+- `time.h` 大概是做什么的
+- `struct tm` 为什么要写成 `struct tm time_data;`，不能直接写 `tm time_data;`
+- 对于 `uint32` 来说能表示的最长时间是多少，到什么日期
+- 那么对于 `int32` 呢
+
+## 21.2 I2C / SPI / UART / 通信协议基础
+
+### I2C 相关
+
+- `MyI2C_W_SDA(Byte&0x80);` 这样调用时会发生什么
+- 为什么 MPU6050 默认地址是 `0x68`，代码里却写 `MyI2C_SendByte(0xD0);`
+- `uint8_t MyI2C_ReceiveAck(void){...}` 这个函数有返回值，为什么别的地方可以直接写 `MyI2C_ReceiveAck();` 而不接收返回值
+- 读寄存器时最后的 `MyI2C_SendAck(1);` 为什么给的是非应答
+- I2C 为什么用开漏
+- I2C 的开漏为什么是弱上拉，为什么不能是强上拉
+- 弱上拉会有哪些缺点
+- 为什么 IIC 的时钟线叫 `SCL`
+- 软件实现一个 I2C 通信协议时，是不是两个设备随便找两个 IO 口就可以，因为从始至终是自己设计时序、数据和格式
+- STM32 的 I2C 引脚为什么要用“复用开漏”而不是普通“开漏”
+- 读寄存器流程里，为什么读的操作没有再次发送寄存器地址
+- 仲裁是如何执行的
+
+### SPI 相关
+
+- SPI 的时钟线为什么叫 `SCK`
+- 为什么 SPI 输入通常配置成上拉或者浮空
+- 什么是高阻态
+- 在 I2C 和 SPI 中，设备不传输时会把数据线设为高阻态；那任何输入模式都有可能被配置成高阻态吗
+- 对于 MISO，从机既要高阻态输出，又要配置成浮空输入或者上拉输入，对吗
+- 也就是说 SPI 主机的配置是输出开漏、输入上拉或者浮空；而从机的两根数据线在接收数据前都是高阻态吗
+- 高阻态是怎么做到的，它和从设备把 MISO 配置成输出（如开漏输出）不冲突吗
+- `while ((MySPI_SwapByte(W25Q64_DUMMY_BYTE) & 0x01) == 0x01) { ... }` 和 `while((MySPI_SwapByte(W25Q64_DUMMY_BYTE) & 0x01) && timeout--){ break; }` 为什么第二种会出问题
+- 主模式全双工连续传输和非连续传输这两种 SPI 传输模式的原理和区别
+- `TDR`、`RDR` 和移位寄存器是不是同一个东西
+- 连续模式是如何协调输入和输出之间的时序的，会不会出现发送了很多数据但接收很少的情况
+- 非连续写法是：
+
+  ```c
+  while(!SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_TXE));
+  SPI_I2S_SendData(SPI1,ByteSend);
+
+  while(!SPI_I2S_GetFlagStatus(SPI1,SPI_I2S_FLAG_RXNE));
+  SPI_I2S_ReceiveData(SPI1);
+  ```
+
+  那连续传输应该怎么写
+
+### UART / 术语
+
+- UART 发送时的 `TX` 里，`X` 是什么意思
+
+### 通信协议实现方式
+
+- 通信协议的软件实现和硬件实现有什么区别
+- 软件和硬件实现分别实现的是哪一部分，是指协议时序吗，它们“长什么样”
+
+## 21.3 GPIO / 复用 / 电气特性
+
+- 复用电路应该如何配置
+- 在 I2C 和 SPI 场景里，输入、开漏、复用开漏、浮空、上拉这些模式分别该怎么理解和选择
+
+## 21.4 存储器 / Flash / 地址 / W25Q64
+
+### Flash 与存储介质
+
+- 常用的内存卡或者 U 盘是不是 Flash
+- NAND 是什么意思，为什么它掉电不丢失，为什么其他存储不行
+- 为什么可以做到掉电不丢失，掉电丢失又是因为什么
+- Flash 只能从 1 写 0，这个说法对吗
+- 为什么写入的时候必须先擦除
+- NAND 闪存和 NOR 闪存的区别
+- NAND 擦写次数较少，那岂不是 U 盘或者 SSD 用不久就坏了
+
+### 地址、页、扇区、块
+
+- 某个芯片的寻址信号是六位的十六进制数，这个芯片的大小是多少，能算吗
+- 为什么常说每个地址单元代表 1 字节；有没有可能代表 2 字节或者更多字节；地址单元是不是指寄存器地址；我也见过 16 位寄存器
+- 扇区和页是什么
+- 块、扇区、页的区别
+
+### W25Q64 / 代码细节
+
+- `void W25Q64_SectorErase(uint32_t Address){ ... MySPI_SwapByte((Address >> 16) & 0xFF); ... }` 这里为什么要 `& 0xFF`
+
+### 传输位宽
+
+- `dual` 和 `quad` 是什么
+
+## 21.5 显示与接口
+
+- TN 屏是什么
+- DSI 是什么
+
+## 21.6 VS Code / 补全 / 插件
+
+- 截图里 `Completions – Completions limit reached` 等提示是什么意思
+- VS Code 的代码补全是不是只有 Copilot
+- ChatGPT 没有代码补全功能吗
+- 截图里的这个 `Codex` 好像不是官方的 Codex，这是什么
+
+## 21.7 RTC / BKP / 时间系统
+
+- RTC 和 BKP 是什么
+- Unix、GMT、UTC 分别是什么
+- `PWR_CR` 寄存器的 `DBP` 位是什么
+- `MyRTC_Init / MyRTC_SetTime / MyRTC_ReadTime` 这段代码为什么一直格式报错
+
+## 21.8 PWR / 低功耗 / 电源相关
+
+- `VBT` 是什么
+- `VBT` 引脚可以给芯片供电吗
+- `PWR` 是什么
+- STM32 的睡眠、停止和待机模式分别有什么作用，怎么使用
+- 低功耗模式一览图（睡眠 / 停机 / 待机）该怎么理解
+
+## 21.9 中断与事件
+
+- 中断和事件有什么区别，分别是什么
+- 如果配置了中断源但是不配置 NVIC，会不会产生事件
+
+## 21.10 代码流程理解
+
+- 这一段硬件 I2C 代码的大概流程是什么：
+
+  ```c
+  I2C_GenerateSTART(I2C2, ENABLE);
+  while(!I2C_CheckEvent(I2C2, I2C_EVENT_MASTER_MODE_SELECT));
+
+  I2C_Send7bitAddress(I2C2, MPU6050_ADDR, I2C_Direction_Transmitter);
+  while(!I2C_CheckEvent(I2C2, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED));
+
+  I2C_SendData(I2C2, reg);
+  while (!I2C_CheckEvent(I2C2, I2C_EVENT_MASTER_BYTE_TRANSMITTED));
+
+  I2C_GenerateSTART(I2C2, ENABLE);
+  while(!I2C_CheckEvent(I2C2, I2C_EVENT_MASTER_MODE_SELECT));
+
+  I2C_Send7bitAddress(I2C2, MPU6050_ADDR, I2C_Direction_Receiver);
+  while(!I2C_CheckEvent(I2C2, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED));
+
+  I2C_AcknowledgeConfig(I2C2, DISABLE);
+  I2C_GenerateSTOP(I2C2, ENABLE);
+  while (!I2C_CheckEvent(I2C2, I2C_EVENT_MASTER_BYTE_RECEIVED));
+  data = I2C_ReceiveData(I2C2);
+
+  I2C_AcknowledgeConfig(I2C2, ENABLE);
+  return data;
+  ```
+
+## 21.11 元问题记录
+
+- 帮我把在这个对话中的所有问题收集起来生成一个 `md` 文件，要求排版简洁，顺序合理
+- 帮我把在这个对话中的所有问题收集起来生成一个 `md` 文件，要求排版简洁，顺序合理（再次提出）
+
+# 22. 最后总结（超短背诵版）
 - `PC13`：GPIOC 第 13 号引脚
 - `Port` 是一组 GPIO，`GPIO` 是单个引脚
 - `OLED` 的 `O` = Organic
@@ -871,4 +1034,3 @@ function "Key_Init" declared implicitly
 - `sizeof(数组)` 返回总字节数
 - `uint8_t` 装不下 666，结果会溢出成 154
 - 选项字节存芯片配置；读保护防读代码；写保护防改 Flash
-

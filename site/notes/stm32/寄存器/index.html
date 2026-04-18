@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://zhyun828.github.io/notes/Arduino/basics/">
+        <link rel="canonical" href="https://zhyun828.github.io/notes/stm32/%E5%AF%84%E5%AD%98%E5%99%A8/">
       
       
-        <link rel="prev" href="../../">
+        <link rel="prev" href="../%E5%A4%96%E8%AE%BE/">
       
       
-        <link rel="next" href="../projet/projet/">
+        <link rel="next" href="../../embedded_system/basic/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Arduino Basics - ZY Engineering Notes</title>
+        <title>STM32 Registers - ZY Engineering Notes</title>
       
     
     
@@ -77,11 +77,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#arduino-avr" class="md-skip">
-          跳转至
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -112,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Arduino Basics
+              STM32 Registers
             
           </span>
         </div>
@@ -420,8 +415,6 @@
                 
   
   
-    
-  
   
   
     
@@ -443,11 +436,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
         
           
           <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="">
@@ -468,7 +463,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -483,37 +478,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Arduino Basics
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../Arduino/basics/" class="md-nav__link">
         
   
   
@@ -529,81 +497,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="目录">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      目录
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#1-avr" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. AVR 端口寄存器
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. 置高 / 置低
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-timer" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Timer 的基本理解
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. 状态标志寄存器
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-clock-select" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Clock Select（时钟选择）
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -680,7 +573,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../projet/projet/" class="md-nav__link">
+      <a href="../../Arduino/projet/projet/" class="md-nav__link">
         
   
   
@@ -708,7 +601,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../projet/pre/" class="md-nav__link">
+      <a href="../../Arduino/projet/pre/" class="md-nav__link">
         
   
   
@@ -736,7 +629,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../projet/code/" class="md-nav__link">
+      <a href="../../Arduino/projet/code/" class="md-nav__link">
         
   
   
@@ -764,7 +657,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../projet/thoughts/" class="md-nav__link">
+      <a href="../../Arduino/projet/thoughts/" class="md-nav__link">
         
   
   
@@ -1276,8 +1169,10 @@
                 
   
   
+    
   
   
+  
     
     
       
@@ -1299,13 +1194,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" checked>
         
           
           <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="">
@@ -1326,7 +1219,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_6">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1344,7 +1237,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../stm32/stm32_knowledge_notes/" class="md-nav__link">
+      <a href="../stm32_knowledge_notes/" class="md-nav__link">
         
   
   
@@ -1372,7 +1265,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../stm32/%E5%A4%96%E8%AE%BE/" class="md-nav__link">
+      <a href="../%E5%A4%96%E8%AE%BE/" class="md-nav__link">
         
   
   
@@ -1397,10 +1290,17 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../stm32/%E5%AF%84%E5%AD%98%E5%99%A8/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1416,6 +1316,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -1746,71 +1647,6 @@
   
   
   
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      目录
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#1-avr" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. AVR 端口寄存器
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. 置高 / 置低
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-timer" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Timer 的基本理解
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. 状态标志寄存器
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-clock-select" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Clock Select（时钟选择）
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
   
 </nav>
                   </div>
@@ -1827,98 +1663,181 @@
 
 
 
-<h1 id="arduino-avr">Arduino / AVR 基础<a class="headerlink" href="#arduino-avr" title="Permanent link">&para;</a></h1>
-<h2 id="1-avr">1. AVR 端口寄存器<a class="headerlink" href="#1-avr" title="Permanent link">&para;</a></h2>
-<p>在 AVR 里，一个端口（比如 <code>PORTB</code>）通常会配套三类寄存器：</p>
-<ul>
-<li><code>DDRB</code>：方向寄存器，<code>1 = 输出</code>，<code>0 = 输入</code></li>
-<li><code>PORTB</code>：输出寄存器
-  输出模式下写 <code>1/0</code> 就是高/低电平；输入模式下写 <code>1</code> 会开启上拉</li>
-<li><code>PINB</code>：读取引脚电平
-  某些芯片里也常用于“写 1 翻转”特性，但刚开始先不要混用</li>
-</ul>
-<p>补充：</p>
-<ul>
-<li>AVR C 里无限循环一般写成 <code>while (1) { ... }</code></li>
-<li><code>while (1)</code> 这类基础定义通常来自 <code>&lt;avr/io.h&gt;</code></li>
-<li><code>_delay_ms(x)</code> 来自 <code>&lt;util/delay.h&gt;</code>，单位是毫秒</li>
-</ul>
-<h2 id="2">2. 置高 / 置低<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="n">PORTB</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">7</span><span class="p">);</span><span class="w">   </span><span class="c1">// 置高</span>
-<span class="n">PORTB</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="o">~</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">7</span><span class="p">);</span><span class="w">  </span><span class="c1">// 置低</span>
-</code></pre></div>
-<h2 id="3-timer">3. Timer 的基本理解<a class="headerlink" href="#3-timer" title="Permanent link">&para;</a></h2>
-<p>Timer 可以先理解成：</p>
-<blockquote>
-<p>一个会自动加 1 的计数器 + 一组控制它如何计数的寄存器</p>
-</blockquote>
-<ul>
-<li><code>TCCR2A</code>、<code>TCCR2B</code>：控制寄存器，决定 <code>Timer2</code> 怎么计数</li>
-<li><code>TCNT2</code>：当前计数寄存器，表示现在数到几</li>
-</ul>
-<p>例如 <code>TCNT2 = 6</code>，而 <code>Timer2</code> 是 8-bit（<code>0 ~ 255</code>），它就会：</p>
-<div class="highlight"><pre><span></span><code>6 -&gt; 7 -&gt; 8 -&gt; ... -&gt; 255 -&gt; 0
-</code></pre></div>
-<p>从 <code>255</code> 再加 1 回到 <code>0</code> 的过程叫“溢出”。发生溢出时，硬件会把 <code>TOV2 = 1</code>。</p>
-<h2 id="4">4. 状态标志寄存器<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>TIFR2</code>：<code>Timer2</code> 的状态 / 标志寄存器</li>
-<li><code>TOV2</code>：溢出标志</li>
-</ul>
-<p>可以把 <code>TIFR2</code> 理解成 Timer2 的“状态指示灯面板”，里面每一位都表示某件事有没有发生。</p>
-<h2 id="5-clock-select">5. Clock Select（时钟选择）<a class="headerlink" href="#5-clock-select" title="Permanent link">&para;</a></h2>
-<p><code>CS22 / CS21 / CS20</code> 用来决定 Timer 数得有多快。</p>
+  <h1>STM32 Registers</h1>
+
 <table>
 <thead>
 <tr>
-<th><code>CS22</code></th>
-<th><code>CS21</code></th>
-<th><code>CS20</code></th>
-<th>含义</th>
+<th>寄存器名称（中文）</th>
+<th>寄存器名称（英文）</th>
+<th>作用说明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>不数（停）</td>
+<td><strong>复位和时钟控制寄存器</strong></td>
+<td>RCC (Reset and Clock Control)</td>
+<td>用于管理复位、时钟源配置、外设时钟等。</td>
 </tr>
 <tr>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>不分频（16 MHz）</td>
+<td><strong>时钟源控制寄存器</strong></td>
+<td>RCC_CR (Clock Control Register)</td>
+<td>配置时钟源，如主时钟、PLL等。</td>
 </tr>
 <tr>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td><code>/8</code></td>
+<td><strong>时钟配置寄存器</strong></td>
+<td>RCC_CFGR (Clock Configuration Register)</td>
+<td>配置时钟源、分频器和系统时钟。</td>
 </tr>
 <tr>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td><code>/32</code></td>
+<td><strong>GPIO端口配置寄存器</strong></td>
+<td>GPIOx_MODER (GPIO Mode Register)</td>
+<td>配置 GPIO 引脚的工作模式（输入、输出、复用功能、模拟模式等）。</td>
 </tr>
 <tr>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td><code>/64</code></td>
+<td><strong>GPIO端口输出数据寄存器</strong></td>
+<td>GPIOx_ODR (GPIO Output Data Register)</td>
+<td>控制 GPIO 引脚的输出电平（高电平或低电平）。</td>
 </tr>
 <tr>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td><code>/256</code></td>
+<td><strong>GPIO端口输入数据寄存器</strong></td>
+<td>GPIOx_IDR (GPIO Input Data Register)</td>
+<td>读取 GPIO 引脚的输入电平（高电平或低电平）。</td>
 </tr>
 <tr>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td><code>/1024</code></td>
+<td><strong>GPIO端口拉电阻寄存器</strong></td>
+<td>GPIOx_PUPDR (GPIO Pull-Up/Pull-Down Register)</td>
+<td>配置 GPIO 引脚的上拉或下拉电阻。</td>
+</tr>
+<tr>
+<td><strong>GPIO端口输出类型寄存器</strong></td>
+<td>GPIOx_OTYPER (GPIO Output Type Register)</td>
+<td>配置 GPIO 引脚的输出类型（推挽或开漏）。</td>
+</tr>
+<tr>
+<td><strong>外部中断线控制寄存器</strong></td>
+<td>EXTI (External Interrupt)</td>
+<td>配置外部中断线的触发方式（上升沿、下降沿或双边沿），以及中断使能。</td>
+</tr>
+<tr>
+<td><strong>外部中断线触发寄存器</strong></td>
+<td>EXTI_IMR (Interrupt Mask Register)</td>
+<td>配置每个外部中断线路的中断使能。</td>
+</tr>
+<tr>
+<td><strong>中断控制寄存器</strong></td>
+<td>NVIC (Nested Vectored Interrupt Controller)</td>
+<td>配置中断的优先级和使能中断。</td>
+</tr>
+<tr>
+<td><strong>定时器控制寄存器</strong></td>
+<td>TIMx_CR1 (Timer Control Register)</td>
+<td>配置定时器的计数方向、时钟源、预分频系数等参数。</td>
+</tr>
+<tr>
+<td><strong>定时器自动重载寄存器</strong></td>
+<td>TIMx_ARR (Timer Auto-Reload Register)</td>
+<td>配置定时器的自动重载值，控制计时周期。</td>
+</tr>
+<tr>
+<td><strong>定时器捕获/比较寄存器</strong></td>
+<td>TIMx_CCR (Timer Capture/Compare Register)</td>
+<td>用于定时器的输入捕获或输出比较功能。</td>
+</tr>
+<tr>
+<td><strong>定时器死区时间寄存器</strong></td>
+<td>TIMx_BDTR (Timer Break &amp; Dead-Time Register)</td>
+<td>配置定时器的死区时间，通常用于PWM信号控制。</td>
+</tr>
+<tr>
+<td><strong>定时器重复计数寄存器</strong></td>
+<td>TIMx_RCR (Timer Repetition Counter Register)</td>
+<td>配置定时器的重复计数，用于循环模式。</td>
+</tr>
+<tr>
+<td><strong>DMA控制寄存器</strong></td>
+<td>DMA (Direct Memory Access)</td>
+<td>配置 DMA 模块，用于内存和外设之间的数据传输。</td>
+</tr>
+<tr>
+<td><strong>DMA传输方向寄存器</strong></td>
+<td>DMA_CCR (DMA Channel Control Register)</td>
+<td>配置 DMA 渠道的传输方向、传输大小、使能等。</td>
+</tr>
+<tr>
+<td><strong>闪存控制寄存器</strong></td>
+<td>FLASH (Flash Memory)</td>
+<td>配置闪存的读写操作，如页擦除、编程等。</td>
+</tr>
+<tr>
+<td><strong>实时时钟控制寄存器</strong></td>
+<td>RTC (Real-Time Clock)</td>
+<td>配置 RTC 模块，进行时间和日期的管理。</td>
+</tr>
+<tr>
+<td><strong>电源控制寄存器</strong></td>
+<td>PWR (Power Control)</td>
+<td>配置芯片的电源管理，包括待机模式、睡眠模式等。</td>
+</tr>
+<tr>
+<td><strong>看门狗控制寄存器</strong></td>
+<td>IWDG (Independent Watchdog)</td>
+<td>配置独立看门狗的计时和复位功能，用于防止系统死锁。</td>
+</tr>
+<tr>
+<td><strong>I2C控制寄存器</strong></td>
+<td>I2C (Inter-Integrated Circuit)</td>
+<td>配置 I2C 总线的主从模式、传输速度、时钟等。</td>
+</tr>
+<tr>
+<td><strong>SPI控制寄存器</strong></td>
+<td>SPI (Serial Peripheral Interface)</td>
+<td>配置 SPI 总线的工作模式、时钟极性等。</td>
+</tr>
+<tr>
+<td><strong>USART控制寄存器</strong></td>
+<td>USART (Universal Synchronous Asynchronous Receiver Transmitter)</td>
+<td>配置串口通信的波特率、数据位、校验等参数。</td>
+</tr>
+<tr>
+<td><strong>USB控制寄存器</strong></td>
+<td>USB (Universal Serial Bus)</td>
+<td>配置 USB 总线的工作模式，如主机、设备、传输速率等。</td>
+</tr>
+<tr>
+<td><strong>CRC控制寄存器</strong></td>
+<td>CRC (Cyclic Redundancy Check)</td>
+<td>配置 CRC 校验模块，用于数据完整性检测。</td>
+</tr>
+<tr>
+<td><strong>看门狗时间寄存器</strong></td>
+<td>WWDG (Window Watchdog)</td>
+<td>配置窗口看门狗，用于监控系统，防止系统进入死锁。</td>
+</tr>
+<tr>
+<td><strong>数据缓存控制寄存器</strong></td>
+<td>DCache (Data Cache Control)</td>
+<td>配置数据缓存，控制数据存储的缓存策略。</td>
+</tr>
+<tr>
+<td><strong>专用功能寄存器</strong></td>
+<td>AFIO (Alternate Function I/O)</td>
+<td>配置 I/O 引脚的替代功能。</td>
+</tr>
+<tr>
+<td><strong>故障检测寄存器</strong></td>
+<td>FDCAN (Fault Detection CAN)</td>
+<td>配置 CAN 总线的故障检测功能。</td>
+</tr>
+<tr>
+<td><strong>死区时间控制寄存器</strong></td>
+<td>DTG (Dead Time Generator)</td>
+<td>配置定时器的死区时间，通常用于电机控制等场景中的 PWM 波形控制。</td>
+</tr>
+<tr>
+<td><strong>重复计数寄存器</strong></td>
+<td>REP (Repetition Counter)</td>
+<td>配置 PWM 模式下的重复计数值，用于控制周期性信号的重复次数。</td>
 </tr>
 </tbody>
 </table>
@@ -1957,7 +1876,7 @@
       <nav class="md-footer__inner md-grid" aria-label="页脚" >
         
           
-          <a href="../../" class="md-footer__link md-footer__link--prev" aria-label="上一页: Overview">
+          <a href="../%E5%A4%96%E8%AE%BE/" class="md-footer__link md-footer__link--prev" aria-label="上一页: STM32 Peripherals">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1967,20 +1886,20 @@
                 上一页
               </span>
               <div class="md-ellipsis">
-                Overview
+                STM32 Peripherals
               </div>
             </div>
           </a>
         
         
           
-          <a href="../projet/projet/" class="md-footer__link md-footer__link--next" aria-label="下一页: Project Overview">
+          <a href="../../embedded_system/basic/" class="md-footer__link md-footer__link--next" aria-label="下一页: Overview">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 下一页
               </span>
               <div class="md-ellipsis">
-                Project Overview
+                Overview
               </div>
             </div>
             <div class="md-footer__button md-icon">
