@@ -1,147 +1,205 @@
 # USART
 
-USART, Universal Synchronous and Asynchronous Receiver Transmitter, 是 MCU 里常见的串行通信外设。它可以工作在异步模式，也可以工作在同步模式。实际项目里最常用的是异步串口，也就是平时常说的 UART。
+USART 是 Universal Synchronous/Asynchronous Receiver/Transmitter 的缩写，中文常叫通用同步/异步收发器。STM32 的 USART 外设可以把软件写入数据寄存器的一个字节自动生成数据帧，从 `TX` 引脚发送出去；也可以自动接收 `RX` 引脚上的数据帧，拼接成字节后放入接收数据寄存器。
 
-## 一句话理解
+日常项目中最常用的是异步串口，也就是 UART 用法。
 
-USART/UART 像两根点对点串行线：发送端和接收端不共享时钟，双方提前约好波特率、数据位、校验位和停止位，然后按固定节拍发送一帧一帧的数据。
+## 1. 协议定位
 
-## USART 和 UART 的关系
+| 协议 | 引脚 | 双工 | 时钟 | 电平 | 设备关系 |
+| --- | --- | --- | --- | --- | --- |
+| USART/UART | `TX`、`RX` | 全双工 | 异步为主 | 单端 | 点对点 |
+| I2C | `SCL`、`SDA` | 半双工 | 同步 | 单端开漏 | 多设备 |
+| SPI | `SCK`、`MOSI`、`MISO`、`SS` | 全双工 | 同步 | 单端 | 多设备 |
+| CAN | `CAN_H`、`CAN_L` | 半双工 | 异步 | 差分 | 多设备 |
 
-- UART: Universal Asynchronous Receiver Transmitter，只支持异步串行通信。
-- USART: Universal Synchronous and Asynchronous Receiver Transmitter，既支持异步，也支持同步。
-- 很多 MCU 手册里外设叫 USART，但你配置成无外部时钟、只用 `TXD/RXD` 时，本质上就是 UART 用法。
+USART 的特点：
 
-## 基本连接
+- 引脚少，基础连接只需要 `TX`、`RX` 和 `GND`。
+- 全双工，发送和接收可以同时进行。
+- 异步模式不需要时钟线，但双方必须约定相同波特率。
+- 外设自动处理起始位、数据位、校验位和停止位。
+- 适合串口日志、上位机通信、模块通信和简单点对点控制。
 
-异步串口最常见的连接只需要两根信号线和共地：
+USART 的局限：
 
-- `TXD`: Transmit Data，发送数据。
-- `RXD`: Receive Data，接收数据。
-- `GND`: 公共参考地。
+- 没有协议级地址、仲裁和 ACK。
+- TTL 串口不适合长距离和强干扰环境。
+- 电平标准容易混淆，TTL、RS-232、RS-485 不能直接等同。
 
-连接时要交叉：
+## 2. USART、UART 和串口
 
-```text
-MCU_A TXD  ->  MCU_B RXD
-MCU_A RXD  <-  MCU_B TXD
-MCU_A GND  --  MCU_B GND
-```
+- UART 只强调异步收发。
+- USART 同时支持同步和异步。
+- 串口是工程口语，可能指 TTL UART、RS-232 或 RS-485。
 
-如果使用同步 USART，还会额外出现 `XCK` 或类似名字的时钟线；如果使用硬件流控，还会出现 `RTS/CTS`。
+STM32 外设名通常叫 USART。只要配置为异步模式，不使用外部时钟线，它的使用方式就和 UART 一样。
 
-<figure markdown="span">
-  <img src="https://developerhelp.microchip.com/xwiki/bin/download/products/mcu-mpu/32bit-mcu/sam/l10-l11/peripherals/sercom/usart-uart/WebHome/saml10-sercom-usart-uart.png?height=261&rev=1.1&width=600" alt="Microchip SAM L10 SERCOM USART UART block diagram" />
-  <figcaption>图 1：Microchip SAM L10/L11 SERCOM USART/UART 模块框图。来源：Microchip Developer Help。</figcaption>
-</figure>
+## 3. 硬件连接
 
-从框图可以看到，USART 外设内部通常包含：
-
-- 发送缓冲区和发送移位寄存器。
-- 接收移位寄存器和接收缓冲区。
-- 波特率发生器。
-- 帧格式控制和错误检测逻辑。
-- 可选 DMA、中断、硬件流控、同步时钟等功能。
-
-## 电平和接口标准
-
-USART/UART 只描述串行帧怎么发，不等于规定了电气电平。常见电平有：
-
-| 类型 | 电平特点 | 常见场景 |
-| --- | --- | --- |
-| TTL/CMOS UART | 0 V/3.3 V 或 0 V/5 V | MCU、传感器模块、USB-TTL |
-| RS-232 | 正负电压，逻辑含义与 TTL 不同 | PC 串口、老设备 |
-| RS-485 | 差分信号，适合长线和多节点 | 工业现场、Modbus RTU |
-
-所以串口调不通时，要先确认“协议参数”和“电平标准”是不是都匹配。
-
-## 异步帧格式
-
-异步串口线路空闲时通常保持高电平。一帧数据从 start bit 开始，然后发送数据位，可选 parity bit，最后用 stop bit 回到空闲状态。
-
-<figure markdown="span">
-  <img src="https://developerhelp.microchip.com/xwiki/bin/download/products/mcu-mpu/32bit-mcu/sam/l10-l11/peripherals/sercom/usart-uart/WebHome/saml10-sercom-usart-uart_frame.png?height=172&rev=1.1&width=600" alt="Microchip SAM L10 SERCOM USART UART frame format diagram" />
-  <figcaption>图 2：USART/UART 帧格式。来源：Microchip Developer Help。</figcaption>
-</figure>
-
-读这张图时按顺序看：
-
-- `IDLE`: 空闲状态，信号线保持高电平。
-- `St`: Start bit，固定为低电平，用来告诉接收端“一帧开始了”。
-- `n`: 数据位，通常是 8 位，也可能是 5 到 9 位。
-- `[P]`: 可选校验位，可以是奇校验或偶校验。
-- `Sp`: Stop bit，固定为高电平，可以是 1 位或 2 位。
-
-最常见的配置是 `8N1`：
+最小连接方式：
 
 ```text
-8 data bits, No parity, 1 stop bit
+MCU_A TX  ->  MCU_B RX
+MCU_A RX  <-  MCU_B TX
+MCU_A GND --  MCU_B GND
 ```
 
-## 波特率
+注意：
 
-波特率表示每秒传输多少个符号。对普通 UART 来说，可以近似理解为每秒传多少 bit。
+- `TX` 接对方 `RX`，`RX` 接对方 `TX`。
+- 双方必须共地。
+- 使用硬件流控时会增加 `RTS/CTS`。
+- 使用同步 USART 时会增加时钟线，例如 `CK` 或 `XCK`。
+- 连接 RS-232 或 RS-485 设备时必须加对应收发器。
 
-常见波特率：
+## 4. 电平标准
+
+USART/UART 描述的是帧格式，不规定物理电平。
+
+| 类型 | 典型电平 | 特点 | 场景 |
+| --- | --- | --- | --- |
+| TTL/CMOS UART | 0/3.3 V 或 0/5 V | 单端、短距离 | MCU、USB-TTL、传感器模块 |
+| RS-232 | 正负电压，逻辑常反相 | 需要电平转换芯片 | 老式 PC 串口、仪器 |
+| RS-485 | 差分信号 | 长距离、多节点 | 工业现场、Modbus RTU |
+
+串口不通时，要同时检查协议参数和电平标准。参数对了但电平错了，也会乱码或完全无响应。
+
+## 5. 异步数据帧
+
+<figure markdown="span">
+  <img src="https://developerhelp.microchip.com/xwiki/bin/download/products/mcu-mpu/32bit-mcu/sam/l10-l11/peripherals/sercom/usart-uart/WebHome/saml10-sercom-usart-uart_frame.png?height=172&rev=1.1&width=600" alt="USART UART asynchronous frame format" />
+  <figcaption>图 1：USART/UART 异步数据帧。来源：Microchip Developer Help。</figcaption>
+</figure>
+
+一帧数据的顺序：
+
+1. 空闲状态为高电平。
+2. 起始位 `Start bit` 为低电平，表示一帧开始。
+3. 数据位按配置发送，常见为 8 位，也可配置 9 位。
+4. 可选校验位，可以无校验、奇校验或偶校验。
+5. 停止位为高电平，长度可为 0.5、1、1.5 或 2 位。
+
+常见写法 `115200 8N1` 表示：
+
+- 波特率 115200。
+- 8 个数据位。
+- 无校验。
+- 1 个停止位。
+
+## 6. 波特率
+
+波特率表示每秒传输多少个符号。普通 UART 中可近似看作每秒 bit 数。
 
 | 波特率 | 常见用途 |
 | ---: | --- |
-| 9600 | 低速调试、老设备 |
-| 115200 | MCU 串口日志、下载器、模块通信 |
-| 1 Mbps | 板级高速串口、短线通信 |
+| 9600 | 低速模块、老设备 |
+| 115200 | 串口调试、日志输出、下载器 |
+| 921600 | 高速日志或短线传输 |
+| 1 Mbps 以上 | 板级短线高速通信 |
 
-发送端和接收端的波特率必须接近。如果偏差太大，接收端采样点会逐渐偏移，轻则乱码，重则帧错误。
+课件中提到 STM32F103 USART 自带波特率发生器，最高可达 `4.5 Mbits/s`。实际能否稳定使用还取决于时钟源、误差、线长、电平转换芯片和对端能力。
 
-## 接收采样
+## 7. STM32 USART 基本结构
 
-异步串口没有共享时钟，接收端通常这样工作：
+课件中的 USART 基本结构可以概括为：
 
-1. 平时监测 `RXD` 是否从高电平变低。
-2. 发现 start bit 后，等待半个 bit 时间，确认仍为低电平，避免误判毛刺。
-3. 之后每隔一个 bit 时间在中间位置采样一次。
-4. 采满数据位、校验位和停止位后，得到一个字符。
+```text
+CPU 写入 -> 发送数据寄存器 TDR -> 发送移位寄存器 -> TX 引脚
+RX 引脚 -> 接收移位寄存器 -> 接收数据寄存器 RDR -> CPU 读取
+PCLK -> 波特率发生器 -> 发送/接收控制器
+```
 
-因此，UART 对波特率误差、边沿质量和噪声比较敏感。
+关键模块：
 
-## 发送和接收流程
+- 发送控制器：按帧格式把数据移出。
+- 接收控制器：检测起始位，按波特率采样。
+- 数据寄存器：软件读写入口。
+- 移位寄存器：真正逐 bit 输出或输入。
+- 波特率发生器：由外设时钟分频得到采样节拍。
+- GPIO 复用：把外设信号映射到 `TX/RX` 引脚。
 
-发送流程：
+课件列出的 STM32F103C8T6 USART 资源：
 
-1. 软件把一个字节写入发送数据寄存器。
-2. 外设把数据装入移位寄存器。
-3. 自动补 start bit、数据位、校验位和 stop bit。
-4. 按波特率从 `TXD` 逐位输出。
+- `USART1`
+- `USART2`
+- `USART3`
+
+## 8. 常见配置项
+
+| 配置项 | 典型值 | 说明 |
+| --- | --- | --- |
+| 波特率 | 9600、115200 | 双方必须一致或误差足够小 |
+| 数据位 | 8/9 | 常用 8 位 |
+| 停止位 | 0.5/1/1.5/2 | 常用 1 位 |
+| 校验 | 无、奇、偶 | 双方必须一致 |
+| 模式 | 发送、接收、收发 | 常用收发同时开启 |
+| 硬件流控 | none、RTS、CTS、RTS/CTS | 防止接收端来不及处理 |
+| 中断/DMA | 可选 | 高频收发建议使用 |
+
+## 9. 发送流程
+
+轮询发送通常这样做：
+
+1. 等待发送数据寄存器空。
+2. 写入一个字节。
+3. 外设把字节送入发送移位寄存器。
+4. 外设自动补起始位、校验位和停止位。
+5. 等待发送完成，或继续写入下一个字节。
+
+常见标志：
+
+- `TXE`：发送数据寄存器空，可以写入下一个字节。
+- `TC`：Transmission Complete，最后一帧已经真正发完。
+
+RS-485 半双工方向控制时要特别注意 `TC`。如果只等 `TXE` 就关闭发送使能，最后的停止位可能还没发完。
+
+## 10. 接收流程
 
 接收流程：
 
-1. 外设从 `RXD` 检测 start bit。
-2. 按配置采样数据位和校验位。
-3. 检查 stop bit 是否正确。
-4. 把收到的数据放入接收寄存器或 FIFO。
-5. 软件通过轮询、 interrupt 或 DMA 读取数据。
+1. 外设检测 `RX` 从高变低，识别起始位。
+2. 按波特率在数据位中间采样。
+3. 采满数据位、校验位和停止位。
+4. 将结果放入接收数据寄存器。
+5. 置位接收标志，软件读取。
 
-## 常见错误
+常见错误：
 
 | 错误 | 含义 | 常见原因 |
 | --- | --- | --- |
-| Framing Error | 停止位位置不符合预期 | 波特率不匹配、噪声、接错电平 |
-| Parity Error | 校验位不匹配 | 双方校验配置不同、数据受干扰 |
-| Overrun Error | 新数据到达时旧数据还没读走 | 中断处理慢、FIFO 太小、DMA 未开 |
-| Break | 线路长时间保持低电平 | 对端发送 break、短路、接线异常 |
+| `ORE` | 溢出错误 | 上一个字节没读，新字节已到 |
+| `FE` | 帧错误 | 停止位不对，波特率或电平异常 |
+| `PE` | 校验错误 | 校验配置不一致或数据受干扰 |
 
-## 调试 checklist
+## 11. 扩展功能
 
-1. `TXD` 是否接到对方 `RXD`，`RXD` 是否接到对方 `TXD`。
+课件列出的 USART 扩展能力：
+
+- 同步模式。
+- 硬件流控制。
+- DMA。
+- 智能卡。
+- IrDA。
+- LIN。
+
+常见项目中最常用的是普通异步收发、中断接收、DMA 循环接收和 RS-485 方向控制。
+
+## 12. 调试 checklist
+
+1. `TX/RX` 是否交叉连接。
 2. 双方是否共地。
-3. 电平是否匹配：TTL、RS-232、RS-485 不能直接混接。
-4. 波特率、数据位、校验位、停止位是否完全一致。
-5. 逻辑分析仪解码是否能识别 start bit 和 stop bit。
-6. 是否误用了反相串口电平。
-7. 接收中断或 DMA 是否及时搬走数据，避免 overrun。
-8. RS-485 半双工时，收发方向控制是否覆盖完整帧。
+3. TTL、RS-232、RS-485 电平是否匹配。
+4. 波特率、数据位、校验位、停止位是否一致。
+5. GPIO 复用模式是否正确。
+6. USART 和 GPIO 时钟是否打开。
+7. 是否区分 `TXE` 与 `TC`。
+8. 是否出现 `ORE/FE/PE`。
+9. RS-485 是否在完整帧结束后再切回接收。
+10. DMA 接收是否处理了空闲中断、半满和满缓冲边界。
 
 ## 参考资料
 
+- `STM32入门教程.pptx`：USART 简介、框图、基本结构相关页。
 - [Microchip Developer Help: SAM L10/L11 SERCOM USART](https://developerhelp.microchip.com/xwiki/bin/view/products/mcu-mpu/32bit-mcu/sam/l10-l11/peripherals/sercom/usart-uart/)
-- [Microchip Developer Help: PIC32 USART Overview](https://developerhelp.microchip.com/xwiki/bin/view/products/mcu-mpu/32bit-mcu/PIC32/peripherals/usart-overview/)
 - [Microchip TB3208: Basic Operation of UART with Protocol Support](https://www.microchip.com/en-us/application-notes/tb3208)

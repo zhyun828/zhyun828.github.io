@@ -1,0 +1,3567 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Notes on embedded systems, robotics, C++, FPGA, and interview preparation.">
+      
+      
+      
+        <link rel="canonical" href="https://zhyun828.github.io/notes/protocols/can/">
+      
+      
+        <link rel="prev" href="../spi/">
+      
+      
+        <link rel="next" href="../tcp-udp-ip/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>CAN - ZY Engineering Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/home.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#can" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="ZY Engineering Notes" class="md-header__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ZY Engineering Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CAN
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal"  aria-label="深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="cyan"  aria-label="浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m3.55 19.09 1.41 1.41 1.8-1.79-1.42-1.42M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6c0-3.32-2.69-6-6-6m8 7h3v-2h-3m-2.76 7.71 1.8 1.79 1.41-1.41-1.79-1.8M20.45 5l-1.41-1.4-1.8 1.79 1.42 1.42M13 1h-2v3h2M6.76 5.39 4.96 3.6 3.55 5l1.79 1.81zM1 13h3v-2H1m12 9h-2v3h2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="ZY Engineering Notes" class="md-nav__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ZY Engineering Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通信协议
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    通信协议
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    USART
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i2c/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I2C
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SPI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAN
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 协议定位
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 总线硬件
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-can-can" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 高速 CAN 与低速 CAN
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 差分电平
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-can" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. CAN 帧类型
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. CAN 帧类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        数据帧
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        遥控帧
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        错误帧
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        过载帧
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        帧间隔
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 数据帧结构
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 位填充
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 接收采样与位时序
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. 接收采样与位时序">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        硬同步
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        再同步
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        波特率计算
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 多设备发送与仲裁
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-ackcrc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. ACK、CRC 与错误处理
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-stm32-bxcan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. STM32 bxCAN 外设
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-bxcan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. bxCAN 基本结构
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. 发送和接收配置位
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. 发送和接收配置位">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NART
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#txfp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TXFP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rflm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RFLM
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. 测试模式和工作模式
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. 中断和时间触发通信
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. 调试 checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        参考资料
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tcp-udp-ip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TCP / UDP / IP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modbus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modbus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ethernet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ethernet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LIN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../http-https/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP / HTTPS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面试
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    面试
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E5%BF%AB%E9%80%9F%E6%A3%80%E7%B4%A2%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速检索表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E5%B5%8C%E5%85%A5%E5%BC%8F%E9%9D%A2%E8%AF%95%E6%B1%87%E6%80%BB%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    嵌入式面试汇总表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E9%AB%98%E9%A2%91%E9%A2%98%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高频题深度解析
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E9%97%AE%E7%AD%94%E9%9D%A2%E8%AF%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目经历问答面试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arduino
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Arduino
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_2" id="__nav_2_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    projet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/projet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/pre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    pre
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/thoughts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thoughts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cpp
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cpp
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cpp/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cpp/opp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    opp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cpp/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cpp/cpp_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%AF%A6%E8%A7%A3_%E6%89%A9%E5%B1%95%E7%89%88/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    设计模式详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    embedded_system
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    embedded_system
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../embedded_system/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_6_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../embedded_system/TP/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TP
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    TP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FPGA
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    FPGA
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FPGA/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_8" id="__nav_2_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gazebo
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    gazebo
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gazebo/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_9" id="__nav_2_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_10" id="__nav_2_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ros
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ros
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ros/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ros/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    stm32
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stm32/stm32_knowledge_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32_knowledge_notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stm32/%E5%A4%96%E8%AE%BE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    外设
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stm32/%E5%AF%84%E5%AD%98%E5%99%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    寄存器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 协议定位
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 总线硬件
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-can-can" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 高速 CAN 与低速 CAN
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 差分电平
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-can" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. CAN 帧类型
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. CAN 帧类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        数据帧
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        遥控帧
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        错误帧
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        过载帧
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        帧间隔
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 数据帧结构
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 位填充
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 接收采样与位时序
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. 接收采样与位时序">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        硬同步
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        再同步
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        波特率计算
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 多设备发送与仲裁
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-ackcrc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. ACK、CRC 与错误处理
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-stm32-bxcan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. STM32 bxCAN 外设
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-bxcan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. bxCAN 基本结构
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. 发送和接收配置位
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. 发送和接收配置位">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NART
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#txfp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TXFP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rflm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RFLM
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. 测试模式和工作模式
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. 中断和时间触发通信
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. 调试 checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        参考资料
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="导航栏" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Notes
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    通信协议
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="can">CAN<a class="headerlink" href="#can" title="Permanent link">&para;</a></h1>
+<p>CAN 是 Controller Area Network Bus 的缩写，中文常叫控制器局域网总线。它由 BOSCH 公司开发，是一种简洁易用、传输速度快、易扩展、可靠性高的串行通信总线，广泛用于汽车、嵌入式、工业控制、电机驱动和电池管理系统。</p>
+<h2 id="1">1. 协议定位<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>协议</th>
+<th>引脚</th>
+<th>双工</th>
+<th>时钟</th>
+<th>电平</th>
+<th>设备关系</th>
+<th>场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UART</td>
+<td><code>TX</code>、<code>RX</code></td>
+<td>全双工</td>
+<td>异步</td>
+<td>单端</td>
+<td>点对点</td>
+<td>两个设备互相通信</td>
+</tr>
+<tr>
+<td>I2C</td>
+<td><code>SCL</code>、<code>SDA</code></td>
+<td>半双工</td>
+<td>同步</td>
+<td>单端</td>
+<td>多设备</td>
+<td>一个主控外挂多个模块</td>
+</tr>
+<tr>
+<td>SPI</td>
+<td><code>SCK</code>、<code>MOSI</code>、<code>MISO</code>、<code>SS</code></td>
+<td>全双工</td>
+<td>同步</td>
+<td>单端</td>
+<td>多设备</td>
+<td>一个主控外挂多个高速模块</td>
+</tr>
+<tr>
+<td>CAN</td>
+<td><code>CAN_H</code>、<code>CAN_L</code></td>
+<td>半双工</td>
+<td>异步</td>
+<td>差分</td>
+<td>多设备</td>
+<td>多个主控互相通信</td>
+</tr>
+</tbody>
+</table>
+<p>CAN 的核心特征：</p>
+<ul>
+<li>两根通信线：<code>CAN_H</code>、<code>CAN_L</code>。</li>
+<li>差分信号通信，抗干扰能力强。</li>
+<li>异步通信，无需时钟线，通信速率由设备各自约定。</li>
+<li>半双工，同一时刻只有一个设备成功发送。</li>
+<li>多设备同时发送时通过仲裁判断先后顺序。</li>
+<li>11 位或 29 位报文 ID，用于区分消息功能并决定优先级。</li>
+<li>经典 CAN 可配置 1 到 8 字节有效载荷。</li>
+<li>支持广播式数据帧和请求式遥控帧。</li>
+<li>具备 ACK、CRC、位填充、位同步和错误处理等机制。</li>
+</ul>
+<h2 id="2">2. 总线硬件<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<p>每个设备通过 CAN 收发器挂载在 CAN 总线网络上：</p>
+<div class="highlight"><pre><span></span><code>MCU / CAN 控制器 TX/RX  &lt;-&gt;  CAN 收发器  &lt;-&gt;  CAN_H / CAN_L 总线
+</code></pre></div>
+<p>硬件连接要点：</p>
+<ul>
+<li>CAN 控制器的 <code>TX/RX</code> 与 CAN 收发器相连。</li>
+<li>CAN 收发器的 <code>CAN_H/CAN_L</code> 接到总线。</li>
+<li>高速 CAN 使用闭环网络，两端添加 <code>120 Ω</code> 终端电阻。</li>
+<li>低速 CAN 可使用开环网络，其中一端添加约 <code>2.2 kΩ</code> 终端电阻。</li>
+</ul>
+<h2 id="3-can-can">3. 高速 CAN 与低速 CAN<a class="headerlink" href="#3-can-can" title="Permanent link">&para;</a></h2>
+<p>课件中的速率范围：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>标准</th>
+<th style="text-align: right;">速率</th>
+<th>典型距离</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>高速 CAN</td>
+<td>ISO 11898</td>
+<td style="text-align: right;">125 kbit/s 到 1 Mbit/s</td>
+<td>小于 40 m</td>
+</tr>
+<tr>
+<td>低速 CAN</td>
+<td>ISO 11519</td>
+<td style="text-align: right;">10 kbit/s 到 125 kbit/s</td>
+<td>小于 1 km</td>
+</tr>
+</tbody>
+</table>
+<p>距离越长，允许速率通常越低。工程上要结合线缆、节点数、分支长度、收发器能力和终端电阻决定最终速率。</p>
+<h2 id="4">4. 差分电平<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
+<p>CAN 总线用两线电压差表示数据位。</p>
+<p>高速 CAN 典型规定：</p>
+<ul>
+<li>差分电压约 <code>0 V</code> 表示逻辑 1，即隐性电平。</li>
+<li>差分电压约 <code>2 V</code> 表示逻辑 0，即显性电平。</li>
+<li>隐性时 <code>CAN_H</code> 和 <code>CAN_L</code> 都接近 <code>2.5 V</code>。</li>
+<li>显性时 <code>CAN_H</code> 约 <code>3.5 V</code>，<code>CAN_L</code> 约 <code>1.5 V</code>。</li>
+</ul>
+<p>CAN 逻辑的重要规则：显性 <code>0</code> 会覆盖隐性 <code>1</code>。</p>
+<h2 id="5-can">5. CAN 帧类型<a class="headerlink" href="#5-can" title="Permanent link">&para;</a></h2>
+<p>CAN 协议规定了 5 种类型的帧：</p>
+<table>
+<thead>
+<tr>
+<th>帧类型</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据帧</td>
+<td>发送设备主动发送数据，广播式</td>
+</tr>
+<tr>
+<td>遥控帧</td>
+<td>接收设备主动请求数据，请求式</td>
+</tr>
+<tr>
+<td>错误帧</td>
+<td>某个设备检测出错误时通知其他设备</td>
+</tr>
+<tr>
+<td>过载帧</td>
+<td>接收设备通知自己尚未做好接收准备</td>
+</tr>
+<tr>
+<td>帧间隔</td>
+<td>将数据帧和遥控帧与前面的帧分离</td>
+</tr>
+</tbody>
+</table>
+<p>实际最常用的是数据帧。遥控帧在现代项目中较少使用，很多系统更倾向周期发送或事件发送。</p>
+<h3 id="_1">数据帧<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<p>数据帧用于发送设备主动广播数据。总线上所有节点都能看到这帧数据，是否交给软件处理由接收过滤器决定。数据帧的 <code>RTR</code> 位为显性 <code>0</code>。</p>
+<h3 id="_2">遥控帧<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p>遥控帧用于接收设备主动请求某个 ID 的数据。它没有数据段，<code>RTR</code> 位为隐性 <code>1</code>，其他部分与数据帧类似。</p>
+<p>如果数据帧和遥控帧使用相同 ID 同时参与仲裁，因为数据帧的 <code>RTR=0</code>、遥控帧的 <code>RTR=1</code>，所以数据帧优先级更高。</p>
+<h3 id="_3">错误帧<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>所有节点都会监测总线数据。一旦发现位错误、填充错误、CRC 错误、格式错误或应答错误，检测到错误的节点会发送错误帧来破坏当前传输，并终止当前发送节点继续发送。</p>
+<h3 id="_4">过载帧<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>当接收方收到大量数据而来不及处理时，可以发送过载帧，延缓发送方继续发送数据，以平衡总线负载，避免数据丢失。</p>
+<h3 id="_5">帧间隔<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p>帧间隔用于把数据帧和遥控帧与前面的帧分离。课件中还强调了空闲判断：任何节点检测到连续 11 个隐性电平，就认为总线空闲，只有总线空闲时才可以开始发送数据帧或遥控帧。</p>
+<h2 id="6">6. 数据帧结构<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<p>CAN 数据帧分为标准格式和扩展格式：</p>
+<ul>
+<li>标准格式：11 位 ID。</li>
+<li>扩展格式：29 位 ID。</li>
+</ul>
+<p>CAN 1.2 时期只有标准格式。CAN 2.0 时期由于 ID 不够用，引入扩展格式，并通过 IDE 位区分标准帧和扩展帧。</p>
+<figure>
+  <img src="https://developerhelp.microchip.com/xwiki/bin/download/applications/can/overview/mechanisms/WebHome/Picture11.jpg?rev=1.1" alt="CAN data frame and bit timing example" />
+<br />
+<figcaption>图 1：CAN 数据帧与位时间示意。来源：Microchip Developer Help。</figcaption>
+</figure>
+<p>字段理解：</p>
+<ul>
+<li>SOF, Start of Frame：帧起始，表示后面一段波形是正在传输的数据位。</li>
+<li>ID, Identifier：标识符，用于区分消息功能，同时决定仲裁优先级。</li>
+<li>RTR, Remote Transmission Request：远程请求位，用来区分数据帧和遥控帧。</li>
+<li>IDE, Identifier Extension：扩展标志位，用来区分标准格式和扩展格式。</li>
+<li>SRR, Substitute Remote Request：替代 RTR，是协议升级时留下的位。</li>
+<li><code>r0/r1</code>, Reserve：保留位，为后续协议升级留空间。</li>
+<li>DLC, Data Length Code：数据长度码，指示数据段有几个字节。</li>
+<li>Data：数据段，经典 CAN 可携带 0 到 8 字节。</li>
+<li>CRC, Cyclic Redundancy Check：循环冗余校验，用于判断数据是否正确。</li>
+<li>ACK, Acknowledgement：应答位，用于判断数据有没有被至少一个接收方正确接收。</li>
+<li>CRC delimiter / ACK delimiter：界定符，用于在 CRC/ACK 前后给发送方和接收方释放总线留下时间。</li>
+<li>EOF, End of Frame：帧结束，表示数据位已经传输完毕。</li>
+</ul>
+<p>标准帧和扩展帧的优先级也有特殊规则：当标准格式 11 位 ID 与扩展格式 29 位 ID 的高 11 位相同时，标准格式优先级更高，因为扩展帧中的 <code>SRR</code> 必须始终为隐性 <code>1</code>。</p>
+<p>课件给出的典型波形示例可以这样理解：</p>
+<table>
+<thead>
+<tr>
+<th>示例</th>
+<th>帧类型</th>
+<th>ID</th>
+<th style="text-align: right;">DLC</th>
+<th>数据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>示例 1</td>
+<td>标准数据帧</td>
+<td><code>0x555</code></td>
+<td style="text-align: right;">1</td>
+<td><code>0xAA</code></td>
+</tr>
+<tr>
+<td>示例 2</td>
+<td>标准数据帧</td>
+<td><code>0x666</code></td>
+<td style="text-align: right;">2</td>
+<td><code>0x12, 0x34</code></td>
+</tr>
+<tr>
+<td>示例 3</td>
+<td>扩展数据帧</td>
+<td><code>0x0789ABCD</code></td>
+<td style="text-align: right;">1</td>
+<td><code>0x56</code></td>
+</tr>
+<tr>
+<td>示例 4</td>
+<td>标准遥控帧</td>
+<td><code>0x088</code></td>
+<td style="text-align: right;">1</td>
+<td>无数据内容</td>
+</tr>
+</tbody>
+</table>
+<h2 id="7">7. 位填充<a class="headerlink" href="#7" title="Permanent link">&para;</a></h2>
+<p>课件中的位填充规则：</p>
+<blockquote>
+<p>发送方每发送 5 个相同电平后，自动追加 1 个相反电平的填充位；接收方检测到填充位时，会自动移除填充位，恢复原始数据。</p>
+</blockquote>
+<p>作用：</p>
+<ul>
+<li>增加波形的定时信息，利于接收方再同步。</li>
+<li>防止波形长时间无变化，导致采样点漂移。</li>
+<li>将正常数据流与错误帧、过载帧区分开。</li>
+<li>保持 CAN 总线在正常数据流发送时的活跃状态。</li>
+</ul>
+<p>示意：</p>
+<div class="highlight"><pre><span></span><code>原始数据: 100000110
+实际发送: 1000001 110
+             ^ 插入相反电平填充位
+</code></pre></div>
+<h2 id="8">8. 接收采样与位时序<a class="headerlink" href="#8" title="Permanent link">&para;</a></h2>
+<p>CAN 没有时钟线。总线上的所有设备通过约定波特率确定每个数据位的时长。</p>
+<p>理想状态：</p>
+<ul>
+<li>发送方以约定位时长输出数据位。</li>
+<li>接收方以约定位时长采样总线电平。</li>
+<li>采样点最好落在数据位中心附近。</li>
+</ul>
+<p>为了灵活调整采样点位置，CAN 将每个 bit 划分为更细的时间段。</p>
+<figure>
+  <img src="https://developerhelp.microchip.com/xwiki/bin/download/applications/can/overview/mechanisms/WebHome/Picture12.png?rev=1.1" alt="CAN bit timing programmable segments" />
+<br />
+<figcaption>图 2：CAN bit time 可编程时间段。来源：Microchip Developer Help。</figcaption>
+</figure>
+<p>课件中的范围：</p>
+<ul>
+<li><code>SS = 1 Tq</code></li>
+<li><code>PTS = 1~8 Tq</code></li>
+<li><code>PBS1 = 1~8 Tq</code></li>
+<li><code>PBS2 = 2~8 Tq</code></li>
+</ul>
+<p>各段含义：</p>
+<ul>
+<li>SS：同步段，用于对齐边沿。</li>
+<li>PTS：传播时间段，补偿总线传播延迟。</li>
+<li>PBS1：相位缓冲段 1，位于采样点前。</li>
+<li>PBS2：相位缓冲段 2，位于采样点后。</li>
+<li>Tq：最小时间单位，由 CAN 控制器时钟分频得到。</li>
+</ul>
+<p>调 CAN 波特率时，不能只看 <code>500 kbit/s</code>，还要看 Tq 数量、采样点、SJW、总线长度和其他节点配置是否一致。</p>
+<p>课件中专门指出了接收采样可能遇到的问题：接收方虽然按约定的位时长采样，但如果发送方和接收方时钟有误差，误差会随着 bit 数累积，采样点逐渐偏离数据位中心。偏移严重时，接收方可能在边沿附近采样，导致读错数据。</p>
+<h3 id="_6">硬同步<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>每个设备都有自己的位时序计时周期。当某个设备率先发送报文时，其他所有接收方在收到 SOF 的下降沿后，会把自己的位时序计时周期拨到 <code>SS</code> 段位置，与发送方保持同步。</p>
+<p>硬同步特点：</p>
+<ul>
+<li>只在帧的第一个下降沿有效，也就是 SOF 下降沿。</li>
+<li>如果之后发送方和接收方时钟没有误差，后续采样点会持续对齐数据位中心附近。</li>
+</ul>
+<h3 id="_7">再同步<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<p>如果发送方或接收方时钟存在误差，后续数据边沿会逐渐偏离 <code>SS</code> 段。CAN 使用再同步补偿宽度 <code>SJW</code> 调整相位：</p>
+<ul>
+<li>边沿来得偏晚时，可以加长 <code>PBS1</code>。</li>
+<li>边沿来得偏早时，可以缩短 <code>PBS2</code>。</li>
+<li>再同步可以发生在第一个下降沿之后的每个跳变边沿。</li>
+<li>课件给出的 <code>SJW</code> 范围为 <code>1~4 Tq</code>。</li>
+</ul>
+<h3 id="_8">波特率计算<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p>课件给出的公式：</p>
+<div class="highlight"><pre><span></span><code>波特率 = 1 / 一个数据位的时长
+      = 1 / (TSS + TPTS + TPBS1 + TPBS2)
+</code></pre></div>
+<p>示例：</p>
+<div class="highlight"><pre><span></span><code>SS   = 1 Tq
+PTS  = 3 Tq
+PBS1 = 3 Tq
+PBS2 = 3 Tq
+Tq   = 0.5 us
+
+bit time = (1 + 3 + 3 + 3) * 0.5 us = 5 us
+baudrate = 1 / 5 us = 200 kbit/s
+</code></pre></div>
+<h2 id="9">9. 多设备发送与仲裁<a class="headerlink" href="#9" title="Permanent link">&para;</a></h2>
+<p>CAN 总线只有一对差分线，同一时间只能有一个设备成功发送数据。如果多个设备同时有发送需求，CAN 通过 ID 仲裁分配总线。</p>
+<p>如果当前已经有设备正在发送数据帧或遥控帧，其他节点不能再同时发送数据帧或遥控帧；它们只能等待总线重新空闲。总线空闲的判断依据是连续 11 个隐性电平。</p>
+<p>仲裁规则：</p>
+<ul>
+<li>仲裁发生在 ID 段。</li>
+<li>ID 号小的优先级高。</li>
+<li>显性 <code>0</code> 覆盖隐性 <code>1</code>。</li>
+<li>每个设备发出一个 bit 后都会读回总线电平。</li>
+<li>发送 <code>1</code> 却读回 <code>0</code> 的设备仲裁失败，转入接收状态。</li>
+<li>仲裁失败的设备等待下一次总线空闲再尝试发送。</li>
+<li>胜出的帧继续发送，不会被破坏，所以叫非破坏性仲裁。</li>
+</ul>
+<figure>
+  <img src="https://developerhelp.microchip.com/xwiki/bin/download/applications/can/overview/mechanisms/WebHome/Picture14.jpg?rev=1.1" alt="CAN arbitration example" />
+<br />
+<figcaption>图 3：CAN 仲裁示例。来源：Microchip Developer Help。</figcaption>
+</figure>
+<p>实现非破坏性仲裁需要两个基础：</p>
+<ol>
+<li>线与特性：任何设备发送显性 <code>0</code>，总线就呈现 <code>0</code>；只有所有设备都发送隐性 <code>1</code>，总线才呈现 <code>1</code>。</li>
+<li>回读机制：发送方发送每一位后读取总线，判断自己发送的电平是否真的出现在总线上。</li>
+</ol>
+<p>仲裁过程可以理解为逐 bit 比较：</p>
+<ul>
+<li>从 ID 最高位开始依次比较。</li>
+<li>如果某一位所有节点相同，仲裁继续。</li>
+<li>如果出现差异，发送隐性 <code>1</code> 且读回显性 <code>0</code> 的节点失败。</li>
+<li>仲裁失败节点立刻转入接收状态，不干扰胜出的报文。</li>
+<li>ID 越小，越早出现显性 <code>0</code>，优先级越高。</li>
+</ul>
+<p>课件中的两个优先级补充：</p>
+<ul>
+<li>数据帧和遥控帧 ID 相同时，数据帧优先级高于遥控帧。</li>
+<li>标准格式 11 位 ID 与扩展格式 29 位 ID 的高 11 位相同时，标准格式优先级高于扩展格式。</li>
+</ul>
+<h2 id="10-ackcrc">10. ACK、CRC 与错误处理<a class="headerlink" href="#10-ackcrc" title="Permanent link">&para;</a></h2>
+<p>CAN 的可靠性依赖多个机制：</p>
+<ul>
+<li>CRC 校验：检测数据帧是否被破坏。</li>
+<li>ACK 应答：至少一个接收节点正确接收后，会在 ACK 位发送显性位。</li>
+<li>位监测：发送方会检查发出的电平是否与总线一致。</li>
+<li>位填充错误检测：违反位填充规则会触发错误。</li>
+<li>错误帧：检测到错误的节点会通知其他节点。</li>
+<li>错误计数：节点根据错误情况进入 error active、error passive 或 bus-off。</li>
+</ul>
+<p>如果总线上只有一个节点，它发送数据后可能收不到 ACK，因此会不断重发或报错。调试 CAN 时至少需要另一个正常节点或分析仪参与 ACK。</p>
+<p>课件中列出的 5 种错误类型：</p>
+<table>
+<thead>
+<tr>
+<th>错误类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>位错误</td>
+<td>发送方读回的总线电平与自己发送的位不一致</td>
+</tr>
+<tr>
+<td>填充错误</td>
+<td>数据流违反连续 5 位后必须插入反相位的规则</td>
+</tr>
+<tr>
+<td>CRC 错误</td>
+<td>接收方计算出的 CRC 与帧中的 CRC 不一致</td>
+</tr>
+<tr>
+<td>格式错误</td>
+<td>固定格式位出现了不符合协议的电平</td>
+</tr>
+<tr>
+<td>应答错误</td>
+<td>发送方在 ACK 槽没有检测到任何接收方应答</td>
+</tr>
+</tbody>
+</table>
+<p>错误状态分为三类：</p>
+<ul>
+<li>主动错误状态：设备正常参与通信，检测到错误时发送主动错误帧。</li>
+<li>被动错误状态：设备仍参与通信，但检测到错误时只能发送被动错误帧。</li>
+<li>总线关闭状态：设备不能参与通信，需要软件或硬件恢复。</li>
+</ul>
+<p>每个设备内部维护发送错误计数器 <code>TEC</code> 和接收错误计数器 <code>REC</code>，根据这两个计数器的值决定自己处于哪种错误状态。发送端频繁 ACK 错误、总线短路、波特率不匹配、终端电阻错误，都可能导致计数器快速增加。</p>
+<h2 id="11-stm32-bxcan">11. STM32 bxCAN 外设<a class="headerlink" href="#11-stm32-bxcan" title="Permanent link">&para;</a></h2>
+<p>课件中对 STM32 bxCAN 的描述：</p>
+<ul>
+<li>STM32 内置 bxCAN 外设，即 CAN 控制器。</li>
+<li>支持 CAN 2.0A 和 CAN 2.0B。</li>
+<li>可以自动发送 CAN 报文。</li>
+<li>可以按照过滤器自动接收指定 CAN 报文。</li>
+<li>程序只需处理报文数据，不必关注总线电平细节。</li>
+<li>波特率最高可达 <code>1 Mbit/s</code>。</li>
+<li>3 个可配置优先级的发送邮箱。</li>
+<li>2 个 3 级深度的接收 FIFO。</li>
+<li>14 个过滤器组，互联型可到 28 个。</li>
+<li>支持时间触发通信、自动离线恢复、自动唤醒、禁止自动重传。</li>
+<li>接收 FIFO 溢出处理方式可配置。</li>
+<li>发送优先级可配置。</li>
+<li>支持双 CAN 模式。</li>
+</ul>
+<p>STM32F103C8T6 课件列出的 CAN 资源：</p>
+<ul>
+<li><code>CAN1</code></li>
+</ul>
+<h2 id="12-bxcan">12. bxCAN 基本结构<a class="headerlink" href="#12-bxcan" title="Permanent link">&para;</a></h2>
+<p>课件中的结构可以概括为：</p>
+<div class="highlight"><pre><span></span><code>CPU 写入 -&gt; 发送邮箱 0/1/2 -&gt; 发送控制器 -&gt; CAN_TX -&gt; 收发器
+收发器 -&gt; CAN_RX -&gt; 接收控制器 -&gt; 过滤器 -&gt; FIFO0/FIFO1 -&gt; CPU 读取
+</code></pre></div>
+<p>关键概念：</p>
+<ul>
+<li>发送邮箱：缓存待发送报文。</li>
+<li>接收 FIFO：缓存已接收报文。</li>
+<li>过滤器：决定哪些 ID 的报文进入 FIFO。</li>
+<li>控制器：负责位时序、仲裁、ACK、错误处理。</li>
+<li>收发器：负责 TX/RX 逻辑电平与 <code>CAN_H/CAN_L</code> 差分电平转换。</li>
+</ul>
+<h2 id="13">13. 发送和接收配置位<a class="headerlink" href="#13" title="Permanent link">&para;</a></h2>
+<h3 id="nart">NART<a class="headerlink" href="#nart" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>NART = 1</code>：关闭自动重传，报文只发送 1 次。</li>
+<li><code>NART = 0</code>：自动重传，发送失败时硬件会一直重传直到成功。</li>
+</ul>
+<h3 id="txfp">TXFP<a class="headerlink" href="#txfp" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>TXFP = 1</code>：发送优先级由发送请求顺序决定。</li>
+<li><code>TXFP = 0</code>：发送优先级由报文标识符决定，ID 小者优先。</li>
+</ul>
+<h3 id="rflm">RFLM<a class="headerlink" href="#rflm" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>RFLM = 1</code>：接收 FIFO 锁定，溢出时新报文被丢弃。</li>
+<li><code>RFLM = 0</code>：禁用 FIFO 锁定，溢出时最后收到的报文被新报文覆盖。</li>
+</ul>
+<h2 id="14">14. 测试模式和工作模式<a class="headerlink" href="#14" title="Permanent link">&para;</a></h2>
+<p>测试模式：</p>
+<ul>
+<li>静默模式：用于分析 CAN 总线活动，不会对总线造成影响。</li>
+<li>环回模式：用于自测试，发送报文可以在 <code>CAN_TX</code> 引脚检测到。</li>
+<li>环回静默模式：用于热自测试，自测同时不影响总线。</li>
+</ul>
+<p>工作模式：</p>
+<ul>
+<li>初始化模式：用于配置 CAN 外设，禁止报文收发。</li>
+<li>正常模式：配置完成后进入正常收发。</li>
+<li>睡眠模式：低功耗，可软件唤醒或硬件自动唤醒。</li>
+</ul>
+<p>自动唤醒：</p>
+<ul>
+<li><code>AWUM = 1</code>：检测到 CAN 总线活动后，硬件自动清零 <code>SLEEP</code> 并唤醒。</li>
+<li><code>AWUM = 0</code>：需要软件清零 <code>SLEEP</code> 唤醒。</li>
+</ul>
+<h2 id="15">15. 中断和时间触发通信<a class="headerlink" href="#15" title="Permanent link">&para;</a></h2>
+<p>课件中 CAN 外设占用 4 个专用中断向量：</p>
+<ul>
+<li>发送中断：发送邮箱空时产生。</li>
+<li>FIFO0 中断：收到报文、FIFO0 满、FIFO0 溢出时产生。</li>
+<li>FIFO1 中断：收到报文、FIFO1 满、FIFO1 溢出时产生。</li>
+<li>状态改变错误中断：出错、唤醒、进入睡眠时产生。</li>
+</ul>
+<p>时间触发通信 TTCM：</p>
+<ul>
+<li><code>TTCM = 1</code>：开启时间触发通信。</li>
+<li>CAN 外设内置 16 位计数器，按 CAN 位时间自增，溢出归零。</li>
+<li>发送帧 SOF 时，硬件捕获计数器值到发送邮箱 <code>TIME</code>。</li>
+<li>接收帧 SOF 时，硬件捕获计数器值到接收 FIFO <code>TIME</code>。</li>
+<li>若发送邮箱配置 <code>TGT=1</code>，可以把时间戳写入数据段最后两个字节，使用此功能时 <code>DLC</code> 必须为 8。</li>
+</ul>
+<h2 id="16-checklist">16. 调试 checklist<a class="headerlink" href="#16-checklist" title="Permanent link">&para;</a></h2>
+<ol>
+<li><code>CAN_H/CAN_L</code> 是否接反。</li>
+<li>是否有合适终端电阻，高速 CAN 两端通常各 <code>120 Ω</code>。</li>
+<li>所有节点波特率、Tq、采样点、SJW 是否一致。</li>
+<li>收发器供电、待机或使能引脚是否正确。</li>
+<li>是否至少有一个其他节点 ACK。</li>
+<li>ID 过滤器是否把目标帧过滤掉。</li>
+<li>是否有节点 bus-off 或一直发送 error frame。</li>
+<li><code>NART</code> 是否导致失败后不重传。</li>
+<li>FIFO 是否溢出，<code>RFLM</code> 策略是否符合需求。</li>
+<li>分支线过长或总线过长时，是否需要降低速率。</li>
+</ol>
+<h2 id="_9">参考资料<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>CAN总线入门教程.pptx</code>：CAN 简介、硬件电路、电平标准、帧格式、位填充、采样、位时序、仲裁、STM32 bxCAN 相关页。</li>
+<li><code>STM32入门教程.pptx</code>：通信接口对比相关页。</li>
+<li><a href="https://developerhelp.microchip.com/xwiki/bin/view/applications/can/overview/">Microchip Developer Help: Learn Controller Area Network (CAN) Protocol</a></li>
+<li><a href="https://developerhelp.microchip.com/xwiki/bin/view/applications/can/overview/mechanisms/">Microchip Developer Help: Core Protocol Mechanisms of CAN</a></li>
+<li><a href="https://www.ti.com/lit/an/sloa101b/sloa101b.pdf">Texas Instruments: Introduction to the Controller Area Network (CAN)</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../spi/" class="md-footer__link md-footer__link--prev" aria-label="上一页: SPI">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                SPI
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../tcp-udp-ip/" class="md-footer__link md-footer__link--next" aria-label="下一页: TCP / UDP / IP">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                TCP / UDP / IP
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tabs", "navigation.indexes", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,152 +1,419 @@
 # CAN
 
-CAN, Controller Area Network, 是一种面向汽车和工业控制场景的多节点、实时、抗干扰串行通信协议。它常用于 ECU、传感器、执行器、电机控制器、电池管理系统和工业设备之间的通信。
+CAN 是 Controller Area Network Bus 的缩写，中文常叫控制器局域网总线。它由 BOSCH 公司开发，是一种简洁易用、传输速度快、易扩展、可靠性高的串行通信总线，广泛用于汽车、嵌入式、工业控制、电机驱动和电池管理系统。
 
-## 一句话理解
+## 1. 协议定位
 
-CAN 像一条所有节点共享的差分总线：谁都可以尝试发送，但消息 ID 决定优先级；优先级高的消息会在仲裁中胜出，其他节点自动退让，不会破坏已经发送的数据。
+| 协议 | 引脚 | 双工 | 时钟 | 电平 | 设备关系 | 场景 |
+| --- | --- | --- | --- | --- | --- | --- |
+| UART | `TX`、`RX` | 全双工 | 异步 | 单端 | 点对点 | 两个设备互相通信 |
+| I2C | `SCL`、`SDA` | 半双工 | 同步 | 单端 | 多设备 | 一个主控外挂多个模块 |
+| SPI | `SCK`、`MOSI`、`MISO`、`SS` | 全双工 | 同步 | 单端 | 多设备 | 一个主控外挂多个高速模块 |
+| CAN | `CAN_H`、`CAN_L` | 半双工 | 异步 | 差分 | 多设备 | 多个主控互相通信 |
 
-## 总线结构
+CAN 的核心特征：
 
-CAN 通常使用两根差分线：
+- 两根通信线：`CAN_H`、`CAN_L`。
+- 差分信号通信，抗干扰能力强。
+- 异步通信，无需时钟线，通信速率由设备各自约定。
+- 半双工，同一时刻只有一个设备成功发送。
+- 多设备同时发送时通过仲裁判断先后顺序。
+- 11 位或 29 位报文 ID，用于区分消息功能并决定优先级。
+- 经典 CAN 可配置 1 到 8 字节有效载荷。
+- 支持广播式数据帧和请求式遥控帧。
+- 具备 ACK、CRC、位填充、位同步和错误处理等机制。
 
-- `CAN_H`
-- `CAN_L`
+## 2. 总线硬件
 
-每个节点一般由 MCU、CAN 控制器和 CAN 收发器组成。现代 MCU 可能内置 CAN 控制器，但仍然需要外部 CAN transceiver 接到物理总线上。
+每个设备通过 CAN 收发器挂载在 CAN 总线网络上：
+
+```text
+MCU / CAN 控制器 TX/RX  <->  CAN 收发器  <->  CAN_H / CAN_L 总线
+```
+
+硬件连接要点：
+
+- CAN 控制器的 `TX/RX` 与 CAN 收发器相连。
+- CAN 收发器的 `CAN_H/CAN_L` 接到总线。
+- 高速 CAN 使用闭环网络，两端添加 `120 Ω` 终端电阻。
+- 低速 CAN 可使用开环网络，其中一端添加约 `2.2 kΩ` 终端电阻。
+
+## 3. 高速 CAN 与低速 CAN
+
+课件中的速率范围：
+
+| 类型 | 标准 | 速率 | 典型距离 |
+| --- | --- | ---: | --- |
+| 高速 CAN | ISO 11898 | 125 kbit/s 到 1 Mbit/s | 小于 40 m |
+| 低速 CAN | ISO 11519 | 10 kbit/s 到 125 kbit/s | 小于 1 km |
+
+距离越长，允许速率通常越低。工程上要结合线缆、节点数、分支长度、收发器能力和终端电阻决定最终速率。
+
+## 4. 差分电平
+
+CAN 总线用两线电压差表示数据位。
+
+高速 CAN 典型规定：
+
+- 差分电压约 `0 V` 表示逻辑 1，即隐性电平。
+- 差分电压约 `2 V` 表示逻辑 0，即显性电平。
+- 隐性时 `CAN_H` 和 `CAN_L` 都接近 `2.5 V`。
+- 显性时 `CAN_H` 约 `3.5 V`，`CAN_L` 约 `1.5 V`。
+
+CAN 逻辑的重要规则：显性 `0` 会覆盖隐性 `1`。
+
+## 5. CAN 帧类型
+
+CAN 协议规定了 5 种类型的帧：
+
+| 帧类型 | 用途 |
+| --- | --- |
+| 数据帧 | 发送设备主动发送数据，广播式 |
+| 遥控帧 | 接收设备主动请求数据，请求式 |
+| 错误帧 | 某个设备检测出错误时通知其他设备 |
+| 过载帧 | 接收设备通知自己尚未做好接收准备 |
+| 帧间隔 | 将数据帧和遥控帧与前面的帧分离 |
+
+实际最常用的是数据帧。遥控帧在现代项目中较少使用，很多系统更倾向周期发送或事件发送。
+
+### 数据帧
+
+数据帧用于发送设备主动广播数据。总线上所有节点都能看到这帧数据，是否交给软件处理由接收过滤器决定。数据帧的 `RTR` 位为显性 `0`。
+
+### 遥控帧
+
+遥控帧用于接收设备主动请求某个 ID 的数据。它没有数据段，`RTR` 位为隐性 `1`，其他部分与数据帧类似。
+
+如果数据帧和遥控帧使用相同 ID 同时参与仲裁，因为数据帧的 `RTR=0`、遥控帧的 `RTR=1`，所以数据帧优先级更高。
+
+### 错误帧
+
+所有节点都会监测总线数据。一旦发现位错误、填充错误、CRC 错误、格式错误或应答错误，检测到错误的节点会发送错误帧来破坏当前传输，并终止当前发送节点继续发送。
+
+### 过载帧
+
+当接收方收到大量数据而来不及处理时，可以发送过载帧，延缓发送方继续发送数据，以平衡总线负载，避免数据丢失。
+
+### 帧间隔
+
+帧间隔用于把数据帧和遥控帧与前面的帧分离。课件中还强调了空闲判断：任何节点检测到连续 11 个隐性电平，就认为总线空闲，只有总线空闲时才可以开始发送数据帧或遥控帧。
+
+## 6. 数据帧结构
+
+CAN 数据帧分为标准格式和扩展格式：
+
+- 标准格式：11 位 ID。
+- 扩展格式：29 位 ID。
+
+CAN 1.2 时期只有标准格式。CAN 2.0 时期由于 ID 不够用，引入扩展格式，并通过 IDE 位区分标准帧和扩展帧。
 
 <figure markdown="span">
-  <img src="https://developerhelp.microchip.com/xwiki/bin/download/applications/can/overview/WebHome/Picture1.jpg?height=334&rev=1.1&width=500" alt="Controller Area Network CAN overview graphic" />
-  <figcaption>图 1：CAN 网络概念图。来源：Microchip Developer Help。</figcaption>
+  <img src="https://developerhelp.microchip.com/xwiki/bin/download/applications/can/overview/mechanisms/WebHome/Picture11.jpg?rev=1.1" alt="CAN data frame and bit timing example" />
+  <figcaption>图 1：CAN 数据帧与位时间示意。来源：Microchip Developer Help。</figcaption>
 </figure>
 
-硬件层面要特别注意：
+字段理解：
 
-- 总线两端通常需要终端电阻，典型值为 `120 Ω`。
-- CAN 是差分通信，抗共模干扰能力比单端信号更好。
-- 节点不是按地址通信，而是所有节点都接收总线上的帧，再根据 ID 过滤。
+- SOF, Start of Frame：帧起始，表示后面一段波形是正在传输的数据位。
+- ID, Identifier：标识符，用于区分消息功能，同时决定仲裁优先级。
+- RTR, Remote Transmission Request：远程请求位，用来区分数据帧和遥控帧。
+- IDE, Identifier Extension：扩展标志位，用来区分标准格式和扩展格式。
+- SRR, Substitute Remote Request：替代 RTR，是协议升级时留下的位。
+- `r0/r1`, Reserve：保留位，为后续协议升级留空间。
+- DLC, Data Length Code：数据长度码，指示数据段有几个字节。
+- Data：数据段，经典 CAN 可携带 0 到 8 字节。
+- CRC, Cyclic Redundancy Check：循环冗余校验，用于判断数据是否正确。
+- ACK, Acknowledgement：应答位，用于判断数据有没有被至少一个接收方正确接收。
+- CRC delimiter / ACK delimiter：界定符，用于在 CRC/ACK 前后给发送方和接收方释放总线留下时间。
+- EOF, End of Frame：帧结束，表示数据位已经传输完毕。
 
-## 显性位和隐性位
+标准帧和扩展帧的优先级也有特殊规则：当标准格式 11 位 ID 与扩展格式 29 位 ID 的高 11 位相同时，标准格式优先级更高，因为扩展帧中的 `SRR` 必须始终为隐性 `1`。
 
-CAN 总线有两个逻辑状态：
+课件给出的典型波形示例可以这样理解：
 
-| CAN 术语 | 逻辑值 | 总线含义 |
-| --- | ---: | --- |
-| Dominant | 0 | 显性位，会覆盖隐性位 |
-| Recessive | 1 | 隐性位，只有没人发送显性位时才保持 |
+| 示例 | 帧类型 | ID | DLC | 数据 |
+| --- | --- | --- | ---: | --- |
+| 示例 1 | 标准数据帧 | `0x555` | 1 | `0xAA` |
+| 示例 2 | 标准数据帧 | `0x666` | 2 | `0x12, 0x34` |
+| 示例 3 | 扩展数据帧 | `0x0789ABCD` | 1 | `0x56` |
+| 示例 4 | 标准遥控帧 | `0x088` | 1 | 无数据内容 |
 
-这和 I2C 的“线与”思想很像：如果一个节点发送隐性位 `1`，但读回总线是显性位 `0`，说明有更高优先级的节点正在发送。
+## 7. 位填充
 
-## 仲裁
+课件中的位填充规则：
 
-CAN 仲裁发生在消息 ID 阶段。多个节点可以同时开始发送，它们一边发送 ID，一边监测总线。
+> 发送方每发送 5 个相同电平后，自动追加 1 个相反电平的填充位；接收方检测到填充位时，会自动移除填充位，恢复原始数据。
+
+作用：
+
+- 增加波形的定时信息，利于接收方再同步。
+- 防止波形长时间无变化，导致采样点漂移。
+- 将正常数据流与错误帧、过载帧区分开。
+- 保持 CAN 总线在正常数据流发送时的活跃状态。
+
+示意：
+
+```text
+原始数据: 100000110
+实际发送: 1000001 110
+             ^ 插入相反电平填充位
+```
+
+## 8. 接收采样与位时序
+
+CAN 没有时钟线。总线上的所有设备通过约定波特率确定每个数据位的时长。
+
+理想状态：
+
+- 发送方以约定位时长输出数据位。
+- 接收方以约定位时长采样总线电平。
+- 采样点最好落在数据位中心附近。
+
+为了灵活调整采样点位置，CAN 将每个 bit 划分为更细的时间段。
+
+<figure markdown="span">
+  <img src="https://developerhelp.microchip.com/xwiki/bin/download/applications/can/overview/mechanisms/WebHome/Picture12.png?rev=1.1" alt="CAN bit timing programmable segments" />
+  <figcaption>图 2：CAN bit time 可编程时间段。来源：Microchip Developer Help。</figcaption>
+</figure>
+
+课件中的范围：
+
+- `SS = 1 Tq`
+- `PTS = 1~8 Tq`
+- `PBS1 = 1~8 Tq`
+- `PBS2 = 2~8 Tq`
+
+各段含义：
+
+- SS：同步段，用于对齐边沿。
+- PTS：传播时间段，补偿总线传播延迟。
+- PBS1：相位缓冲段 1，位于采样点前。
+- PBS2：相位缓冲段 2，位于采样点后。
+- Tq：最小时间单位，由 CAN 控制器时钟分频得到。
+
+调 CAN 波特率时，不能只看 `500 kbit/s`，还要看 Tq 数量、采样点、SJW、总线长度和其他节点配置是否一致。
+
+课件中专门指出了接收采样可能遇到的问题：接收方虽然按约定的位时长采样，但如果发送方和接收方时钟有误差，误差会随着 bit 数累积，采样点逐渐偏离数据位中心。偏移严重时，接收方可能在边沿附近采样，导致读错数据。
+
+### 硬同步
+
+每个设备都有自己的位时序计时周期。当某个设备率先发送报文时，其他所有接收方在收到 SOF 的下降沿后，会把自己的位时序计时周期拨到 `SS` 段位置，与发送方保持同步。
+
+硬同步特点：
+
+- 只在帧的第一个下降沿有效，也就是 SOF 下降沿。
+- 如果之后发送方和接收方时钟没有误差，后续采样点会持续对齐数据位中心附近。
+
+### 再同步
+
+如果发送方或接收方时钟存在误差，后续数据边沿会逐渐偏离 `SS` 段。CAN 使用再同步补偿宽度 `SJW` 调整相位：
+
+- 边沿来得偏晚时，可以加长 `PBS1`。
+- 边沿来得偏早时，可以缩短 `PBS2`。
+- 再同步可以发生在第一个下降沿之后的每个跳变边沿。
+- 课件给出的 `SJW` 范围为 `1~4 Tq`。
+
+### 波特率计算
+
+课件给出的公式：
+
+```text
+波特率 = 1 / 一个数据位的时长
+      = 1 / (TSS + TPTS + TPBS1 + TPBS2)
+```
+
+示例：
+
+```text
+SS   = 1 Tq
+PTS  = 3 Tq
+PBS1 = 3 Tq
+PBS2 = 3 Tq
+Tq   = 0.5 us
+
+bit time = (1 + 3 + 3 + 3) * 0.5 us = 5 us
+baudrate = 1 / 5 us = 200 kbit/s
+```
+
+## 9. 多设备发送与仲裁
+
+CAN 总线只有一对差分线，同一时间只能有一个设备成功发送数据。如果多个设备同时有发送需求，CAN 通过 ID 仲裁分配总线。
+
+如果当前已经有设备正在发送数据帧或遥控帧，其他节点不能再同时发送数据帧或遥控帧；它们只能等待总线重新空闲。总线空闲的判断依据是连续 11 个隐性电平。
+
+仲裁规则：
+
+- 仲裁发生在 ID 段。
+- ID 号小的优先级高。
+- 显性 `0` 覆盖隐性 `1`。
+- 每个设备发出一个 bit 后都会读回总线电平。
+- 发送 `1` 却读回 `0` 的设备仲裁失败，转入接收状态。
+- 仲裁失败的设备等待下一次总线空闲再尝试发送。
+- 胜出的帧继续发送，不会被破坏，所以叫非破坏性仲裁。
 
 <figure markdown="span">
   <img src="https://developerhelp.microchip.com/xwiki/bin/download/applications/can/overview/mechanisms/WebHome/Picture14.jpg?rev=1.1" alt="CAN arbitration example" />
-  <figcaption>图 2：CAN 仲裁示例。来源：Microchip Developer Help。</figcaption>
+  <figcaption>图 3：CAN 仲裁示例。来源：Microchip Developer Help。</figcaption>
 </figure>
 
-读这张图时注意：
+实现非破坏性仲裁需要两个基础：
 
-- ID 越小，优先级通常越高，因为更早出现 dominant `0`。
-- 发送 recessive `1` 的节点如果读到 dominant `0`，说明自己输掉仲裁。
-- 输掉仲裁的节点停止发送，等待下一次总线空闲再重试。
-- 胜出的帧继续发送，不需要重传，因此 CAN 仲裁是非破坏性的。
+1. 线与特性：任何设备发送显性 `0`，总线就呈现 `0`；只有所有设备都发送隐性 `1`，总线才呈现 `1`。
+2. 回读机制：发送方发送每一位后读取总线，判断自己发送的电平是否真的出现在总线上。
 
-## 数据帧结构
+仲裁过程可以理解为逐 bit 比较：
 
-CAN 标准帧和扩展帧的 ID 长度不同：
+- 从 ID 最高位开始依次比较。
+- 如果某一位所有节点相同，仲裁继续。
+- 如果出现差异，发送隐性 `1` 且读回显性 `0` 的节点失败。
+- 仲裁失败节点立刻转入接收状态，不干扰胜出的报文。
+- ID 越小，越早出现显性 `0`，优先级越高。
 
-- 标准帧：11-bit identifier。
-- 扩展帧：29-bit identifier。
+课件中的两个优先级补充：
 
-经典 CAN 的数据场最多 8 byte；CAN FD 支持更长数据场和更高数据阶段速率。
+- 数据帧和遥控帧 ID 相同时，数据帧优先级高于遥控帧。
+- 标准格式 11 位 ID 与扩展格式 29 位 ID 的高 11 位相同时，标准格式优先级高于扩展格式。
 
-<figure markdown="span">
-  <img src="https://developerhelp.microchip.com/xwiki/bin/download/applications/can/overview/mechanisms/WebHome/Picture11.jpg?rev=1.1" alt="CAN bit timing data frame diagram" />
-  <figcaption>图 3：CAN 数据帧和 bit timing 示意。来源：Microchip Developer Help。</figcaption>
-</figure>
+## 10. ACK、CRC 与错误处理
 
-从图里可以抓住三类信息：
+CAN 的可靠性依赖多个机制：
 
-- Identifier: 决定消息语义和仲裁优先级。
-- Data: 实际载荷，经典 CAN 为 0 到 8 byte。
-- ACK: 接收节点用于确认帧已经被至少一个节点正确接收。
+- CRC 校验：检测数据帧是否被破坏。
+- ACK 应答：至少一个接收节点正确接收后，会在 ACK 位发送显性位。
+- 位监测：发送方会检查发出的电平是否与总线一致。
+- 位填充错误检测：违反位填充规则会触发错误。
+- 错误帧：检测到错误的节点会通知其他节点。
+- 错误计数：节点根据错误情况进入 error active、error passive 或 bus-off。
 
-## 位时序
+如果总线上只有一个节点，它发送数据后可能收不到 ACK，因此会不断重发或报错。调试 CAN 时至少需要另一个正常节点或分析仪参与 ACK。
 
-CAN 的一个 bit 会被拆成多个时间段，用来补偿传播延迟和同步误差。
+课件中列出的 5 种错误类型：
 
-<figure markdown="span">
-  <img src="https://developerhelp.microchip.com/xwiki/bin/download/applications/can/overview/mechanisms/WebHome/Picture12.png?rev=1.1" alt="CAN bit time programmable segments" />
-  <figcaption>图 4：CAN bit time 可编程时间段。来源：Microchip Developer Help。</figcaption>
-</figure>
+| 错误类型 | 含义 |
+| --- | --- |
+| 位错误 | 发送方读回的总线电平与自己发送的位不一致 |
+| 填充错误 | 数据流违反连续 5 位后必须插入反相位的规则 |
+| CRC 错误 | 接收方计算出的 CRC 与帧中的 CRC 不一致 |
+| 格式错误 | 固定格式位出现了不符合协议的电平 |
+| 应答错误 | 发送方在 ACK 槽没有检测到任何接收方应答 |
 
-常见时间段：
+错误状态分为三类：
 
-- Sync Seg: 用来同步边沿。
-- Prop Seg: 补偿总线传播延迟。
-- Phase Seg 1: 采样点前的相位缓冲。
-- Phase Seg 2: 采样点后的相位缓冲。
+- 主动错误状态：设备正常参与通信，检测到错误时发送主动错误帧。
+- 被动错误状态：设备仍参与通信，但检测到错误时只能发送被动错误帧。
+- 总线关闭状态：设备不能参与通信，需要软件或硬件恢复。
 
-调 CAN 波特率时，不能只看 “500 kbit/s” 这个数，还要看 sample point、SJW、TQ 分配是否和网络长度、收发器、其他节点兼容。
+每个设备内部维护发送错误计数器 `TEC` 和接收错误计数器 `REC`，根据这两个计数器的值决定自己处于哪种错误状态。发送端频繁 ACK 错误、总线短路、波特率不匹配、终端电阻错误，都可能导致计数器快速增加。
 
-## ACK 与错误处理
+## 11. STM32 bxCAN 外设
 
-CAN 有比较强的错误处理机制：
+课件中对 STM32 bxCAN 的描述：
 
-- 发送端会监测自己发出的位是否和总线一致。
-- 接收端会检查 CRC、格式、位填充、ACK 等。
-- 发现错误时，节点会发送 error frame。
-- 错误计数过高的节点会进入 error passive，严重时进入 bus-off。
+- STM32 内置 bxCAN 外设，即 CAN 控制器。
+- 支持 CAN 2.0A 和 CAN 2.0B。
+- 可以自动发送 CAN 报文。
+- 可以按照过滤器自动接收指定 CAN 报文。
+- 程序只需处理报文数据，不必关注总线电平细节。
+- 波特率最高可达 `1 Mbit/s`。
+- 3 个可配置优先级的发送邮箱。
+- 2 个 3 级深度的接收 FIFO。
+- 14 个过滤器组，互联型可到 28 个。
+- 支持时间触发通信、自动离线恢复、自动唤醒、禁止自动重传。
+- 接收 FIFO 溢出处理方式可配置。
+- 发送优先级可配置。
+- 支持双 CAN 模式。
 
-ACK 的含义：
+STM32F103C8T6 课件列出的 CAN 资源：
 
-- 发送节点在 ACK slot 发送 recessive。
-- 任意正确接收该帧的节点会在 ACK slot 发送 dominant。
-- 如果发送端没有看到 ACK，说明没有节点确认该帧，通常会重发。
+- `CAN1`
 
-## 位填充
+## 12. bxCAN 基本结构
 
-为了保证总线上有足够边沿用于同步，CAN 使用 bit stuffing：
+课件中的结构可以概括为：
 
-- 连续 5 个相同电平后，发送端插入 1 个相反电平。
-- 接收端解析时会去掉这个 stuff bit。
-- 如果接收端发现位填充规则被破坏，会报 stuffing error。
+```text
+CPU 写入 -> 发送邮箱 0/1/2 -> 发送控制器 -> CAN_TX -> 收发器
+收发器 -> CAN_RX -> 接收控制器 -> 过滤器 -> FIFO0/FIFO1 -> CPU 读取
+```
 
-## 过滤器
+关键概念：
 
-CAN 是广播式总线：每个节点都会看到所有帧。为了减少 CPU 处理压力，CAN 控制器通常提供 ID filter 和 mask。
+- 发送邮箱：缓存待发送报文。
+- 接收 FIFO：缓存已接收报文。
+- 过滤器：决定哪些 ID 的报文进入 FIFO。
+- 控制器：负责位时序、仲裁、ACK、错误处理。
+- 收发器：负责 TX/RX 逻辑电平与 `CAN_H/CAN_L` 差分电平转换。
 
-- Filter: 指定希望接收的 ID 模式。
-- Mask: 指定哪些 ID bit 必须比较，哪些 bit 可以忽略。
+## 13. 发送和接收配置位
 
-这也是为什么 CAN 设计时要先规划 ID：ID 不只是“地址”，还包含优先级、消息类型和过滤策略。
+### NART
 
-## 调试 checklist
+- `NART = 1`：关闭自动重传，报文只发送 1 次。
+- `NART = 0`：自动重传，发送失败时硬件会一直重传直到成功。
 
-1. 总线两端是否各有 `120 Ω` 终端电阻。
-2. `CAN_H` 和 `CAN_L` 是否接反。
-3. 所有节点波特率、sample point、CAN FD 配置是否一致。
-4. 收发器供电和待机/使能引脚是否正确。
-5. 是否有节点一直 error frame 或 bus-off。
-6. 是否只有一个节点在线导致没有 ACK。
-7. ID filter 是否把目标帧过滤掉了。
-8. 总线长度和分支长度是否适合当前速率。
+### TXFP
 
-## 和 USART / SPI / I2C 的直观区别
+- `TXFP = 1`：发送优先级由发送请求顺序决定。
+- `TXFP = 0`：发送优先级由报文标识符决定，ID 小者优先。
 
-| 对比项 | CAN | USART/UART | SPI | I2C |
-| --- | --- | --- | --- | --- |
-| 拓扑 | 多节点共享总线 | 点对点为主 | 主从结构 | 多目标共享总线 |
-| 物理层 | 差分 CAN_H/CAN_L | 取决于 TTL/RS-232/RS-485 | 单端板级信号 | 开漏上拉 |
-| 仲裁 | 有，按 ID 优先级 | 无 | 无 | 有，按地址/位仲裁 |
-| ACK | 有协议级 ACK | 无 | 无 | 有 ACK/NACK |
-| 典型场景 | 汽车、工业控制 | 调试、模块通信 | 高速板级外设 | 低速板级外设 |
+### RFLM
+
+- `RFLM = 1`：接收 FIFO 锁定，溢出时新报文被丢弃。
+- `RFLM = 0`：禁用 FIFO 锁定，溢出时最后收到的报文被新报文覆盖。
+
+## 14. 测试模式和工作模式
+
+测试模式：
+
+- 静默模式：用于分析 CAN 总线活动，不会对总线造成影响。
+- 环回模式：用于自测试，发送报文可以在 `CAN_TX` 引脚检测到。
+- 环回静默模式：用于热自测试，自测同时不影响总线。
+
+工作模式：
+
+- 初始化模式：用于配置 CAN 外设，禁止报文收发。
+- 正常模式：配置完成后进入正常收发。
+- 睡眠模式：低功耗，可软件唤醒或硬件自动唤醒。
+
+自动唤醒：
+
+- `AWUM = 1`：检测到 CAN 总线活动后，硬件自动清零 `SLEEP` 并唤醒。
+- `AWUM = 0`：需要软件清零 `SLEEP` 唤醒。
+
+## 15. 中断和时间触发通信
+
+课件中 CAN 外设占用 4 个专用中断向量：
+
+- 发送中断：发送邮箱空时产生。
+- FIFO0 中断：收到报文、FIFO0 满、FIFO0 溢出时产生。
+- FIFO1 中断：收到报文、FIFO1 满、FIFO1 溢出时产生。
+- 状态改变错误中断：出错、唤醒、进入睡眠时产生。
+
+时间触发通信 TTCM：
+
+- `TTCM = 1`：开启时间触发通信。
+- CAN 外设内置 16 位计数器，按 CAN 位时间自增，溢出归零。
+- 发送帧 SOF 时，硬件捕获计数器值到发送邮箱 `TIME`。
+- 接收帧 SOF 时，硬件捕获计数器值到接收 FIFO `TIME`。
+- 若发送邮箱配置 `TGT=1`，可以把时间戳写入数据段最后两个字节，使用此功能时 `DLC` 必须为 8。
+
+## 16. 调试 checklist
+
+1. `CAN_H/CAN_L` 是否接反。
+2. 是否有合适终端电阻，高速 CAN 两端通常各 `120 Ω`。
+3. 所有节点波特率、Tq、采样点、SJW 是否一致。
+4. 收发器供电、待机或使能引脚是否正确。
+5. 是否至少有一个其他节点 ACK。
+6. ID 过滤器是否把目标帧过滤掉。
+7. 是否有节点 bus-off 或一直发送 error frame。
+8. `NART` 是否导致失败后不重传。
+9. FIFO 是否溢出，`RFLM` 策略是否符合需求。
+10. 分支线过长或总线过长时，是否需要降低速率。
 
 ## 参考资料
 
+- `CAN总线入门教程.pptx`：CAN 简介、硬件电路、电平标准、帧格式、位填充、采样、位时序、仲裁、STM32 bxCAN 相关页。
+- `STM32入门教程.pptx`：通信接口对比相关页。
 - [Microchip Developer Help: Learn Controller Area Network (CAN) Protocol](https://developerhelp.microchip.com/xwiki/bin/view/applications/can/overview/)
 - [Microchip Developer Help: Core Protocol Mechanisms of CAN](https://developerhelp.microchip.com/xwiki/bin/view/applications/can/overview/mechanisms/)
 - [Texas Instruments: Introduction to the Controller Area Network (CAN)](https://www.ti.com/lit/an/sloa101b/sloa101b.pdf)
-- [Texas Instruments: CAN Physical Layer and Termination Guide](https://www.ti.com/lit/an/slla270/slla270.pdf)

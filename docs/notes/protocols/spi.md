@@ -1,128 +1,234 @@
 # SPI
 
-SPI, Serial Peripheral Interface, 是一种同步、全双工、常用于板级外设连接的串行总线。它常用于 Flash、屏幕、ADC、DAC、传感器、无线模块等器件。
+SPI 是 Serial Peripheral Interface 的缩写，是 Motorola 开发的一种同步串行总线。它常用于 MCU 与 Flash、OLED、ADC、DAC、传感器、无线模块等板级外设通信。
 
-## 一句话理解
+## 1. 协议定位
 
-SPI 像一组由主设备控制节拍的移位寄存器：主设备拉低片选，输出时钟，MOSI 和 MISO 两条数据线可以同时一位一位移出和移入。
+| 协议 | 引脚 | 双工 | 时钟 | 电平 | 设备关系 |
+| --- | --- | --- | --- | --- | --- |
+| USART | `TX`、`RX` | 全双工 | 异步 | 单端 | 点对点 |
+| I2C | `SCL`、`SDA` | 半双工 | 同步 | 单端 | 多设备 |
+| SPI | `SCK`、`MOSI`、`MISO`、`SS` | 全双工 | 同步 | 单端 | 多设备 |
+| CAN | `CAN_H`、`CAN_L` | 半双工 | 异步 | 差分 | 多设备 |
 
-## 基本信号
+SPI 的特点：
 
-标准 4 线 SPI 常见信号：
+- 四根通信线，典型全双工。
+- 同步通信，时钟由主机输出。
+- 支持一主多从。
+- 没有统一地址字段，从设备由 `SS/CS` 片选线选择。
+- 协议本身没有 ACK，读写是否成功要靠器件状态寄存器或上层逻辑判断。
 
-| 信号 | 方向 | 作用 |
+## 2. 基本信号
+
+| 信号 | 含义 | 方向 |
 | --- | --- | --- |
-| `SCLK` / `CLK` | 主设备输出 | 串行时钟 |
-| `MOSI` / `SDO` | 主到从 | 主设备发送，从设备接收 |
-| `MISO` / `SDI` | 从到主 | 从设备发送，主设备接收 |
-| `CS` / `SS` / `NSS` | 主设备输出 | 片选，通常低有效 |
+| `SCK` / `SCLK` | 串行时钟 | 主机输出 |
+| `MOSI` | Master Output Slave Input | 主机输出，从机输入 |
+| `MISO` | Master Input Slave Output | 从机输出，主机输入 |
+| `SS` / `CS` / `NSS` | 片选 | 主机输出，通常低有效 |
 
 <figure markdown="span">
-  <img src="https://www.analog.com/en/_/media/images/analog-dialogue/en/volume-52/number-3/articles/introduction-to-spi-interface/205973_fig_01.svg?la=en&rev=f03bda0b77f94822a05ed2e7e8f8070d&sc_lang=en" alt="SPI configuration with main and subnode" />
+  <img src="https://www.analog.com/en/_/media/images/analog-dialogue/en/volume-52/number-3/articles/introduction-to-spi-interface/205973_fig_01.svg?la=en&rev=f03bda0b77f94822a05ed2e7e8f8070d&sc_lang=en" alt="SPI single main and subnode connection" />
   <figcaption>图 1：SPI 单主单从连接。来源：Analog Devices。</figcaption>
 </figure>
 
-这张图体现了 SPI 的几个特点：
+课件中的硬件连接要点：
 
-- 主设备负责产生 `SCLK`。
-- 主设备通过 `CS` 选择当前通信的从设备。
-- `MOSI` 和 `MISO` 是两条独立数据线，因此可以全双工。
-- 从设备未被选中时，通常需要释放或高阻其 `MISO`，避免多个从设备争用总线。
+- 所有 SPI 设备的 `SCK`、`MOSI`、`MISO` 分别连在一起。
+- 主机另外引出多条 `SS` 控制线，分别接到各从机的 `SS` 引脚。
+- 输出引脚配置为推挽输出。
+- 输入引脚配置为浮空输入或上拉输入。
 
-## 一次传输怎么开始
+## 3. 起始和终止
 
-典型 SPI 传输流程：
+SPI 的起始和终止通常由片选线控制：
 
-1. 主设备把目标从设备的 `CS` 拉低。
-2. 主设备输出 `SCLK`。
-3. 每个时钟周期，主设备在 `MOSI` 上移出一位，同时从设备在 `MISO` 上移出一位。
-4. 传完约定的 bit 数或字节数后，主设备停止时钟。
-5. 主设备把 `CS` 拉高，结束本次传输。
+- 起始条件：`SS` 从高电平切换到低电平。
+- 终止条件：`SS` 从低电平切换到高电平。
 
-SPI 没有地址字段，也没有标准 ACK。能不能读到正确数据，取决于片选、时钟模式、命令格式和时序是否符合从设备手册。
+一次完整传输中，`SS` 应覆盖命令、地址、数据等完整阶段。很多 SPI 器件会在 `SS` 拉高时结束内部状态机，如果中途抬高 `SS`，后续字节可能被当成新命令。
 
-## CPOL 和 CPHA
+## 4. 移位交换
 
-SPI 最容易出错的是时钟模式。时钟模式由两个参数决定：
+SPI 的核心是交换一个字节：
 
-- `CPOL`: Clock Polarity，时钟空闲电平。
-- `CPHA`: Clock Phase，在哪个边沿采样、哪个边沿移位。
+1. 主机拉低目标从机 `SS`。
+2. 主机产生 `SCK`。
+3. 主机在 `MOSI` 上逐 bit 输出。
+4. 从机在 `MISO` 上逐 bit 输出。
+5. 每个时钟边沿完成移入或移出。
+6. 8 个时钟后，双方完成一个字节交换。
 
-四种常见模式：
+即使主机只是读从机，也必须继续输出时钟。很多时候主机会发送 dummy byte，例如 `0xFF` 或 `0x00`，只是为了产生时钟。
 
-| SPI Mode | CPOL | CPHA | 空闲时钟 | 常见描述 |
+## 5. CPOL 和 CPHA
+
+SPI 有四种模式，取决于 `CPOL` 和 `CPHA`：
+
+- `CPOL`：Clock Polarity，时钟空闲电平。
+- `CPHA`：Clock Phase，第一个边沿采样还是第二个边沿采样。
+
+<figure markdown="span">
+  <img src="https://www.analog.com/en/_/media/images/analog-dialogue/en/volume-52/number-3/articles/introduction-to-spi-interface/205973_fig_02.png?la=en&rev=c19f52f7fc014bbda34df6bf7c2a18fe&sc_lang=en" alt="SPI mode 0 timing diagram" />
+  <figcaption>图 2：SPI Mode 0 时序，CPOL=0、CPHA=0。来源：Analog Devices。</figcaption>
+</figure>
+
+| Mode | CPOL | CPHA | 空闲 SCK | 数据行为 |
 | ---: | ---: | ---: | --- | --- |
-| 0 | 0 | 0 | 低电平 | 上升沿采样，下降沿移位 |
-| 1 | 0 | 1 | 低电平 | 下降沿采样，上升沿移位 |
-| 2 | 1 | 0 | 高电平 | 下降沿采样，上升沿移位 |
-| 3 | 1 | 1 | 高电平 | 上升沿采样，下降沿移位 |
+| 0 | 0 | 0 | 低电平 | 第一个边沿移入，第二个边沿移出 |
+| 1 | 0 | 1 | 低电平 | 第一个边沿移出，第二个边沿移入 |
+| 2 | 1 | 0 | 高电平 | 第一个边沿移入，第二个边沿移出 |
+| 3 | 1 | 1 | 高电平 | 第一个边沿移出，第二个边沿移入 |
 
-## Mode 0 时序
+如果模式配错，常见现象是读到的数据错位、固定为 `0xFF/0x00`，或者逻辑分析仪换一种模式才能解出正确数据。
 
-<figure markdown="span">
-  <img src="https://www.analog.com/en/_/media/images/analog-dialogue/en/volume-52/number-3/articles/introduction-to-spi-interface/205973_fig_02.png?la=en&rev=c19f52f7fc014bbda34df6bf7c2a18fe&sc_lang=en" alt="SPI Mode 0 timing diagram" />
-  <figcaption>图 2：SPI Mode 0，CPOL=0，CPHA=0。来源：Analog Devices。</figcaption>
-</figure>
-
-读这张图时重点看：
-
-- `nCS` 低电平期间，本次 SPI 传输有效。
-- `CLK` 空闲为低电平。
-- 橙色虚线表示采样边沿，蓝色虚线表示移位边沿。
-- Mode 0 中通常在上升沿采样，在下降沿准备下一位数据。
-- `MOSI` 和 `MISO` 同时工作，主设备发送 `0xA5` 的同时也能收到 `0xBA`。
-
-## Mode 3 时序
+图 2 中 `nCS` 拉低后传输开始，`CLK` 空闲为低电平；橙色虚线是采样边沿，蓝色虚线是移位边沿。Mode 0 下通常在第一个边沿采样，在第二个边沿准备下一位数据。
 
 <figure markdown="span">
-  <img src="https://www.analog.com/en/_/media/images/analog-dialogue/en/volume-52/number-3/articles/introduction-to-spi-interface/205973_fig_05.jpg?la=en&rev=2f0a41bece7d4bb481a4f647ea1e2caa&sc_lang=en" alt="SPI Mode 3 timing diagram" />
-  <figcaption>图 3：SPI Mode 3，CPOL=1，CPHA=1。来源：Analog Devices。</figcaption>
+  <img src="https://www.analog.com/en/_/media/images/analog-dialogue/en/volume-52/number-3/articles/introduction-to-spi-interface/205973_fig_05.jpg?la=en&rev=2f0a41bece7d4bb481a4f647ea1e2caa&sc_lang=en" alt="SPI mode 3 timing diagram" />
+  <figcaption>图 3：SPI Mode 3 时序，CPOL=1、CPHA=1。来源：Analog Devices。</figcaption>
 </figure>
 
-Mode 3 与 Mode 0 的区别：
+Mode 3 与 Mode 0 的主要区别是 `SCK` 空闲电平为高，采样边沿也随相位定义改变。调试时如果看到波形但数据错误，优先核对从设备手册要求的 SPI Mode。
 
-- `CLK` 空闲为高电平。
-- 数据采样仍发生在图中橙色虚线标出的边沿。
-- 如果 MCU 配成 Mode 0，而从设备要求 Mode 3，逻辑分析仪可能能看到波形，但读出的数据会错位或完全错误。
-
-## 多从设备连接
-
-多个 SPI 从设备通常共享 `SCLK/MOSI/MISO`，但每个从设备有独立 `CS`。
+## 6. 多从机连接
 
 <figure markdown="span">
-  <img src="https://www.analog.com/en/_/media/images/analog-dialogue/en/volume-52/number-3/articles/introduction-to-spi-interface/205973_fig_06.svg?la=en&rev=5cb89587a840475fb17a3f64aae449e6&sc_lang=en" alt="Multi-subnode SPI configuration" />
-  <figcaption>图 4：SPI 多从设备常规连接方式。来源：Analog Devices。</figcaption>
+  <img src="https://www.analog.com/en/_/media/images/analog-dialogue/en/volume-52/number-3/articles/introduction-to-spi-interface/205973_fig_06.svg?la=en&rev=5cb89587a840475fb17a3f64aae449e6&sc_lang=en" alt="SPI multiple subnodes" />
+  <figcaption>图 4：SPI 多从设备连接方式。来源：Analog Devices。</figcaption>
 </figure>
 
-注意点：
+注意：
 
-- 任意时刻通常只拉低一个从设备的 `CS`。
-- 如果两个从设备同时驱动 `MISO`，数据会冲突。
-- 从设备越多，主设备需要的片选 GPIO 越多。
-- 有些器件支持 daisy-chain，但不是所有 SPI 器件都支持。
+- `SCK/MOSI/MISO` 可以共用。
+- 每个从机需要独立 `SS/CS`。
+- 任意时刻一般只允许一个从机被选中。
+- 未选中的从机应释放 `MISO`，否则会总线冲突。
+- 从设备越多，主机占用 GPIO 越多。
 
-## 和 I2C / USART 的直观区别
+## 7. SPI Flash 典型时序
 
-| 对比项 | SPI | I2C | USART/UART |
-| --- | --- | --- | --- |
-| 时钟 | 有，由主设备输出 | 有，由 controller 输出 | 异步模式无共享时钟 |
-| 数据方向 | MOSI/MISO 分开，全双工 | SDA 双向，半双工语义 | TX/RX 分开，全双工 |
-| 设备选择 | 片选线 | 地址 | 点对点为主 |
-| 标准 ACK | 无 | 有 ACK/NACK | 无协议级 ACK |
-| 典型速度 | 较高 | 中低速 | 中低速到高速 |
+课件使用 W25Q64 讲 SPI Flash。常见命令包括：
 
-## 调试 checklist
+- 写使能：`0x06`
+- 指定地址写：`0x02 + Address[23:0] + Data`
+- 指定地址读：`0x03 + Address[23:0] + Data`
 
-1. 从设备手册要求的 SPI Mode 是多少。
-2. `CS` 是否低有效，是否覆盖完整命令和数据阶段。
-3. 字节顺序是 MSB first 还是 LSB first。
-4. 命令、地址、dummy byte、读写方向是否符合手册。
-5. `MISO` 是否被多个从设备同时驱动。
-6. 时钟频率是否超过从设备最大值。
-7. 线太长或频率太高时，上升沿/下降沿是否变差。
-8. 逻辑分析仪解码设置是否与 CPOL/CPHA 一致。
+### 发送指令
+
+```text
+CS low
+MOSI: 0x06
+CS high
+```
+
+用于 W25Qxx 的写使能。没有地址和数据阶段。
+
+### 指定地址写
+
+```text
+CS low
+MOSI: 0x02
+MOSI: Address[23:0]
+MOSI: Data...
+CS high
+```
+
+Flash 写入通常还需要先擦除，且页写不能跨页随意写。
+
+### 指定地址读
+
+```text
+CS low
+MOSI: 0x03
+MOSI: Address[23:0]
+MISO: Data...
+CS high
+```
+
+读阶段主机仍要持续产生时钟；主机可能在 `MOSI` 上发送 dummy byte。
+
+## 8. W25Q64 课件要点
+
+W25Qxx 系列是低成本、小型化、使用简单的非易失性存储器。
+
+用途：
+
+- 数据存储。
+- 字库存储。
+- 固件程序存储。
+
+课件列出的参数：
+
+- 存储介质：Nor Flash。
+- W25Q64 容量：`64 Mbit / 8 MByte`。
+- 地址宽度：24 位。
+- 普通 SPI 时钟频率可到 `80 MHz`。
+- Dual SPI 可到 `160 MHz`。
+- Quad SPI 可到 `320 MHz`。
+
+W25Q64 常见引脚：
+
+| 引脚 | 功能 |
+| --- | --- |
+| `VCC/GND` | 电源，常见 2.7 到 3.6 V |
+| `CS` | SPI 片选 |
+| `CLK` | SPI 时钟 |
+| `DI` | MOSI，主机输出从机输入 |
+| `DO` | MISO，从机输出主机输入 |
+| `WP` | 写保护 |
+| `HOLD` | 数据保持 |
+
+## 9. STM32 SPI 外设
+
+课件对 STM32 硬件 SPI 的描述：
+
+- 硬件自动执行时钟生成和数据收发。
+- 可配置 8 位或 16 位数据帧。
+- 可配置高位先行或低位先行。
+- 时钟频率可由 `fPCLK / (2, 4, 8, 16, 32, 64, 128, 256)` 分频得到。
+- 支持主模式或从模式。
+- 可精简为半双工或单工通信。
+- 支持 DMA。
+- 兼容 I2S 协议。
+- STM32F103C8T6 硬件 SPI 资源：`SPI1`、`SPI2`。
+
+基本结构：
+
+```text
+PCLK -> 波特率发生器 -> SCK
+发送数据寄存器 TDR -> 移位寄存器 -> MOSI
+MISO -> 移位寄存器 -> 接收数据寄存器 RDR
+GPIO 开关控制 -> SCK/MOSI/MISO/SS
+```
+
+## 10. 常见状态标志
+
+| 标志 | 含义 | 调试用途 |
+| --- | --- | --- |
+| `TXE` | 发送缓冲区空 | 可以写入下一个数据 |
+| `RXNE` | 接收缓冲区非空 | 可以读取收到的数据 |
+| `BSY` | SPI 忙 | 判断最后一个 bit 是否真正发完 |
+| `OVR` | 溢出 | 接收数据未及时读取 |
+
+SPI 是全双工移位：发送一个字节的同时通常也会收到一个字节。因此只写不读也可能造成接收溢出。
+
+## 11. 调试 checklist
+
+1. SPI Mode 是否和从设备手册一致。
+2. `SS/CS` 是否低有效，是否覆盖完整命令。
+3. `SCK/MOSI/MISO` 是否接错。
+4. 数据位宽是 8 位还是 16 位。
+5. 高位先行还是低位先行。
+6. 分频后的 `SCK` 是否超过从设备最大时钟。
+7. 读数据时是否继续发送 dummy byte 以产生时钟。
+8. 多从机时是否有多个设备同时驱动 `MISO`。
+9. Flash 写入前是否发送写使能，写前是否擦除。
+10. 是否等待 `BSY=0` 后再拉高 `CS`。
 
 ## 参考资料
 
+- `STM32入门教程.pptx`：SPI 通信、硬件电路、Mode 0 到 Mode 3、W25Q64、STM32 SPI 外设相关页。
 - [Analog Devices: Introduction to SPI Interface](https://www.analog.com/en/resources/analog-dialogue/articles/2018/08/13/15/31/introduction-to-spi-interface.html)
 - [Analog Devices AN-1248: SPI Interface](https://www.analog.com/media/en/technical-documentation/application-notes/AN-1248.pdf)

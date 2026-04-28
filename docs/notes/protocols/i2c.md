@@ -1,275 +1,273 @@
-# I2C
+# I2C / IIC
 
-I2C, Inter-Integrated Circuit, 是一种常见的板级低速同步串行总线。它只需要两根信号线：
+I2C 是 Inter-Integrated Circuit 的缩写，也常写作 IIC，是 Philips 开发的一种通用数据总线。它只需要 `SCL` 和 `SDA` 两根通信线，适合 MCU 挂接多个低速外设，例如 OLED、EEPROM、RTC、MPU6050、温湿度传感器和电源管理芯片。
 
-- `SCL`: Serial Clock, 串行时钟线
-- `SDA`: Serial Data, 串行数据线
+## 1. 协议定位
 
-它适合把 MCU 与传感器、EEPROM、RTC、电源管理芯片、IO 扩展器等器件连接在同一块 PCB 上。
+| 协议 | 引脚 | 双工 | 时钟 | 电平 | 设备关系 |
+| --- | --- | --- | --- | --- | --- |
+| USART | `TX`、`RX` | 全双工 | 异步 | 单端 | 点对点 |
+| I2C | `SCL`、`SDA` | 半双工 | 同步 | 单端开漏 | 多设备 |
+| SPI | `SCK`、`MOSI`、`MISO`、`SS` | 全双工 | 同步 | 单端 | 多设备 |
+| CAN | `CAN_H`、`CAN_L` | 半双工 | 异步 | 差分 | 多设备 |
 
-## 一句话理解
+I2C 的特点：
 
-I2C 像一条共享的两线小总线：控制器先发起通信，目标器件根据地址响应，双方按时钟节拍一位一位传数据。
+- 两根线：`SCL` 是时钟线，`SDA` 是数据线。
+- 同步通信：时钟由主机提供。
+- 半双工：同一根 `SDA` 线上分时发送和接收。
+- 带数据应答：每 8 bit 后有 ACK/NACK。
+- 支持多设备：一主多从、多主多从都可以。
 
-## 总线连接
+## 2. 硬件连接
 
-I2C 的 `SCL` 和 `SDA` 都是开漏或开集电极结构，器件只能主动把线拉低，不能主动输出高电平。总线恢复高电平依靠上拉电阻。
+所有 I2C 设备的 `SCL` 连在一起，`SDA` 连在一起。设备的 `SCL/SDA` 引脚需要配置成开漏输出，外部各加一个上拉电阻。
 
 <figure markdown="span">
-  <img src="https://www.analog.com/en/_/media/analog/en/app-note-images/an-1159/fig1.png?la=en&rev=ce58b4f274a14605b1bacf89dce7f733" alt="I2C bus connection with SDA, SCL, pull-up resistors, controller, and target devices" />
+  <img src="https://www.analog.com/en/_/media/analog/en/app-note-images/an-1159/fig1.png?la=en&rev=ce58b4f274a14605b1bacf89dce7f733" alt="I2C bus connection" />
   <figcaption>图 1：I2C 典型连接方式。来源：Analog Devices AN-1159。</figcaption>
 </figure>
 
-这个结构带来几个重要结论：
+课件中的硬件要点：
 
-- 总线空闲时，`SCL` 和 `SDA` 都应为高电平。
-- 上拉电阻负责把总线拉回高电平；器件只负责把线拉低。
-- 任意器件拉低总线，其他器件都会看到低电平，因此可以实现 ACK、仲裁和时钟拉伸。
-- 板上多个模块如果都带上拉电阻，会形成并联等效电阻，需要检查总上拉是否过小。
+- `SCL` 和 `SDA` 都要上拉。
+- 上拉电阻常用 `4.7 kΩ` 左右。
+- 总线空闲时，两根线都应为高电平。
+- 器件只能主动拉低总线，不能主动输出高电平。
 
-## 角色
+开漏加上拉的意义：
 
-新版官方文档更倾向使用 controller 和 target：
+- 避免多个设备同时输出不同电平造成短路。
+- 支持 ACK、仲裁和时钟拉伸。
+- 释放总线时由上拉电阻恢复高电平。
 
-- Controller: 发起通信、产生时钟、发送 START 和 STOP 的一方。
-- Target: 被地址选中的器件，按 controller 的节拍收发数据。
+## 3. 角色和地址
 
-老资料里常见 master 和 slave，阅读芯片手册时两套说法经常同时出现。
+I2C 通信中常见角色：
 
-## 信号规则
+- 主机：产生 `SCL`，发起 START/STOP，指定目标地址。
+- 从机：被地址选中后，在主机时钟节拍下收发数据。
 
-I2C 的数据有效性规则非常关键：
+常见地址模式：
 
-- `SCL` 为高电平时，`SDA` 必须保持稳定，此时接收方采样数据。
-- `SCL` 为低电平时，`SDA` 才允许变化。
-- 例外是 START 和 STOP 条件：它们都是在 `SCL` 为高电平时改变 `SDA`。
+- 7 位地址：最常见。
+- 10 位地址：STM32 硬件 I2C 支持，但普通模块较少使用。
+
+很多芯片手册会同时出现 7 位地址和 8 位读写地址：
+
+```text
+7-bit address: 0x68
+write address: 0xD0 = 0x68 << 1 | 0
+read  address: 0xD1 = 0x68 << 1 | 1
+```
+
+MPU6050 课件示例：
+
+- `AD0 = 0`：I2C 从机地址 `1101000`
+- `AD0 = 1`：I2C 从机地址 `1101001`
+
+## 4. 时序基本单元
 
 <figure markdown="span">
-  <img src="https://www.analog.com/en/_/media/analog/en/app-note-images/an-1159/fig7.png?la=en&rev=7734fecefb9a4e4faecf8b7e0857e389" alt="I2C-compatible interface timing diagram" />
+  <img src="https://www.analog.com/en/_/media/analog/en/app-note-images/an-1159/fig7.png?la=en&rev=7734fecefb9a4e4faecf8b7e0857e389" alt="I2C compatible interface timing diagram" />
   <figcaption>图 2：I2C 兼容接口时序图。来源：Analog Devices AN-1159。</figcaption>
 </figure>
 
-看这张时序图时，重点抓三件事：
+关键规则：
 
-- `SDA` 的数据位在 `SCL` 高电平期间被认为有效，所以不要在 `SCL` 高电平时随意改变数据。
-- `tLOW` 和 `tHIGH` 分别约束时钟低电平和高电平持续时间，决定某个速率模式下的最低时序要求。
-- `tSU` 和 `tH` 分别表示建立时间和保持时间：数据要在采样前提前稳定，采样后也要保持一小段时间。
+- START：`SCL` 高电平期间，`SDA` 从高变低。
+- STOP：`SCL` 高电平期间，`SDA` 从低变高。
+- 数据变化：只能在 `SCL` 低电平期间改变 `SDA`。
+- 数据采样：接收方在 `SCL` 高电平期间读取 `SDA`。
+- 数据顺序：高位先行，通常先发 `B7`，最后发 `B0`。
 
-## START 和 STOP
+读这张时序图时，重点看三个时间关系：
 
-I2C 总线空闲时，`SCL` 和 `SDA` 都为高电平。Controller 要开始一次传输时发送 START；要结束一次传输时发送 STOP。
+- `tSU;STA` 和 `tHD;STA` 描述 START 条件前后的建立/保持时间。
+- `tSU;DAT` 和 `tHD;DAT` 描述数据位在采样前后需要保持稳定的时间。
+- `tSU;STO` 描述 STOP 条件成立前 `SDA` 需要满足的建立时间。
+
+START 和 STOP 的波形可以单独看下面两张官方图：
 
 <figure markdown="span">
-  <img src="https://www.analog.com/en/_/media/analog/en/app-note-images/an-1159/fig3.png?la=en&rev=68da20c28259472bab23d0d2a13fa322" alt="I2C start condition timing diagram" />
+  <img src="https://www.analog.com/en/_/media/analog/en/app-note-images/an-1159/fig3.png?la=en&rev=68da20c28259472bab23d0d2a13fa322" alt="I2C start condition timing" />
   <figcaption>图 3：START 条件，SCL 为高时 SDA 从高变低。来源：Analog Devices AN-1159。</figcaption>
 </figure>
 
-START 条件的判定方式：
-
-- `SCL = 1`
-- `SDA` 从 `1` 跳变到 `0`
-- 表示 controller 获取总线并开始一次传输
-
 <figure markdown="span">
-  <img src="https://www.analog.com/en/_/media/analog/en/app-note-images/an-1159/fig4.png?la=en&rev=a7f280ab2d61401e941adf2db816955d" alt="I2C stop condition timing diagram" />
+  <img src="https://www.analog.com/en/_/media/analog/en/app-note-images/an-1159/fig4.png?la=en&rev=a7f280ab2d61401e941adf2db816955d" alt="I2C stop condition timing" />
   <figcaption>图 4：STOP 条件，SCL 为高时 SDA 从低变高。来源：Analog Devices AN-1159。</figcaption>
 </figure>
 
-STOP 条件的判定方式：
+## 5. 发送一个字节
 
-- `SCL = 1`
-- `SDA` 从 `0` 跳变到 `1`
-- 表示 controller 释放总线，本次传输结束
+发送一个字节的过程：
 
-## 一帧数据长什么样
+1. `SCL` 低电平期间，发送方把数据位放到 `SDA`。
+2. 发送方释放或拉高 `SCL`。
+3. 接收方在 `SCL` 高电平期间读取该 bit。
+4. 重复 8 次，从高位到低位。
+5. 发送方释放 `SDA`，等待接收方在第 9 个时钟给 ACK/NACK。
 
-常见 7 位地址模式下，controller 首先发送：
+`SCL` 高电平期间 `SDA` 不允许随意变化，否则可能被解释为 START 或 STOP。
 
-```text
-START + 7-bit address + R/W + ACK + data byte + ACK/NACK + STOP
-```
+## 6. 接收一个字节
 
-其中：
+接收一个字节时，方向反过来：
 
-- 地址后面的 `R/W` 位为 `0` 表示写，为 `1` 表示读。
-- 每 8 位数据后面都有第 9 个时钟，用来传 ACK 或 NACK。
-- ACK 是接收方把 `SDA` 拉低；NACK 是接收方释放 `SDA`，由上拉电阻保持高电平。
+1. 主机释放 `SDA`。
+2. 从机在 `SCL` 低电平期间把数据位放到 `SDA`。
+3. 主机在 `SCL` 高电平期间读取。
+4. 8 bit 后，主机发送 ACK 或 NACK。
+
+接收之前释放 `SDA` 很关键。如果主机一直拉低 `SDA`，从机无法发送高电平。
+
+## 7. ACK 和 NACK
+
+每 8 bit 数据后，第 9 个时钟用于应答。
+
+| SDA 电平 | 含义 |
+| --- | --- |
+| 0 | ACK，应答 |
+| 1 | NACK，非应答 |
+
+典型场景：
+
+- 主机发送地址后，从机拉低 `SDA` 表示地址匹配并 ACK。
+- 主机发送数据后，从机 ACK 表示接收成功。
+- 主机读取最后一个字节后发送 NACK，表示不再继续读取。
+
+如果地址后直接 NACK，优先检查地址、上拉、电源、接线和地址选择脚。
+
+## 8. 典型传输序列
 
 <figure markdown="span">
-  <img src="https://www.analog.com/en/_/media/analog/en/app-note-images/an-1159/fig2.png?la=en&rev=77516e94d1314983b857cf45a414e6aa" alt="I2C transfer sequence diagram" />
+  <img src="https://www.analog.com/en/_/media/analog/en/app-note-images/an-1159/fig2.png?la=en&rev=77516e94d1314983b857cf45a414e6aa" alt="I2C transfer sequence" />
   <figcaption>图 5：I2C 完整传输序列。来源：Analog Devices AN-1159。</figcaption>
 </figure>
 
-这张图可以按顺序读：
-
-- 起点是 START，说明总线从空闲进入传输状态。
-- Controller 先发目标地址和读写方向位。
-- 目标器件如果识别到自己的地址，会在 ACK 位把 `SDA` 拉低。
-- 后面每个数据字节都是 8 位数据加 1 位 ACK/NACK。
-- 最后用 STOP 释放总线。
-
-## ACK 和 NACK
-
-ACK/NACK 是 I2C 调试时最重要的观察点之一。每发送 8 位后，第 9 个时钟周期留给接收方回应。
+图中的 `S` 是 START，`P` 是 STOP，地址和数据都按 8 位一组传输，每组后面跟 1 位 ACK/NACK。课件中讲的“指定地址写、当前地址读、指定地址读”都可以看作这个基本序列的组合。
 
 <figure markdown="span">
-  <img src="https://www.analog.com/en/_/media/analog/en/app-note-images/an-1159/fig5.png?la=en&rev=c35dac0e94b74de4a6a310fcab3eb1dc" alt="I2C ACK and NACK timing diagram" />
+  <img src="https://www.analog.com/en/_/media/analog/en/app-note-images/an-1159/fig5.png?la=en&rev=c35dac0e94b74de4a6a310fcab3eb1dc" alt="I2C ACK and NACK timing" />
   <figcaption>图 6：ACK 与 NACK 时序。来源：Analog Devices AN-1159。</figcaption>
 </figure>
 
-判断方法：
+ACK/NACK 判断：
 
-- ACK: 第 9 个时钟期间，接收方把 `SDA` 拉低。
-- NACK: 第 9 个时钟期间，接收方释放 `SDA`，线上保持高电平。
+- ACK：第 9 个时钟周期内，接收方把 `SDA` 拉低。
+- NACK：第 9 个时钟周期内，接收方释放 `SDA`，总线保持高电平。
 
-常见 NACK 原因：
+<figure markdown="span">
+  <img src="https://www.analog.com/en/_/media/analog/en/app-note-images/an-1159/fig6.png?la=en&rev=89db3cda0c534f3f9821c15398541848" alt="I2C repeated start timing" />
+  <figcaption>图 7：Repeated START 时序。来源：Analog Devices AN-1159。</figcaption>
+</figure>
 
-- 地址错误，目标器件没有响应。
-- 器件没有上电或接线错误。
-- 读写方向位不符合当前操作。
-- 寄存器地址或命令不被器件接受。
-- 读多字节时，controller 用 NACK 表示最后一个字节已经读完。
-
-## 写操作
-
-写寄存器通常分三步：
-
-1. Controller 发送目标器件地址，`R/W=0`。
-2. Controller 发送要写入的寄存器地址或命令字。
-3. Controller 发送数据字节。
+### 指定地址写
 
 ```text
 START
-  target_address + W
-  register_address
-  data
+Slave Address + W
+ACK
+Reg Address
+ACK
+Data
+ACK
 STOP
 ```
 
-如果要连续写多个字节，很多器件会在内部自动递增寄存器地址，但是否支持要看具体芯片手册。
+用途：对指定从机的指定寄存器写入数据。
 
-## 读操作与 Repeated START
-
-读寄存器常见流程是“先写寄存器地址，再重新开始读数据”：
+### 当前地址读
 
 ```text
 START
-  target_address + W
-  register_address
-REPEATED START
-  target_address + R
-  data
+Slave Address + R
+ACK
+Data
 NACK
 STOP
 ```
 
-<figure markdown="span">
-  <img src="https://www.analog.com/en/_/media/analog/en/app-note-images/an-1159/fig6.png?la=en&rev=89db3cda0c534f3f9821c15398541848" alt="I2C repeated start timing diagram" />
-  <figcaption>图 7：Repeated START 条件。来源：Analog Devices AN-1159。</figcaption>
-</figure>
+用途：从从机当前内部地址指针读取数据。
 
-Repeated START 的意义是：不发送 STOP、不释放总线，直接从一个传输阶段切换到另一个传输阶段。
-
-典型寄存器读取为什么需要它：
-
-- 第一个阶段是写：告诉 target “我要读哪个寄存器”。
-- 第二个阶段是读：重新发送同一个 target 地址，但方向位改成 `R`。
-- 如果中间发送 STOP，某些器件可能会把内部状态机复位，导致读取失败或读到错误位置。
-- 最后一个字节通常由 controller 发送 NACK，表示“不再继续读”。
-
-## 地址
-
-常见 I2C 使用 7 位地址。很多芯片手册会把地址写成两种形式：
-
-- 7 位地址：例如 `0x68`
-- 8 位读写地址：例如写地址 `0xD0`、读地址 `0xD1`
-
-两者关系是：
+### 指定地址读
 
 ```text
-write_address = (address_7bit << 1) | 0
-read_address  = (address_7bit << 1) | 1
+START
+Slave Address + W
+ACK
+Reg Address
+ACK
+Repeated START
+Slave Address + R
+ACK
+Data
+NACK
+STOP
 ```
 
-调试时要先确认驱动 API 需要的是 7 位地址还是 8 位地址，这是非常常见的踩坑点。
+Repeated START 的作用是不释放总线，同时让从机保持刚设置好的寄存器地址指针。
 
-## 速率
+## 9. STM32 硬件 I2C
 
-常见速率模式：
+课件对 STM32 I2C 外设的描述：
 
-| 模式 | 典型最大速率 |
-| --- | ---: |
-| Standard-mode | 100 kbit/s |
-| Fast-mode | 400 kbit/s |
-| Fast-mode Plus | 1 Mbit/s |
-| High-speed mode | 3.4 Mbit/s |
+- 硬件自动执行时钟生成、起始终止条件生成、应答位收发和数据收发。
+- 支持多主机模型。
+- 支持 7 位和 10 位地址模式。
+- 标准速度最高 `100 kHz`。
+- 快速速度最高 `400 kHz`。
+- 支持 DMA。
+- 兼容 SMBus 协议。
+- STM32F103C8T6 硬件 I2C 资源：`I2C1`、`I2C2`。
 
-实际能跑多快取决于器件支持、走线长度、总线电容、上拉电阻和波形质量。嵌入式项目里，如果没有特殊需求，100 kHz 或 400 kHz 通常更稳。
-
-## 上拉电阻
-
-上拉电阻太大，`SCL`/`SDA` 上升沿会太慢；上拉电阻太小，器件拉低电平时电流会太大。
-
-可以用这两个方向理解：
+基本结构：
 
 ```text
-Rpullup 太大 -> 上升慢 -> 高速通信容易失败
-Rpullup 太小 -> 拉低电流大 -> VOL 可能超标，功耗增加
+PCLK -> 时钟控制器 -> SCL
+数据寄存器 DR <-> 移位寄存器 <-> SDA
+GPIO 开关控制 -> SCL/SDA 复用输出
 ```
 
-TI 的 I2C 上拉电阻应用笔记给出了工程计算思路：
+## 10. 软件 I2C 与硬件 I2C
 
-```text
-Rp(min) 由电源电压、低电平输出电压和灌电流能力决定
-Rp(max) 由总线电容和允许的上升时间决定
-```
+| 方式 | 优点 | 缺点 |
+| --- | --- | --- |
+| 软件模拟 I2C | 逻辑直观、引脚灵活、便于教学 | 占用 CPU，速度不高 |
+| 硬件 I2C | 自动产生时序、效率高、支持 DMA | 状态机复杂，错误处理更麻烦 |
 
-常见经验值：
+初学建议先理解软件模拟 I2C，因为它能帮助你真正看懂 START、STOP、ACK、读写方向和释放 `SDA`。
 
-- 短线、低速、少量器件：`4.7 kΩ` 常见。
-- 3.3 V、400 kHz、器件较多：可能需要 `2.2 kΩ` 到 `3.3 kΩ`。
-- 板上多个模块都带上拉时，要注意等效电阻会变小。
+## 11. 上拉电阻和速度
 
-## 时钟拉伸
+上拉电阻与总线电容决定上升沿速度。
 
-Target 如果来不及准备数据，可以把 `SCL` 拉低，让 controller 等待。这叫 clock stretching。
+- 上拉太大：上升沿慢，高速下容易采样错误。
+- 上拉太小：低电平电流大，功耗增加，器件拉低能力可能不足。
 
-注意：
+经验：
 
-- 不是所有 controller 驱动都完整支持 clock stretching。
-- 某些传感器在测量转换期间会用 clock stretching。
-- 如果总线表现为 `SCL` 长时间低电平，需要检查是否有器件在拉伸时钟，或总线被异常拉死。
+- 单板短线、100 kHz：`4.7 kΩ` 常见。
+- 400 kHz 或节点较多：可能需要 `2.2 kΩ` 到 `3.3 kΩ`。
+- 多个模块都带上拉时，要计算并联后的等效电阻。
 
-## 多 controller 与仲裁
+## 12. 调试 checklist
 
-I2C 支持多个 controller。由于总线是线与结构，controller 在发送高电平时如果读到低电平，说明别的 controller 正在拉低总线，它会判定自己丢失仲裁并退出。
-
-普通 MCU 项目大多是单 controller 架构，所以初学阶段可以先把重点放在地址、ACK、读写流程和电气连接上。
-
-## 调试 checklist
-
-1. 确认 `SCL` 和 `SDA` 是否都有上拉。
-2. 空闲时两根线是否都是高电平。
-3. 地址使用的是 7 位还是 8 位形式。
-4. 逻辑分析仪里是否能看到 START、地址、ACK 和 STOP。
-5. 读寄存器时是否需要 repeated START。
-6. 总线速率是否超过目标器件支持范围。
-7. 多个模块并联时，上拉电阻等效值是否过小。
-8. `SDA` 或 `SCL` 长时间为低时，逐个断开器件排查是谁拉住总线。
-
-## 和 SPI / UART 的直观区别
-
-| 对比项 | I2C | SPI | UART |
-| --- | --- | --- | --- |
-| 时钟 | 有 `SCL` | 有 `SCLK` | 无独立时钟 |
-| 数据线 | 双向 `SDA` | 通常 MOSI/MISO 分开 | TX/RX 分开 |
-| 器件选择 | 地址 | 片选线 | 点对点为主 |
-| 引脚数量 | 少 | 多 | 少 |
-| 典型用途 | 板级低速外设 | 高速外设、显示、Flash | 串口调试、模块通信 |
+1. 空闲时 `SCL/SDA` 是否都是高电平。
+2. 是否存在上拉电阻。
+3. GPIO 是否配置为开漏输出或复用开漏。
+4. 地址是 7 位还是 8 位。
+5. START 后地址阶段是否 ACK。
+6. 读寄存器是否使用 Repeated START。
+7. 读数据前主机是否释放 `SDA`。
+8. `SDA` 是否只在 `SCL` 低电平变化。
+9. 总线速度是否超过从机支持。
+10. 多模块并联时上拉是否过强或过弱。
 
 ## 参考资料
 
-- [Analog Devices AN-1159: I2C-Compatible Interface Timing Specifications and Communication Protocol](https://www.analog.com/en/resources/app-notes/an-1159.html)
+- `STM32入门教程.pptx`：I2C 通信、硬件电路、时序基本单元、典型读写、STM32 I2C 外设相关页。
 - [NXP UM10204: I2C-bus specification and user manual](https://www.nxp.com/docs/en/user-guide/UM10204.pdf)
+- [Analog Devices AN-1159: I2C-Compatible Interface Timing Specifications and Communication Protocol](https://www.analog.com/en/resources/app-notes/an-1159.html)
 - [Texas Instruments SLVA689: I2C Bus Pullup Resistor Calculation](https://www.ti.com/lit/an/slva689/slva689.pdf)
-- [Analog Devices: I2C Communication Protocol, Understanding I2C Primer, PMBus, and SMBus](https://www.analog.com/en/resources/analog-dialogue/articles/2021/10/28/13/25/i2c-communication-protocol-understanding-i2c-primer-pmbus-and-smbus.html)

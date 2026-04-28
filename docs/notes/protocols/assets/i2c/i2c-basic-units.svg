@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="360" viewBox="0 0 1000 360" role="img" aria-label="I2C start stop byte and ack timing">
+  <rect width="1000" height="360" fill="#ffffff"/>
+  <style>
+    text{font-family:Arial,"Microsoft YaHei",sans-serif;fill:#1f2933}
+    .title{font-size:24px;font-weight:700}
+    .small{font-size:17px}
+    .sig{stroke:#243b53;stroke-width:4;fill:none}
+    .grid{stroke:#d0d7de;stroke-width:1}
+    .mark{stroke:#ef4444;stroke-width:3;stroke-dasharray:7 6}
+    .box{fill:#f8fafc;stroke:#9aa5b1;stroke-width:1.5}
+  </style>
+  <text x="40" y="42" class="title">I2C 时序基本单元：START、8 位数据、ACK、STOP</text>
+  <text x="40" y="74" class="small">SCL 高电平期间 SDA 保持稳定；START/STOP 是唯一允许在 SCL 高电平改变 SDA 的条件</text>
+  <text x="38" y="128" class="small">SCL</text>
+  <text x="38" y="218" class="small">SDA</text>
+
+  <g transform="translate(95,90)">
+    <path class="sig" d="M0 40 H50 V0 H100 V40 H150 V0 H200 V40 H250 V0 H300 V40 H350 V0 H400 V40 H450 V0 H500 V40 H550 V0 H600 V40 H650 V0 H700 V40 H760"/>
+    <path class="sig" d="M0 120 H60 V165 H115 V120 H205 V165 H295 V120 H385 V165 H475 V120 H565 V165 H655 V120 H705 V165 H760 V120"/>
+    <line class="mark" x1="60" y1="-15" x2="60" y2="188"/>
+    <line class="mark" x1="705" y1="-15" x2="705" y2="188"/>
+    <text x="33" y="205" class="small">START</text>
+    <text x="675" y="205" class="small">STOP</text>
+    <rect x="118" y="205" width="500" height="42" rx="7" class="box"/>
+    <text x="270" y="232" class="small">8 data bits, MSB first</text>
+    <rect x="618" y="205" width="70" height="42" rx="7" class="box"/>
+    <text x="634" y="232" class="small">ACK</text>
+  </g>
+</svg>
