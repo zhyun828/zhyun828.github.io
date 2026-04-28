@@ -68,8 +68,8 @@ USART/UART 描述的是帧格式，不规定物理电平。
 ## 5. 异步数据帧
 
 <figure markdown="span">
-  <img src="https://developerhelp.microchip.com/xwiki/bin/download/products/mcu-mpu/32bit-mcu/sam/l10-l11/peripherals/sercom/usart-uart/WebHome/saml10-sercom-usart-uart_frame.png?height=172&rev=1.1&width=600" alt="USART UART asynchronous frame format" />
-  <figcaption>图 1：USART/UART 异步数据帧。来源：Microchip Developer Help。</figcaption>
+  <img src="../assets/usart/usart-frame.svg" alt="USART asynchronous frame format" />
+  <figcaption>图 1：USART/UART 异步数据帧。根据 STM32 入门课件 USART 帧格式重绘。</figcaption>
 </figure>
 
 一帧数据的顺序：

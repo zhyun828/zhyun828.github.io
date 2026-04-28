@@ -24,8 +24,8 @@ I2C 的特点：
 所有 I2C 设备的 `SCL` 连在一起，`SDA` 连在一起。设备的 `SCL/SDA` 引脚需要配置成开漏输出，外部各加一个上拉电阻。
 
 <figure markdown="span">
-  <img src="https://www.analog.com/en/_/media/analog/en/app-note-images/an-1159/fig1.png?la=en&rev=ce58b4f274a14605b1bacf89dce7f733" alt="I2C bus connection" />
-  <figcaption>图 1：I2C 典型连接方式。来源：Analog Devices AN-1159。</figcaption>
+  <img src="../assets/i2c/i2c-bus.svg" alt="I2C bus connection" />
+  <figcaption>图 1：I2C 典型连接方式。根据 STM32 入门课件硬件连接重绘。</figcaption>
 </figure>
 
 课件中的硬件要点：
@@ -69,8 +69,8 @@ MPU6050 课件示例：
 ## 4. 时序基本单元
 
 <figure markdown="span">
-  <img src="https://www.analog.com/en/_/media/analog/en/app-note-images/an-1159/fig7.png?la=en&rev=7734fecefb9a4e4faecf8b7e0857e389" alt="I2C compatible interface timing diagram" />
-  <figcaption>图 2：I2C 兼容接口时序图。来源：Analog Devices AN-1159。</figcaption>
+  <img src="../assets/i2c/i2c-basic-units.svg" alt="I2C start stop byte and ack timing" />
+  <figcaption>图 2：I2C START、8 位数据、ACK、STOP 基本时序。根据 STM32 入门课件重绘。</figcaption>
 </figure>
 
 关键规则：
@@ -87,17 +87,7 @@ MPU6050 课件示例：
 - `tSU;DAT` 和 `tHD;DAT` 描述数据位在采样前后需要保持稳定的时间。
 - `tSU;STO` 描述 STOP 条件成立前 `SDA` 需要满足的建立时间。
 
-START 和 STOP 的波形可以单独看下面两张官方图：
-
-<figure markdown="span">
-  <img src="https://www.analog.com/en/_/media/analog/en/app-note-images/an-1159/fig3.png?la=en&rev=68da20c28259472bab23d0d2a13fa322" alt="I2C start condition timing" />
-  <figcaption>图 3：START 条件，SCL 为高时 SDA 从高变低。来源：Analog Devices AN-1159。</figcaption>
-</figure>
-
-<figure markdown="span">
-  <img src="https://www.analog.com/en/_/media/analog/en/app-note-images/an-1159/fig4.png?la=en&rev=a7f280ab2d61401e941adf2db816955d" alt="I2C stop condition timing" />
-  <figcaption>图 4：STOP 条件，SCL 为高时 SDA 从低变高。来源：Analog Devices AN-1159。</figcaption>
-</figure>
+图 2 同时包含 START 和 STOP：START 是 `SCL` 高电平期间 `SDA` 从高变低；STOP 是 `SCL` 高电平期间 `SDA` 从低变高。
 
 ## 5. 发送一个字节
 
@@ -142,26 +132,11 @@ START 和 STOP 的波形可以单独看下面两张官方图：
 ## 8. 典型传输序列
 
 <figure markdown="span">
-  <img src="https://www.analog.com/en/_/media/analog/en/app-note-images/an-1159/fig2.png?la=en&rev=77516e94d1314983b857cf45a414e6aa" alt="I2C transfer sequence" />
-  <figcaption>图 5：I2C 完整传输序列。来源：Analog Devices AN-1159。</figcaption>
+  <img src="../assets/i2c/i2c-transfer-types.svg" alt="I2C transfer sequences" />
+  <figcaption>图 3：I2C 指定地址写、当前地址读、指定地址读。根据 STM32 入门课件重绘。</figcaption>
 </figure>
 
-图中的 `S` 是 START，`P` 是 STOP，地址和数据都按 8 位一组传输，每组后面跟 1 位 ACK/NACK。课件中讲的“指定地址写、当前地址读、指定地址读”都可以看作这个基本序列的组合。
-
-<figure markdown="span">
-  <img src="https://www.analog.com/en/_/media/analog/en/app-note-images/an-1159/fig5.png?la=en&rev=c35dac0e94b74de4a6a310fcab3eb1dc" alt="I2C ACK and NACK timing" />
-  <figcaption>图 6：ACK 与 NACK 时序。来源：Analog Devices AN-1159。</figcaption>
-</figure>
-
-ACK/NACK 判断：
-
-- ACK：第 9 个时钟周期内，接收方把 `SDA` 拉低。
-- NACK：第 9 个时钟周期内，接收方释放 `SDA`，总线保持高电平。
-
-<figure markdown="span">
-  <img src="https://www.analog.com/en/_/media/analog/en/app-note-images/an-1159/fig6.png?la=en&rev=89db3cda0c534f3f9821c15398541848" alt="I2C repeated start timing" />
-  <figcaption>图 7：Repeated START 时序。来源：Analog Devices AN-1159。</figcaption>
-</figure>
+图 3 直接对应课件中的三类典型时序。地址和数据都按 8 位一组传输，每组后面跟 1 位 ACK/NACK。
 
 ### 指定地址写
 
