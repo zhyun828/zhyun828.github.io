@@ -51,6 +51,17 @@ nav:
   - Home: index.md
   - Notes:
       - Overview: notes/index.md
+      - 通信协议:
+          - Overview: notes/protocols/index.md
+          - USART: notes/protocols/usart.md
+          - I2C: notes/protocols/i2c.md
+          - SPI: notes/protocols/spi.md
+          - CAN: notes/protocols/can.md
+          - TCP / UDP / IP: notes/protocols/tcp-udp-ip.md
+          - Modbus: notes/protocols/modbus.md
+          - Ethernet: notes/protocols/ethernet.md
+          - LIN: notes/protocols/lin.md
+          - HTTP / HTTPS: notes/protocols/http-https.md
       - 面试:
           - 快速检索表: notes/面试/快速检索表.md
           - 嵌入式面试汇总表: notes/面试/嵌入式面试汇总表.md
