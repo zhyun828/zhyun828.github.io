@@ -2746,9 +2746,9 @@
 </tbody>
 </table>
 <figure>
-  <img src="https://www.analog.com/en/_/media/images/analog-dialogue/en/volume-52/number-3/articles/introduction-to-spi-interface/205973_fig_01.svg?la=en&rev=f03bda0b77f94822a05ed2e7e8f8070d&sc_lang=en" alt="SPI single main and subnode connection" />
+  <img src="../assets/spi/spi-single.svg" alt="SPI single master single slave connection" />
 <br />
-<figcaption>图 1：SPI 单主单从连接。来源：Analog Devices。</figcaption>
+<figcaption>图 1：SPI 单主单从连接。根据 STM32 入门课件硬件连接重绘。</figcaption>
 </figure>
 <p>课件中的硬件连接要点：</p>
 <ul>
@@ -2782,9 +2782,9 @@
 <li><code>CPHA</code>：Clock Phase，第一个边沿采样还是第二个边沿采样。</li>
 </ul>
 <figure>
-  <img src="https://www.analog.com/en/_/media/images/analog-dialogue/en/volume-52/number-3/articles/introduction-to-spi-interface/205973_fig_02.png?la=en&rev=c19f52f7fc014bbda34df6bf7c2a18fe&sc_lang=en" alt="SPI mode 0 timing diagram" />
+  <img src="../assets/spi/spi-modes.svg" alt="SPI four modes" />
 <br />
-<figcaption>图 2：SPI Mode 0 时序，CPOL=0、CPHA=0。来源：Analog Devices。</figcaption>
+<figcaption>图 2：SPI 四种时钟模式。根据 STM32 入门课件 Mode 0 到 Mode 3 时序重绘。</figcaption>
 </figure>
 <table>
 <thead>
@@ -2828,18 +2828,12 @@
 </tbody>
 </table>
 <p>如果模式配错，常见现象是读到的数据错位、固定为 <code>0xFF/0x00</code>，或者逻辑分析仪换一种模式才能解出正确数据。</p>
-<p>图 2 中 <code>nCS</code> 拉低后传输开始，<code>CLK</code> 空闲为低电平；橙色虚线是采样边沿，蓝色虚线是移位边沿。Mode 0 下通常在第一个边沿采样，在第二个边沿准备下一位数据。</p>
-<figure>
-  <img src="https://www.analog.com/en/_/media/images/analog-dialogue/en/volume-52/number-3/articles/introduction-to-spi-interface/205973_fig_05.jpg?la=en&rev=2f0a41bece7d4bb481a4f647ea1e2caa&sc_lang=en" alt="SPI mode 3 timing diagram" />
-<br />
-<figcaption>图 3：SPI Mode 3 时序，CPOL=1、CPHA=1。来源：Analog Devices。</figcaption>
-</figure>
-<p>Mode 3 与 Mode 0 的主要区别是 <code>SCK</code> 空闲电平为高，采样边沿也随相位定义改变。调试时如果看到波形但数据错误，优先核对从设备手册要求的 SPI Mode。</p>
+<p>图 2 中红色虚线是采样边沿，灰色虚线是移位边沿。调试时如果看到波形但数据错误，优先核对从设备手册要求的 SPI Mode。</p>
 <h2 id="6">6. 多从机连接<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
 <figure>
-  <img src="https://www.analog.com/en/_/media/images/analog-dialogue/en/volume-52/number-3/articles/introduction-to-spi-interface/205973_fig_06.svg?la=en&rev=5cb89587a840475fb17a3f64aae449e6&sc_lang=en" alt="SPI multiple subnodes" />
+  <img src="../assets/spi/spi-multi.svg" alt="SPI multiple slaves" />
 <br />
-<figcaption>图 4：SPI 多从设备连接方式。来源：Analog Devices。</figcaption>
+<figcaption>图 3：SPI 多从设备连接方式。根据 STM32 入门课件硬件连接重绘。</figcaption>
 </figure>
 <p>注意：</p>
 <ul>
@@ -2856,6 +2850,11 @@
 <li>指定地址写：<code>0x02 + Address[23:0] + Data</code></li>
 <li>指定地址读：<code>0x03 + Address[23:0] + Data</code></li>
 </ul>
+<figure>
+  <img src="../assets/spi/spi-flash-sequences.svg" alt="SPI flash command address read and write sequences" />
+<br />
+<figcaption>图 4：SPI Flash 常见命令序列。根据 STM32 入门课件重绘。</figcaption>
+</figure>
 <h3 id="_1">发送指令<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>CS low
 MOSI: 0x06

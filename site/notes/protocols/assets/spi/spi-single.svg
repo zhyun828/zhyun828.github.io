@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360" role="img" aria-label="SPI single master single slave connection">
+  <rect width="980" height="360" fill="#fff"/>
+  <style>
+    text{font-family:Arial,"Microsoft YaHei",sans-serif;fill:#123}
+    .title{font-size:26px;font-weight:700}
+    .box1{fill:#dbeafe;stroke:#2563eb;stroke-width:2}
+    .box2{fill:#ffedd5;stroke:#f97316;stroke-width:2}
+    .wire{stroke:#243b53;stroke-width:4;marker-end:url(#arrow)}
+    .wire2{stroke:#243b53;stroke-width:4;marker-end:url(#arrow2)}
+    .label{font-size:20px;font-weight:700}
+    .small{font-size:17px}
+  </style>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#243b53"/></marker>
+    <marker id="arrow2" markerWidth="10" markerHeight="10" refX="1" refY="3" orient="auto"><path d="M9,0 L9,6 L0,3 z" fill="#243b53"/></marker>
+  </defs>
+  <text x="40" y="48" class="title">SPI 单主单从连接</text>
+  <rect x="70" y="100" width="250" height="190" rx="10" class="box1"/>
+  <text x="120" y="145" class="label">SPI Master</text>
+  <rect x="660" y="100" width="250" height="190" rx="10" class="box2"/>
+  <text x="710" y="145" class="label">SPI Slave</text>
+  <line x1="320" y1="155" x2="660" y2="155" class="wire"/><text x="460" y="142" class="small">SCK</text>
+  <line x1="320" y1="195" x2="660" y2="195" class="wire"/><text x="452" y="182" class="small">MOSI</text>
+  <line x1="660" y1="235" x2="320" y2="235" class="wire2"/><text x="452" y="222" class="small">MISO</text>
+  <line x1="320" y1="275" x2="660" y2="275" class="wire"/><text x="462" y="262" class="small">SS / CS</text>
+</svg>

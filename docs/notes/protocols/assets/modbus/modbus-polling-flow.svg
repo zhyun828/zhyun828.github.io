@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="500" viewBox="0 0 1000 500" role="img" aria-labelledby="title desc">
+  <title id="title">Modbus polling flow</title>
+  <desc id="desc">Modbus request response polling flow with normal response, exception response and timeout retry.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.lane{fill:#fff;stroke:#334155;stroke-width:2;rx:12}.text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:18px;fill:#0f172a}
+      .title{font-size:23px;font-weight:700}.small{font-size:15px;fill:#475569}.arrow{stroke:#2563eb;stroke-width:3;marker-end:url(#arrow)}
+      .err{stroke:#dc2626;stroke-width:3;marker-end:url(#arrowRed)}.wait{stroke:#64748b;stroke-width:3;stroke-dasharray:8 8;marker-end:url(#arrowGray)}
+      .box{fill:#dbeafe;stroke:#2563eb;stroke-width:2;rx:9}.ok{fill:#dcfce7;stroke:#16a34a;stroke-width:2;rx:9}.bad{fill:#fee2e2;stroke:#dc2626;stroke-width:2;rx:9}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#2563eb"/></marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#dc2626"/></marker>
+    <marker id="arrowGray" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#64748b"/></marker>
+  </defs>
+  <rect class="bg" width="1000" height="500"/>
+  <text class="text title" x="500" y="42" text-anchor="middle">Modbus 主站轮询流程</text>
+  <rect class="lane" x="70" y="80" width="230" height="360"/>
+  <rect class="lane" x="700" y="80" width="230" height="360"/>
+  <text class="text title" x="185" y="118" text-anchor="middle">主站 / Client</text>
+  <text class="text title" x="815" y="118" text-anchor="middle">从站 / Server</text>
+
+  <rect class="box" x="110" y="160" width="150" height="44"/><text class="text" x="185" y="188" text-anchor="middle">组织请求</text>
+  <line class="arrow" x1="260" y1="182" x2="700" y2="182"/>
+  <text class="small" x="480" y="166" text-anchor="middle">站号 + 功能码 + 地址 + 数量/数据</text>
+
+  <rect class="box" x="740" y="160" width="150" height="44"/><text class="text" x="815" y="188" text-anchor="middle">解析请求</text>
+  <rect class="ok" x="740" y="245" width="150" height="44"/><text class="text" x="815" y="273" text-anchor="middle">正常响应</text>
+  <line class="arrow" x1="740" y1="267" x2="300" y2="267"/>
+  <text class="small" x="520" y="250" text-anchor="middle">返回功能码 + 字节数 + 数据</text>
+
+  <rect class="bad" x="740" y="325" width="150" height="44"/><text class="text" x="815" y="353" text-anchor="middle">异常响应</text>
+  <line class="err" x1="740" y1="347" x2="300" y2="347"/>
+  <text class="small" x="520" y="330" text-anchor="middle">功能码 + 0x80，返回异常码</text>
+
+  <line class="wait" x1="185" y1="205" x2="185" y2="390"/>
+  <rect class="bad" x="110" y="390" width="150" height="44"/><text class="text" x="185" y="418" text-anchor="middle">超时/重试</text>
+  <text class="small" x="500" y="458" text-anchor="middle">串口半双工场景中，主站发送完毕后要及时释放 RS-485 总线，避免挡住从站响应。</text>
+</svg>

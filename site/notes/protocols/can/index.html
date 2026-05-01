@@ -3082,6 +3082,11 @@
 <p>CAN 逻辑的重要规则：显性 <code>0</code> 会覆盖隐性 <code>1</code>。</p>
 <h2 id="5-can">5. CAN 帧类型<a class="headerlink" href="#5-can" title="Permanent link">&para;</a></h2>
 <p>CAN 协议规定了 5 种类型的帧：</p>
+<figure>
+  <img src="../assets/can/can-frame-types.svg" alt="CAN five frame types" />
+<br />
+<figcaption>图 1：CAN 协议的 5 种帧类型。根据 CAN 入门课件重绘。</figcaption>
+</figure>
 <table>
 <thead>
 <tr>
@@ -3132,9 +3137,9 @@
 </ul>
 <p>CAN 1.2 时期只有标准格式。CAN 2.0 时期由于 ID 不够用，引入扩展格式，并通过 IDE 位区分标准帧和扩展帧。</p>
 <figure>
-  <img src="https://developerhelp.microchip.com/xwiki/bin/download/applications/can/overview/mechanisms/WebHome/Picture11.jpg?rev=1.1" alt="CAN data frame and bit timing example" />
+  <img src="../assets/can/can-frame.svg" alt="Classic CAN data frame" />
 <br />
-<figcaption>图 1：CAN 数据帧与位时间示意。来源：Microchip Developer Help。</figcaption>
+<figcaption>图 2：经典 CAN 数据帧结构。根据 CAN 入门课件重绘。</figcaption>
 </figure>
 <p>字段理解：</p>
 <ul>
@@ -3221,9 +3226,9 @@
 </ul>
 <p>为了灵活调整采样点位置，CAN 将每个 bit 划分为更细的时间段。</p>
 <figure>
-  <img src="https://developerhelp.microchip.com/xwiki/bin/download/applications/can/overview/mechanisms/WebHome/Picture12.png?rev=1.1" alt="CAN bit timing programmable segments" />
+  <img src="../assets/can/can-bit-timing.svg" alt="CAN bit timing segments" />
 <br />
-<figcaption>图 2：CAN bit time 可编程时间段。来源：Microchip Developer Help。</figcaption>
+<figcaption>图 3：CAN 位时序。根据 CAN 入门课件位时序页重绘。</figcaption>
 </figure>
 <p>课件中的范围：</p>
 <ul>
@@ -3286,9 +3291,9 @@ baudrate = 1 / 5 us = 200 kbit/s
 <li>胜出的帧继续发送，不会被破坏，所以叫非破坏性仲裁。</li>
 </ul>
 <figure>
-  <img src="https://developerhelp.microchip.com/xwiki/bin/download/applications/can/overview/mechanisms/WebHome/Picture14.jpg?rev=1.1" alt="CAN arbitration example" />
+  <img src="../assets/can/can-arbitration.svg" alt="CAN non destructive arbitration" />
 <br />
-<figcaption>图 3：CAN 仲裁示例。来源：Microchip Developer Help。</figcaption>
+<figcaption>图 4：CAN 非破坏性仲裁示意。根据 CAN 入门课件重绘。</figcaption>
 </figure>
 <p>实现非破坏性仲裁需要两个基础：</p>
 <ol>
@@ -3351,6 +3356,11 @@ baudrate = 1 / 5 us = 200 kbit/s
 </tbody>
 </table>
 <p>错误状态分为三类：</p>
+<figure>
+  <img src="../assets/can/can-error-states.svg" alt="CAN error counters and states" />
+<br />
+<figcaption>图 5：CAN 错误状态与 TEC/REC 计数器关系。</figcaption>
+</figure>
 <ul>
 <li>主动错误状态：设备正常参与通信，检测到错误时发送主动错误帧。</li>
 <li>被动错误状态：设备仍参与通信，但检测到错误时只能发送被动错误帧。</li>
@@ -3380,6 +3390,11 @@ baudrate = 1 / 5 us = 200 kbit/s
 </ul>
 <h2 id="12-bxcan">12. bxCAN 基本结构<a class="headerlink" href="#12-bxcan" title="Permanent link">&para;</a></h2>
 <p>课件中的结构可以概括为：</p>
+<figure>
+  <img src="../assets/can/bxcan-structure.svg" alt="STM32 bxCAN basic structure" />
+<br />
+<figcaption>图 6：STM32 bxCAN 基本结构。根据 CAN 入门课件重绘。</figcaption>
+</figure>
 <div class="highlight"><pre><span></span><code>CPU 写入 -&gt; 发送邮箱 0/1/2 -&gt; 发送控制器 -&gt; CAN_TX -&gt; 收发器
 收发器 -&gt; CAN_RX -&gt; 接收控制器 -&gt; 过滤器 -&gt; FIFO0/FIFO1 -&gt; CPU 读取
 </code></pre></div>
