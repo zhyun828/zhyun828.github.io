@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="520" viewBox="0 0 1040 520" role="img" aria-labelledby="title desc">
+  <title id="title">Typical HTTP access flow</title>
+  <desc id="desc">Client resolves DNS, establishes TCP or TLS, sends HTTP request, server returns response.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.host{fill:#dbeafe;stroke:#2563eb;stroke-width:2;rx:12}.server{fill:#dcfce7;stroke:#16a34a;stroke-width:2;rx:12}
+      .text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:19px;fill:#0f172a}.title{font-size:25px;font-weight:700}.small{font-size:15px;fill:#475569}
+      .arrow{stroke:#2563eb;stroke-width:3;marker-end:url(#arrow)}.back{stroke:#16a34a;stroke-width:3;marker-end:url(#green)}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#2563eb"/></marker>
+    <marker id="green" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#16a34a"/></marker>
+  </defs>
+  <rect class="bg" width="1040" height="520"/>
+  <text class="text title" x="520" y="45" text-anchor="middle">一次典型 HTTP/HTTPS 访问</text>
+  <rect class="host" x="90" y="85" width="190" height="70"/><text class="text" x="185" y="126" text-anchor="middle">客户端</text>
+  <rect class="server" x="760" y="85" width="190" height="70"/><text class="text" x="855" y="126" text-anchor="middle">服务器</text>
+  <line x1="185" y1="155" x2="185" y2="455" stroke="#334155" stroke-width="3"/>
+  <line x1="855" y1="155" x2="855" y2="455" stroke="#334155" stroke-width="3"/>
+  <line class="arrow" x1="195" y1="190" x2="845" y2="190"/><text class="text" x="520" y="175" text-anchor="middle">1. DNS 解析域名为 IP</text>
+  <line class="arrow" x1="195" y1="250" x2="845" y2="250"/><text class="text" x="520" y="235" text-anchor="middle">2. TCP 连接，HTTPS 还要 TLS 握手</text>
+  <line class="arrow" x1="195" y1="315" x2="845" y2="315"/><text class="text" x="520" y="300" text-anchor="middle">3. 发送 HTTP 请求</text>
+  <line class="back" x1="845" y1="380" x2="195" y2="380"/><text class="text" x="520" y="365" text-anchor="middle">4. 返回 HTTP 响应</text>
+  <text class="small" x="520" y="475" text-anchor="middle">如果 DNS、TCP 或 TLS 失败，应用可能拿不到任何 HTTP 状态码。</text>
+</svg>

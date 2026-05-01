@@ -779,43 +779,618 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#1-http-https" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. HTTP / HTTPS 概述
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. HTTP 在网络分层中的位置
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-http-tcpip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. HTTP 与 TCP/IP 的关系
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-url" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. URL 的基本组成
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 请求/响应模型
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 常见请求方法
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 请求报文结构
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 响应报文结构
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 状态码分类与典型示例
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. 常见请求头与响应头
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. 常见请求头与响应头">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-host" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 Host
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-content-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 Content-Type
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103-content-length-transfer-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 Content-Length 与 Transfer-Encoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#104-authorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.4 Authorization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#105-cookie-set-cookie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.5 Cookie 与 Set-Cookie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#106-cache-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.6 Cache-Control
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#107-user-agentacceptlocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.7 User-Agent、Accept、Location
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-cookiesessiontoken" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Cookie、Session、Token 的区别
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-http11http2http3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. HTTP/1.1、HTTP/2、HTTP/3 简要区别
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-https" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. HTTPS 是什么
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. TLS 的基本作用
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14. TLS 的基本作用">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#141" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.1 加密
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#142" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.2 完整性
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#143" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.3 身份认证
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-ca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. 证书、CA、域名校验
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-https" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. HTTPS 建立连接的大致流程
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. 调试方法
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17. 调试方法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#171" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.1 浏览器开发者工具
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#172-curl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.2 curl
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#173-postman-apifox-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.3 Postman / Apifox 等 API 工具
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#174-wireshark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.4 Wireshark
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. 常见错误与排障思路
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18. 常见错误与排障思路">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#181-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.1 没有 HTTP 状态码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#182-400-bad-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.2 400 Bad Request
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#183-401-403" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.3 401 与 403
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#184-404" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.4 404
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#185-5xx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.5 5xx
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#186-https" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.6 HTTPS 证书错误
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. 工程实践建议
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="19. 工程实践建议">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#191" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.1 接口设计
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#192" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.2 安全意识
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#193" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.3 缓存
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#194" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.4 超时与重试
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#195" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.5 嵌入式实现
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-tcpudpwebsocketmqtt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20. 与 TCP/UDP、WebSocket、MQTT 的对比
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21. 常见误区
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="21. 常见误区">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#211-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.1 HTTP 是网页本身
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#212-https-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.2 HTTPS 是更高级的 HTTP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#213-cookiesessiontoken" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.3 Cookie、Session、Token 是同一个东西
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#214-http3-udp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.4 HTTP/3 使用 UDP，所以不可靠
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#215-https" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.5 HTTPS 抓不到明文就无法调试
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22. 学习路线
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        核心概念
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        硬件连接
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        协议时序
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        常见问题
+        参考资料
       
     </span>
   </a>
@@ -2276,43 +2851,618 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#1-http-https" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. HTTP / HTTPS 概述
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. HTTP 在网络分层中的位置
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-http-tcpip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. HTTP 与 TCP/IP 的关系
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-url" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. URL 的基本组成
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 请求/响应模型
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 常见请求方法
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 请求报文结构
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 响应报文结构
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 状态码分类与典型示例
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. 常见请求头与响应头
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. 常见请求头与响应头">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-host" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 Host
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-content-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 Content-Type
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103-content-length-transfer-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 Content-Length 与 Transfer-Encoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#104-authorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.4 Authorization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#105-cookie-set-cookie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.5 Cookie 与 Set-Cookie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#106-cache-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.6 Cache-Control
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#107-user-agentacceptlocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.7 User-Agent、Accept、Location
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-cookiesessiontoken" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Cookie、Session、Token 的区别
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-http11http2http3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. HTTP/1.1、HTTP/2、HTTP/3 简要区别
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-https" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. HTTPS 是什么
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. TLS 的基本作用
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14. TLS 的基本作用">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#141" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.1 加密
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#142" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.2 完整性
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#143" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.3 身份认证
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-ca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. 证书、CA、域名校验
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-https" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. HTTPS 建立连接的大致流程
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. 调试方法
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17. 调试方法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#171" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.1 浏览器开发者工具
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#172-curl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.2 curl
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#173-postman-apifox-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.3 Postman / Apifox 等 API 工具
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#174-wireshark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.4 Wireshark
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. 常见错误与排障思路
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18. 常见错误与排障思路">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#181-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.1 没有 HTTP 状态码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#182-400-bad-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.2 400 Bad Request
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#183-401-403" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.3 401 与 403
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#184-404" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.4 404
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#185-5xx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.5 5xx
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#186-https" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.6 HTTPS 证书错误
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. 工程实践建议
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="19. 工程实践建议">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#191" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.1 接口设计
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#192" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.2 安全意识
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#193" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.3 缓存
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#194" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.4 超时与重试
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#195" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19.5 嵌入式实现
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-tcpudpwebsocketmqtt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20. 与 TCP/UDP、WebSocket、MQTT 的对比
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21. 常见误区
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="21. 常见误区">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#211-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.1 HTTP 是网页本身
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#212-https-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.2 HTTPS 是更高级的 HTTP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#213-cookiesessiontoken" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.3 Cookie、Session、Token 是同一个东西
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#214-http3-udp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.4 HTTP/3 使用 UDP，所以不可靠
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#215-https" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21.5 HTTPS 抓不到明文就无法调试
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22. 学习路线
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        核心概念
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        硬件连接
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        协议时序
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        常见问题
+        参考资料
       
     </span>
   </a>
@@ -2403,10 +3553,964 @@
 
 
 <h1 id="http-https">HTTP / HTTPS<a class="headerlink" href="#http-https" title="Permanent link">&para;</a></h1>
-<h2 id="_1">核心概念<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<h2 id="_2">硬件连接<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<h2 id="_3">协议时序<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<h2 id="_4">常见问题<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>HTTP 和 HTTPS 是我们每天都在使用的应用层协议。浏览器打开网页、手机 App 调接口、嵌入式设备上传数据、开发板提供配置页面，背后都可能是 HTTP 或 HTTPS。</p>
+<p>初学时要先分清：HTTP 不是“网页本身”，而是一套客户端和服务器交换请求、响应的应用层协议；HTTPS 也不是“更高级的 HTTP”，而是 HTTP 运行在 TLS 安全层之上，解决加密、完整性和身份认证问题。</p>
+<h2 id="1-http-https">1. HTTP / HTTPS 概述<a class="headerlink" href="#1-http-https" title="Permanent link">&para;</a></h2>
+<p>HTTP 是 Hypertext Transfer Protocol，超文本传输协议。它最初用于传输超文本页面，现在已经广泛用于 Web API、文件下载、设备配置、云平台通信等场景。</p>
+<p>HTTP 的核心模型很简单：</p>
+<div class="highlight"><pre><span></span><code>客户端发送请求 -&gt; 服务器返回响应
+</code></pre></div>
+<p>例如：</p>
+<ul>
+<li>浏览器请求 HTML、CSS、JavaScript、图片。</li>
+<li>App 请求后端接口，获得 JSON。</li>
+<li>嵌入式设备向云平台 POST 传感器数据。</li>
+<li>PC 通过 HTTP 页面配置开发板参数。</li>
+</ul>
+<p>HTTPS 是 HTTP Secure。常见理解是：</p>
+<div class="highlight"><pre><span></span><code>HTTPS = HTTP + TLS
+</code></pre></div>
+<p>TLS 位于 HTTP 和 TCP 之间，为 HTTP 数据提供：</p>
+<ul>
+<li>加密：别人抓到包也难以直接读出内容。</li>
+<li>完整性：防止数据被中途篡改而不被发现。</li>
+<li>身份认证：客户端可以验证服务器证书，确认自己连接的是目标域名对应的服务器。</li>
+</ul>
+<h2 id="2-http">2. HTTP 在网络分层中的位置<a class="headerlink" href="#2-http" title="Permanent link">&para;</a></h2>
+<p>HTTP 是应用层协议。它不直接控制网线、MAC 地址或 IP 路由，而是依赖下层协议完成传输。</p>
+<figure>
+  <img src="../assets/http-https/http-layering.svg" alt="HTTP and HTTPS in network stack" />
+<br />
+<figcaption>图 1：HTTP / HTTPS 在网络协议栈中的位置。</figcaption>
+</figure>
+<p>常见分层关系：</p>
+<table>
+<thead>
+<tr>
+<th>层次</th>
+<th>HTTP</th>
+<th>HTTPS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>应用层</td>
+<td>HTTP</td>
+<td>HTTP</td>
+</tr>
+<tr>
+<td>安全层</td>
+<td>无</td>
+<td>TLS</td>
+</tr>
+<tr>
+<td>传输层</td>
+<td>TCP</td>
+<td>TCP</td>
+</tr>
+<tr>
+<td>网络层</td>
+<td>IP</td>
+<td>IP</td>
+</tr>
+<tr>
+<td>链路层</td>
+<td>Ethernet / Wi-Fi</td>
+<td>Ethernet / Wi-Fi</td>
+</tr>
+</tbody>
+</table>
+<p>HTTP/3 比较特殊，它不是运行在 TCP 上，而是运行在 QUIC 上；QUIC 又运行在 UDP 上。初学阶段可以先记住：</p>
+<ul>
+<li>HTTP/1.1 和 HTTP/2 通常基于 TCP。</li>
+<li>HTTPS 常见是 HTTP + TLS + TCP。</li>
+<li>HTTP/3 是 HTTP 语义运行在 QUIC/UDP 上。</li>
+</ul>
+<h2 id="3-http-tcpip">3. HTTP 与 TCP/IP 的关系<a class="headerlink" href="#3-http-tcpip" title="Permanent link">&para;</a></h2>
+<p>HTTP 关心的是“请求什么资源、返回什么状态、Body 是什么格式”。TCP/IP 关心的是“数据如何从一个进程可靠送到另一个进程”。</p>
+<p>例如访问：</p>
+<div class="highlight"><pre><span></span><code>https://example.com/api/status
+</code></pre></div>
+<p>大致会发生：</p>
+<ol>
+<li>DNS 把 <code>example.com</code> 解析成 IP 地址。</li>
+<li>客户端与服务器建立 TCP 连接，通常端口是 <code>443</code>。</li>
+<li>客户端与服务器进行 TLS 握手，建立安全通道。</li>
+<li>客户端在 TLS 通道里发送 HTTP 请求。</li>
+<li>服务器返回 HTTP 响应。</li>
+</ol>
+<p>HTTP 本身不负责：</p>
+<ul>
+<li>IP 寻址。</li>
+<li>TCP 重传。</li>
+<li>拥塞控制。</li>
+<li>以太网帧转发。</li>
+<li>TLS 证书校验。</li>
+</ul>
+<p>这些由下层协议和运行环境完成。</p>
+<h2 id="4-url">4. URL 的基本组成<a class="headerlink" href="#4-url" title="Permanent link">&para;</a></h2>
+<p>URL 是 Uniform Resource Locator，统一资源定位符。它描述要访问什么资源。</p>
+<p>例子：</p>
+<div class="highlight"><pre><span></span><code>https://user:pass@example.com:8443/api/v1/data?dev=1&amp;page=2#section
+</code></pre></div>
+<p>常见组成：</p>
+<table>
+<thead>
+<tr>
+<th>部分</th>
+<th>示例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>scheme</td>
+<td><code>https</code></td>
+<td>使用的协议或方案。</td>
+</tr>
+<tr>
+<td>userinfo</td>
+<td><code>user:pass</code></td>
+<td>用户信息，现代 Web 中较少使用。</td>
+</tr>
+<tr>
+<td>host</td>
+<td><code>example.com</code></td>
+<td>域名或 IP。</td>
+</tr>
+<tr>
+<td>port</td>
+<td><code>8443</code></td>
+<td>端口，省略时使用默认端口。</td>
+</tr>
+<tr>
+<td>path</td>
+<td><code>/api/v1/data</code></td>
+<td>资源路径。</td>
+</tr>
+<tr>
+<td>query</td>
+<td><code>dev=1&amp;page=2</code></td>
+<td>查询参数。</td>
+</tr>
+<tr>
+<td>fragment</td>
+<td><code>section</code></td>
+<td>片段标识，通常只在客户端使用，不会随 HTTP 请求发给服务器。</td>
+</tr>
+</tbody>
+</table>
+<p>默认端口：</p>
+<ul>
+<li>HTTP 默认端口 <code>80</code>。</li>
+<li>HTTPS 默认端口 <code>443</code>。</li>
+</ul>
+<p>URL 中的 host 会出现在 HTTP/1.1 的 <code>Host</code> 请求头中。HTTPS 场景下，TLS 握手还常用 SNI 告诉服务器客户端想访问哪个域名。</p>
+<h2 id="5">5. 请求/响应模型<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<p>HTTP 是典型请求/响应协议。</p>
+<figure>
+  <img src="../assets/http-https/http-message-structure.svg" alt="HTTP request and response structure" />
+<br />
+<figcaption>图 2：HTTP 请求与响应结构。</figcaption>
+</figure>
+<p>请求由客户端发出，响应由服务器返回。一次典型访问如下：</p>
+<figure>
+  <img src="../assets/http-https/http-access-flow.svg" alt="Typical HTTP access flow" />
+<br />
+<figcaption>图 3：一次典型 HTTP 访问流程。</figcaption>
+</figure>
+<p>HTTP 报文通常包含：</p>
+<ul>
+<li>起始行。</li>
+<li>Header 字段。</li>
+<li>空行。</li>
+<li>可选 Body。</li>
+</ul>
+<p>请求示例：</p>
+<div class="highlight"><pre><span></span><code><span class="nf">GET</span> <span class="nn">/api/status</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">example.com</span>
+<span class="na">User-Agent</span><span class="o">:</span> <span class="l">curl/8.0</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+</code></pre></div>
+<p>响应示例：</p>
+<div class="highlight"><pre><span></span><code><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Content-Length</span><span class="o">:</span> <span class="l">17</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">no-store</span>
+
+<span class="p">{</span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;ok&quot;</span><span class="p">}</span>
+</code></pre></div>
+<p>注意：HTTP/2 和 HTTP/3 在传输层面的编码不再是这种纯文本起始行形式，但语义上仍然有方法、路径、状态码、头字段和内容。</p>
+<h2 id="6">6. 常见请求方法<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<p>HTTP 方法表示客户端希望对资源执行什么操作。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>常见含义</th>
+<th>是否常带 Body</th>
+<th>典型用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>获取资源</td>
+<td>通常不带</td>
+<td>查询页面、读取数据。</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>提交数据或触发处理</td>
+<td>常带</td>
+<td>登录、提交表单、创建业务动作。</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>创建或整体替换资源</td>
+<td>常带</td>
+<td>更新完整配置。</td>
+</tr>
+<tr>
+<td>PATCH</td>
+<td>局部修改资源</td>
+<td>常带</td>
+<td>修改资源的部分字段。</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>删除资源</td>
+<td>通常不带或少量</td>
+<td>删除某个对象。</td>
+</tr>
+<tr>
+<td>HEAD</td>
+<td>只获取响应头</td>
+<td>不带</td>
+<td>检查资源是否存在、获取长度。</td>
+</tr>
+<tr>
+<td>OPTIONS</td>
+<td>查询支持能力</td>
+<td>可选</td>
+<td>CORS 预检、能力发现。</td>
+</tr>
+</tbody>
+</table>
+<p>常见误区：</p>
+<ul>
+<li>GET 不应依赖 Body。很多工具允许 GET 带 Body，但兼容性和语义都不好。</li>
+<li>GET 应尽量设计成安全、幂等，不应触发危险修改。</li>
+<li>PUT 通常表示整体替换，PATCH 通常表示局部修改。</li>
+<li>POST 不一定只能用于创建，也常用于复杂查询或动作触发，但接口设计时要讲清楚语义。</li>
+</ul>
+<h2 id="7">7. 请求报文结构<a class="headerlink" href="#7" title="Permanent link">&para;</a></h2>
+<p>HTTP/1.1 请求报文结构：</p>
+<div class="highlight"><pre><span></span><code>请求行
+请求头
+空行
+请求体
+</code></pre></div>
+<p>请求行示例：</p>
+<div class="highlight"><pre><span></span><code><span class="nf">POST</span> <span class="nn">/api/device/report</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</code></pre></div>
+<p>包含：</p>
+<ul>
+<li>Method：<code>POST</code>。</li>
+<li>Request Target：<code>/api/device/report</code>。</li>
+<li>HTTP Version：<code>HTTP/1.1</code>。</li>
+</ul>
+<p>请求头示例：</p>
+<div class="highlight"><pre><span></span><code><span class="err">Host: iot.example.com</span>
+<span class="err">Content-Type: application/json</span>
+<span class="err">Authorization: Bearer eyJhbGciOi...</span>
+<span class="err">Content-Length: 35</span>
+</code></pre></div>
+<p>请求体示例：</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;temperature&quot;</span><span class="p">:</span><span class="mf">25.6</span><span class="p">,</span><span class="nt">&quot;humidity&quot;</span><span class="p">:</span><span class="mi">60</span><span class="p">}</span>
+</code></pre></div>
+<p>嵌入式设备发送 HTTP 请求时，要特别注意：</p>
+<ul>
+<li>Header 和 Body 之间必须有空行。</li>
+<li><code>Content-Length</code> 要与 Body 字节数一致。</li>
+<li>文本长度和字节长度不一定相同，中文 UTF-8 会占多个字节。</li>
+<li>TCP 是字节流，不能假设一次发送就是服务器一次完整读取。</li>
+</ul>
+<h2 id="8">8. 响应报文结构<a class="headerlink" href="#8" title="Permanent link">&para;</a></h2>
+<p>HTTP/1.1 响应报文结构：</p>
+<div class="highlight"><pre><span></span><code>状态行
+响应头
+空行
+响应体
+</code></pre></div>
+<p>状态行示例：</p>
+<div class="highlight"><pre><span></span><code><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">404</span> <span class="ne">Not Found</span>
+</code></pre></div>
+<p>包含：</p>
+<ul>
+<li>HTTP Version：<code>HTTP/1.1</code>。</li>
+<li>Status Code：<code>404</code>。</li>
+<li>Reason Phrase：<code>Not Found</code>，HTTP/2 之后不再依赖原因短语。</li>
+</ul>
+<p>响应头示例：</p>
+<div class="highlight"><pre><span></span><code><span class="err">Content-Type: text/html; charset=utf-8</span>
+<span class="err">Cache-Control: max-age=3600</span>
+<span class="err">Set-Cookie: sid=abc; HttpOnly; Secure; SameSite=Lax</span>
+</code></pre></div>
+<p>响应体可以是：</p>
+<ul>
+<li>HTML。</li>
+<li>JSON。</li>
+<li>图片。</li>
+<li>文件。</li>
+<li>空内容。</li>
+</ul>
+<h2 id="9">9. 状态码分类与典型示例<a class="headerlink" href="#9" title="Permanent link">&para;</a></h2>
+<p>HTTP 状态码表示服务器对请求的处理结果。</p>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>范围</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1xx</td>
+<td><code>100..199</code></td>
+<td>信息性响应。</td>
+</tr>
+<tr>
+<td>2xx</td>
+<td><code>200..299</code></td>
+<td>成功。</td>
+</tr>
+<tr>
+<td>3xx</td>
+<td><code>300..399</code></td>
+<td>重定向。</td>
+</tr>
+<tr>
+<td>4xx</td>
+<td><code>400..499</code></td>
+<td>客户端错误。</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td><code>500..599</code></td>
+<td>服务器错误。</td>
+</tr>
+</tbody>
+</table>
+<p>常见状态码：</p>
+<table>
+<thead>
+<tr>
+<th>状态码</th>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>OK</td>
+<td>请求成功。</td>
+</tr>
+<tr>
+<td>201</td>
+<td>Created</td>
+<td>资源创建成功。</td>
+</tr>
+<tr>
+<td>204</td>
+<td>No Content</td>
+<td>成功但无响应体。</td>
+</tr>
+<tr>
+<td>301</td>
+<td>Moved Permanently</td>
+<td>永久重定向。</td>
+</tr>
+<tr>
+<td>302</td>
+<td>Found</td>
+<td>临时重定向，历史兼容语义较复杂。</td>
+</tr>
+<tr>
+<td>304</td>
+<td>Not Modified</td>
+<td>缓存资源未修改。</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Bad Request</td>
+<td>请求格式错误。</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td>未认证或认证失败。</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td>已理解请求，但拒绝访问。</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found</td>
+<td>资源不存在。</td>
+</tr>
+<tr>
+<td>405</td>
+<td>Method Not Allowed</td>
+<td>方法不允许。</td>
+</tr>
+<tr>
+<td>408</td>
+<td>Request Timeout</td>
+<td>请求超时。</td>
+</tr>
+<tr>
+<td>409</td>
+<td>Conflict</td>
+<td>资源状态冲突。</td>
+</tr>
+<tr>
+<td>413</td>
+<td>Content Too Large</td>
+<td>请求体过大。</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Too Many Requests</td>
+<td>请求过多，被限流。</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error</td>
+<td>服务器内部错误。</td>
+</tr>
+<tr>
+<td>502</td>
+<td>Bad Gateway</td>
+<td>网关从上游收到无效响应。</td>
+</tr>
+<tr>
+<td>503</td>
+<td>Service Unavailable</td>
+<td>服务不可用。</td>
+</tr>
+<tr>
+<td>504</td>
+<td>Gateway Timeout</td>
+<td>网关等待上游超时。</td>
+</tr>
+</tbody>
+</table>
+<p>排障时要区分：</p>
+<ul>
+<li>4xx 通常先查客户端请求、权限、路径、参数。</li>
+<li>5xx 通常先查服务器、网关、后端服务、日志。</li>
+<li>没有 HTTP 状态码，说明可能还没到 HTTP 层，例如 DNS、TCP、TLS 已经失败。</li>
+</ul>
+<h2 id="10">10. 常见请求头与响应头<a class="headerlink" href="#10" title="Permanent link">&para;</a></h2>
+<p>HTTP Header 是键值形式的元数据。</p>
+<h3 id="101-host">10.1 Host<a class="headerlink" href="#101-host" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="err">Host: example.com</span>
+</code></pre></div>
+<p>HTTP/1.1 请求必须包含 Host。一个服务器 IP 上可能托管多个域名，服务器通过 Host 判断要访问哪个站点。</p>
+<h3 id="102-content-type">10.2 Content-Type<a class="headerlink" href="#102-content-type" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="err">Content-Type: application/json</span>
+<span class="err">Content-Type: text/html; charset=utf-8</span>
+<span class="err">Content-Type: application/x-www-form-urlencoded</span>
+<span class="err">Content-Type: multipart/form-data; boundary=...</span>
+</code></pre></div>
+<p>Content-Type 表示 Body 的媒体类型。客户端和服务器都依赖它解析数据。</p>
+<p>常见问题：</p>
+<ul>
+<li>JSON 接口忘记设置 <code>application/json</code>。</li>
+<li>表单和 JSON 混用。</li>
+<li>字符集不一致导致中文乱码。</li>
+</ul>
+<h3 id="103-content-length-transfer-encoding">10.3 Content-Length 与 Transfer-Encoding<a class="headerlink" href="#103-content-length-transfer-encoding" title="Permanent link">&para;</a></h3>
+<p><code>Content-Length</code> 表示 Body 字节数。</p>
+<div class="highlight"><pre><span></span><code><span class="err">Content-Length: 123</span>
+</code></pre></div>
+<p><code>Transfer-Encoding: chunked</code> 表示分块传输，常见于 HTTP/1.1 动态响应。</p>
+<p>嵌入式 HTTP Server 如果不支持 chunked，要明确使用 Content-Length 或关闭连接作为响应结束标志。</p>
+<h3 id="104-authorization">10.4 Authorization<a class="headerlink" href="#104-authorization" title="Permanent link">&para;</a></h3>
+<p>Authorization 用于携带认证信息。</p>
+<div class="highlight"><pre><span></span><code><span class="err">Authorization: Basic ...</span>
+<span class="err">Authorization: Bearer &lt;token&gt;</span>
+</code></pre></div>
+<p>Bearer Token 常用于 API 访问。注意不要在日志中明文打印完整 Token。</p>
+<h3 id="105-cookie-set-cookie">10.5 Cookie 与 Set-Cookie<a class="headerlink" href="#105-cookie-set-cookie" title="Permanent link">&para;</a></h3>
+<p>客户端请求时带 Cookie：</p>
+<div class="highlight"><pre><span></span><code><span class="err">Cookie: sid=abc; theme=dark</span>
+</code></pre></div>
+<p>服务器响应时设置 Cookie：</p>
+<div class="highlight"><pre><span></span><code><span class="err">Set-Cookie: sid=abc; HttpOnly; Secure; SameSite=Lax</span>
+</code></pre></div>
+<p>Cookie 常用于浏览器会话、登录状态、偏好设置等。</p>
+<h3 id="106-cache-control">10.6 Cache-Control<a class="headerlink" href="#106-cache-control" title="Permanent link">&para;</a></h3>
+<p>Cache-Control 控制缓存策略。</p>
+<div class="highlight"><pre><span></span><code><span class="err">Cache-Control: no-store</span>
+<span class="err">Cache-Control: max-age=3600</span>
+<span class="err">Cache-Control: public, max-age=86400</span>
+</code></pre></div>
+<p>常见含义：</p>
+<ul>
+<li><code>no-store</code>：不要存储响应。</li>
+<li><code>no-cache</code>：可以存储，但使用前必须重新验证。</li>
+<li><code>max-age=3600</code>：缓存 3600 秒。</li>
+<li><code>public</code>：可被共享缓存保存。</li>
+<li><code>private</code>：只适合用户私有缓存。</li>
+</ul>
+<p>缓存可以显著提升性能，但接口设计不当也可能导致旧数据、权限数据泄露或调试困惑。</p>
+<h3 id="107-user-agentacceptlocation">10.7 User-Agent、Accept、Location<a class="headerlink" href="#107-user-agentacceptlocation" title="Permanent link">&para;</a></h3>
+<p><code>User-Agent</code> 表示客户端信息。</p>
+<p><code>Accept</code> 表示客户端希望接收的内容类型。</p>
+<p><code>Location</code> 常用于重定向或创建资源后的新地址。</p>
+<div class="highlight"><pre><span></span><code><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">302</span> <span class="ne">Found</span>
+<span class="na">Location</span><span class="o">:</span> <span class="l">/login</span>
+</code></pre></div>
+<h2 id="11-cookiesessiontoken">11. Cookie、Session、Token 的区别<a class="headerlink" href="#11-cookiesessiontoken" title="Permanent link">&para;</a></h2>
+<p>这三个概念经常混在一起。</p>
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>存在哪里</th>
+<th>用途</th>
+<th>典型形式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cookie</td>
+<td>浏览器本地，由浏览器自动随请求携带</td>
+<td>保存少量状态或会话标识</td>
+<td><code>sid=abc</code></td>
+</tr>
+<tr>
+<td>Session</td>
+<td>服务器端</td>
+<td>保存某个用户的登录状态和上下文</td>
+<td>服务器内存、Redis、数据库</td>
+</tr>
+<tr>
+<td>Token</td>
+<td>客户端持有，服务端验证</td>
+<td>API 身份凭证或授权凭证</td>
+<td>JWT、随机字符串</td>
+</tr>
+</tbody>
+</table>
+<p>典型 Cookie + Session 流程：</p>
+<ol>
+<li>用户登录。</li>
+<li>服务器创建 Session。</li>
+<li>服务器通过 <code>Set-Cookie</code> 返回 <code>sid</code>。</li>
+<li>浏览器后续请求自动带 <code>Cookie: sid=...</code>。</li>
+<li>服务器用 <code>sid</code> 找到对应 Session。</li>
+</ol>
+<p>典型 Token 流程：</p>
+<ol>
+<li>用户登录。</li>
+<li>服务器返回 Token。</li>
+<li>客户端保存 Token。</li>
+<li>后续请求带 <code>Authorization: Bearer &lt;token&gt;</code>。</li>
+<li>服务器验证 Token。</li>
+</ol>
+<p>注意：</p>
+<ul>
+<li>Cookie 是一种浏览器存储和自动携带机制，不等于 Session。</li>
+<li>Session 通常在服务器端，Cookie 里可能只存 Session ID。</li>
+<li>Token 不一定存 Cookie，也可以存在 App 本地存储或内存里。</li>
+<li>Token 泄露同样危险，HTTPS 和安全存储仍然重要。</li>
+</ul>
+<h2 id="12-http11http2http3">12. HTTP/1.1、HTTP/2、HTTP/3 简要区别<a class="headerlink" href="#12-http11http2http3" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>传输基础</th>
+<th>主要特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HTTP/1.1</td>
+<td>TCP</td>
+<td>文本报文，持久连接，管线化理论存在但实践受限。</td>
+</tr>
+<tr>
+<td>HTTP/2</td>
+<td>TCP</td>
+<td>二进制分帧，多路复用，头部压缩，服务器推送曾被设计但实际使用减少。</td>
+</tr>
+<tr>
+<td>HTTP/3</td>
+<td>QUIC over UDP</td>
+<td>基于 QUIC，减少 TCP 队头阻塞影响，连接迁移能力更好。</td>
+</tr>
+</tbody>
+</table>
+<p>HTTP/2 的多路复用可以在一个 TCP 连接上并发多个请求响应流，但因为底层仍是 TCP，如果 TCP 层丢包，所有流都可能受影响。</p>
+<p>HTTP/3 运行在 QUIC 上，QUIC 使用 UDP 作为承载，并在用户态实现连接、加密、流、多路复用、丢包恢复等能力。初学阶段不要理解成“HTTP/3 就是不可靠的 UDP”。HTTP/3 只是使用 UDP 穿过网络，可靠性和安全性由 QUIC 提供。</p>
+<h2 id="13-https">13. HTTPS 是什么<a class="headerlink" href="#13-https" title="Permanent link">&para;</a></h2>
+<p>HTTPS 是在 TLS 安全通道中传输 HTTP。</p>
+<figure>
+  <img src="../assets/http-https/http-https-tcp-tls.svg" alt="HTTP HTTPS TCP TLS relationship" />
+<br />
+<figcaption>图 4：HTTP、HTTPS、TCP、TLS 的关系。</figcaption>
+</figure>
+<p>HTTP 明文传输存在几个问题：</p>
+<ul>
+<li>窃听：中间人可以看到请求路径、Header、Body。</li>
+<li>篡改：中间人可能修改响应内容。</li>
+<li>冒充：客户端无法可靠确认服务器身份。</li>
+</ul>
+<p>HTTPS 用 TLS 解决这些问题：</p>
+<ul>
+<li>用加密保护内容。</li>
+<li>用消息认证和完整性校验发现篡改。</li>
+<li>用证书链验证服务器身份。</li>
+</ul>
+<p>HTTPS 不等于绝对安全。它保护传输通道，但不能自动解决：</p>
+<ul>
+<li>服务器漏洞。</li>
+<li>弱密码。</li>
+<li>XSS、CSRF。</li>
+<li>Token 泄露。</li>
+<li>客户端本地被攻破。</li>
+<li>错误信任证书。</li>
+</ul>
+<h2 id="14-tls">14. TLS 的基本作用<a class="headerlink" href="#14-tls" title="Permanent link">&para;</a></h2>
+<p>TLS 是 Transport Layer Security，传输层安全协议。它常位于应用层和传输层之间。</p>
+<p>TLS 主要提供三类能力：</p>
+<h3 id="141">14.1 加密<a class="headerlink" href="#141" title="Permanent link">&para;</a></h3>
+<p>通信内容经过加密，中间设备即使抓到包，也难以直接读出 HTTP 请求和响应内容。</p>
+<h3 id="142">14.2 完整性<a class="headerlink" href="#142" title="Permanent link">&para;</a></h3>
+<p>TLS 会检查数据是否被篡改。如果中间人修改密文，接收方通常能发现并终止连接。</p>
+<h3 id="143">14.3 身份认证<a class="headerlink" href="#143" title="Permanent link">&para;</a></h3>
+<p>服务器提供证书，客户端验证证书链、有效期、域名等，以确认连接的是目标服务器。</p>
+<p>某些场景还会使用双向 TLS，服务器也验证客户端证书。这常见于企业、工业网关、设备到云平台的高安全接入。</p>
+<h2 id="15-ca">15. 证书、CA、域名校验<a class="headerlink" href="#15-ca" title="Permanent link">&para;</a></h2>
+<p>HTTPS 服务器证书通常包含：</p>
+<ul>
+<li>证书持有者信息。</li>
+<li>公钥。</li>
+<li>域名信息，现代证书主要看 Subject Alternative Name。</li>
+<li>有效期。</li>
+<li>签发者。</li>
+<li>签名算法和签名。</li>
+</ul>
+<p>CA 是 Certificate Authority，证书颁发机构。浏览器和操作系统内置一批受信任根 CA。服务器证书通常由中间 CA 签发，最终能追溯到受信任根 CA。</p>
+<p>客户端验证证书时通常检查：</p>
+<ul>
+<li>证书链是否能连到受信任根 CA。</li>
+<li>证书是否在有效期内。</li>
+<li>证书是否被吊销，具体机制和客户端实现有关。</li>
+<li>访问的域名是否匹配证书中的域名。</li>
+<li>证书签名算法是否安全。</li>
+</ul>
+<p>常见证书错误：</p>
+<ul>
+<li>证书过期。</li>
+<li>域名不匹配。</li>
+<li>自签名证书未被信任。</li>
+<li>中间证书缺失。</li>
+<li>设备时间错误导致证书看起来未生效或已过期。</li>
+<li>嵌入式设备根证书库太旧。</li>
+</ul>
+<h2 id="16-https">16. HTTPS 建立连接的大致流程<a class="headerlink" href="#16-https" title="Permanent link">&para;</a></h2>
+<p>HTTPS 建立连接包含 TCP 握手和 TLS 握手。下面是简化流程。</p>
+<figure>
+  <img src="../assets/http-https/https-tls-flow.svg" alt="HTTPS TLS handshake simplified flow" />
+<br />
+<figcaption>图 5：HTTPS / TLS 建立安全连接的简化流程。</figcaption>
+</figure>
+<p>典型流程：</p>
+<ol>
+<li>客户端与服务器建立 TCP 连接。</li>
+<li>客户端发送 TLS ClientHello，包含支持的 TLS 版本、加密套件、随机数、SNI 等。</li>
+<li>服务器返回 ServerHello，选择参数，并发送证书等信息。</li>
+<li>客户端验证证书链、有效期和域名。</li>
+<li>双方协商出会话密钥。</li>
+<li>后续 HTTP 数据使用协商出的密钥加密传输。</li>
+</ol>
+<p>这是为了帮助初学者理解的简化说法。TLS 1.2 和 TLS 1.3 的握手细节不同，密钥交换、消息数量、0-RTT 等机制也不同。工程上通常使用成熟 TLS 库，例如 OpenSSL、mbedTLS、wolfSSL、BoringSSL，而不是自己实现 TLS。</p>
+<h2 id="17">17. 调试方法<a class="headerlink" href="#17" title="Permanent link">&para;</a></h2>
+<h3 id="171">17.1 浏览器开发者工具<a class="headerlink" href="#171" title="Permanent link">&para;</a></h3>
+<p>浏览器 DevTools 的 Network 面板可以查看：</p>
+<ul>
+<li>URL。</li>
+<li>方法。</li>
+<li>状态码。</li>
+<li>请求头和响应头。</li>
+<li>Query 参数。</li>
+<li>Request Payload。</li>
+<li>Response Body。</li>
+<li>Cookie。</li>
+<li>缓存命中情况。</li>
+<li>Timing。</li>
+</ul>
+<p>适合调试网页、接口、CORS、缓存和 Cookie。</p>
+<h3 id="172-curl">17.2 curl<a class="headerlink" href="#172-curl" title="Permanent link">&para;</a></h3>
+<p><code>curl</code> 是命令行调试 HTTP/HTTPS 的常用工具。</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-v<span class="w"> </span>https://example.com/
+curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>https://api.example.com/data<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;{\&quot;a\&quot;:1}&quot;</span>
+curl<span class="w"> </span>-I<span class="w"> </span>https://example.com/
+</code></pre></div>
+<p>常用选项：</p>
+<ul>
+<li><code>-v</code>：显示连接和 TLS/HTTP 细节。</li>
+<li><code>-I</code>：只请求响应头。</li>
+<li><code>-H</code>：添加 Header。</li>
+<li><code>-d</code>：发送请求体。</li>
+<li><code>--cacert</code>：指定 CA 证书。</li>
+<li><code>-k</code>：跳过证书校验，仅调试时使用，不应在生产中使用。</li>
+</ul>
+<h3 id="173-postman-apifox-api">17.3 Postman / Apifox 等 API 工具<a class="headerlink" href="#173-postman-apifox-api" title="Permanent link">&para;</a></h3>
+<p>适合调试 REST API：</p>
+<ul>
+<li>管理环境变量。</li>
+<li>设置 Header。</li>
+<li>设置 Bearer Token。</li>
+<li>查看响应体。</li>
+<li>保存接口集合。</li>
+</ul>
+<h3 id="174-wireshark">17.4 Wireshark<a class="headerlink" href="#174-wireshark" title="Permanent link">&para;</a></h3>
+<p>Wireshark 可以抓 HTTP 明文流量，也可以看到 HTTPS 的 TCP/TLS 握手信息。</p>
+<p>HTTPS 内容默认是加密的，抓包通常看不到 HTTP Header 和 Body。但仍能看到：</p>
+<ul>
+<li>DNS。</li>
+<li>TCP 握手。</li>
+<li>TLS 版本。</li>
+<li>SNI，具体是否可见取决于是否使用 ECH 等新机制。</li>
+<li>证书信息，TLS 版本和配置会影响可见性。</li>
+<li>TCP 重传、RST、握手失败。</li>
+</ul>
+<p>调试 HTTPS 内容时，可以使用浏览器开发者工具、服务器日志、客户端日志，或在受控环境中配置 TLS key log。不要在生产环境随意泄露密钥日志。</p>
+<h2 id="18">18. 常见错误与排障思路<a class="headerlink" href="#18" title="Permanent link">&para;</a></h2>
+<h3 id="181-http">18.1 没有 HTTP 状态码<a class="headerlink" href="#181-http" title="Permanent link">&para;</a></h3>
+<p>如果客户端没有拿到 HTTP 状态码，问题可能发生在更低层：</p>
+<ul>
+<li>DNS 解析失败。</li>
+<li>TCP 连接失败。</li>
+<li>TLS 握手失败。</li>
+<li>代理或防火墙阻断。</li>
+<li>连接超时。</li>
+</ul>
+<p>排查顺序：</p>
+<ol>
+<li>DNS 是否能解析。</li>
+<li>IP 是否能连通。</li>
+<li>TCP 端口是否开放。</li>
+<li>TLS 证书是否通过校验。</li>
+<li>HTTP 请求是否发出。</li>
+</ol>
+<h3 id="182-400-bad-request">18.2 400 Bad Request<a class="headerlink" href="#182-400-bad-request" title="Permanent link">&para;</a></h3>
+<p>常见原因：</p>
+<ul>
+<li>URL、Query、Header 格式错误。</li>
+<li>JSON 不合法。</li>
+<li>Content-Length 错误。</li>
+<li>Content-Type 与 Body 不匹配。</li>
+<li>服务端参数校验失败。</li>
+</ul>
+<h3 id="183-401-403">18.3 401 与 403<a class="headerlink" href="#183-401-403" title="Permanent link">&para;</a></h3>
+<p><code>401 Unauthorized</code> 通常表示认证缺失或失败。</p>
+<p><code>403 Forbidden</code> 通常表示身份可能已确认，但没有权限访问。</p>
+<p>检查：</p>
+<ul>
+<li>Authorization 是否带上。</li>
+<li>Token 是否过期。</li>
+<li>Cookie 是否被浏览器阻止。</li>
+<li>权限角色是否正确。</li>
+<li>系统时间是否影响 Token 或证书。</li>
+</ul>
+<h3 id="184-404">18.4 404<a class="headerlink" href="#184-404" title="Permanent link">&para;</a></h3>
+<p>常见原因：</p>
+<ul>
+<li>URL 路径错误。</li>
+<li>HTTP 方法错误。</li>
+<li>反向代理路由错误。</li>
+<li>服务部署路径和接口文档不一致。</li>
+</ul>
+<h3 id="185-5xx">18.5 5xx<a class="headerlink" href="#185-5xx" title="Permanent link">&para;</a></h3>
+<p>常见原因：</p>
+<ul>
+<li>后端程序异常。</li>
+<li>数据库不可用。</li>
+<li>上游服务超时。</li>
+<li>网关配置错误。</li>
+<li>服务过载。</li>
+</ul>
+<p>客户端看到 5xx 时，不应盲目高频重试，否则可能加重服务器压力。</p>
+<h3 id="186-https">18.6 HTTPS 证书错误<a class="headerlink" href="#186-https" title="Permanent link">&para;</a></h3>
+<p>常见原因：</p>
+<ul>
+<li>证书过期。</li>
+<li>域名不匹配。</li>
+<li>根 CA 不受信任。</li>
+<li>中间证书链缺失。</li>
+<li>设备时间错误。</li>
+<li>嵌入式固件证书库太旧。</li>
+</ul>
+<p>嵌入式设备尤其容易因为 RTC 时间不准导致 TLS 证书校验失败。很多设备需要先同步时间，再建立 HTTPS 连接。</p>
+<h2 id="19">19. 工程实践建议<a class="headerlink" href="#19" title="Permanent link">&para;</a></h2>
+<h3 id="191">19.1 接口设计<a class="headerlink" href="#191" title="Permanent link">&para;</a></h3>
+<ul>
+<li>URL 表达资源，方法表达动作。</li>
+<li>GET 用于读取，POST/PUT/PATCH/DELETE 用于修改。</li>
+<li>返回一致的 JSON 结构。</li>
+<li>错误响应包含可读错误码和信息。</li>
+<li>对请求体大小做限制。</li>
+<li>对接口版本进行规划，例如 <code>/api/v1/...</code>。</li>
+</ul>
+<h3 id="192">19.2 安全意识<a class="headerlink" href="#192" title="Permanent link">&para;</a></h3>
+<ul>
+<li>生产环境使用 HTTPS。</li>
+<li>不在 URL Query 中放敏感 Token。</li>
+<li>Token 不要明文打印到日志。</li>
+<li>Cookie 设置 <code>HttpOnly</code>、<code>Secure</code>、<code>SameSite</code>。</li>
+<li>管理接口增加认证和权限控制。</li>
+<li>嵌入式设备避免使用硬编码万能密码。</li>
+<li>证书校验不要在生产中关闭。</li>
+</ul>
+<h3 id="193">19.3 缓存<a class="headerlink" href="#193" title="Permanent link">&para;</a></h3>
+<ul>
+<li>静态资源可以设置较长缓存。</li>
+<li>用户私有数据使用 <code>private</code> 或 <code>no-store</code>。</li>
+<li>配置接口和实时数据谨慎缓存。</li>
+<li>使用 ETag 或 Last-Modified 做条件请求。</li>
+</ul>
+<h3 id="194">19.4 超时与重试<a class="headerlink" href="#194" title="Permanent link">&para;</a></h3>
+<p>客户端应区分：</p>
+<ul>
+<li>DNS 超时。</li>
+<li>TCP 连接超时。</li>
+<li>TLS 握手超时。</li>
+<li>请求发送超时。</li>
+<li>响应读取超时。</li>
+</ul>
+<p>重试建议：</p>
+<ul>
+<li>GET 等幂等请求更适合自动重试。</li>
+<li>POST 是否能重试取决于业务是否幂等。</li>
+<li>使用指数退避，避免雪崩。</li>
+<li>对 429、503 可结合 <code>Retry-After</code>。</li>
+</ul>
+<h3 id="195">19.5 嵌入式实现<a class="headerlink" href="#195" title="Permanent link">&para;</a></h3>
+<p>嵌入式设备做 HTTP/HTTPS 时要关注：</p>
+<ul>
+<li>RAM 是否足够容纳 TLS 缓冲区和证书链。</li>
+<li>Flash 是否足够存根证书。</li>
+<li>RTC 时间是否正确。</li>
+<li>是否支持 SNI。</li>
+<li>是否需要 HTTP chunked。</li>
+<li>是否需要长连接。</li>
+<li>网络断开后是否能自动重连。</li>
+<li>OTA 下载是否校验固件签名，不要只依赖 HTTPS。</li>
+</ul>
+<p>实现方式与平台强相关。裸机、RTOS、Linux、蜂窝模组 AT 指令、Wi-Fi 模组 SDK 的 HTTP/HTTPS 能力差异很大，要看对应官方文档。</p>
+<h2 id="20-tcpudpwebsocketmqtt">20. 与 TCP/UDP、WebSocket、MQTT 的对比<a class="headerlink" href="#20-tcpudpwebsocketmqtt" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>协议</th>
+<th>层次/定位</th>
+<th>常见承载</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TCP</td>
+<td>传输层</td>
+<td>IP</td>
+<td>可靠字节流，HTTP/1.1/2 常用。</td>
+</tr>
+<tr>
+<td>UDP</td>
+<td>传输层</td>
+<td>IP</td>
+<td>无连接数据报，HTTP/3 的 QUIC 使用 UDP。</td>
+</tr>
+<tr>
+<td>HTTP</td>
+<td>应用层</td>
+<td>TCP</td>
+<td>请求/响应模型，Web API 常用。</td>
+</tr>
+<tr>
+<td>HTTPS</td>
+<td>应用层 + TLS</td>
+<td>TCP</td>
+<td>HTTP 通过 TLS 加密传输。</td>
+</tr>
+<tr>
+<td>WebSocket</td>
+<td>应用层</td>
+<td>TCP，常由 HTTP Upgrade 建立</td>
+<td>长连接、双向消息。</td>
+</tr>
+<tr>
+<td>MQTT</td>
+<td>应用层</td>
+<td>TCP/TLS</td>
+<td>发布订阅模型，物联网常用。</td>
+</tr>
+</tbody>
+</table>
+<p>边界理解：</p>
+<ul>
+<li>HTTP 适合请求/响应。</li>
+<li>WebSocket 适合浏览器和服务器之间长期双向推送。</li>
+<li>MQTT 适合设备与 Broker 的发布订阅。</li>
+<li>TCP/UDP 是更底层的传输能力，不定义业务资源和状态码。</li>
+</ul>
+<h2 id="21">21. 常见误区<a class="headerlink" href="#21" title="Permanent link">&para;</a></h2>
+<h3 id="211-http">21.1 HTTP 是网页本身<a class="headerlink" href="#211-http" title="Permanent link">&para;</a></h3>
+<p>不是。网页是 HTML、CSS、JavaScript、图片等资源；HTTP 是传输这些资源的协议。</p>
+<h3 id="212-https-http">21.2 HTTPS 是更高级的 HTTP<a class="headerlink" href="#212-https-http" title="Permanent link">&para;</a></h3>
+<p>不准确。HTTPS 是 HTTP over TLS。HTTP 语义仍然是请求、响应、方法、状态码、头字段，只是传输通道被 TLS 保护。</p>
+<h3 id="213-cookiesessiontoken">21.3 Cookie、Session、Token 是同一个东西<a class="headerlink" href="#213-cookiesessiontoken" title="Permanent link">&para;</a></h3>
+<p>不是。Cookie 是客户端存储和自动携带机制；Session 多指服务器端会话状态；Token 是访问凭证，常通过 Authorization 或 Cookie 携带。</p>
+<h3 id="214-http3-udp">21.4 HTTP/3 使用 UDP，所以不可靠<a class="headerlink" href="#214-http3-udp" title="Permanent link">&para;</a></h3>
+<p>不准确。HTTP/3 使用 QUIC，QUIC 基于 UDP，但自己实现了可靠传输、加密、多路复用和拥塞控制等机制。它不是简单把 HTTP 文本直接塞进 UDP。</p>
+<h3 id="215-https">21.5 HTTPS 抓不到明文就无法调试<a class="headerlink" href="#215-https" title="Permanent link">&para;</a></h3>
+<p>不是。可以用浏览器开发者工具、客户端日志、服务器日志、受控环境 TLS key log 等方式调试。Wireshark 仍能帮助分析 DNS、TCP、TLS 握手和连接问题。</p>
+<h2 id="22">22. 学习路线<a class="headerlink" href="#22" title="Permanent link">&para;</a></h2>
+<p>建议按下面顺序练习：</p>
+<ol>
+<li>用浏览器 DevTools 打开一个网页，观察请求方法、状态码、Header。</li>
+<li>用 <code>curl -v</code> 请求 HTTP 和 HTTPS 网站，对比连接过程。</li>
+<li>手写一个简单 HTTP 请求，理解请求行、Header、空行。</li>
+<li>用本地 HTTP Server 返回 JSON，观察 Content-Type。</li>
+<li>设计一个 REST 风格接口，区分 GET、POST、PUT、DELETE。</li>
+<li>使用 Cookie 登录一个测试页面，观察 Set-Cookie 和 Cookie。</li>
+<li>用 Wireshark 抓 HTTP 明文，再抓 HTTPS TLS 握手。</li>
+<li>在嵌入式设备上实现 HTTP GET/POST。</li>
+<li>再实现 HTTPS，处理证书、时间、内存和超时问题。</li>
+</ol>
+<h2 id="_1">参考资料<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc9110">RFC 9110: HTTP Semantics</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc9112">RFC 9112: HTTP/1.1</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc9113">RFC 9113: HTTP/2</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc9114">RFC 9114: HTTP/3</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc8446">RFC 8446: The Transport Layer Security (TLS) Protocol Version 1.3</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP">MDN Web Docs: HTTP</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status">MDN Web Docs: HTTP response status codes</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies">MDN Web Docs: HTTP cookies</a></li>
+<li><a href="https://curl.se/docs/">curl Documentation</a></li>
+</ul>
 
 
 

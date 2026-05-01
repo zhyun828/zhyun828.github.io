@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="500" viewBox="0 0 1040 500" role="img" aria-labelledby="title desc">
+  <title id="title">LIN and CAN comparison</title>
+  <desc id="desc">LIN is low cost single master local network while CAN is multi master differential backbone network.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.lin{fill:#dcfce7;stroke:#15803d;stroke-width:2;rx:14}.can{fill:#dbeafe;stroke:#1d4ed8;stroke-width:2;rx:14}
+      .text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:19px;fill:#0f172a}.title{font-size:25px;font-weight:700}.head{font-size:23px;font-weight:700}
+      .small{font-size:16px;fill:#334155}.bus1{stroke:#16a34a;stroke-width:5}.bus2{stroke:#2563eb;stroke-width:5}.node{fill:#fff;stroke:#334155;stroke-width:2;rx:8}
+    </style>
+  </defs>
+  <rect class="bg" width="1040" height="500"/>
+  <text class="text title" x="520" y="45" text-anchor="middle">LIN 与 CAN 的定位对比</text>
+  <rect class="lin" x="70" y="80" width="410" height="360"/>
+  <rect class="can" x="560" y="80" width="410" height="360"/>
+  <text class="text head" x="275" y="120" text-anchor="middle">LIN</text>
+  <text class="text head" x="765" y="120" text-anchor="middle">CAN</text>
+
+  <line class="bus1" x1="125" y1="180" x2="425" y2="180"/>
+  <rect class="node" x="125" y="140" width="86" height="48"/><text class="small" x="168" y="170" text-anchor="middle">Master</text>
+  <rect class="node" x="245" y="205" width="76" height="45"/><text class="small" x="283" y="233" text-anchor="middle">Slave</text>
+  <rect class="node" x="345" y="205" width="76" height="45"/><text class="small" x="383" y="233" text-anchor="middle">Slave</text>
+
+  <line class="bus2" x1="615" y1="180" x2="915" y2="180"/>
+  <rect class="node" x="610" y="140" width="76" height="48"/><text class="small" x="648" y="170" text-anchor="middle">ECU</text>
+  <rect class="node" x="730" y="205" width="76" height="45"/><text class="small" x="768" y="233" text-anchor="middle">ECU</text>
+  <rect class="node" x="835" y="140" width="76" height="48"/><text class="small" x="873" y="170" text-anchor="middle">ECU</text>
+
+  <text class="small" x="275" y="300" text-anchor="middle">单主调度，无仲裁</text>
+  <text class="small" x="275" y="330" text-anchor="middle">单线，低速，低成本</text>
+  <text class="small" x="275" y="360" text-anchor="middle">适合局部执行器和传感器</text>
+
+  <text class="small" x="765" y="300" text-anchor="middle">多主，非破坏性仲裁</text>
+  <text class="small" x="765" y="330" text-anchor="middle">双线差分，更高可靠性</text>
+  <text class="small" x="765" y="360" text-anchor="middle">适合主干控制和多 ECU 通信</text>
+</svg>

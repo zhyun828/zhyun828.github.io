@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="430" viewBox="0 0 1120 430" role="img" aria-labelledby="title desc">
+  <title id="title">LIN frame structure</title>
+  <desc id="desc">LIN frame contains break sync PID data and checksum, split into header and response.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.h{fill:#dbeafe;stroke:#2563eb;stroke-width:2}.r{fill:#dcfce7;stroke:#16a34a;stroke-width:2}
+      .c{fill:#fee2e2;stroke:#dc2626;stroke-width:2}.box{stroke:#334155;stroke-width:2;rx:8}
+      .text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:19px;fill:#0f172a}.title{font-size:25px;font-weight:700}.small{font-size:15px;fill:#475569}
+      .brace{stroke:#64748b;stroke-width:3;fill:none}
+    </style>
+  </defs>
+  <rect class="bg" width="1120" height="430"/>
+  <text class="text title" x="560" y="48" text-anchor="middle">LIN 帧结构</text>
+
+  <rect class="box h" x="80" y="130" width="170" height="82"/><text class="text" x="165" y="164" text-anchor="middle">Break</text><text class="small" x="165" y="190" text-anchor="middle">帧起始</text>
+  <rect class="box h" x="250" y="130" width="170" height="82"/><text class="text" x="335" y="164" text-anchor="middle">Sync</text><text class="small" x="335" y="190" text-anchor="middle">固定 0x55</text>
+  <rect class="box h" x="420" y="130" width="170" height="82"/><text class="text" x="505" y="164" text-anchor="middle">PID</text><text class="small" x="505" y="190" text-anchor="middle">6 位 ID + P0/P1</text>
+  <rect class="box r" x="590" y="130" width="330" height="82"/><text class="text" x="755" y="164" text-anchor="middle">Data</text><text class="small" x="755" y="190" text-anchor="middle">0..8 字节，由发布者发送</text>
+  <rect class="box c" x="920" y="130" width="150" height="82"/><text class="text" x="995" y="164" text-anchor="middle">Checksum</text><text class="small" x="995" y="190" text-anchor="middle">Classic / Enhanced</text>
+
+  <path class="brace" d="M80 260 Q80 245 95 245 L575 245 Q590 245 590 260"/>
+  <text class="text" x="335" y="292" text-anchor="middle">Header：始终由主节点发送</text>
+  <path class="brace" d="M590 260 Q590 245 605 245 L1055 245 Q1070 245 1070 260"/>
+  <text class="text" x="830" y="292" text-anchor="middle">Response：由该帧发布者发送</text>
+
+  <text class="small" x="560" y="360" text-anchor="middle">主节点发送 Header 后，对应的发布者在响应段发送数据；订阅者只接收和使用数据。</text>
+</svg>

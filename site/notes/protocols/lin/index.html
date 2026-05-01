@@ -751,43 +751,652 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#1-lin-lin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. LIN 概述：为什么会有 LIN
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-lin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. LIN 在车载网络中的位置
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-lin-uartcan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. LIN 与 UART、CAN 的关系
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 典型应用场景
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 单总线、低成本、低速通信
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 主节点、从节点、发布者、订阅者
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 主节点、从节点、发布者、订阅者">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-master" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 主节点 Master
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-slave" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 从节点 Slave
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-publisher-subscriber" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 发布者 Publisher 与订阅者 Subscriber
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-lin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. LIN 通信的整体工作方式
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-lin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. LIN 帧结构详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. LIN 帧结构详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-break" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Break
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Sync
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-pid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 PID
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#84-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4 Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#85-checksum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.5 Checksum
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-pid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. PID 的组成与奇偶校验
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-classic-checksum-enhanced-checksum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Classic Checksum 与 Enhanced Checksum
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Classic Checksum 与 Enhanced Checksum">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-classic-checksum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 Classic Checksum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-enhanced-checksum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 Enhanced Checksum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 使用区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-lin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. LIN 帧类型
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. LIN 帧类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#111-unconditional-frame" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1 无条件帧 Unconditional Frame
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112-event-triggered-frame" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2 事件触发帧 Event Triggered Frame
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113-diagnostic-frame" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3 诊断帧 Diagnostic Frame
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#114-user-defined-frame" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4 用户定义帧 User-defined Frame
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-schedule-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. 调度表 Schedule Table
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. 时间同步机制
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. 诊断与配置基本思路
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-lin-can" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. LIN 与 CAN 的配合关系
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-lin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. LIN 的优点、局限性和适用边界
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16. LIN 的优点、局限性和适用边界">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#161" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.1 优点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#162" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.2 局限性
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#163" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.3 适用边界
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. 常见调试方法与排障思路
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17. 常见调试方法与排障思路">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#171" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.1 先看物理层
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#172-header" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.2 再看 Header
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#173-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.3 再看 Response
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#174" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.4 再看调度表
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#175" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.5 常见错误现象
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. 工程实践建议
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18. 工程实践建议">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#181" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.1 节点设计
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#182" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.2 调度设计
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#183" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.3 错误处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#184" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.4 主从职责划分
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-usart-can" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. 与 USART / CAN 的简要对比
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20. 初学者常见误区
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20. 初学者常见误区">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#201-lin-can" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.1 LIN 是低配版 CAN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#202-lin-uart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.2 LIN 就是 UART
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#203-pid-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.3 PID 就是 ID
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#204" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.4 从节点可以随时发送
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#205" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.5 调度表只是软件实现细节
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#206-checksum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.6 checksum 错一定是线路干扰
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21. 学习路线
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        核心概念
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        硬件连接
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        协议时序
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        常见问题
+        参考资料
       
     </span>
   </a>
@@ -2276,43 +2885,652 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#1-lin-lin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. LIN 概述：为什么会有 LIN
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-lin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. LIN 在车载网络中的位置
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-lin-uartcan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. LIN 与 UART、CAN 的关系
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 典型应用场景
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 单总线、低成本、低速通信
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 主节点、从节点、发布者、订阅者
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 主节点、从节点、发布者、订阅者">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-master" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 主节点 Master
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-slave" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 从节点 Slave
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-publisher-subscriber" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 发布者 Publisher 与订阅者 Subscriber
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-lin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. LIN 通信的整体工作方式
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-lin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. LIN 帧结构详解
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. LIN 帧结构详解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-break" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Break
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Sync
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-pid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 PID
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#84-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4 Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#85-checksum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.5 Checksum
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-pid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. PID 的组成与奇偶校验
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-classic-checksum-enhanced-checksum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Classic Checksum 与 Enhanced Checksum
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Classic Checksum 与 Enhanced Checksum">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-classic-checksum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 Classic Checksum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-enhanced-checksum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 Enhanced Checksum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 使用区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-lin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. LIN 帧类型
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. LIN 帧类型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#111-unconditional-frame" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1 无条件帧 Unconditional Frame
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112-event-triggered-frame" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2 事件触发帧 Event Triggered Frame
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113-diagnostic-frame" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3 诊断帧 Diagnostic Frame
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#114-user-defined-frame" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4 用户定义帧 User-defined Frame
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-schedule-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. 调度表 Schedule Table
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. 时间同步机制
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. 诊断与配置基本思路
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-lin-can" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. LIN 与 CAN 的配合关系
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-lin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. LIN 的优点、局限性和适用边界
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16. LIN 的优点、局限性和适用边界">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#161" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.1 优点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#162" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.2 局限性
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#163" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16.3 适用边界
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. 常见调试方法与排障思路
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17. 常见调试方法与排障思路">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#171" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.1 先看物理层
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#172-header" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.2 再看 Header
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#173-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.3 再看 Response
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#174" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.4 再看调度表
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#175" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17.5 常见错误现象
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. 工程实践建议
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18. 工程实践建议">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#181" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.1 节点设计
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#182" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.2 调度设计
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#183" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.3 错误处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#184" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18.4 主从职责划分
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-usart-can" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. 与 USART / CAN 的简要对比
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20. 初学者常见误区
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20. 初学者常见误区">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#201-lin-can" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.1 LIN 是低配版 CAN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#202-lin-uart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.2 LIN 就是 UART
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#203-pid-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.3 PID 就是 ID
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#204" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.4 从节点可以随时发送
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#205" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.5 调度表只是软件实现细节
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#206-checksum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20.6 checksum 错一定是线路干扰
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21. 学习路线
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        核心概念
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        硬件连接
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        协议时序
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        常见问题
+        参考资料
       
     </span>
   </a>
@@ -2403,10 +3621,783 @@
 
 
 <h1 id="lin">LIN<a class="headerlink" href="#lin" title="Permanent link">&para;</a></h1>
-<h2 id="_1">核心概念<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
-<h2 id="_2">硬件连接<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<h2 id="_3">协议时序<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<h2 id="_4">常见问题<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>LIN 是 Local Interconnect Network 的缩写，常翻译为本地互连网络。它是一种面向低成本、低速、车身局部控制场景的串行通信协议，典型用途是把车门、车窗、座椅、空调风门、雨量传感器、方向盘按键、后视镜、天窗等“数量多、数据量小、实时性要求中等”的节点接入整车网络。</p>
+<p>一句话理解 LIN：它不是“低配版 CAN”，而是专门为低成本从属网络设计的主从式单线总线。它常常和 CAN 配合使用：CAN 负责整车主干和高可靠多主通信，LIN 负责局部低速执行器和传感器的低成本接入。</p>
+<h2 id="1-lin-lin">1. LIN 概述：为什么会有 LIN<a class="headerlink" href="#1-lin-lin" title="Permanent link">&para;</a></h2>
+<p>在汽车电子里，并不是每一个执行器都值得接一颗 CAN 收发器和完整 CAN 控制器。比如一个车窗开关、一个小电机、一个温度风门执行器，数据量很小，通信周期也不高。如果全部使用 CAN，成本、线束、软件复杂度都会上升。</p>
+<p>LIN 要解决的问题主要是：</p>
+<ul>
+<li>降低节点硬件成本。</li>
+<li>减少线束数量，使用单根信号线加电源和地。</li>
+<li>让简单从节点可以用普通 UART/USART 外设参与通信。</li>
+<li>用主节点统一调度，避免多节点争用总线。</li>
+<li>在不需要 CAN 那么高性能的地方，提供足够可靠的低速通信。</li>
+</ul>
+<p>LIN 的典型特征：</p>
+<table>
+<thead>
+<tr>
+<th>特征</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>单主多从</td>
+<td>一个主节点控制总线时序，多个从节点被动响应。</td>
+</tr>
+<tr>
+<td>单线通信</td>
+<td>LIN 总线是一根信号线，通常还需要电源和地。</td>
+</tr>
+<tr>
+<td>低速</td>
+<td>常见速率最高约 <code>20 kbit/s</code>，工程中也常见 <code>9.6 kbit/s</code>、<code>19.2 kbit/s</code>。</td>
+</tr>
+<tr>
+<td>低成本</td>
+<td>从节点通常不需要晶振级高精度时钟，可通过 Sync 字段同步。</td>
+</tr>
+<tr>
+<td>确定性调度</td>
+<td>主节点按调度表发送帧头，决定什么时候通信。</td>
+</tr>
+<tr>
+<td>基于 UART</td>
+<td>字节层面类似异步串口，但 LIN 有额外帧格式和协议规则。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-lin">2. LIN 在车载网络中的位置<a class="headerlink" href="#2-lin" title="Permanent link">&para;</a></h2>
+<p>LIN 常作为 CAN、CAN FD、FlexRay、Automotive Ethernet 等主干网络下面的局部子网。主控 ECU 既可以是 CAN 节点，也可以是某条 LIN 支路的主节点。</p>
+<figure>
+  <img src="../../protocols/assets/lin/lin-network-position.svg" alt="LIN position in vehicle network" />
+<br />
+<figcaption>图 1：LIN 常用于车载网络中的局部低速子网。</figcaption>
+</figure>
+<p>常见结构是：</p>
+<ul>
+<li>车身控制器 BCM 接入 CAN 主干。</li>
+<li>BCM 同时作为多个 LIN 子网的主节点。</li>
+<li>每条 LIN 子网上挂多个低成本从节点。</li>
+<li>从节点只负责自己的局部功能，比如读取按键、驱动小电机、上报状态。</li>
+</ul>
+<p>所以 LIN 与 CAN 的关系不是互相替代，而是分工协作：</p>
+<ul>
+<li>CAN 更适合多主、较高带宽、强实时、复杂控制。</li>
+<li>LIN 更适合低速、低成本、主节点集中调度的局部功能。</li>
+</ul>
+<h2 id="3-lin-uartcan">3. LIN 与 UART、CAN 的关系<a class="headerlink" href="#3-lin-uartcan" title="Permanent link">&para;</a></h2>
+<p>初学者最容易把 LIN、UART、CAN 放在同一层比较。实际上它们不完全是同一层概念。</p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>UART/USART</th>
+<th>LIN</th>
+<th>CAN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>定位</td>
+<td>MCU 串口外设/异步串行通信方式</td>
+<td>基于单线串行的车载局部网络协议</td>
+<td>多主差分总线通信协议</td>
+</tr>
+<tr>
+<td>物理层</td>
+<td>TTL 串口、RS-232、RS-485 等都可承载</td>
+<td>LIN 收发器，单线总线</td>
+<td>CAN 收发器，CAN_H/CAN_L 差分</td>
+</tr>
+<tr>
+<td>拓扑</td>
+<td>通常点对点，或借助外部总线</td>
+<td>单主多从</td>
+<td>多主多节点</td>
+</tr>
+<tr>
+<td>仲裁</td>
+<td>无协议级仲裁</td>
+<td>不需要仲裁，主节点调度</td>
+<td>非破坏性位仲裁</td>
+</tr>
+<tr>
+<td>帧结构</td>
+<td>起始位、数据位、校验位、停止位</td>
+<td>Break、Sync、PID、Data、Checksum</td>
+<td>SOF、ID、控制、数据、CRC、ACK、EOF</td>
+</tr>
+<tr>
+<td>典型速率</td>
+<td>取决于硬件</td>
+<td>最高约 <code>20 kbit/s</code></td>
+<td>Classical CAN 最高 <code>1 Mbit/s</code></td>
+</tr>
+<tr>
+<td>典型场景</td>
+<td>调试口、模块间简单通信</td>
+<td>车身局部低速节点</td>
+<td>车身、动力、底盘、工业控制</td>
+</tr>
+</tbody>
+</table>
+<p>可以这样理解：</p>
+<ul>
+<li>UART 是发送和接收字节的基础硬件能力。</li>
+<li>LIN 借用了 UART 的异步字节格式，但定义了总线电平、帧结构、主从调度、PID、校验、诊断等规则。</li>
+<li>CAN 不依赖 UART，它有自己的控制器、收发器、仲裁和错误处理机制。</li>
+</ul>
+<p>因此，LIN 不是“裸 UART 加几个字节”。一个 LIN 节点除了能收发串口字节，还要理解 Break、Sync、PID、调度表、checksum 和诊断等协议行为。</p>
+<h2 id="4">4. 典型应用场景<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
+<p>LIN 常用于“一个主控 ECU 管理一组简单外设”的场景。</p>
+<p>典型例子：</p>
+<ul>
+<li>车门模块：车窗升降、门锁、后视镜调节、按键面板。</li>
+<li>座椅模块：座椅位置电机、加热、通风、记忆位置。</li>
+<li>空调系统：风门执行器、鼓风机控制、温度传感器。</li>
+<li>方向盘：按键、加热、局部传感器。</li>
+<li>雨刮和灯光：雨量传感器、光照传感器、局部执行器。</li>
+<li>电池和充电相关低速辅助节点。</li>
+</ul>
+<p>这些节点通常有共同特点：</p>
+<ul>
+<li>数据量小。</li>
+<li>节点成本敏感。</li>
+<li>不需要多个节点自由竞争总线。</li>
+<li>对实时性有要求，但不是微秒级。</li>
+<li>线束空间和成本很重要。</li>
+</ul>
+<h2 id="5">5. 单总线、低成本、低速通信<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<p>LIN 物理层通常是一根 LIN 信号线，配合电源和地。总线空闲时为隐性状态，通信时通过主从节点的 LIN 收发器拉动总线电平。</p>
+<p>工程上需要注意：</p>
+<ul>
+<li>LIN 是单线通信，不是 CAN 那样的双线差分通信。</li>
+<li>LIN 抗干扰能力和速度不如 CAN，因此不适合高带宽或强实时主干网络。</li>
+<li>LIN 支路通常较短，节点数量有限。</li>
+<li>LIN 从节点常通过主节点发送的 Sync 字段校准波特率，因此可以降低从节点时钟成本。</li>
+<li>低成本不等于“随便接线”。车载环境里仍要考虑 EMC、ESD、浪涌、休眠唤醒和地偏移。</li>
+</ul>
+<p>LIN 规范和实际芯片资料中会给出物理层、电压、电流、斜率控制、睡眠唤醒等要求。具体数值要以目标 LIN 收发器数据手册和整车厂规范为准。</p>
+<h2 id="6">6. 主节点、从节点、发布者、订阅者<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<p>LIN 使用一个主节点和多个从节点。</p>
+<figure>
+  <img src="../../protocols/assets/lin/lin-master-slave.svg" alt="LIN master slave bus topology" />
+<br />
+<figcaption>图 2：LIN 单主多从总线结构。</figcaption>
+</figure>
+<h3 id="61-master">6.1 主节点 Master<a class="headerlink" href="#61-master" title="Permanent link">&para;</a></h3>
+<p>主节点负责：</p>
+<ul>
+<li>维护调度表。</li>
+<li>周期性发送帧头 Header。</li>
+<li>决定总线上什么时候出现哪一个帧。</li>
+<li>管理诊断、配置、休眠和唤醒。</li>
+<li>通常作为 LIN 子网与 CAN 主干之间的网关。</li>
+</ul>
+<p>主节点不一定总是数据发送者。它发送帧头后，响应部分可能由主节点自己发送，也可能由某个从节点发送。</p>
+<h3 id="62-slave">6.2 从节点 Slave<a class="headerlink" href="#62-slave" title="Permanent link">&para;</a></h3>
+<p>从节点负责：</p>
+<ul>
+<li>监听主节点发送的 Header。</li>
+<li>根据 PID 判断自己是否需要响应或接收数据。</li>
+<li>在被调度到时发布数据。</li>
+<li>接收属于自己的控制数据。</li>
+<li>上报错误状态或诊断信息。</li>
+</ul>
+<p>从节点不能随意抢占总线。没有主节点帧头，从节点通常不会主动发送完整 LIN 帧。</p>
+<h3 id="63-publisher-subscriber">6.3 发布者 Publisher 与订阅者 Subscriber<a class="headerlink" href="#63-publisher-subscriber" title="Permanent link">&para;</a></h3>
+<p>LIN 里一个帧可以看成一个“信号容器”。某个节点负责发布这个帧中的数据，其他一个或多个节点订阅这个帧的数据。</p>
+<ul>
+<li>发布者：在该 PID 对应的响应段中发送 Data 和 Checksum。</li>
+<li>订阅者：接收并使用该 PID 对应的数据。</li>
+</ul>
+<p>例如：</p>
+<ul>
+<li>主节点发送 PID <code>0x12</code> 的帧头。</li>
+<li>左车门从节点是该帧发布者，返回车窗位置。</li>
+<li>主节点和其他相关节点订阅这个帧，更新状态。</li>
+</ul>
+<p>这种发布/订阅关系通常由 LDF 文件或项目通信矩阵描述。</p>
+<h2 id="7-lin">7. LIN 通信的整体工作方式<a class="headerlink" href="#7-lin" title="Permanent link">&para;</a></h2>
+<p>LIN 的一次通信通常由两部分组成：</p>
+<ol>
+<li>Header：主节点发送。</li>
+<li>Response：发布者发送，可能是主节点，也可能是某个从节点。</li>
+</ol>
+<p>也就是说，LIN 总线上的“谁能说话”由主节点帧头决定。</p>
+<p>典型过程：</p>
+<ol>
+<li>主节点按照调度表选择下一个帧。</li>
+<li>主节点发送 Break。</li>
+<li>主节点发送 Sync <code>0x55</code>。</li>
+<li>主节点发送 PID。</li>
+<li>对应发布者发送 0 到 8 字节 Data。</li>
+<li>发布者发送 Checksum。</li>
+<li>所有订阅者接收并校验数据。</li>
+<li>主节点等待该帧 slot 结束，进入下一个调度项。</li>
+</ol>
+<p>这个机制使 LIN 天然具有确定性：只要调度表设计合理，什么时候读谁、什么时候写谁都是可预期的。</p>
+<h2 id="8-lin">8. LIN 帧结构详解<a class="headerlink" href="#8-lin" title="Permanent link">&para;</a></h2>
+<p>LIN 帧由 Header 和 Response 组成。</p>
+<figure>
+  <img src="../../protocols/assets/lin/lin-frame-structure.svg" alt="LIN frame structure break sync PID data checksum" />
+<br />
+<figcaption>图 3：LIN 帧结构。</figcaption>
+</figure>
+<div class="highlight"><pre><span></span><code>Header:   Break + Sync + PID
+Response: Data[0..8] + Checksum
+</code></pre></div>
+<h3 id="81-break">8.1 Break<a class="headerlink" href="#81-break" title="Permanent link">&para;</a></h3>
+<p>Break 是 LIN 帧的起始标志，由主节点发送。它是一段比普通 UART 字符更长的显性低电平。</p>
+<p>作用：</p>
+<ul>
+<li>通知所有从节点：新帧开始。</li>
+<li>让从节点从普通字节流中重新同步到 LIN 帧边界。</li>
+<li>唤起处于等待接收状态的 LIN 协议解析逻辑。</li>
+</ul>
+<p>在 MCU 上实现 LIN Master 时，Break 不能简单理解为发送普通字节。很多带 LIN 功能的 UART/USART 外设可以自动产生 Break；如果没有硬件支持，也可能需要临时调整波特率或手动控制 TX，但这属于常见做法，不一定所有芯片完全一致。</p>
+<h3 id="82-sync">8.2 Sync<a class="headerlink" href="#82-sync" title="Permanent link">&para;</a></h3>
+<p>Sync 字段固定为 <code>0x55</code>，二进制为：</p>
+<div class="highlight"><pre><span></span><code>0101 0101
+</code></pre></div>
+<p>它的边沿分布均匀，方便从节点测量位宽并校准自己的波特率。</p>
+<p>这就是 LIN 能降低从节点时钟成本的重要原因之一：从节点不一定需要高精度晶振，可以在每帧 Sync 字段上重新同步。但工程上仍要保证从节点内部时钟误差、温漂和软件延迟满足目标网络要求。</p>
+<h3 id="83-pid">8.3 PID<a class="headerlink" href="#83-pid" title="Permanent link">&para;</a></h3>
+<p>PID 是 Protected Identifier，受保护标识符。它不是普通裸 ID，而是：</p>
+<div class="highlight"><pre><span></span><code>PID = ID[0..5] + P0 + P1
+</code></pre></div>
+<p>其中：</p>
+<ul>
+<li>ID 是 6 位帧标识符，范围 <code>0..63</code>。</li>
+<li>P0 和 P1 是两个奇偶校验位。</li>
+<li>PID 总共 8 位。</li>
+</ul>
+<p>PID 的作用：</p>
+<ul>
+<li>标识当前帧是什么。</li>
+<li>让从节点判断自己是否需要发布或订阅。</li>
+<li>通过奇偶校验位检测 PID 本身的部分错误。</li>
+</ul>
+<h3 id="84-data">8.4 Data<a class="headerlink" href="#84-data" title="Permanent link">&para;</a></h3>
+<p>Data 是响应数据，长度通常为 <code>1..8</code> 字节，也可能有特殊帧使用不同语义。某个 PID 的数据长度和信号布局通常在 LDF 或项目文档中固定。</p>
+<p>LIN 数据里可以承载：</p>
+<ul>
+<li>开关状态。</li>
+<li>传感器值。</li>
+<li>执行器目标位置。</li>
+<li>电机状态。</li>
+<li>错误标志。</li>
+<li>诊断数据。</li>
+</ul>
+<h3 id="85-checksum">8.5 Checksum<a class="headerlink" href="#85-checksum" title="Permanent link">&para;</a></h3>
+<p>Checksum 是响应段末尾的校验字节，用来检查 Data 或 PID+Data 是否传输正确。</p>
+<p>LIN 有两种常见 checksum：</p>
+<ul>
+<li>Classic Checksum。</li>
+<li>Enhanced Checksum。</li>
+</ul>
+<p>后面会单独展开。</p>
+<h2 id="9-pid">9. PID 的组成与奇偶校验<a class="headerlink" href="#9-pid" title="Permanent link">&para;</a></h2>
+<p>LIN 的帧 ID 只有 6 位，记为：</p>
+<div class="highlight"><pre><span></span><code>ID0 ID1 ID2 ID3 ID4 ID5
+</code></pre></div>
+<p>PID 还包含两个奇偶校验位：</p>
+<div class="highlight"><pre><span></span><code>P0 = ID0 xor ID1 xor ID2 xor ID4
+P1 = not(ID1 xor ID3 xor ID4 xor ID5)
+</code></pre></div>
+<p>最终 PID 位布局可以理解为：</p>
+<div class="highlight"><pre><span></span><code>bit0..bit5 = ID0..ID5
+bit6       = P0
+bit7       = P1
+</code></pre></div>
+<p>示例：ID = <code>0x12</code>。</p>
+<div class="highlight"><pre><span></span><code>ID = 0x12 = 0b010010
+ID0=0, ID1=1, ID2=0, ID3=0, ID4=1, ID5=0
+
+P0 = 0 xor 1 xor 0 xor 1 = 0
+P1 = not(1 xor 0 xor 1 xor 0) = not(0) = 1
+
+PID = 0b10010010 = 0x92
+</code></pre></div>
+<p>所以抓包里看到的 PID 可能是 <code>0x92</code>，但它对应的 6 位 ID 是 <code>0x12</code>。这就是“PID 不等于普通裸 ID”的核心。</p>
+<p>常见保留 ID：</p>
+<ul>
+<li><code>0x3C</code>：诊断请求帧，Master Request Frame。</li>
+<li><code>0x3D</code>：诊断响应帧，Slave Response Frame。</li>
+<li><code>0x3E</code>、<code>0x3F</code>：保留用于扩展。</li>
+</ul>
+<p>工程中描述帧时要说清楚“ID”还是“PID”。如果工具显示 PID，可能已经包含奇偶位；如果工具显示 Frame ID，可能只是 6 位 ID。</p>
+<h2 id="10-classic-checksum-enhanced-checksum">10. Classic Checksum 与 Enhanced Checksum<a class="headerlink" href="#10-classic-checksum-enhanced-checksum" title="Permanent link">&para;</a></h2>
+<p>LIN 的 checksum 是 8 位反码和校验。计算时对参与校验的字节求和，处理进位回卷，最后取反得到 checksum。</p>
+<h3 id="101-classic-checksum">10.1 Classic Checksum<a class="headerlink" href="#101-classic-checksum" title="Permanent link">&para;</a></h3>
+<p>Classic Checksum 只覆盖 Data 字节，不包含 PID。</p>
+<div class="highlight"><pre><span></span><code>Classic Checksum = inverted sum(Data bytes)
+</code></pre></div>
+<p>它主要用于早期 LIN 版本兼容，也用于诊断相关帧。</p>
+<h3 id="102-enhanced-checksum">10.2 Enhanced Checksum<a class="headerlink" href="#102-enhanced-checksum" title="Permanent link">&para;</a></h3>
+<p>Enhanced Checksum 覆盖 PID 和 Data。</p>
+<div class="highlight"><pre><span></span><code>Enhanced Checksum = inverted sum(PID + Data bytes)
+</code></pre></div>
+<p>它比 Classic 更强一些，因为 PID 也参与校验，可以发现更多错误。</p>
+<h3 id="103">10.3 使用区别<a class="headerlink" href="#103" title="Permanent link">&para;</a></h3>
+<p>常见规则：</p>
+<ul>
+<li>LIN 1.x 设备常使用 Classic Checksum。</li>
+<li>LIN 2.x 的普通信号帧通常使用 Enhanced Checksum。</li>
+<li>诊断帧 <code>0x3C</code>、<code>0x3D</code> 通常仍使用 Classic Checksum。</li>
+</ul>
+<p>这是常见做法，不一定所有设备完全一致。实际项目中要看 LIN 版本、LDF 文件、从节点数据手册和整车厂通信规范。</p>
+<h2 id="11-lin">11. LIN 帧类型<a class="headerlink" href="#11-lin" title="Permanent link">&para;</a></h2>
+<p>LIN 中常见帧类型包括无条件帧、事件触发帧、偶发帧、诊断帧、用户定义帧等。初学者先掌握下面几类即可。</p>
+<h3 id="111-unconditional-frame">11.1 无条件帧 Unconditional Frame<a class="headerlink" href="#111-unconditional-frame" title="Permanent link">&para;</a></h3>
+<p>无条件帧是最常用的帧。</p>
+<p>特点：</p>
+<ul>
+<li>调度表到时间就发送 Header。</li>
+<li>固定发布者在 Response 中返回数据。</li>
+<li>订阅者接收并使用。</li>
+</ul>
+<p>例如主节点每 20 ms 读取车窗位置，每 100 ms 读取按键状态。</p>
+<h3 id="112-event-triggered-frame">11.2 事件触发帧 Event Triggered Frame<a class="headerlink" href="#112-event-triggered-frame" title="Permanent link">&para;</a></h3>
+<p>事件触发帧用于减少总线负载。多个从节点可能关联到同一个事件触发帧，当没有事件时可以不响应；当某个节点有事件时，它响应。</p>
+<p>需要注意：</p>
+<ul>
+<li>如果多个从节点同时响应，会发生冲突。</li>
+<li>主节点检测到冲突后，需要通过后续无条件帧逐个查询具体哪个节点有事件。</li>
+<li>事件触发帧适合低频事件，不适合所有高频周期数据。</li>
+</ul>
+<h3 id="113-diagnostic-frame">11.3 诊断帧 Diagnostic Frame<a class="headerlink" href="#113-diagnostic-frame" title="Permanent link">&para;</a></h3>
+<p>诊断帧用于节点配置、诊断服务、读写标识信息等。常见保留 ID：</p>
+<ul>
+<li><code>0x3C</code>：Master Request。</li>
+<li><code>0x3D</code>：Slave Response。</li>
+</ul>
+<p>诊断帧常用于：</p>
+<ul>
+<li>节点寻址。</li>
+<li>读取产品标识。</li>
+<li>配置 NAD。</li>
+<li>传输诊断服务数据。</li>
+</ul>
+<p>LIN 诊断和汽车诊断协议体系相关，实际项目中可能涉及 UDS on LIN、NAD、PCI、SID 等概念。初学阶段先理解：LIN 诊断也是通过主节点调度的特殊帧完成，不是从节点自由发送。</p>
+<h3 id="114-user-defined-frame">11.4 用户定义帧 User-defined Frame<a class="headerlink" href="#114-user-defined-frame" title="Permanent link">&para;</a></h3>
+<p>用户定义帧用于项目自定义的数据传输。它的含义由系统设计者决定。</p>
+<p>使用时要注意：</p>
+<ul>
+<li>避免和诊断、保留 ID 冲突。</li>
+<li>在 LDF 或通信矩阵中明确数据长度、信号位置、checksum 类型。</li>
+<li>保证所有订阅者对数据解释一致。</li>
+</ul>
+<h2 id="12-schedule-table">12. 调度表 Schedule Table<a class="headerlink" href="#12-schedule-table" title="Permanent link">&para;</a></h2>
+<p>调度表是 LIN 的核心。没有调度表，LIN 就失去了“主节点统一安排总线时间”的优势。</p>
+<figure>
+  <img src="../../protocols/assets/lin/lin-schedule-flow.svg" alt="LIN schedule table polling flow" />
+<br />
+<figcaption>图 4：LIN 主节点按调度表轮询不同帧。</figcaption>
+</figure>
+<p>调度表描述：</p>
+<ul>
+<li>发送哪个帧头。</li>
+<li>每个帧的 slot 时间。</li>
+<li>帧的周期。</li>
+<li>不同工作模式下切换哪张表。</li>
+<li>诊断帧、事件帧、普通周期帧如何穿插。</li>
+</ul>
+<p>一个简化调度表示例：</p>
+<table>
+<thead>
+<tr>
+<th>顺序</th>
+<th>帧 ID</th>
+<th>帧用途</th>
+<th>周期/slot</th>
+<th>发布者</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>0x10</code></td>
+<td>主节点下发车窗目标位置</td>
+<td>10 ms</td>
+<td>主节点</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>0x11</code></td>
+<td>左车窗状态反馈</td>
+<td>10 ms</td>
+<td>左车窗从节点</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>0x12</code></td>
+<td>右车窗状态反馈</td>
+<td>10 ms</td>
+<td>右车窗从节点</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>0x20</code></td>
+<td>按键状态</td>
+<td>20 ms</td>
+<td>按键从节点</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>0x3C</code></td>
+<td>诊断请求</td>
+<td>100 ms 或按需</td>
+<td>主节点</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>0x3D</code></td>
+<td>诊断响应</td>
+<td>100 ms 或按需</td>
+<td>从节点</td>
+</tr>
+</tbody>
+</table>
+<p>调度设计要考虑：</p>
+<ul>
+<li>高频控制数据放在短周期。</li>
+<li>慢速状态、版本信息、诊断信息放在长周期或按需表。</li>
+<li>每个 slot 要留足响应时间、处理时间和容差。</li>
+<li>不能让低优先级诊断长期阻塞关键控制帧。</li>
+<li>不同模式可以使用不同调度表，例如正常运行表、诊断表、休眠准备表。</li>
+</ul>
+<h2 id="13">13. 时间同步机制<a class="headerlink" href="#13" title="Permanent link">&para;</a></h2>
+<p>LIN 从节点通常通过 Sync 字段进行同步。主节点发送的 Sync 字段固定为 <code>0x55</code>，从节点测量边沿间隔，估算当前帧的位时间。</p>
+<p>这个机制解决了低成本从节点的时钟精度问题：</p>
+<ul>
+<li>从节点可以使用内部 RC 振荡器。</li>
+<li>每次 Header 都有重新同步机会。</li>
+<li>从节点不需要像 CAN 那样参与复杂位仲裁。</li>
+</ul>
+<p>但工程中仍要注意：</p>
+<ul>
+<li>主节点波特率必须稳定。</li>
+<li>从节点同步算法和 UART 采样误差要满足规范要求。</li>
+<li>若 Break 或 Sync 波形质量差，从节点可能无法正确识别帧。</li>
+<li>如果总线干扰导致 <code>0x55</code> 错误，后续 PID 和数据也可能全部解析失败。</li>
+</ul>
+<h2 id="14">14. 诊断与配置基本思路<a class="headerlink" href="#14" title="Permanent link">&para;</a></h2>
+<p>LIN 诊断通常围绕主节点和从节点的诊断帧进行。</p>
+<p>常见概念：</p>
+<ul>
+<li>NAD，Node Address for Diagnostic，诊断节点地址。</li>
+<li>Supplier ID、Function ID、Variant，用于识别从节点产品信息。</li>
+<li>Master Request Frame，主节点诊断请求。</li>
+<li>Slave Response Frame，从节点诊断响应。</li>
+</ul>
+<p>常见用途：</p>
+<ul>
+<li>给从节点分配或配置 NAD。</li>
+<li>读取从节点产品标识。</li>
+<li>读取软件版本、硬件版本。</li>
+<li>查询故障状态。</li>
+<li>执行简单诊断服务。</li>
+</ul>
+<p>基本思路：</p>
+<ol>
+<li>主节点切换到诊断调度表或插入诊断帧。</li>
+<li>主节点通过 <code>0x3C</code> 发送诊断请求。</li>
+<li>目标从节点在 <code>0x3D</code> 对应响应机会中返回诊断响应。</li>
+<li>主节点解析响应并决定是否继续请求。</li>
+</ol>
+<p>诊断功能在不同 LIN 版本、整车厂规范和芯片栈中可能有实现差异。做项目时不要只凭通用教程写死流程，要以 LDF、节点数据手册和项目诊断规范为准。</p>
+<h2 id="15-lin-can">15. LIN 与 CAN 的配合关系<a class="headerlink" href="#15-lin-can" title="Permanent link">&para;</a></h2>
+<figure>
+  <img src="../../protocols/assets/lin/lin-vs-can.svg" alt="LIN and CAN comparison" />
+<br />
+<figcaption>图 5：LIN 与 CAN 的定位对比。</figcaption>
+</figure>
+<p>在整车中，常见组合方式是：</p>
+<ul>
+<li>CAN 连接多个 ECU，承担车身、动力、底盘、诊断等主干通信。</li>
+<li>某个 ECU 作为 LIN Master，管理一条或多条 LIN 支路。</li>
+<li>LIN 从节点只处理局部简单任务。</li>
+<li>主 ECU 把 LIN 从节点信息汇总后，再通过 CAN 上报给其他 ECU。</li>
+</ul>
+<p>例如：</p>
+<ol>
+<li>车门按键从节点通过 LIN 把按键状态发给车门控制器。</li>
+<li>车门控制器判断是否允许升窗。</li>
+<li>车门控制器通过 LIN 下发电机控制命令。</li>
+<li>必要时车门控制器再通过 CAN 把状态上报给车身控制器。</li>
+</ol>
+<p>这种结构让 CAN 主干保持清晰，低成本节点通过 LIN 接入，不必每个小节点都挂 CAN。</p>
+<h2 id="16-lin">16. LIN 的优点、局限性和适用边界<a class="headerlink" href="#16-lin" title="Permanent link">&para;</a></h2>
+<h3 id="161">16.1 优点<a class="headerlink" href="#161" title="Permanent link">&para;</a></h3>
+<ul>
+<li>成本低：从节点硬件和软件复杂度低。</li>
+<li>线束简单：单线总线适合局部网络。</li>
+<li>调度确定：主节点统一安排通信。</li>
+<li>容易接入 MCU：很多 MCU 的 UART/USART 支持 LIN Break 检测或 LIN 模式。</li>
+<li>适合休眠唤醒：车载低功耗场景常用。</li>
+<li>与 CAN 互补：适合做 CAN 主干下面的低速子网。</li>
+</ul>
+<h3 id="162">16.2 局限性<a class="headerlink" href="#162" title="Permanent link">&para;</a></h3>
+<ul>
+<li>速度低，不适合大数据量。</li>
+<li>单主机制，主节点故障会影响整条 LIN 子网。</li>
+<li>从节点不能自由抢占总线。</li>
+<li>错误处理能力不如 CAN 完整。</li>
+<li>单线通信抗干扰和带宽不如 CAN 差分总线。</li>
+<li>调度表设计不好会导致延迟大、总线利用率低。</li>
+</ul>
+<h3 id="163">16.3 适用边界<a class="headerlink" href="#163" title="Permanent link">&para;</a></h3>
+<p>适合 LIN：</p>
+<ul>
+<li>低速传感器。</li>
+<li>简单执行器。</li>
+<li>周期状态读取。</li>
+<li>局部车身控制。</li>
+<li>成本敏感从节点。</li>
+</ul>
+<p>不适合 LIN：</p>
+<ul>
+<li>高速数据采集。</li>
+<li>多主实时控制。</li>
+<li>强安全关键闭环控制。</li>
+<li>节点需要随时主动上报大量数据。</li>
+<li>需要复杂错误隔离和高带宽的主干通信。</li>
+</ul>
+<h2 id="17">17. 常见调试方法与排障思路<a class="headerlink" href="#17" title="Permanent link">&para;</a></h2>
+<h3 id="171">17.1 先看物理层<a class="headerlink" href="#171" title="Permanent link">&para;</a></h3>
+<p>检查项：</p>
+<ul>
+<li>LIN 线、电源、地是否连接正确。</li>
+<li>是否使用 LIN 收发器，而不是直接把 MCU UART TX/RX 接到总线。</li>
+<li>主节点和从节点供电电压是否正常。</li>
+<li>总线空闲电平是否正常。</li>
+<li>是否有短路、断路、地偏移、干扰。</li>
+<li>收发器是否处于睡眠、待机或正常模式。</li>
+</ul>
+<p>调试工具：</p>
+<ul>
+<li>示波器：看 Break、Sync、PID、响应波形。</li>
+<li>逻辑分析仪：解码 UART/LIN 字节。</li>
+<li>LIN 分析仪：直接解析 PID、checksum、帧类型、错误。</li>
+</ul>
+<h3 id="172-header">17.2 再看 Header<a class="headerlink" href="#172-header" title="Permanent link">&para;</a></h3>
+<p>如果从节点完全不响应，优先看：</p>
+<ul>
+<li>Break 是否足够长。</li>
+<li>Sync 是否为 <code>0x55</code>。</li>
+<li>波特率是否正确。</li>
+<li>PID 是否正确，奇偶位是否正确。</li>
+<li>主节点是否发送了从节点订阅的 ID。</li>
+<li>从节点是否已经唤醒并进入正常通信状态。</li>
+</ul>
+<h3 id="173-response">17.3 再看 Response<a class="headerlink" href="#173-response" title="Permanent link">&para;</a></h3>
+<p>如果能看到响应但主节点认为错误：</p>
+<ul>
+<li>Data 长度是否和 LDF 定义一致。</li>
+<li>Checksum 类型是否选错，Classic 与 Enhanced 是否混用。</li>
+<li>诊断帧是否错误使用 Enhanced Checksum。</li>
+<li>从节点响应时间是否超过 slot。</li>
+<li>多个从节点是否错误配置为同一个帧的发布者。</li>
+</ul>
+<h3 id="174">17.4 再看调度表<a class="headerlink" href="#174" title="Permanent link">&para;</a></h3>
+<p>很多 LIN 问题不是字节错，而是调度错：</p>
+<ul>
+<li>帧周期过长，应用层觉得响应慢。</li>
+<li>slot 时间过短，从节点还没发完就进入下一帧。</li>
+<li>诊断表切换后忘记切回正常表。</li>
+<li>事件触发帧冲突后没有用无条件帧解析冲突。</li>
+<li>低优先级帧太多，挤占关键控制帧。</li>
+</ul>
+<h3 id="175">17.5 常见错误现象<a class="headerlink" href="#175" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>现象</th>
+<th>可能原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>总线一直高电平</td>
+<td>没有发送、收发器睡眠、主节点未启动。</td>
+</tr>
+<tr>
+<td>Break 有但无响应</td>
+<td>PID 不匹配、从节点未唤醒、波特率不同、供电异常。</td>
+</tr>
+<tr>
+<td>Sync 解码不稳定</td>
+<td>波特率误差、波形质量差、采样设置错误。</td>
+</tr>
+<tr>
+<td>偶发 checksum 错</td>
+<td>干扰、checksum 类型错、数据长度错。</td>
+</tr>
+<tr>
+<td>多个节点同时响应</td>
+<td>LDF 配置错误，多个发布者冲突。</td>
+</tr>
+<tr>
+<td>诊断不通</td>
+<td>NAD 错、诊断调度表错误、<code>0x3C/0x3D</code> 处理不完整。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="18">18. 工程实践建议<a class="headerlink" href="#18" title="Permanent link">&para;</a></h2>
+<h3 id="181">18.1 节点设计<a class="headerlink" href="#181" title="Permanent link">&para;</a></h3>
+<p>主节点建议：</p>
+<ul>
+<li>使用稳定时钟源，保证波特率精度。</li>
+<li>使用 LIN 收发器，正确控制睡眠和唤醒。</li>
+<li>明确维护一张或多张调度表。</li>
+<li>记录每个从节点的响应超时、checksum 错、通信丢失次数。</li>
+<li>作为 CAN-LIN 网关时，做好信号刷新、超时替代值和故障上报。</li>
+</ul>
+<p>从节点建议：</p>
+<ul>
+<li>使用硬件 LIN Break 检测功能，减少软件误判。</li>
+<li>PID 先校验奇偶位，再判断 ID。</li>
+<li>严格按 LDF 定义的数据长度和 checksum 类型响应。</li>
+<li>只在自己是发布者时发送 Response。</li>
+<li>对关键输出设置超时保护：长期收不到主节点控制帧时进入安全状态。</li>
+</ul>
+<h3 id="182">18.2 调度设计<a class="headerlink" href="#182" title="Permanent link">&para;</a></h3>
+<p>建议：</p>
+<ul>
+<li>把控制闭环相关帧放到高频调度。</li>
+<li>把版本号、配置、诊断放到低频或按需调度。</li>
+<li>对每个 slot 预留足够响应时间。</li>
+<li>避免总线利用率长期接近满载。</li>
+<li>对事件触发帧准备冲突解析策略。</li>
+<li>为诊断通信设计独立调度表或诊断窗口。</li>
+</ul>
+<h3 id="183">18.3 错误处理<a class="headerlink" href="#183" title="Permanent link">&para;</a></h3>
+<p>主节点应记录：</p>
+<ul>
+<li>无响应。</li>
+<li>PID 奇偶错误。</li>
+<li>Checksum 错误。</li>
+<li>数据长度错误。</li>
+<li>响应超时。</li>
+<li>总线物理错误。</li>
+</ul>
+<p>从节点应处理：</p>
+<ul>
+<li>Break 错误或帧同步失败。</li>
+<li>PID 奇偶错误。</li>
+<li>不属于自己的帧。</li>
+<li>主节点长期未调度。</li>
+<li>控制命令超时。</li>
+</ul>
+<p>错误处理建议：</p>
+<ul>
+<li>通信偶发失败不要立即进入永久故障。</li>
+<li>连续失败达到阈值后再上报故障。</li>
+<li>对执行器输出要定义通信丢失后的安全状态。</li>
+<li>调试阶段保留错误计数器和最近错误帧，方便定位问题。</li>
+</ul>
+<h3 id="184">18.4 主从职责划分<a class="headerlink" href="#184" title="Permanent link">&para;</a></h3>
+<p>LIN 网络设计时要保持主从职责清晰：</p>
+<ul>
+<li>主节点负责“什么时候通信”。</li>
+<li>从节点负责“被问到时提供或接收自己的数据”。</li>
+<li>主节点负责诊断、配置和调度切换。</li>
+<li>从节点不要设计成必须主动抢占总线才能保证功能。</li>
+</ul>
+<p>如果某个从节点必须随时主动上报高实时事件，LIN 可能不是最合适的协议。可以考虑 CAN，或者在 LIN 中用更短周期轮询、事件触发帧等方式折中。</p>
+<h2 id="19-usart-can">19. 与 USART / CAN 的简要对比<a class="headerlink" href="#19-usart-can" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>USART 裸串口</th>
+<th>LIN</th>
+<th>CAN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>是否定义完整网络协议</td>
+<td>否</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>是否有主从调度</td>
+<td>无，需自定义</td>
+<td>有，主节点调度</td>
+<td>无固定主节点，多主仲裁</td>
+</tr>
+<tr>
+<td>是否适合多节点</td>
+<td>裸串口不适合，需要外部协议和硬件</td>
+<td>适合低速单主多从</td>
+<td>适合多主多节点</td>
+</tr>
+<tr>
+<td>帧校验</td>
+<td>可选奇偶校验，应用层自定义</td>
+<td>Checksum</td>
+<td>CRC + ACK + 错误机制</td>
+</tr>
+<tr>
+<td>成本</td>
+<td>很低</td>
+<td>低</td>
+<td>较高</td>
+</tr>
+<tr>
+<td>复杂度</td>
+<td>低，但协议要自己做</td>
+<td>中等</td>
+<td>较高</td>
+</tr>
+<tr>
+<td>适合场景</td>
+<td>调试口、简单点对点</td>
+<td>车身局部低速网络</td>
+<td>车载/工业主干通信</td>
+</tr>
+</tbody>
+</table>
+<p>如果你已经学过 USART，可以把 LIN 理解为：在 UART 字节传输能力之上，增加了车载单线物理层、主从调度、固定帧头、PID 保护、checksum、诊断和配置规则。</p>
+<p>如果你已经学过 CAN，可以把 LIN 理解为：牺牲带宽、多主仲裁和复杂错误处理，换取低成本、简单从节点和确定的主控调度。</p>
+<h2 id="20">20. 初学者常见误区<a class="headerlink" href="#20" title="Permanent link">&para;</a></h2>
+<h3 id="201-lin-can">20.1 LIN 是低配版 CAN<a class="headerlink" href="#201-lin-can" title="Permanent link">&para;</a></h3>
+<p>不准确。LIN 与 CAN 的设计目标不同。CAN 是多主差分总线，强调仲裁、错误处理和较高实时性；LIN 是低成本单主从属网络，强调主节点调度和简单节点。</p>
+<h3 id="202-lin-uart">20.2 LIN 就是 UART<a class="headerlink" href="#202-lin-uart" title="Permanent link">&para;</a></h3>
+<p>不准确。LIN 使用类似 UART 的异步字节格式，但它还定义了 Break、Sync、PID、Data、Checksum、调度表、诊断和物理层要求。</p>
+<h3 id="203-pid-id">20.3 PID 就是 ID<a class="headerlink" href="#203-pid-id" title="Permanent link">&para;</a></h3>
+<p>不准确。ID 是 6 位，PID 是 8 位，包含 ID 和两个奇偶校验位。抓包工具显示 PID 时，要注意它可能不是 LDF 中写的 6 位 Frame ID。</p>
+<h3 id="204">20.4 从节点可以随时发送<a class="headerlink" href="#204" title="Permanent link">&para;</a></h3>
+<p>一般不可以。LIN 从节点通常必须等主节点发送对应 Header 后，才能在响应段发送数据。</p>
+<h3 id="205">20.5 调度表只是软件实现细节<a class="headerlink" href="#205" title="Permanent link">&para;</a></h3>
+<p>不是。调度表决定总线时序、响应延迟和总线负载，是 LIN 网络设计的核心。</p>
+<h3 id="206-checksum">20.6 checksum 错一定是线路干扰<a class="headerlink" href="#206-checksum" title="Permanent link">&para;</a></h3>
+<p>不一定。checksum 错也可能是 Classic/Enhanced 类型选错、PID 错、数据长度错、诊断帧规则错或软件计算范围错。</p>
+<h2 id="21">21. 学习路线<a class="headerlink" href="#21" title="Permanent link">&para;</a></h2>
+<p>建议按下面顺序学习和实践：</p>
+<ol>
+<li>用示波器或逻辑分析仪观察 Break、Sync <code>0x55</code>、PID。</li>
+<li>手工计算一个 ID 的 PID 奇偶位。</li>
+<li>手工计算 Classic 和 Enhanced Checksum。</li>
+<li>用 MCU UART 接 LIN 收发器，实现一个只订阅单个帧的从节点。</li>
+<li>增加发布响应能力，按 PID 返回固定数据。</li>
+<li>增加主节点调度表，周期轮询多个帧。</li>
+<li>加入超时、checksum 错误计数、从节点离线检测。</li>
+<li>再学习诊断帧、NAD、LDF 和 CAN-LIN 网关。</li>
+</ol>
+<h2 id="_1">参考资料<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://www.lin-cia.org/fileadmin/microsites/lin-cia.org/resources/documents/LIN_2.2A.pdf">LIN Specification Package Revision 2.2A</a></li>
+<li><a href="https://developerhelp.microchip.com/xwiki/bin/view/applications/lin/overview/">Microchip Developer Help: LIN Overview</a></li>
+<li><a href="https://developerhelp.microchip.com/xwiki/bin/view/applications/lin/data-link-layer/">Microchip Developer Help: LIN Data Link Layer</a></li>
+<li><a href="https://ww1.microchip.com/downloads/en/DeviceDoc/LIN-Protocol-Support-on-UART-Modules-40002076A.pdf">Microchip: LIN Protocol Support on UART Modules</a></li>
+<li><a href="https://www.ti.com/lit/an/slla383a/slla383a.pdf">TI: LIN Protocol and Physical Layer Requirements</a></li>
+</ul>
 
 
 

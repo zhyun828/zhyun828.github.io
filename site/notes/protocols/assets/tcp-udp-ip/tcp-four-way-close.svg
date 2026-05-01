@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="560" viewBox="0 0 980 560" role="img" aria-labelledby="title desc">
+  <title id="title">TCP four way close</title>
+  <desc id="desc">TCP connection termination with FIN ACK FIN ACK in two directions.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.line{stroke:#334155;stroke-width:3}.msg{stroke:#dc2626;stroke-width:3;marker-end:url(#arrow)}
+      .ack{stroke:#2563eb;stroke-width:3;marker-end:url(#arrowBlue)}
+      .text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:20px;fill:#0f172a}.title{font-size:26px;font-weight:700}.small{font-size:16px;fill:#475569}
+      .host{fill:#fee2e2;stroke:#dc2626;stroke-width:2;rx:12}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#dc2626"/></marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#2563eb"/></marker>
+  </defs>
+  <rect class="bg" width="980" height="560"/>
+  <text class="text title" x="490" y="45" text-anchor="middle">TCP 四次挥手</text>
+  <rect class="host" x="105" y="80" width="180" height="58"/><text class="text" x="195" y="116" text-anchor="middle">主动关闭方</text>
+  <rect class="host" x="695" y="80" width="180" height="58"/><text class="text" x="785" y="116" text-anchor="middle">被动关闭方</text>
+  <line class="line" x1="195" y1="138" x2="195" y2="490"/>
+  <line class="line" x1="785" y1="138" x2="785" y2="490"/>
+
+  <line class="msg" x1="205" y1="185" x2="775" y2="235"/><text class="text" x="490" y="200" text-anchor="middle">1. FIN</text>
+  <line class="ack" x1="775" y1="270" x2="205" y2="320"/><text class="text" x="490" y="285" text-anchor="middle">2. ACK</text>
+  <line class="msg" x1="775" y1="355" x2="205" y2="405"/><text class="text" x="490" y="370" text-anchor="middle">3. FIN</text>
+  <line class="ack" x1="205" y1="440" x2="775" y2="475"/><text class="text" x="490" y="450" text-anchor="middle">4. ACK</text>
+
+  <text class="small" x="490" y="525" text-anchor="middle">TCP 是全双工连接，两个方向的数据流可以分别关闭；实际抓包中 FIN 和 ACK 可能合并。</text>
+</svg>
