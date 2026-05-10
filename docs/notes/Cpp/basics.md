@@ -63,6 +63,40 @@
 | `bitset::to_ulong` | `<bitset>`   | bitset → unsigned long |                                   |
 | `to_integer`       | `<cstddef>`  | byte → 整数              |                                   |
 
+## 字符串
+
+```cpp
+string s1;                 // 创建一个空字符串
+string s2 = "hello";       // 创建一个字符串并初始化
+s1.reserve(s2.size());     // 预分配 s2.size() 个字符的空间
+s1.push_back('h');         // 在字符串末尾添加一个字符
+s1 += "ello";              // 在字符串末尾添加一个字符串
+cout << sizeof(s) << endl; // 输出字符串对象占用的内存大小
+
+string s = "ABCDEFG";
+string first3 = s.substr(0, 3);              // "ABC"
+string last3 = s.substr(s.size() - 3, 3);    // "EFG"
+s.erase(2, 3);                               // 从下标 2 开始删 3 个，结果 "ABFG"
+s.erase(n);                                  // 保留前 n 个字符，删除剩余的
+s.empty();                                   // 判断字符串是否为空
+s.clear();                                   // 清空字符串
+reverse(s.begin(), s.end());                 // 反转字符
+reverse(words.begin(), words.end());         // 反转字符串顺序，words 是 vector<string>
+
+auto it = s.begin();                         // 获取字符串迭代器，指向第一个字符
+std::string::iterator it2;                   // 等价写法
+
+s.insert(it, 'X');                           // 在字符串开头插入字符 'X'
+s.insert(pos, count, 'c');                   // 在 pos 位置插入 count 个字符 c
+s.find('o', pos);                            // 从 pos 开始查找字符 'o'
+```
+
+补充说明：
+
+- `for (char c : s)` 可以逐个遍历字符串里的字符。
+- `insert(pos, count, 'c')` 这种重载是 `string` 自带的，其他容器不一定有。
+- `find()` 没找到时会返回 `string::npos`。
+
 ## 输入输出控制
 | 控制符 | 作用 |
 | ---- | ---- |
@@ -218,6 +252,16 @@ bool stackArray::isEmpty() const {
 - 可以写成 `if (条件) return; else return;`
 - 也可以写成三目运算符：`return (条件) ? 正确结果 : 错误结果;`
 - 有时还可以直接 `return (条件);`，这样返回值就是 `1` 或 `0`
+
+## 循环
+
+```cpp
+vector<int> candies(5, 10);  // 创建一个长度为 5 的数组，每个元素初始为 10
+
+for (int x : candies) {
+    // 依次把 candies 里的每个元素取出来赋给 x
+}
+```
 
 ## 默认赋值
 
@@ -405,6 +449,206 @@ sort(nums.begin(), nums.end(), greater<int>());
 
 - `mp.find()` 只能按 `key` 查找，不能直接按 `value` 查找；按 `value` 通常要自己遍历
 - 红黑树是一种“自平衡二叉搜索树”，因此查找 / 插入 / 删除通常是 `O(log n)`
+
+## 二叉树
+
+### 一、二叉树基础概念
+
+二叉树是一种树形数据结构，每个节点最多有两个孩子，通常叫做左孩子和右孩子。
+
+- 根节点：整棵树最上面的节点。
+- 叶子节点：没有孩子的节点。
+- 子树：某个节点和它下面的所有节点组成的小树。
+- 深度 / 高度：从根节点到某个节点，或从某个节点到叶子节点的层数。
+- 满二叉树：每一层节点都放满。
+- 完全二叉树：除了最后一层，前面每层都满；最后一层从左到右连续排列。
+- 二叉搜索树：左子树节点值通常小于根，右子树节点值通常大于根。
+
+```text
+        1
+      /   \
+     2     3
+    / \   / \
+   4   5 6   7
+```
+
+### 二、二叉树在 C 语言中的结构体定义
+
+LeetCode 的二叉树题一般已经给好这个结构体：
+
+```c
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+};
+```
+
+含义：
+
+- `val`：当前节点存的值。
+- `left`：指向左孩子，没有左孩子就是 `NULL`。
+- `right`：指向右孩子，没有右孩子就是 `NULL`。
+
+### 三、二叉树遍历
+
+常见遍历顺序：
+
+- 前序遍历：根 左 右
+- 中序遍历：左 根 右
+- 后序遍历：左 右 根
+- 层序遍历 / BFS：一层一层访问，通常使用队列
+
+用 1~7 节点的满二叉树举例：
+
+```text
+        1
+      /   \
+     2     3
+    / \   / \
+   4   5 6   7
+```
+
+| 遍历方式 | 访问顺序 |
+| ---- | ---- |
+| 前序 | `1 2 4 5 3 6 7` |
+| 中序 | `4 2 5 1 6 3 7` |
+| 后序 | `4 5 2 6 7 3 1` |
+| 层序 | `1 2 3 4 5 6 7` |
+
+### 四、C 语言代码模板
+
+递归遍历的核心写法是：先判断 `root == NULL`，再按遍历顺序处理根、左子树、右子树。
+
+**前序遍历递归模板**
+
+```c
+// LeetCode 144: Binary Tree Preorder Traversal
+#define MAX_NODE 2000
+
+void preorderDfs(struct TreeNode* root, int* ans, int* size) {
+    if (root == NULL) return;
+
+    ans[(*size)++] = root->val;          // 根
+    preorderDfs(root->left, ans, size);  // 左
+    preorderDfs(root->right, ans, size); // 右
+}
+
+int* preorderTraversal(struct TreeNode* root, int* returnSize) {
+    int* ans = (int*)malloc(sizeof(int) * MAX_NODE);
+    *returnSize = 0;
+    preorderDfs(root, ans, returnSize);
+    return ans;
+}
+```
+
+**中序遍历递归模板**
+
+```c
+// LeetCode 94: Binary Tree Inorder Traversal
+#define MAX_NODE 2000
+
+void inorderDfs(struct TreeNode* root, int* ans, int* size) {
+    if (root == NULL) return;
+
+    inorderDfs(root->left, ans, size);   // 左
+    ans[(*size)++] = root->val;          // 根
+    inorderDfs(root->right, ans, size);  // 右
+}
+
+int* inorderTraversal(struct TreeNode* root, int* returnSize) {
+    int* ans = (int*)malloc(sizeof(int) * MAX_NODE);
+    *returnSize = 0;
+    inorderDfs(root, ans, returnSize);
+    return ans;
+}
+```
+
+**后序遍历递归模板**
+
+```c
+// LeetCode 145: Binary Tree Postorder Traversal
+#define MAX_NODE 2000
+
+void postorderDfs(struct TreeNode* root, int* ans, int* size) {
+    if (root == NULL) return;
+
+    postorderDfs(root->left, ans, size);  // 左
+    postorderDfs(root->right, ans, size); // 右
+    ans[(*size)++] = root->val;           // 根
+}
+
+int* postorderTraversal(struct TreeNode* root, int* returnSize) {
+    int* ans = (int*)malloc(sizeof(int) * MAX_NODE);
+    *returnSize = 0;
+    postorderDfs(root, ans, returnSize);
+    return ans;
+}
+```
+
+**层序遍历 BFS 模板**
+
+```c
+// LeetCode 102: Binary Tree Level Order Traversal
+#define MAX_NODE 2000
+
+int** levelOrder(struct TreeNode* root, int* returnSize, int** returnColumnSizes) {
+    *returnSize = 0;
+    *returnColumnSizes = NULL;
+    if (root == NULL) return NULL;
+
+    int** ans = (int**)malloc(sizeof(int*) * MAX_NODE);
+    *returnColumnSizes = (int*)malloc(sizeof(int) * MAX_NODE);
+
+    struct TreeNode** queue = (struct TreeNode**)malloc(sizeof(struct TreeNode*) * MAX_NODE);
+    int front = 0, rear = 0;
+    queue[rear++] = root;
+
+    while (front < rear) {
+        int levelSize = rear - front;
+        int* level = (int*)malloc(sizeof(int) * levelSize);
+
+        for (int i = 0; i < levelSize; i++) {
+            struct TreeNode* node = queue[front++];
+            level[i] = node->val;
+
+            if (node->left != NULL) queue[rear++] = node->left;
+            if (node->right != NULL) queue[rear++] = node->right;
+        }
+
+        ans[*returnSize] = level;
+        (*returnColumnSizes)[*returnSize] = levelSize;
+        (*returnSize)++;
+    }
+
+    free(queue);
+    return ans;
+}
+```
+
+### 五、递归思想解释
+
+递归可以理解成：把一棵大树的问题，拆成根节点、左子树、右子树三个部分。
+
+```text
+处理 root
+递归处理 root->left
+递归处理 root->right
+```
+
+以遍历为例，函数只负责“当前这棵树”：
+
+- 如果当前节点是 `NULL`，说明这棵树为空，直接返回。
+- 如果当前节点不是 `NULL`，就按指定顺序访问根节点、左子树、右子树。
+- 左右子树本身也是二叉树，所以继续调用同一个函数。
+
+三种 DFS 遍历只差“访问根节点”的位置：
+
+```text
+前序：先访问根，再递归左右
+中序：先递归左，再访问根，再递归右
+后序：先递归左右，再访问根
+```
 
 ## 双指针
 
@@ -818,4 +1062,3 @@ dev->init();
 ↓
 产生多态
 ```
-

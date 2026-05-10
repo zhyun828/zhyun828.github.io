@@ -76,7 +76,6 @@ nav:
               - thoughts: notes/Arduino/projet/thoughts.md
       - Cpp:
           - basics: notes/Cpp/basics.md
-          - opp: notes/Cpp/opp.md
           - code: notes/Cpp/code.md
           - 设计模式详解: notes/Cpp/cpp_设计模式详解_扩展版.md
       - embedded_system:
