@@ -43,4 +43,3 @@ ls
 drwxr-xr-x 29 yun  yun  4096 5月   7 07:29 .
 drwxr-xr-x  3 root root 4096 2月   4 00:00 ..
 写上注释
-
