@@ -134,14 +134,122 @@ int fclose(FILE *stream);
 // stream是指向FILE对象的指针，表示要关闭的文件流
 ```
 
+## 进程
+Linux 启动后会创建 PID 为 1 的初始进程，后续大多数进程都由它直接或间接创建，整体形成一棵进程树，可用 `pstree` 查看。
 
+- 父进程：创建子进程，可以发送信号、等待子进程结束并获取退出状态。
+- 子进程：由父进程创建，初始时相当于父进程的副本，拥有独立地址空间。
+- 孤儿进程：父进程先结束，子进程仍在运行，会被 PID 为 1 的进程收养。
+- 僵尸进程：子进程已退出，但父进程未调用 `wait` / `waitpid` 回收退出状态。
+### `fork`
+```c
+#include <unistd.h>
+pid_t fork(void);
+```
+`fork` 用于创建子进程。调用后父子进程都会从 `fork` 后继续执行，可通过返回值区分：
+- 父进程中返回子进程 PID。
+- 子进程中返回 `0`。
+- 失败返回 `-1`。
+```c
+pid_t pid = fork();
+if (pid < 0) {
+    perror("fork");
+} else if (pid == 0) {
+    printf("child pid = %d\n", getpid());
+} else {
+    printf("parent pid = %d, child pid = %d\n", getpid(), pid);
+}
+```
+### 进程终止
+进程正常终止：
+- `main` 函数中 `return`。
+- 调用 `exit(status)`，`status` 是传给父进程的退出状态码。
+进程异常终止：收到信号后退出，例如 `SIGKILL`、`SIGSEGV`。
+### `wait`、`waitpid`
+```c
+#include <sys/wait.h>
+pid_t wait(int *status);
+pid_t waitpid(pid_t pid, int *status, int options);
+```
+父进程通过 `wait` / `waitpid` 等待子进程结束，并回收子进程资源。
+- `pid > 0`：等待指定 PID 的子进程。
+- `pid = -1`：等待任意子进程，等同于 `wait`。
+- `options = 0`：阻塞等待。
+- `options = WNOHANG`：非阻塞检查，子进程未退出时返回 `0`。
+```c
+int status;
+waitpid(pid, &status, 0);
+printf("child exit status = %d\n", WEXITSTATUS(status));
+```
+### `exec`
+`fork` 只会复制当前进程。如果希望子进程执行另一个程序，需要在子进程中调用 `exec` 系列函数。
+```c
+#include <unistd.h>
+int execl(const char *path, const char *arg, ...);
+```
+`exec` 成功后不会返回，当前进程的代码、数据会被新程序替换；失败返回 `-1`。
+```c
+pid_t pid = fork();
+if (pid == 0) {
+    execl("/bin/ls", "ls", "-l", "/etc", (char *)NULL);
+    perror("execl");
+    return 1;
+} else {
+    int status;
+    waitpid(pid, &status, 0);
+}
+```
+常见 `exec` 函数区别：
+- `l`：参数用列表传递，如 `execl`、`execlp`。
+- `v`：参数用数组传递，如 `execv`、`execvp`。
+- `p`：按 `PATH` 搜索程序，如 `execlp`、`execvp`。
+- `e`：可额外指定环境变量，如 `execle`、`execve`。
+### 保活进程思路
+大型项目中可以用一个监控进程启动并管理业务进程：先 `fork`，子进程 `exec` 启动目标程序；父进程循环调用 `waitpid(pid, &status, WNOHANG)` 检查状态，发现子进程退出后重新启动。
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#define PROGRAM "./hello"
+pid_t start_program(void) {
+    pid_t pid = fork();
+    if (pid == 0) {
+        execl(PROGRAM, PROGRAM, (char *)NULL);
+        perror("execl");
+        exit(1);
+    }
+    if (pid < 0) {
+        perror("fork");
+        exit(1);
+    }
+    return pid;
+}
+
+int main(void) {
+    pid_t pid = start_program();
+
+    while (1) {
+        int status;
+        pid_t ret = waitpid(pid, &status, WNOHANG);
+        if (ret == pid) {
+            printf("process exit, restart\n");
+            pid = start_program();
+        } else if (ret < 0) {
+            perror("waitpid");
+            exit(1);
+        }
+        usleep(10 * 1000);
+    }
+}
+```
 
 ## 进程间通信
 ### 匿名管道
 ```c
 #include <unistd.h>
 int pipe(int pipefd[2]);
-// pipefd是一个长度为2的整数数组，pipefd[0]用于读取数据，pipefd[1]用于写入数据
+// pipefd是一个长度为2的整数数组，pipefd[0]用于读取数据，pipefd[1]用于写入数据，成功返回0，失败返回-1
 ```
 ### 命名管道
 ```c
