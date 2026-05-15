@@ -1,0 +1,5854 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Notes on embedded systems, robotics, C++, FPGA, and interview preparation.">
+      
+      
+      
+        <link rel="canonical" href="https://zhyun828.github.io/notes/stm32/rtos_freertos_notes_compact/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>RTOS / FreeRTOS 知识整理笔记 - ZY Engineering Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/home.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#rtos-freertos" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="ZY Engineering Notes" class="md-header__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ZY Engineering Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              RTOS / FreeRTOS 知识整理笔记
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal"  aria-label="深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="cyan"  aria-label="浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m3.55 19.09 1.41 1.41 1.8-1.79-1.42-1.42M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6c0-3.32-2.69-6-6-6m8 7h3v-2h-3m-2.76 7.71 1.8 1.79 1.41-1.41-1.79-1.8M20.45 5l-1.41-1.4-1.8 1.79 1.42 1.42M13 1h-2v3h2M6.76 5.39 4.96 3.6 3.55 5l1.79 1.81zM1 13h3v-2H1m12 9h-2v3h2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="ZY Engineering Notes" class="md-nav__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ZY Engineering Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../protocols/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通信协议
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    通信协议
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/usart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    USART
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/i2c/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I2C
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/spi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SPI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/can/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/tcp-udp-ip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TCP / UDP / IP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/modbus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modbus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/ethernet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ethernet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/lin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LIN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/http-https/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP / HTTPS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面试
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    面试
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E5%BF%AB%E9%80%9F%E6%A3%80%E7%B4%A2%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速检索表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E5%B5%8C%E5%85%A5%E5%BC%8F%E9%9D%A2%E8%AF%95%E6%B1%87%E6%80%BB%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    嵌入式面试汇总表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E9%AB%98%E9%A2%91%E9%A2%98%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高频题深度解析
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E9%97%AE%E7%AD%94%E9%9D%A2%E8%AF%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目经历问答面试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arduino
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Arduino
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/basics.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_2" id="__nav_2_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    projet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/projet.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/pre.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    pre
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/code.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/thoughts.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thoughts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cpp
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cpp
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cpp/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cpp/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cpp/cpp_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%AF%A6%E8%A7%A3_%E6%89%A9%E5%B1%95%E7%89%88/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    设计模式详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    embedded_system
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    embedded_system
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../embedded_system/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_6_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../embedded_system/TP/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TP
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    TP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FPGA
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    FPGA
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FPGA/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_8" id="__nav_2_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gazebo
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    gazebo
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ros/gazebo/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_9" id="__nav_2_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_10" id="__nav_2_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVGL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LVGL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LVGL/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ros
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ros
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ros/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ros/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_12" id="__nav_2_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    stm32
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stm32_knowledge_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32_knowledge_notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%A4%96%E8%AE%BE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    外设
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%AF%84%E5%AD%98%E5%99%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    寄存器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        目录
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-rtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. RTOS 基础认知
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. RTOS 基础认知">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-rtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 什么是 RTOS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-rtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 RTOS 的核心组成
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 常见任务状态
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-rtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 RTOS 里最常见的设计思想
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 内存管理：堆、栈、局部变量
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 内存管理：堆、栈、局部变量">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 堆管理是什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 栈和堆的区别
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 栈和堆的区别">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        栈（stack）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#heap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        堆（heap）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 函数调用时栈在做什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 局部变量为什么通常在栈上
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 哪些变量不在栈上
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-static" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 static 变量是不是在堆里
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-rtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 RTOS 中的任务栈
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.8 任务切换和栈的关系
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#29-rtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.9 RTOS 里任务栈使用要点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#210" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.10 任务栈常见坑
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#211-freertos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.11 FreeRTOS 堆实现直觉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#212-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.12 静态创建 vs 动态创建
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.12 静态创建 vs 动态创建">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        动态创建
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        静态创建
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 任务管理与调度
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 任务管理与调度">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 任务创建
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 任务句柄参数的作用
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 任务函数参数和句柄的区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-vtaskdelay-delay" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 vTaskDelay 和普通 delay 的区别
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.4 vTaskDelay 和普通 delay 的区别">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vtaskdelay" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        vTaskDelay()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delay" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        普通 delay
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-vtaskdelay-vtaskdelayuntil" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 vTaskDelay() / vTaskDelayUntil()
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.5 vTaskDelay() / vTaskDelayUntil()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vtaskdelay_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        vTaskDelay()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vtaskdelayuntil" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        vTaskDelayUntil()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-vtaskdelayuntil" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 vTaskDelayUntil() 如果执行时间超过周期怎么办
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-vtaskdelay-1-tick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 不写 vTaskDelay() 是否默认 1 tick 轮询
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38-tick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8 tick 是多久
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#39" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.9 时间片轮转
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#310" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.10 任务删除与“收尸”
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.10 任务删除与“收尸”">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务删除自己
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一个任务删除另一个任务
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#311-idle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.11 Idle 任务为什么要有机会执行
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#312-idle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.12 如何确保 Idle 有机会执行
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#313-taskyield-idle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.13 taskYIELD() 能否保证 Idle 运行
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 队列
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 队列">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 队列是什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 队列最核心的两个属性
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 队列主要用途
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 动态创建和静态创建
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.4 动态创建和静态创建">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        动态创建
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        静态创建
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 队列收发
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 队列里的元素是“拷贝”还是“指针”
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.6 队列里的元素是“拷贝”还是“指针”">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        小数据
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        大数据
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#47" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.7 一个队列能不能装多种消息
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#48-struct-union-struct" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.8 为什么是 struct + union + struct
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#49-queue-set" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.9 队列集（Queue Set）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.9 队列集（Queue Set）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        用途
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常见 API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        它不是“数据总队列”
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#410-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.10 轮询方式 vs 队列集方式
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.10 轮询方式 vs 队列集方式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        轮询
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        队列集
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#411" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.11 队列常见坑
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 信号量
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 信号量">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 信号量是什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 信号量的分类
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2 信号量的分类">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#binary-semaphore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二值信号量（Binary Semaphore）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#counting-semaphore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        计数信号量（Counting Semaphore）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-freertos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 FreeRTOS 中信号量的实现本质
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 信号量和队列的区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 信号量和互斥量的区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#56-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.6 常见 API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#57" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.7 二值信号量的典型场景
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#58" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.8 计数信号量的典型场景
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#59" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.9 信号量常见误区
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-mutex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 互斥量 Mutex
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 互斥量 Mutex">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 互斥量是什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 互斥量的核心用途
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 互斥量最关键的特点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-mutex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 为什么保护共享资源优先用 mutex
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5 优先级反转详细说明
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6.5 优先级反转详细说明">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        场景
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#66-hp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.6 为什么 HP 会在第一时间拿不到锁
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#67" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.7 优先级继承怎么缓解
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#68" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.8 为什么说它只能缓解，不能彻底治好
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#69" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.9 递归互斥量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#610-mutex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.10 mutex 不适合什么场景
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#611-mutex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.11 mutex 常见使用原则
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 事件组
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. 事件组">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 事件组是什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 事件组适合什么问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 常见 API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74-xeventgroupwaitbits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 xEventGroupWaitBits() 的关键参数
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#75-or-vs-and" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.5 OR 等待 vs AND 等待
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.5 OR 等待 vs AND 等待">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#or" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#and" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AND
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#76-xeventgroupsync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.6 xEventGroupSync() 是什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#77" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.7 事件组和信号量的区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#78" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.8 事件组和队列的区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#79" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.9 事件组适合与不适合
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.9 事件组适合与不适合">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        适合
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        不适合
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 任务通知
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. 任务通知">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 任务通知是什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 核心特点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 它适合的场景
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#84-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4 常见 API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#85-xtasknotifywait-vs-ultasknotifytake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.5 xTaskNotifyWait() vs ulTaskNotifyTake()
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.5 xTaskNotifyWait() vs ulTaskNotifyTake()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xtasknotifywait" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        xTaskNotifyWait()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ultasknotifytake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ulTaskNotifyTake()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#86" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.6 它和事件组/信号量/队列的关系
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#87" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.7 典型场景
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 软件定时器
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. 软件定时器">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 软件定时器是什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 为什么需要软件定时器
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.3 软件定时器的核心特点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#94-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.4 常见 API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#95-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.5 一次性定时器 vs 自动重装载定时器
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9.5 一次性定时器 vs 自动重装载定时器">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#one-shot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One-shot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto-reload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auto-reload
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#96" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.6 软件定时器的回调里适合做什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#97-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.7 软件定时器 vs 周期任务
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9.7 软件定时器 vs 周期任务">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        软件定时器适合
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        周期任务适合
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#98" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.8 软件定时器常见坑
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. 中断管理
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. 中断管理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 中断是什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-rtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 RTOS 中断设计原则
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10.2 RTOS 中断设计原则">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#isr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ISR 里做
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isr_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ISR 里尽量不做
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103-isr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 ISR 与任务的协作模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#104-isr-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.4 常见 ISR 安全 API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#105-api-fromisr-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.5 为什么要区分普通 API 和 FromISR API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#106-pxhigherprioritytaskwoken" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.6 pxHigherPriorityTaskWoken 的意义
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#107-rtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.7 中断优先级与 RTOS 的关系
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#108" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.8 中断与栈
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#109" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.9 中断管理常见坑
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. 资源管理
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. 资源管理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#111" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1 资源管理是什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2 资源管理的目标
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3 共享资源管理的几种典型方式
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11.3 共享资源管理的几种典型方式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1mutex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        方式1：Mutex 保护共享资源
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        方式2：专属资源任务
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        方式3：计数信号量控制资源数量
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#114-bcanuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4 为什么不推荐“手搓 bCanUse 标志位”
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#115-a-ba-b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5 为什么不推荐“任务 A 挂起任务 B，A 做完再唤醒 B”
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#116" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6 死锁
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#117" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.7 饥饿
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#118" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.8 所有权原则
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. 调试与优化
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. 调试与优化">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#121-rtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1 调试 RTOS 时先看什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#122" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2 栈相关调试
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#123" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.3 调度相关调试
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#124-ipc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.4 IPC 相关调试
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12.4 IPC 相关调试">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        队列
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mutex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        信号量 / mutex
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        事件组 / 通知
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#125" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.5 常见优化思路
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12.5 常见优化思路">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1）让任务阻塞而不是轮询
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2）减少不必要任务
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3）合理选择通信机制
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4）缩短临界区/持锁时间
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5）大对象不要频繁按值拷贝
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-isr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6）降低 ISR 负担
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#126" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.6 常见性能问题来源
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#127" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.7 常见可靠性问题来源
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#128" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.8 非原子访问
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#129-volatile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.9 volatile 不是原子性保证
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1210" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.10 函数重入
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12.10 函数重入">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        不可重入常见原因
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1211" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.11 如何提高可重入性
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. 高频对比总结
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. 高频对比总结">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#131-vs-vs-vs-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.1 队列 vs 信号量 vs 互斥量 vs 事件组 vs 任务通知
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.1 队列 vs 信号量 vs 互斥量 vs 事件组 vs 任务通知">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        队列
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        信号量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        互斥量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        事件组
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务通知
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#132-vtaskdelay-vs-vtaskdelayuntil" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.2 vTaskDelay vs vTaskDelayUntil
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#133-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.3 软件定时器 vs 周期任务
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#134-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.4 轮询 vs 阻塞式等待
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.4 轮询 vs 阻塞式等待">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        轮询
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        阻塞
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#135-binary-semaphore-vs-mutex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.5 binary semaphore vs mutex
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13.5 binary semaphore vs mutex">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#binary-semaphore_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Binary Semaphore
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mutex_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mutex
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. 面试速答模板
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14. 面试速答模板">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#141" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.1 什么是堆管理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#142" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.2 讲讲栈和任务栈
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#143-vtaskdelay-delay" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.3 vTaskDelay 和普通 delay 的区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#144-idle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.4 为什么任务删除后要让 Idle 运行
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#145" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.5 讲讲队列
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#146" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.6 讲讲信号量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#147-mutex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.7 讲讲 mutex
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#148" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.8 讲讲优先级反转
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#149" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.9 讲讲事件组
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1410" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.10 讲讲任务通知
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1411" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.11 讲讲软件定时器
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1412" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.12 讲讲中断设计原则
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. 复习建议（紧凑版）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15. 复习建议（紧凑版）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第一轮：先建立框架
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第二轮：抓高频区分
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        第三轮：背三条核心原则
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="rtos-freertos">RTOS / FreeRTOS 知识整理笔记<a class="headerlink" href="#rtos-freertos" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>按知识类型整理本次对话中涉及的问题，并补充：<strong>软件定时器、中断管理、资源管理、调试与优化</strong>。<br />
+风格目标：<strong>排版紧凑、分类清晰、方便复习与面试背诵</strong>。</p>
+</blockquote>
+<hr />
+<h2 id="_1">目录<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<ol>
+<li><a href="#1-rtos-基础认知">RTOS 基础认知</a></li>
+<li><a href="#2-内存管理堆栈局部变量">内存管理：堆、栈、局部变量</a></li>
+<li><a href="#3-任务管理与调度">任务管理与调度</a></li>
+<li><a href="#4-队列">队列</a></li>
+<li><a href="#5-信号量">信号量</a></li>
+<li><a href="#6-互斥量-mutex">互斥量 Mutex</a></li>
+<li><a href="#7-事件组">事件组</a></li>
+<li><a href="#8-任务通知">任务通知</a></li>
+<li><a href="#9-软件定时器">软件定时器</a></li>
+<li><a href="#10-中断管理">中断管理</a></li>
+<li><a href="#11-资源管理">资源管理</a></li>
+<li><a href="#12-调试与优化">调试与优化</a></li>
+<li><a href="#13-高频对比总结">高频对比总结</a></li>
+<li><a href="#14-面试速答模板">面试速答模板</a></li>
+</ol>
+<hr />
+<h2 id="1-rtos">1. RTOS 基础认知<a class="headerlink" href="#1-rtos" title="Permanent link">&para;</a></h2>
+<h3 id="11-rtos">1.1 什么是 RTOS<a class="headerlink" href="#11-rtos" title="Permanent link">&para;</a></h3>
+<p>RTOS（Real-Time Operating System，实时操作系统）是为了在<strong>可预测时间内响应事件</strong>而设计的操作系统。<br />
+核心目标不是“吞吐量最大”，而是：</p>
+<ul>
+<li>任务调度可预测</li>
+<li>响应时间可控</li>
+<li>支持多任务并发</li>
+<li>提供同步、通信、定时等机制</li>
+</ul>
+<h3 id="12-rtos">1.2 RTOS 的核心组成<a class="headerlink" href="#12-rtos" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>任务（Task）</strong></li>
+<li><strong>调度器（Scheduler）</strong></li>
+<li><strong>时基 tick</strong></li>
+<li><strong>中断（ISR）</strong></li>
+<li><strong>同步/通信机制</strong>：队列、信号量、互斥量、事件组、任务通知</li>
+<li><strong>内存管理</strong></li>
+<li><strong>软件定时器</strong></li>
+</ul>
+<h3 id="13">1.3 常见任务状态<a class="headerlink" href="#13" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Running</strong>：正在运行</li>
+<li><strong>Ready</strong>：就绪，等 CPU</li>
+<li><strong>Blocked</strong>：阻塞，等事件/延时到期</li>
+<li><strong>Suspended</strong>：挂起，不参与调度</li>
+<li><strong>Deleted</strong>：已删除，等待内核回收资源</li>
+</ul>
+<h3 id="14-rtos">1.4 RTOS 里最常见的设计思想<a class="headerlink" href="#14-rtos" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>有事运行，没事阻塞。<br />
+不要高优先级空转死循环。</p>
+</blockquote>
+<hr />
+<h2 id="2">2. 内存管理：堆、栈、局部变量<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<h3 id="21">2.1 堆管理是什么<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
+<p>堆管理就是对<strong>动态申请/释放内存区域</strong>的管理。典型接口：</p>
+<ul>
+<li><code>malloc/free</code></li>
+<li><code>pvPortMalloc/vPortFree</code></li>
+</ul>
+<p>核心问题：
+- 哪块已分配
+- 哪块空闲
+- 如何分配
+- 如何释放
+- 如何减少碎片</p>
+<h3 id="22">2.2 栈和堆的区别<a class="headerlink" href="#22" title="Permanent link">&para;</a></h3>
+<h4 id="stack">栈（stack）<a class="headerlink" href="#stack" title="Permanent link">&para;</a></h4>
+<ul>
+<li>自动分配/释放</li>
+<li>主要服务于函数调用</li>
+<li>存放：局部变量、返回地址、部分寄存器现场</li>
+<li>快，但容量通常较小</li>
+</ul>
+<h4 id="heap">堆（heap）<a class="headerlink" href="#heap" title="Permanent link">&para;</a></h4>
+<ul>
+<li>手动申请/释放</li>
+<li>生命周期灵活</li>
+<li>易出问题：碎片、泄漏、重复释放、越界</li>
+</ul>
+<h3 id="23">2.3 函数调用时栈在做什么<a class="headerlink" href="#23" title="Permanent link">&para;</a></h3>
+<p>函数调用时通常会建立一个<strong>栈帧（stack frame）</strong>，用于保存：
+- 返回地址
+- 局部变量
+- 临时数据
+- 可能还包括参数备份和寄存器</p>
+<p>函数返回时：
+- 恢复上下文
+- 栈指针回退
+- 局部变量随栈帧销毁</p>
+<h3 id="24">2.4 局部变量为什么通常在栈上<a class="headerlink" href="#24" title="Permanent link">&para;</a></h3>
+<p>因为局部变量具有：
+- 生命周期短
+- 离开函数自动销毁
+- 分配释放速度快</p>
+<h3 id="25">2.5 哪些变量不在栈上<a class="headerlink" href="#25" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>全局变量</strong></li>
+<li><strong>static 局部变量</strong></li>
+<li><strong>static 全局变量</strong></li>
+<li><strong>堆上动态内存</strong></li>
+<li><strong>常量区对象</strong></li>
+</ul>
+<h3 id="26-static">2.6 static 变量是不是在堆里<a class="headerlink" href="#26-static" title="Permanent link">&para;</a></h3>
+<p>不是。<br />
+<code>static</code> 变量通常位于：</p>
+<ul>
+<li><code>.data</code>：已初始化静态/全局变量</li>
+<li><code>.bss</code>：未初始化静态/全局变量</li>
+</ul>
+<p>它们属于<strong>静态存储区</strong>，不是堆。</p>
+<h3 id="27-rtos">2.7 RTOS 中的任务栈<a class="headerlink" href="#27-rtos" title="Permanent link">&para;</a></h3>
+<p>每个任务都有自己的独立栈，用于保存：
+- 该任务的函数调用链
+- 局部变量
+- 返回地址
+- 任务切换时的寄存器上下文</p>
+<h3 id="28">2.8 任务切换和栈的关系<a class="headerlink" href="#28" title="Permanent link">&para;</a></h3>
+<p>任务切换本质上就是：
+1. 保存当前任务上下文到它自己的栈
+2. 保存当前栈指针到 TCB
+3. 切换到另一个任务的栈指针
+4. 恢复另一个任务上下文</p>
+<blockquote>
+<p>可以记成：<strong>切任务，本质就是切栈。</strong></p>
+</blockquote>
+<h3 id="29-rtos">2.9 RTOS 里任务栈使用要点<a class="headerlink" href="#29-rtos" title="Permanent link">&para;</a></h3>
+<ul>
+<li>大数组不要轻易定义为局部变量</li>
+<li>避免深层函数调用</li>
+<li>避免深递归</li>
+<li><code>printf</code>、浮点格式化等可能很耗栈</li>
+<li>用栈高水位函数检查剩余空间</li>
+</ul>
+<h3 id="210">2.10 任务栈常见坑<a class="headerlink" href="#210" title="Permanent link">&para;</a></h3>
+<ul>
+<li>返回局部变量地址</li>
+<li>局部数组过大导致栈溢出</li>
+<li>误以为多个任务可以共用一个栈</li>
+<li>忘记中断也会消耗栈</li>
+</ul>
+<h3 id="211-freertos">2.11 FreeRTOS 堆实现直觉<a class="headerlink" href="#211-freertos" title="Permanent link">&para;</a></h3>
+<p>常见有：
+- <code>heap_1</code>：只分配不释放
+- <code>heap_2</code>：可释放，合并能力弱
+- <code>heap_3</code>：直接用 <code>malloc/free</code>
+- <code>heap_4</code>：支持合并，最常用
+- <code>heap_5</code>：支持多段内存区域</p>
+<h3 id="212-vs">2.12 静态创建 vs 动态创建<a class="headerlink" href="#212-vs" title="Permanent link">&para;</a></h3>
+<h4 id="_2">动态创建<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h4>
+<ul>
+<li>内存来自 FreeRTOS heap</li>
+<li>方便，但依赖堆</li>
+</ul>
+<h4 id="_3">静态创建<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h4>
+<ul>
+<li>内存由用户自己提供</li>
+<li>更可控，不依赖运行时堆</li>
+</ul>
+<hr />
+<h2 id="3">3. 任务管理与调度<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<h3 id="31">3.1 任务创建<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
+<p>常见接口：
+- <code>xTaskCreate()</code>：动态创建
+- <code>xTaskCreateStatic()</code>：静态创建</p>
+<h3 id="32">3.2 任务句柄参数的作用<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
+<p><code>xTaskCreate(..., &amp;xTaskHandle)</code> 里的句柄参数用于把<strong>新建任务的句柄返回出来</strong>。<br />
+句柄可用于：
+- 删除任务
+- 挂起/恢复任务
+- 发任务通知
+- 改优先级
+- 查询状态</p>
+<p>如果后续不需要控制该任务，可以传 <code>NULL</code>。</p>
+<h3 id="33">3.3 任务函数参数和句柄的区别<a class="headerlink" href="#33" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>pvParameters</code>：传给任务函数的参数</li>
+<li><code>pxCreatedTask</code>：把任务句柄传出来</li>
+</ul>
+<h3 id="34-vtaskdelay-delay">3.4 vTaskDelay 和普通 delay 的区别<a class="headerlink" href="#34-vtaskdelay-delay" title="Permanent link">&para;</a></h3>
+<h4 id="vtaskdelay"><code>vTaskDelay()</code><a class="headerlink" href="#vtaskdelay" title="Permanent link">&para;</a></h4>
+<ul>
+<li>当前任务进入 Blocked</li>
+<li>把 CPU 让给调度器</li>
+<li>是<strong>任务级延时</strong></li>
+</ul>
+<h4 id="delay">普通 <code>delay</code><a class="headerlink" href="#delay" title="Permanent link">&para;</a></h4>
+<ul>
+<li>只是当前执行流等待</li>
+<li>常见是忙等或基于 tick 的阻塞式等待</li>
+<li>不一定是“交给 RTOS 管理的阻塞”</li>
+</ul>
+<h3 id="35-vtaskdelay-vtaskdelayuntil">3.5 <code>vTaskDelay()</code> / <code>vTaskDelayUntil()</code><a class="headerlink" href="#35-vtaskdelay-vtaskdelayuntil" title="Permanent link">&para;</a></h3>
+<h4 id="vtaskdelay_1"><code>vTaskDelay()</code><a class="headerlink" href="#vtaskdelay_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li>相对延时</li>
+<li>从“现在”开始延后若干 tick</li>
+</ul>
+<h4 id="vtaskdelayuntil"><code>vTaskDelayUntil()</code><a class="headerlink" href="#vtaskdelayuntil" title="Permanent link">&para;</a></h4>
+<ul>
+<li>绝对周期延时</li>
+<li>更适合做固定周期任务</li>
+</ul>
+<h3 id="36-vtaskdelayuntil">3.6 <code>vTaskDelayUntil()</code> 如果执行时间超过周期怎么办<a class="headerlink" href="#36-vtaskdelayuntil" title="Permanent link">&para;</a></h3>
+<p>如果任务执行时间已经超过目标唤醒时刻：
+- 函数不会再阻塞
+- 会立即返回
+- 任务可能表现为连续执行
+- 如果长期超周期，说明任务负载过重或周期设置不合理</p>
+<h3 id="37-vtaskdelay-1-tick">3.7 不写 <code>vTaskDelay()</code> 是否默认 1 tick 轮询<a class="headerlink" href="#37-vtaskdelay-1-tick" title="Permanent link">&para;</a></h3>
+<p>不是。要区分：
+- <strong>时间片轮转</strong>：调度器在同优先级任务间按 tick 切换
+- <strong>循环执行频率</strong>：任务拿到 CPU 后，<code>while(1)</code> 会按 CPU 速度高速执行很多次</p>
+<p>所以“不写 <code>vTaskDelay()</code>”不等于“默认 1 tick 执行一次循环”。</p>
+<h3 id="38-tick">3.8 tick 是多久<a class="headerlink" href="#38-tick" title="Permanent link">&para;</a></h3>
+<p>由 <code>configTICK_RATE_HZ</code> 决定：</p>
+<ul>
+<li><code>1000Hz</code> → <code>1 tick = 1ms</code></li>
+<li><code>100Hz</code> → <code>1 tick = 10ms</code></li>
+</ul>
+<h3 id="39">3.9 时间片轮转<a class="headerlink" href="#39" title="Permanent link">&para;</a></h3>
+<p>当 <code>configUSE_TIME_SLICING = 1</code> 且多个同优先级任务都处于 Ready 时：
+- 调度器会在 tick 到来时在它们之间轮转</p>
+<p>但这不等于“每个任务只在 1 tick 内执行一次循环”。</p>
+<h3 id="310">3.10 任务删除与“收尸”<a class="headerlink" href="#310" title="Permanent link">&para;</a></h3>
+<h4 id="_4">任务删除自己<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>vTaskDelete(NULL)</code></li>
+<li>任务不再运行</li>
+<li>TCB/任务栈等内核资源通常由 <strong>Idle task</strong> 清理</li>
+</ul>
+<h4 id="_5">一个任务删除另一个任务<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h4>
+<ul>
+<li>在一些实现/文档描述下，内核可直接释放目标任务资源</li>
+</ul>
+<h3 id="311-idle">3.11 Idle 任务为什么要有机会执行<a class="headerlink" href="#311-idle" title="Permanent link">&para;</a></h3>
+<p>因为被删除任务的资源回收通常依赖 Idle task。<br />
+如果始终有更高优先级任务保持 Ready，Idle 就可能永远跑不到，资源无法及时回收。</p>
+<h3 id="312-idle">3.12 如何确保 Idle 有机会执行<a class="headerlink" href="#312-idle" title="Permanent link">&para;</a></h3>
+<ul>
+<li>不要高优先级死循环空转</li>
+<li>没事时主动阻塞：</li>
+<li><code>vTaskDelay()</code></li>
+<li>等队列</li>
+<li>等信号量</li>
+<li>等任务通知</li>
+<li>让任务成为事件驱动型</li>
+</ul>
+<h3 id="313-taskyield-idle">3.13 <code>taskYIELD()</code> 能否保证 Idle 运行<a class="headerlink" href="#313-taskyield-idle" title="Permanent link">&para;</a></h3>
+<p>通常不能。<br />
+<code>taskYIELD()</code> 更像是让给<strong>同优先级 Ready 任务</strong>，不是专门让给更低优先级的 Idle。</p>
+<hr />
+<h2 id="4">4. 队列<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
+<h3 id="41">4.1 队列是什么<a class="headerlink" href="#41" title="Permanent link">&para;</a></h3>
+<p>队列是 FreeRTOS 最常用的任务间通信机制之一。它本质上是：
+- 固定长度
+- 固定单元素大小
+- 按值拷贝
+- 支持阻塞等待</p>
+<h3 id="42">4.2 队列最核心的两个属性<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
+<ul>
+<li>队列长度</li>
+<li>单个元素大小</li>
+</ul>
+<p>创建时一次确定，之后不能改变。</p>
+<h3 id="43">4.3 队列主要用途<a class="headerlink" href="#43" title="Permanent link">&para;</a></h3>
+<ul>
+<li>任务间传递数据</li>
+<li>中断向任务传递数据/事件</li>
+<li>多个生产者 → 一个消费者</li>
+<li>命令/事件总线</li>
+</ul>
+<h3 id="44">4.4 动态创建和静态创建<a class="headerlink" href="#44" title="Permanent link">&para;</a></h3>
+<h4 id="_6">动态创建<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>xQueueCreate(length, itemSize)</code></li>
+<li>内存来自 heap</li>
+</ul>
+<h4 id="_7">静态创建<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>xQueueCreateStatic(...)</code></li>
+<li>控制块和存储区由用户自己提供</li>
+</ul>
+<h3 id="45">4.5 队列收发<a class="headerlink" href="#45" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>xQueueSend()</code> / <code>xQueueSendToBack()</code> / <code>xQueueSendToFront()</code></li>
+<li><code>xQueueReceive()</code></li>
+<li><code>xQueuePeek()</code></li>
+</ul>
+<h3 id="46">4.6 队列里的元素是“拷贝”还是“指针”<a class="headerlink" href="#46" title="Permanent link">&para;</a></h3>
+<p>默认是<strong>按值拷贝</strong>。<br />
+但也可以把“指针”作为队列元素，这样队列里传的是地址。</p>
+<h4 id="_8">小数据<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h4>
+<p>适合直接发值</p>
+<h4 id="_9">大数据<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h4>
+<p>常见做法：
+- 数据本体放缓冲区/内存池
+- 队列里只传指针</p>
+<h3 id="47">4.7 一个队列能不能装多种消息<a class="headerlink" href="#47" title="Permanent link">&para;</a></h3>
+<p>可以，但每个元素大小必须固定。<br />
+典型做法：统一消息结构体。</p>
+<div class="highlight"><pre><span></span><code><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">MsgType_t</span><span class="w"> </span><span class="n">type</span><span class="p">;</span>
+<span class="w">    </span><span class="k">union</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">AppMsg_t</span><span class="p">;</span>
+</code></pre></div>
+<h3 id="48-struct-union-struct">4.8 为什么是 <code>struct + union + struct</code><a class="headerlink" href="#48-struct-union-struct" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>外层 struct</strong>：放公共头（如 type）</li>
+<li><strong>union</strong>：不同消息类型共用一块内存</li>
+<li><strong>内层 struct</strong>：每种消息自己的字段分类清晰，方便扩展</li>
+</ul>
+<h3 id="49-queue-set">4.9 队列集（Queue Set）<a class="headerlink" href="#49-queue-set" title="Permanent link">&para;</a></h3>
+<h4 id="_10">用途<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h4>
+<p>让一个任务能够同时阻塞等待多个队列/信号量中“任意一个”变为可读/可取。</p>
+<h4 id="api">常见 API<a class="headerlink" href="#api" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>xQueueCreateSet()</code></li>
+<li><code>xQueueAddToSet()</code></li>
+<li><code>xQueueSelectFromSet()</code></li>
+</ul>
+<h4 id="_11">它不是“数据总队列”<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h4>
+<p>更准确的理解是：</p>
+<blockquote>
+<p><strong>统一等待多个成员对象的就绪状态。</strong></p>
+</blockquote>
+<h3 id="410-vs">4.10 轮询方式 vs 队列集方式<a class="headerlink" href="#410-vs" title="Permanent link">&para;</a></h3>
+<h4 id="_12">轮询<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h4>
+<ul>
+<li>任务自己挨个 <code>receive(..., 0)</code> / <code>take(..., 0)</code></li>
+<li>要么空转浪费 CPU，要么加 delay 带来响应延迟</li>
+</ul>
+<h4 id="_13">队列集<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h4>
+<ul>
+<li>任务阻塞在 <code>xQueueSelectFromSet()</code></li>
+<li>有成员就绪时被唤醒</li>
+<li>响应更及时，CPU 利用率更高</li>
+</ul>
+<h3 id="411">4.11 队列常见坑<a class="headerlink" href="#411" title="Permanent link">&para;</a></h3>
+<ul>
+<li>在 ISR 中误用普通 API</li>
+<li>用队列传大结构体导致拷贝开销大</li>
+<li>把局部变量地址塞进指针队列</li>
+<li>生产速度远高于消费速度导致满队列</li>
+<li>忙轮询 <code>uxQueueMessagesWaiting()</code> 代替阻塞等待</li>
+</ul>
+<hr />
+<h2 id="5">5. 信号量<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<h3 id="51">5.1 信号量是什么<a class="headerlink" href="#51" title="Permanent link">&para;</a></h3>
+<p>可以把信号量理解成：</p>
+<blockquote>
+<p><strong>计数器 + 阻塞/唤醒机制</strong></p>
+</blockquote>
+<p>用途主要有两类：
+- 同步
+- 资源计数</p>
+<h3 id="52">5.2 信号量的分类<a class="headerlink" href="#52" title="Permanent link">&para;</a></h3>
+<h4 id="binary-semaphore">二值信号量（Binary Semaphore）<a class="headerlink" href="#binary-semaphore" title="Permanent link">&para;</a></h4>
+<ul>
+<li>值一般只有 0/1</li>
+<li>常用于同步</li>
+<li>典型场景：ISR 通知任务</li>
+</ul>
+<h4 id="counting-semaphore">计数信号量（Counting Semaphore）<a class="headerlink" href="#counting-semaphore" title="Permanent link">&para;</a></h4>
+<ul>
+<li>值可以大于 1</li>
+<li>表示多个同类资源数量</li>
+<li>或累计多个事件</li>
+</ul>
+<h3 id="53-freertos">5.3 FreeRTOS 中信号量的实现本质<a class="headerlink" href="#53-freertos" title="Permanent link">&para;</a></h3>
+<p>从实现层面看，FreeRTOS 中信号量底层复用了队列机制。<br />
+但从抽象语义看：
+- 队列偏重“传数据”
+- 信号量偏重“传条件/同步/资源计数”</p>
+<h3 id="54">5.4 信号量和队列的区别<a class="headerlink" href="#54" title="Permanent link">&para;</a></h3>
+<ul>
+<li>队列传内容</li>
+<li>信号量传条件</li>
+</ul>
+<h3 id="55">5.5 信号量和互斥量的区别<a class="headerlink" href="#55" title="Permanent link">&para;</a></h3>
+<ul>
+<li>信号量偏重同步/计数</li>
+<li>互斥量偏重共享资源独占访问</li>
+</ul>
+<h3 id="56-api">5.6 常见 API<a class="headerlink" href="#56-api" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>xSemaphoreCreateBinary()</code></li>
+<li><code>xSemaphoreCreateCounting()</code></li>
+<li><code>xSemaphoreTake()</code></li>
+<li><code>xSemaphoreGive()</code></li>
+<li><code>xSemaphoreGiveFromISR()</code></li>
+</ul>
+<h3 id="57">5.7 二值信号量的典型场景<a class="headerlink" href="#57" title="Permanent link">&para;</a></h3>
+<ul>
+<li>ADC 完成中断唤醒处理任务</li>
+<li>DMA 发送完成通知任务</li>
+<li>任务 A 通知任务 B</li>
+</ul>
+<h3 id="58">5.8 计数信号量的典型场景<a class="headerlink" href="#58" title="Permanent link">&para;</a></h3>
+<ul>
+<li>缓冲区池</li>
+<li>资源池</li>
+<li>连接池</li>
+<li>可用通道数限制</li>
+</ul>
+<h3 id="59">5.9 信号量常见误区<a class="headerlink" href="#59" title="Permanent link">&para;</a></h3>
+<ul>
+<li>用二值信号量代替 mutex 保护共享资源</li>
+<li>在 ISR 中用普通 <code>xSemaphoreGive()</code></li>
+<li>忙轮询 <code>xSemaphoreTake(..., 0)</code></li>
+<li>忘了 give</li>
+</ul>
+<hr />
+<h2 id="6-mutex">6. 互斥量 Mutex<a class="headerlink" href="#6-mutex" title="Permanent link">&para;</a></h2>
+<h3 id="61">6.1 互斥量是什么<a class="headerlink" href="#61" title="Permanent link">&para;</a></h3>
+<p>互斥量（Mutex）本质是一把<strong>独占锁</strong>：</p>
+<blockquote>
+<p>同一时刻只允许一个任务进入临界区。</p>
+</blockquote>
+<h3 id="62">6.2 互斥量的核心用途<a class="headerlink" href="#62" title="Permanent link">&para;</a></h3>
+<p>保护共享资源：
+- LCD
+- I2C
+- SPI
+- 串口打印
+- 文件系统对象
+- 全局链表/共享结构体</p>
+<h3 id="63">6.3 互斥量最关键的特点<a class="headerlink" href="#63" title="Permanent link">&para;</a></h3>
+<ul>
+<li>同一时刻只能一个任务持有</li>
+<li>有“所有权”概念</li>
+<li>谁拿到通常就由谁释放</li>
+<li>支持<strong>优先级继承</strong></li>
+</ul>
+<h3 id="64-mutex">6.4 为什么保护共享资源优先用 mutex<a class="headerlink" href="#64-mutex" title="Permanent link">&para;</a></h3>
+<p>因为 mutex 能缓解<strong>优先级反转</strong>，而普通二值信号量通常没有优先级继承机制。</p>
+<h3 id="65">6.5 优先级反转详细说明<a class="headerlink" href="#65" title="Permanent link">&para;</a></h3>
+<p>假设：
+- <strong>LP</strong>：低优先级任务
+- <strong>MP</strong>：中优先级任务
+- <strong>HP</strong>：高优先级任务</p>
+<h4 id="_14">场景<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h4>
+<ol>
+<li>LP 先运行，拿到 mutex</li>
+<li>HP 来了，也想拿这个 mutex</li>
+<li>HP 拿不到，于是阻塞</li>
+<li>MP 变成 Ready</li>
+<li>因为 HP 被阻塞、LP 优先级低，所以 MP 抢占 LP</li>
+<li>LP 无法继续运行，也就无法尽快释放 mutex</li>
+<li>HP 虽然最高优先级，却间接被 MP 拖住</li>
+</ol>
+<p>这就是优先级反转。</p>
+<h3 id="66-hp">6.6 为什么 HP 会在第一时间拿不到锁<a class="headerlink" href="#66-hp" title="Permanent link">&para;</a></h3>
+<p>因为那一刻锁已经被 LP 持有。<br />
+不是“释放动作本身慢”，而是：
+- mutex 当前归别人所有
+- 要等持锁者以后运行到 <code>give</code> 的位置，锁才会重新可用</p>
+<blockquote>
+<p>HP 卡住的根因不是 “give 慢”，而是 “持锁者还没跑到 give”。</p>
+</blockquote>
+<h3 id="67">6.7 优先级继承怎么缓解<a class="headerlink" href="#67" title="Permanent link">&para;</a></h3>
+<p>当 HP 等待 LP 持有的 mutex 时：
+- 内核临时把 LP 的优先级提升到 HP 附近
+- 这样 MP 抢不过 LP
+- LP 能尽快运行完临界区并释放 mutex
+- HP 随后被唤醒</p>
+<h3 id="68">6.8 为什么说它只能缓解，不能彻底治好<a class="headerlink" href="#68" title="Permanent link">&para;</a></h3>
+<p>因为：
+- HP 还是得等 LP 真正释放锁
+- 如果临界区很长，继承也无法让锁“瞬移”
+- 多锁嵌套时问题可能更复杂</p>
+<h3 id="69">6.9 递归互斥量<a class="headerlink" href="#69" title="Permanent link">&para;</a></h3>
+<p>当同一个任务可能重复进入同一把锁时，可用：
+- <code>xSemaphoreCreateRecursiveMutex()</code>
+- <code>xSemaphoreTakeRecursive()</code>
+- <code>xSemaphoreGiveRecursive()</code></p>
+<h3 id="610-mutex">6.10 mutex 不适合什么场景<a class="headerlink" href="#610-mutex" title="Permanent link">&para;</a></h3>
+<ul>
+<li>ISR 中使用</li>
+<li>单纯事件通知</li>
+<li>传具体数据</li>
+<li>极短的原子变量更新（更适合临界区/原子操作）</li>
+</ul>
+<h3 id="611-mutex">6.11 mutex 常见使用原则<a class="headerlink" href="#611-mutex" title="Permanent link">&para;</a></h3>
+<ul>
+<li>临界区尽量短</li>
+<li>不要拿着 mutex 去 <code>delay</code></li>
+<li>不要在临界区里做大量无关计算</li>
+<li>多把锁时固定加锁顺序，避免死锁</li>
+</ul>
+<hr />
+<h2 id="7">7. 事件组<a class="headerlink" href="#7" title="Permanent link">&para;</a></h2>
+<h3 id="71">7.1 事件组是什么<a class="headerlink" href="#71" title="Permanent link">&para;</a></h3>
+<p>事件组就是：</p>
+<blockquote>
+<p><strong>一组二进制标志位（bit flags）</strong></p>
+</blockquote>
+<p>每一位代表一个事件/状态是否成立。</p>
+<h3 id="72">7.2 事件组适合什么问题<a class="headerlink" href="#72" title="Permanent link">&para;</a></h3>
+<p>适合处理“多个布尔事件/状态”的组合等待，例如：
+- 网络已连接
+- 串口收到数据
+- 传感器初始化完成
+- 系统某阶段已就绪</p>
+<h3 id="73-api">7.3 常见 API<a class="headerlink" href="#73-api" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>xEventGroupCreate()</code></li>
+<li><code>xEventGroupCreateStatic()</code></li>
+<li><code>xEventGroupSetBits()</code></li>
+<li><code>xEventGroupClearBits()</code></li>
+<li><code>xEventGroupWaitBits()</code></li>
+<li><code>xEventGroupGetBits()</code></li>
+<li><code>xEventGroupSync()</code></li>
+</ul>
+<h3 id="74-xeventgroupwaitbits">7.4 <code>xEventGroupWaitBits()</code> 的关键参数<a class="headerlink" href="#74-xeventgroupwaitbits" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>要等哪些位</strong></li>
+<li><strong>返回前是否自动清位</strong></li>
+<li><strong>是等任意一位（OR）还是全部位（AND）</strong></li>
+<li><strong>超时时间</strong></li>
+</ul>
+<h3 id="75-or-vs-and">7.5 OR 等待 vs AND 等待<a class="headerlink" href="#75-or-vs-and" title="Permanent link">&para;</a></h3>
+<h4 id="or">OR<a class="headerlink" href="#or" title="Permanent link">&para;</a></h4>
+<p>任意一位置位就返回<br />
+适合：“谁先来我先处理谁”</p>
+<h4 id="and">AND<a class="headerlink" href="#and" title="Permanent link">&para;</a></h4>
+<p>所有目标位都置位才返回<br />
+适合：“所有条件准备好后再继续”</p>
+<h3 id="76-xeventgroupsync">7.6 <code>xEventGroupSync()</code> 是什么<a class="headerlink" href="#76-xeventgroupsync" title="Permanent link">&para;</a></h3>
+<p>它是：</p>
+<blockquote>
+<p><strong>原子地先置位，再等待一组位全部到齐</strong></p>
+</blockquote>
+<p>典型场景：多个任务到达同一个同步点（barrier / rendezvous）。</p>
+<h3 id="77">7.7 事件组和信号量的区别<a class="headerlink" href="#77" title="Permanent link">&para;</a></h3>
+<ul>
+<li>信号量更像单个事件/资源计数</li>
+<li>事件组更像一组布尔条件状态</li>
+</ul>
+<h3 id="78">7.8 事件组和队列的区别<a class="headerlink" href="#78" title="Permanent link">&para;</a></h3>
+<ul>
+<li>队列传具体内容</li>
+<li>事件组只表达状态位，不传 payload</li>
+</ul>
+<h3 id="79">7.9 事件组适合与不适合<a class="headerlink" href="#79" title="Permanent link">&para;</a></h3>
+<h4 id="_15">适合<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h4>
+<ul>
+<li>多条件组合等待</li>
+<li>系统状态机</li>
+<li>多个初始化阶段同步</li>
+</ul>
+<h4 id="_16">不适合<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h4>
+<ul>
+<li>传结构体数据</li>
+<li>多条消息缓冲</li>
+<li>精确资源计数（计数信号量更合适）</li>
+</ul>
+<hr />
+<h2 id="8">8. 任务通知<a class="headerlink" href="#8" title="Permanent link">&para;</a></h2>
+<h3 id="81">8.1 任务通知是什么<a class="headerlink" href="#81" title="Permanent link">&para;</a></h3>
+<p>任务通知就是：</p>
+<blockquote>
+<p><strong>直接发给某个任务的一份内建通知槽</strong></p>
+</blockquote>
+<p>它比队列/信号量更轻量，常用于：
+- ISR 唤醒专属任务
+- 单任务事件通知
+- 把通知值当计数器或事件位用</p>
+<h3 id="82">8.2 核心特点<a class="headerlink" href="#82" title="Permanent link">&para;</a></h3>
+<ul>
+<li>每个任务自带通知值和通知状态</li>
+<li>可看作一个 32 位值 + 状态</li>
+<li>新版还支持通知数组</li>
+</ul>
+<h3 id="83">8.3 它适合的场景<a class="headerlink" href="#83" title="Permanent link">&para;</a></h3>
+<ul>
+<li>一对一、定向唤醒</li>
+<li>ISR → task 唤醒</li>
+<li>轻量事件、计数、bit 标志</li>
+<li>不需要复杂消息对象时</li>
+</ul>
+<h3 id="84-api">8.4 常见 API<a class="headerlink" href="#84-api" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>xTaskNotify()</code></li>
+<li><code>xTaskNotifyFromISR()</code></li>
+<li><code>xTaskNotifyWait()</code></li>
+<li><code>xTaskNotifyGive()</code></li>
+<li><code>vTaskNotifyGiveFromISR()</code></li>
+<li><code>ulTaskNotifyTake()</code></li>
+</ul>
+<h3 id="85-xtasknotifywait-vs-ultasknotifytake">8.5 <code>xTaskNotifyWait()</code> vs <code>ulTaskNotifyTake()</code><a class="headerlink" href="#85-xtasknotifywait-vs-ultasknotifytake" title="Permanent link">&para;</a></h3>
+<h4 id="xtasknotifywait"><code>xTaskNotifyWait()</code><a class="headerlink" href="#xtasknotifywait" title="Permanent link">&para;</a></h4>
+<ul>
+<li>更偏事件位 / mailbox 风格</li>
+<li>可以读 32 位通知值</li>
+</ul>
+<h4 id="ultasknotifytake"><code>ulTaskNotifyTake()</code><a class="headerlink" href="#ultasknotifytake" title="Permanent link">&para;</a></h4>
+<ul>
+<li>更偏二值/计数信号量风格</li>
+<li>等待通知值非 0</li>
+<li>可选择清零或减 1</li>
+</ul>
+<h3 id="86">8.6 它和事件组/信号量/队列的关系<a class="headerlink" href="#86" title="Permanent link">&para;</a></h3>
+<ul>
+<li>比信号量更轻量，但只能发给某个确定任务</li>
+<li>比事件组轻，但更偏单任务私有通知槽</li>
+<li>不适合复杂数据传输，队列更合适</li>
+</ul>
+<h3 id="87">8.7 典型场景<a class="headerlink" href="#87" title="Permanent link">&para;</a></h3>
+<ul>
+<li>ADC ISR 完成后通知处理任务</li>
+<li>UART ISR 唤醒解析任务</li>
+<li>单任务私有事件位</li>
+</ul>
+<hr />
+<h2 id="9">9. 软件定时器<a class="headerlink" href="#9" title="Permanent link">&para;</a></h2>
+<h3 id="91">9.1 软件定时器是什么<a class="headerlink" href="#91" title="Permanent link">&para;</a></h3>
+<p>软件定时器（Software Timer）是由 RTOS 内核管理的定时机制，不依赖你自己写轮询。<br />
+它不是硬件定时器寄存器本身，而是建立在 RTOS tick 之上的“内核定时服务”。</p>
+<h3 id="92">9.2 为什么需要软件定时器<a class="headerlink" href="#92" title="Permanent link">&para;</a></h3>
+<p>适合处理：
+- 周期性执行的轻量工作
+- 超时处理
+- 延后执行
+- 定时检查/喂狗/状态刷新</p>
+<h3 id="93">9.3 软件定时器的核心特点<a class="headerlink" href="#93" title="Permanent link">&para;</a></h3>
+<ul>
+<li>由内核统一管理</li>
+<li>回调在 <strong>Timer Service/Daemon Task</strong> 中执行</li>
+<li>可一周期性触发，也可一次性触发</li>
+</ul>
+<h3 id="94-api">9.4 常见 API<a class="headerlink" href="#94-api" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>xTimerCreate()</code></li>
+<li><code>xTimerCreateStatic()</code></li>
+<li><code>xTimerStart()</code></li>
+<li><code>xTimerStop()</code></li>
+<li><code>xTimerReset()</code></li>
+<li><code>xTimerChangePeriod()</code></li>
+<li><code>xTimerDelete()</code></li>
+<li><code>xTimerIsTimerActive()</code></li>
+</ul>
+<h3 id="95-vs">9.5 一次性定时器 vs 自动重装载定时器<a class="headerlink" href="#95-vs" title="Permanent link">&para;</a></h3>
+<h4 id="one-shot">One-shot<a class="headerlink" href="#one-shot" title="Permanent link">&para;</a></h4>
+<ul>
+<li>到时执行一次</li>
+<li>适合超时逻辑</li>
+</ul>
+<h4 id="auto-reload">Auto-reload<a class="headerlink" href="#auto-reload" title="Permanent link">&para;</a></h4>
+<ul>
+<li>周期执行</li>
+<li>适合周期任务的轻量替代</li>
+</ul>
+<h3 id="96">9.6 软件定时器的回调里适合做什么<a class="headerlink" href="#96" title="Permanent link">&para;</a></h3>
+<p>适合：
+- 设标志
+- 发消息/通知
+- 做很轻量的状态更新</p>
+<p>不适合：
+- 长时间阻塞
+- 大量计算
+- 长时间占用 CPU
+- 调用不合适的阻塞 API</p>
+<p>因为回调运行在 Timer Service Task 中，回调太重会影响其他软件定时器处理。</p>
+<h3 id="97-vs">9.7 软件定时器 vs 周期任务<a class="headerlink" href="#97-vs" title="Permanent link">&para;</a></h3>
+<h4 id="_17">软件定时器适合<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h4>
+<ul>
+<li>轻量周期动作</li>
+<li>超时控制</li>
+<li>不想专门开一个任务</li>
+</ul>
+<h4 id="_18">周期任务适合<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h4>
+<ul>
+<li>较重业务逻辑</li>
+<li>要独立优先级/独立栈</li>
+<li>需要自己的阻塞等待模型</li>
+</ul>
+<h3 id="98">9.8 软件定时器常见坑<a class="headerlink" href="#98" title="Permanent link">&para;</a></h3>
+<ul>
+<li>在回调里做太重的事</li>
+<li>回调里长时间阻塞</li>
+<li>忘记 Timer Service Task 的优先级和栈大小</li>
+<li>把重业务全部塞进 timer callback</li>
+</ul>
+<hr />
+<h2 id="10">10. 中断管理<a class="headerlink" href="#10" title="Permanent link">&para;</a></h2>
+<h3 id="101">10.1 中断是什么<a class="headerlink" href="#101" title="Permanent link">&para;</a></h3>
+<p>中断是 CPU 对异步外部/内部事件的响应机制。<br />
+RTOS 中断管理的关键点是：
+- 中断尽量短
+- ISR 和 task 职责分离
+- ISR 只做“快”的事，把“慢”的事交给任务</p>
+<h3 id="102-rtos">10.2 RTOS 中断设计原则<a class="headerlink" href="#102-rtos" title="Permanent link">&para;</a></h3>
+<h4 id="isr">ISR 里做<a class="headerlink" href="#isr" title="Permanent link">&para;</a></h4>
+<ul>
+<li>清中断标志</li>
+<li>读取必要寄存器/数据</li>
+<li>写入环形缓冲/队列</li>
+<li>give semaphore / notify task</li>
+<li>必要时请求切换</li>
+</ul>
+<h4 id="isr_1">ISR 里尽量不做<a class="headerlink" href="#isr_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li>复杂逻辑</li>
+<li>长时间循环</li>
+<li>大量打印</li>
+<li>阻塞等待</li>
+<li>使用错误的非 ISR API</li>
+</ul>
+<h3 id="103-isr">10.3 ISR 与任务的协作模式<a class="headerlink" href="#103-isr" title="Permanent link">&para;</a></h3>
+<p>最典型：
+1. ISR 捕获事件
+2. ISR 用 <code>FromISR</code> API 通知某任务
+3. 任务被唤醒后处理真正业务</p>
+<h3 id="104-isr-api">10.4 常见 ISR 安全 API<a class="headerlink" href="#104-isr-api" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>xQueueSendFromISR()</code></li>
+<li><code>xSemaphoreGiveFromISR()</code></li>
+<li><code>vTaskNotifyGiveFromISR()</code></li>
+<li><code>xTaskNotifyFromISR()</code></li>
+</ul>
+<h3 id="105-api-fromisr-api">10.5 为什么要区分普通 API 和 FromISR API<a class="headerlink" href="#105-api-fromisr-api" title="Permanent link">&para;</a></h3>
+<p>因为 ISR 环境不能随意：
+- 阻塞
+- 执行不可控的复杂调度行为
+- 使用只适合任务上下文的机制</p>
+<h3 id="106-pxhigherprioritytaskwoken">10.6 <code>pxHigherPriorityTaskWoken</code> 的意义<a class="headerlink" href="#106-pxhigherprioritytaskwoken" title="Permanent link">&para;</a></h3>
+<p>ISR 通知某任务后，如果该任务优先级更高，ISR 退出前可触发一次上下文切换。<br />
+这样可以实现“中断一结束，立即切到处理任务”。</p>
+<h3 id="107-rtos">10.7 中断优先级与 RTOS 的关系<a class="headerlink" href="#107-rtos" title="Permanent link">&para;</a></h3>
+<p>在 Cortex-M + FreeRTOS 场景下，要特别注意：
+- 哪些中断能调用 RTOS API
+- 哪些中断优先级必须低于某阈值
+- 与 <code>configMAX_SYSCALL_INTERRUPT_PRIORITY</code> 等配置相关</p>
+<h3 id="108">10.8 中断与栈<a class="headerlink" href="#108" title="Permanent link">&para;</a></h3>
+<ul>
+<li>中断通常使用主栈（MSP）或架构规定的异常栈</li>
+<li>中断进入时会自动压入部分上下文</li>
+<li>中断嵌套会进一步消耗栈</li>
+</ul>
+<h3 id="109">10.9 中断管理常见坑<a class="headerlink" href="#109" title="Permanent link">&para;</a></h3>
+<ul>
+<li>ISR 里调用普通任务 API</li>
+<li>中断做太多事导致系统抖动</li>
+<li>忘记清标志导致重复进中断</li>
+<li>优先级配置错误导致 RTOS API 异常</li>
+<li>在 ISR 里使用 mutex</li>
+</ul>
+<hr />
+<h2 id="11">11. 资源管理<a class="headerlink" href="#11" title="Permanent link">&para;</a></h2>
+<h3 id="111">11.1 资源管理是什么<a class="headerlink" href="#111" title="Permanent link">&para;</a></h3>
+<p>这里的“资源”不仅是内存，还包括：
+- 外设
+- 总线
+- 缓冲区
+- 文件句柄
+- 通信通道
+- 共享数据结构</p>
+<h3 id="112">11.2 资源管理的目标<a class="headerlink" href="#112" title="Permanent link">&para;</a></h3>
+<ul>
+<li>资源分配合理</li>
+<li>防止并发冲突</li>
+<li>防止泄漏</li>
+<li>防止死锁/饥饿</li>
+<li>提高可预测性</li>
+</ul>
+<h3 id="113">11.3 共享资源管理的几种典型方式<a class="headerlink" href="#113" title="Permanent link">&para;</a></h3>
+<h4 id="1mutex">方式1：Mutex 保护共享资源<a class="headerlink" href="#1mutex" title="Permanent link">&para;</a></h4>
+<p>适合：
+- LCD
+- I2C
+- SPI
+- <code>printf</code></p>
+<h4 id="2_1">方式2：专属资源任务<a class="headerlink" href="#2_1" title="Permanent link">&para;</a></h4>
+<p>例如：
+- 专门的 <code>LcdTask</code>
+- 其他任务只发显示命令，不直接碰 LCD</p>
+<p>这种“资源代理任务”在嵌入式里很实用。</p>
+<h4 id="3_1">方式3：计数信号量控制资源数量<a class="headerlink" href="#3_1" title="Permanent link">&para;</a></h4>
+<p>适合：
+- 缓冲区池
+- 通道数限制
+- 并发连接数限制</p>
+<h3 id="114-bcanuse">11.4 为什么不推荐“手搓 bCanUse 标志位”<a class="headerlink" href="#114-bcanuse" title="Permanent link">&para;</a></h3>
+<p>常见缺陷：
+- 检查和置位不是原子操作
+- 可能竞态进入
+- 失败后容易忙等
+- 没有优先级继承
+- 扩展性差
+- 容易异常路径忘记释放</p>
+<h3 id="115-a-ba-b">11.5 为什么不推荐“任务 A 挂起任务 B，A 做完再唤醒 B”<a class="headerlink" href="#115-a-ba-b" title="Permanent link">&para;</a></h3>
+<p>原因：
+- 你要保护的是资源，不是整个任务
+- 任务间强耦合
+- 易丢唤醒
+- 多等待者场景难管理
+- 不具扩展性</p>
+<p>正确思路通常是：
+- 用 mutex
+- 或做专属资源任务</p>
+<h3 id="116">11.6 死锁<a class="headerlink" href="#116" title="Permanent link">&para;</a></h3>
+<p>典型场景：
+- Task1 拿 A 等 B
+- Task2 拿 B 等 A</p>
+<p>避免方法：
+- 统一加锁顺序
+- 减少嵌套锁
+- 缩短持锁时间
+- 尽量避免“边持锁边等待别的资源”</p>
+<h3 id="117">11.7 饥饿<a class="headerlink" href="#117" title="Permanent link">&para;</a></h3>
+<p>某任务长期拿不到资源/CPU。常见原因：
+- 高优先级任务空转
+- 锁持有时间过长
+- 调度设计不合理</p>
+<h3 id="118">11.8 所有权原则<a class="headerlink" href="#118" title="Permanent link">&para;</a></h3>
+<p>共享资源最好遵循：
+- 谁申请，谁释放
+- 谁创建，谁销毁
+- 资源生命周期清晰</p>
+<hr />
+<h2 id="12">12. 调试与优化<a class="headerlink" href="#12" title="Permanent link">&para;</a></h2>
+<h3 id="121-rtos">12.1 调试 RTOS 时先看什么<a class="headerlink" href="#121-rtos" title="Permanent link">&para;</a></h3>
+<p>优先排查：
+1. 是否栈溢出
+2. 是否优先级设计不合理
+3. 是否有任务空转
+4. 是否用了错误的 ISR API
+5. 是否有死锁/资源泄漏
+6. 队列/信号量是否满或一直拿不到</p>
+<h3 id="122">12.2 栈相关调试<a class="headerlink" href="#122" title="Permanent link">&para;</a></h3>
+<ul>
+<li>开启栈溢出检测</li>
+<li>查看任务栈高水位</li>
+<li>检查大局部数组</li>
+<li>检查深层调用和递归</li>
+</ul>
+<h3 id="123">12.3 调度相关调试<a class="headerlink" href="#123" title="Permanent link">&para;</a></h3>
+<p>看任务是否：
+- 长期 Ready 但没运行
+- 长期 Blocked
+- 一直 Running 不阻塞
+- 被错误挂起</p>
+<h3 id="124-ipc">12.4 IPC 相关调试<a class="headerlink" href="#124-ipc" title="Permanent link">&para;</a></h3>
+<h4 id="_19">队列<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h4>
+<ul>
+<li>是否满队列</li>
+<li>是否消费者太慢</li>
+<li>是否发错元素大小</li>
+<li>是否 ISR 用错 API</li>
+</ul>
+<h4 id="mutex">信号量 / mutex<a class="headerlink" href="#mutex" title="Permanent link">&para;</a></h4>
+<ul>
+<li>是否忘记 give</li>
+<li>是否把 semaphore 当 mutex</li>
+<li>是否死锁</li>
+<li>是否优先级反转</li>
+</ul>
+<h4 id="_20">事件组 / 通知<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h4>
+<ul>
+<li>是否清位/清值逻辑错</li>
+<li>是否等待条件写错（AND/OR）</li>
+<li>是否覆盖通知值</li>
+</ul>
+<h3 id="125">12.5 常见优化思路<a class="headerlink" href="#125" title="Permanent link">&para;</a></h3>
+<h4 id="1">1）让任务阻塞而不是轮询<a class="headerlink" href="#1" title="Permanent link">&para;</a></h4>
+<p>优先：
+- 队列阻塞接收
+- 信号量阻塞等待
+- 任务通知
+- 事件组</p>
+<h4 id="2_2">2）减少不必要任务<a class="headerlink" href="#2_2" title="Permanent link">&para;</a></h4>
+<p>很轻的周期逻辑可考虑：
+- 软件定时器
+- 合并到专属管理任务</p>
+<h4 id="3_2">3）合理选择通信机制<a class="headerlink" href="#3_2" title="Permanent link">&para;</a></h4>
+<ul>
+<li>简单一对一定向唤醒 → 任务通知</li>
+<li>传复杂数据 → 队列</li>
+<li>多条件组合等待 → 事件组</li>
+<li>共享资源独占 → mutex</li>
+</ul>
+<h4 id="4_1">4）缩短临界区/持锁时间<a class="headerlink" href="#4_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li>先准备数据，再加锁</li>
+<li>持锁期间只做最关键操作</li>
+</ul>
+<h4 id="5_1">5）大对象不要频繁按值拷贝<a class="headerlink" href="#5_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li>用指针 + 缓冲区/内存池</li>
+</ul>
+<h4 id="6-isr">6）降低 ISR 负担<a class="headerlink" href="#6-isr" title="Permanent link">&para;</a></h4>
+<ul>
+<li>ISR 快进快出</li>
+<li>把重活放到任务</li>
+</ul>
+<h3 id="126">12.6 常见性能问题来源<a class="headerlink" href="#126" title="Permanent link">&para;</a></h3>
+<ul>
+<li>高优先级空转轮询</li>
+<li>队列里大对象频繁拷贝</li>
+<li>软件定时器回调过重</li>
+<li>串口打印过多</li>
+<li>临界区太长</li>
+<li>优先级设置不合理</li>
+<li>中断过于频繁且处理过重</li>
+</ul>
+<h3 id="127">12.7 常见可靠性问题来源<a class="headerlink" href="#127" title="Permanent link">&para;</a></h3>
+<ul>
+<li>栈不够</li>
+<li>忘记释放资源</li>
+<li>非原子访问共享变量</li>
+<li>函数不可重入</li>
+<li>ISR/任务混用同一不可重入函数</li>
+<li>动态内存碎片/泄漏</li>
+</ul>
+<h3 id="128">12.8 非原子访问<a class="headerlink" href="#128" title="Permanent link">&para;</a></h3>
+<p>非原子访问指：</p>
+<blockquote>
+<p>一个变量操作底层分成多步，中间可能被打断。</p>
+</blockquote>
+<p>典型例子：
+- <code>count++</code>
+- 多字节变量在窄位宽 MCU 上的读写</p>
+<h3 id="129-volatile">12.9 <code>volatile</code> 不是原子性保证<a class="headerlink" href="#129-volatile" title="Permanent link">&para;</a></h3>
+<p><code>volatile</code> 只能告诉编译器：
+- 这个变量可能随时变化
+- 不要优化掉真实读写</p>
+<p>它不能解决：
+- 竞争条件
+- 原子性
+- 互斥问题</p>
+<h3 id="1210">12.10 函数重入<a class="headerlink" href="#1210" title="Permanent link">&para;</a></h3>
+<p>函数可重入，表示：</p>
+<blockquote>
+<p>上一次调用还没结束时，再次进入该函数，仍然安全。</p>
+</blockquote>
+<h4 id="_21">不可重入常见原因<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h4>
+<ul>
+<li>使用 static 变量</li>
+<li>使用全局共享变量且无保护</li>
+<li>返回内部静态缓冲区地址</li>
+<li>调用不可重入库函数</li>
+</ul>
+<h3 id="1211">12.11 如何提高可重入性<a class="headerlink" href="#1211" title="Permanent link">&para;</a></h3>
+<ul>
+<li>只用局部变量</li>
+<li>调用者传缓冲区</li>
+<li>避免静态共享状态</li>
+<li>对共享资源加锁</li>
+<li>ISR 与任务不要混用不可重入函数</li>
+</ul>
+<hr />
+<h2 id="13_1">13. 高频对比总结<a class="headerlink" href="#13_1" title="Permanent link">&para;</a></h2>
+<h3 id="131-vs-vs-vs-vs">13.1 队列 vs 信号量 vs 互斥量 vs 事件组 vs 任务通知<a class="headerlink" href="#131-vs-vs-vs-vs" title="Permanent link">&para;</a></h3>
+<h4 id="_22">队列<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h4>
+<ul>
+<li>传数据</li>
+<li>可缓存多条消息</li>
+<li>多生产者/多消费者友好</li>
+</ul>
+<h4 id="_23">信号量<a class="headerlink" href="#_23" title="Permanent link">&para;</a></h4>
+<ul>
+<li>做同步 / 资源计数</li>
+<li>二值：同步</li>
+<li>计数：名额管理</li>
+</ul>
+<h4 id="_24">互斥量<a class="headerlink" href="#_24" title="Permanent link">&para;</a></h4>
+<ul>
+<li>共享资源独占锁</li>
+<li>有所有权</li>
+<li>支持优先级继承</li>
+</ul>
+<h4 id="_25">事件组<a class="headerlink" href="#_25" title="Permanent link">&para;</a></h4>
+<ul>
+<li>一组布尔状态位</li>
+<li>支持 OR / AND 组合等待</li>
+</ul>
+<h4 id="_26">任务通知<a class="headerlink" href="#_26" title="Permanent link">&para;</a></h4>
+<ul>
+<li>发给某个特定任务的轻量私有通知槽</li>
+<li>适合一对一唤醒和轻量同步</li>
+</ul>
+<h3 id="132-vtaskdelay-vs-vtaskdelayuntil">13.2 <code>vTaskDelay</code> vs <code>vTaskDelayUntil</code><a class="headerlink" href="#132-vtaskdelay-vs-vtaskdelayuntil" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>vTaskDelay</code>：相对延时</li>
+<li><code>vTaskDelayUntil</code>：绝对周期延时</li>
+</ul>
+<h3 id="133-vs">13.3 软件定时器 vs 周期任务<a class="headerlink" href="#133-vs" title="Permanent link">&para;</a></h3>
+<ul>
+<li>软件定时器：轻量周期动作/超时控制</li>
+<li>周期任务：较重业务、需要独立优先级和栈</li>
+</ul>
+<h3 id="134-vs">13.4 轮询 vs 阻塞式等待<a class="headerlink" href="#134-vs" title="Permanent link">&para;</a></h3>
+<h4 id="_27">轮询<a class="headerlink" href="#_27" title="Permanent link">&para;</a></h4>
+<ul>
+<li>简单</li>
+<li>浪费 CPU 或带延迟</li>
+</ul>
+<h4 id="_28">阻塞<a class="headerlink" href="#_28" title="Permanent link">&para;</a></h4>
+<ul>
+<li>CPU 利用率高</li>
+<li>更符合 RTOS 设计</li>
+</ul>
+<h3 id="135-binary-semaphore-vs-mutex">13.5 binary semaphore vs mutex<a class="headerlink" href="#135-binary-semaphore-vs-mutex" title="Permanent link">&para;</a></h3>
+<h4 id="binary-semaphore_1">Binary Semaphore<a class="headerlink" href="#binary-semaphore_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li>更偏同步</li>
+<li>可用于 ISR → task</li>
+<li>无优先级继承</li>
+</ul>
+<h4 id="mutex_1">Mutex<a class="headerlink" href="#mutex_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li>更偏共享资源保护</li>
+<li>有所有权</li>
+<li>有优先级继承</li>
+<li>不用于 ISR</li>
+</ul>
+<hr />
+<h2 id="14">14. 面试速答模板<a class="headerlink" href="#14" title="Permanent link">&para;</a></h2>
+<h3 id="141">14.1 什么是堆管理<a class="headerlink" href="#141" title="Permanent link">&para;</a></h3>
+<p>堆管理就是对动态内存区域进行分配、释放、回收和碎片控制的机制。RTOS/嵌入式里要特别注意堆碎片和运行时不确定性，因此很多对象也支持静态创建。</p>
+<h3 id="142">14.2 讲讲栈和任务栈<a class="headerlink" href="#142" title="Permanent link">&para;</a></h3>
+<p>栈主要用于函数调用现场和局部变量保存。RTOS 中每个任务都有独立任务栈，任务切换时本质就是保存当前上下文并切换栈指针到另一个任务的栈。</p>
+<h3 id="143-vtaskdelay-delay">14.3 <code>vTaskDelay</code> 和普通 delay 的区别<a class="headerlink" href="#143-vtaskdelay-delay" title="Permanent link">&para;</a></h3>
+<p><code>vTaskDelay</code> 是任务级阻塞延时，会把当前任务交给调度器管理；普通 delay 往往只是当前执行流等待，容易浪费 CPU 或不符合 RTOS 的阻塞式设计。</p>
+<h3 id="144-idle">14.4 为什么任务删除后要让 Idle 运行<a class="headerlink" href="#144-idle" title="Permanent link">&para;</a></h3>
+<p>因为任务自删除后，内核资源回收通常依赖 Idle task。如果高优先级任务一直不阻塞，Idle 就可能跑不到，导致被删任务的 TCB 和栈无法及时回收。</p>
+<h3 id="145">14.5 讲讲队列<a class="headerlink" href="#145" title="Permanent link">&para;</a></h3>
+<p>队列是 FreeRTOS 最常用的 IPC 机制之一，创建时固定长度和单元素大小，元素按值拷贝。适合任务间传递固定大小消息，也支持 ISR 到 task 通信。</p>
+<h3 id="146">14.6 讲讲信号量<a class="headerlink" href="#146" title="Permanent link">&para;</a></h3>
+<p>信号量本质是计数器加等待队列，用于同步或资源计数。二值信号量适合同步，计数信号量适合表示多个同类资源数量。</p>
+<h3 id="147-mutex">14.7 讲讲 mutex<a class="headerlink" href="#147-mutex" title="Permanent link">&para;</a></h3>
+<p>Mutex 是共享资源独占锁，具有所有权和优先级继承，适合保护 LCD、I2C、SPI、共享链表等资源。共享资源保护优先用 mutex，而不是普通二值信号量。</p>
+<h3 id="148">14.8 讲讲优先级反转<a class="headerlink" href="#148" title="Permanent link">&para;</a></h3>
+<p>优先级反转通常是三任务场景：低优先级任务持有共享资源，高优先级任务等待该资源被阻塞，中优先级任务又抢占低优先级任务，导致高优先级任务间接被拖住。mutex 的优先级继承可缓解此问题。</p>
+<h3 id="149">14.9 讲讲事件组<a class="headerlink" href="#149" title="Permanent link">&para;</a></h3>
+<p>事件组是一组事件位，适合表示多个布尔状态并支持组合等待。一个任务可以等待任意一位或全部位满足条件，适合多条件同步和系统状态机。</p>
+<h3 id="1410">14.10 讲讲任务通知<a class="headerlink" href="#1410" title="Permanent link">&para;</a></h3>
+<p>任务通知是发给某个特定任务的轻量级私有通知槽，可当二值信号量、计数信号量、事件位或 32 位邮箱使用。适合 ISR 定向唤醒单个任务。</p>
+<h3 id="1411">14.11 讲讲软件定时器<a class="headerlink" href="#1411" title="Permanent link">&para;</a></h3>
+<p>软件定时器是建立在 RTOS tick 之上的内核定时机制，适合做轻量周期动作和超时控制。回调运行在 Timer Service Task 中，因此回调应尽量短小，不适合长时间阻塞或重业务逻辑。</p>
+<h3 id="1412">14.12 讲讲中断设计原则<a class="headerlink" href="#1412" title="Permanent link">&para;</a></h3>
+<p>ISR 要尽量短，只做快的动作：清标志、搬运少量数据、发队列/信号量/任务通知，然后把重逻辑交给任务处理。ISR 中必须使用 <code>FromISR</code> 版本 API。</p>
+<hr />
+<h2 id="15">15. 复习建议（紧凑版）<a class="headerlink" href="#15" title="Permanent link">&para;</a></h2>
+<h3 id="_29">第一轮：先建立框架<a class="headerlink" href="#_29" title="Permanent link">&para;</a></h3>
+<p>按下面顺序看：
+1. 任务 / 调度 / tick
+2. 栈 / 堆 / 静态区
+3. 队列 / 信号量 / mutex
+4. 事件组 / 任务通知
+5. 软件定时器 / 中断管理
+6. 资源管理 / 调试优化</p>
+<h3 id="_30">第二轮：抓高频区分<a class="headerlink" href="#_30" title="Permanent link">&para;</a></h3>
+<p>重点区分：
+- 队列 vs 信号量
+- Binary Semaphore vs Mutex
+- 事件组 vs 任务通知
+- <code>vTaskDelay</code> vs <code>vTaskDelayUntil</code>
+- 轮询 vs 阻塞
+- 静态创建 vs 动态创建</p>
+<h3 id="_31">第三轮：背三条核心原则<a class="headerlink" href="#_31" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>有事运行，没事阻塞</strong></li>
+<li><strong>共享资源优先用 mutex</strong></li>
+<li><strong>ISR 快进快出，重活交给任务</strong></li>
+</ol>
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tabs", "navigation.indexes", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

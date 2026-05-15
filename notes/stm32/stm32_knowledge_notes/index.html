@@ -1,0 +1,3691 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Notes on embedded systems, robotics, C++, FPGA, and interview preparation.">
+      
+      
+      
+        <link rel="canonical" href="https://zhyun828.github.io/notes/stm32/stm32_knowledge_notes/">
+      
+      
+        <link rel="prev" href="../../ros/code/">
+      
+      
+        <link rel="next" href="../%E5%A4%96%E8%AE%BE/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>stm32_knowledge_notes - ZY Engineering Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/home.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#stm32" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="ZY Engineering Notes" class="md-header__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ZY Engineering Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              stm32_knowledge_notes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal"  aria-label="深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="cyan"  aria-label="浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m3.55 19.09 1.41 1.41 1.8-1.79-1.42-1.42M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6c0-3.32-2.69-6-6-6m8 7h3v-2h-3m-2.76 7.71 1.8 1.79 1.41-1.41-1.79-1.8M20.45 5l-1.41-1.4-1.8 1.79 1.42 1.42M13 1h-2v3h2M6.76 5.39 4.96 3.6 3.55 5l1.79 1.81zM1 13h3v-2H1m12 9h-2v3h2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="ZY Engineering Notes" class="md-nav__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ZY Engineering Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../protocols/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通信协议
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    通信协议
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/usart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    USART
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/i2c/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I2C
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/spi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SPI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/can/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/tcp-udp-ip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TCP / UDP / IP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/modbus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modbus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/ethernet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ethernet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/lin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LIN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/http-https/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP / HTTPS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面试
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    面试
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E5%BF%AB%E9%80%9F%E6%A3%80%E7%B4%A2%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速检索表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E5%B5%8C%E5%85%A5%E5%BC%8F%E9%9D%A2%E8%AF%95%E6%B1%87%E6%80%BB%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    嵌入式面试汇总表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E9%AB%98%E9%A2%91%E9%A2%98%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高频题深度解析
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E9%97%AE%E7%AD%94%E9%9D%A2%E8%AF%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目经历问答面试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arduino
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Arduino
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/basics.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_2" id="__nav_2_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    projet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/projet.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/pre.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    pre
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/code.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/thoughts.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thoughts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cpp
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cpp
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cpp/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cpp/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cpp/cpp_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%AF%A6%E8%A7%A3_%E6%89%A9%E5%B1%95%E7%89%88/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    设计模式详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    embedded_system
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    embedded_system
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../embedded_system/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_6_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../embedded_system/TP/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TP
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    TP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FPGA
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    FPGA
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FPGA/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_8" id="__nav_2_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gazebo
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    gazebo
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ros/gazebo/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_9" id="__nav_2_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_10" id="__nav_2_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVGL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LVGL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LVGL/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ros
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ros
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ros/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ros/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_12" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_12" id="__nav_2_12_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_12_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    stm32
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32_knowledge_notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%A4%96%E8%AE%BE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    外设
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%AF%84%E5%AD%98%E5%99%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    寄存器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="导航栏" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Notes
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="./" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    stm32
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="stm32">STM32 学习知识点整理<a class="headerlink" href="#stm32" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>这份笔记根据本次对话里提到的问题整理，按知识结构重新排序，方便背诵和查阅。
+说明：原来的“本对话问题整理_新版.md”中的问题已经按题型并入本文，统一保留在文中的补充问题索引里，后续继续在这一份总文档上迭代即可。</p>
+</blockquote>
+<h1 id="1">1. 基础概念<a class="headerlink" href="#1" title="Permanent link">&para;</a></h1>
+<h2 id="11-pc13">1.1 PC13 是什么<a class="headerlink" href="#11-pc13" title="Permanent link">&para;</a></h2>
+<p>在 STM32 中，<code>PC13</code> 表示：
+- <code>P</code> = Port（端口）
+- <code>C</code> = GPIOC 端口
+- <code>13</code> = 该端口的第 13 号引脚
+所以 <code>PC13</code> 就是 <strong>GPIOC 端口的第 13 个引脚</strong>。
+它本质上是一个 GPIO 引脚，但也可能复用成其他功能，具体要看芯片型号的数据手册和参考手册。
+很多 STM32 开发板上，板载 LED 常接在 <code>PC13</code>。</p>
+<h2 id="12-port-gpio">1.2 Port 和 GPIO 的区别<a class="headerlink" href="#12-port-gpio" title="Permanent link">&para;</a></h2>
+<h3 id="gpio">GPIO<a class="headerlink" href="#gpio" title="Permanent link">&para;</a></h3>
+<p>GPIO 是 <strong>通用输入输出引脚</strong>（General Purpose Input/Output）。</p>
+<h3 id="port">Port<a class="headerlink" href="#port" title="Permanent link">&para;</a></h3>
+<p>Port 是 <strong>一组 GPIO 引脚的集合</strong>。
+例如：
+- <code>GPIOA</code> 包含 <code>PA0 ~ PA15</code>
+- <code>GPIOB</code> 包含 <code>PB0 ~ PB15</code>
+- <code>GPIOC</code> 包含 <code>PC0 ~ PC15</code></p>
+<h3 id="_1">一句话记忆<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>GPIO</strong>：单个引脚的概念</li>
+<li><strong>Port</strong>：一组 GPIO 的概念</li>
+</ul>
+<h2 id="13-oled-o">1.3 OLED 里的 O 是什么<a class="headerlink" href="#13-oled-o" title="Permanent link">&para;</a></h2>
+<p><code>OLED</code> = <strong>Organic Light Emitting Diode</strong>
+其中：
+- <code>O</code> = <strong>Organic</strong>（有机）
+所以 OLED 的中文一般叫：<strong>有机发光二极管</strong></p>
+<h2 id="14-ao-do">1.4 AO 口和 DO 口是什么<a class="headerlink" href="#14-ao-do" title="Permanent link">&para;</a></h2>
+<p>这两个说法更常见于模块，而不是 STM32 寄存器命名。</p>
+<h3 id="ao">AO<a class="headerlink" href="#ao" title="Permanent link">&para;</a></h3>
+<p><code>AO</code> = <strong>Analog Output</strong> / 模拟输出
+表示模块输出的是模拟电压。</p>
+<h3 id="do">DO<a class="headerlink" href="#do" title="Permanent link">&para;</a></h3>
+<p><code>DO</code> = <strong>Digital Output</strong> / 数字输出
+表示模块输出的是数字高低电平。</p>
+<h3 id="_2">注意<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p>很多传感器模块同时带：
+- <code>AO</code>：模拟量输出，可接 STM32 的 ADC
+- <code>DO</code>：数字量输出，可接 STM32 的普通 GPIO 输入</p>
+<h1 id="2-arm">2. ARM 位宽与地址<a class="headerlink" href="#2-arm" title="Permanent link">&para;</a></h1>
+<h2 id="21-32-arm-32">2.1 32 位 ARM 架构中的“32 位”指什么<a class="headerlink" href="#21-32-arm-32" title="Permanent link">&para;</a></h2>
+<p>32 位主要表示处理器的基础数据宽度是 32 位，通常体现在：
+1. <strong>通用寄存器宽度</strong>通常为 32 位
+2. <strong>一次运算最自然处理 32 位数据</strong>
+3. <strong>地址空间通常按 32 位地址表示</strong></p>
+<h3 id="_3">一句话记忆<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p><strong>32 位 = 寄存器和数据通路通常以 32 位为基本单位。</strong></p>
+<h2 id="22-stm32-0x00000000-8">2.2 STM32 地址为什么经常写成 <code>0x00000000</code> 这种 8 位十六进制形式<a class="headerlink" href="#22-stm32-0x00000000-8" title="Permanent link">&para;</a></h2>
+<p>不是巧合，而是因为 STM32 是 32 位架构，地址通常按 <strong>32 位地址值</strong>表示。</p>
+<h3 id="8">为什么是 8 位十六进制<a class="headerlink" href="#8" title="Permanent link">&para;</a></h3>
+<p>因为：
+- 1 位十六进制 = 4 位二进制
+- 8 位十六进制 = 32 位二进制</p>
+<p>例如：
+- <code>0x08000000</code>：Flash 起始地址
+- <code>0x20000000</code>：SRAM 起始地址
+- <code>0x40000000</code>：外设寄存器区起始地址</p>
+<h3 id="_4">一句话记忆<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p><strong>8 位十六进制地址 = 32 位二进制地址。</strong></p>
+<h1 id="3">3. 总线与时钟<a class="headerlink" href="#3" title="Permanent link">&para;</a></h1>
+<h2 id="31-ahb-apb">3.1 AHB 和 APB 的区别<a class="headerlink" href="#31-ahb-apb" title="Permanent link">&para;</a></h2>
+<h3 id="ahb">AHB<a class="headerlink" href="#ahb" title="Permanent link">&para;</a></h3>
+<p><code>AHB</code> = <strong>Advanced High-performance Bus</strong>
+特点：
+- 高性能总线
+- 速度快
+- 带宽大
+- 常连接内核、DMA、存储器等高速模块</p>
+<h3 id="apb">APB<a class="headerlink" href="#apb" title="Permanent link">&para;</a></h3>
+<p><code>APB</code> = <strong>Advanced Peripheral Bus</strong>
+特点：
+- 外设总线
+- 结构更简单
+- 功耗更低
+- 常连接串口、定时器、I2C、SPI 等外设</p>
+<h3 id="_5">一句话记忆<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p><strong>AHB 管高速主干，APB 管普通外设。</strong></p>
+<h2 id="32-gpio-apb">3.2 GPIO 在 APB 里吗<a class="headerlink" href="#32-gpio-apb" title="Permanent link">&para;</a></h2>
+<h3 id="stm32f1-stm32f103">对 STM32F1（如 STM32F103）来说<a class="headerlink" href="#stm32f1-stm32f103" title="Permanent link">&para;</a></h3>
+<p>GPIO 一般挂在 <strong>APB2</strong> 上。
+例如：
+<div class="highlight"><pre><span></span><code><span class="n">RCC_APB2PeriphClockCmd</span><span class="p">(</span><span class="n">RCC_APB2Periph_GPIOA</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
+</code></pre></div>
+这就说明 <code>GPIOA</code> 属于 <code>APB2</code>。</p>
+<h3 id="_6">但要注意<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>不是所有 STM32 系列都一样。
+- <strong>STM32F1</strong>：GPIO 常在 <code>APB2</code>
+- <strong>很多新系列</strong>：GPIO 常在 <code>AHB</code> / <code>AHB1</code>
+所以最终要看具体芯片参考手册。</p>
+<h1 id="4-gpio">4. GPIO 输入输出模式<a class="headerlink" href="#4-gpio" title="Permanent link">&para;</a></h1>
+<h2 id="41-gpio-stm32f1">4.1 GPIO 模式总览（以 STM32F1 为主）<a class="headerlink" href="#41-gpio-stm32f1" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>标准库名称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>浮空输入</td>
+<td><code>GPIO_Mode_IN_FLOATING</code></td>
+<td>输入，不上拉不下拉</td>
+</tr>
+<tr>
+<td>上拉输入</td>
+<td><code>GPIO_Mode_IPU</code></td>
+<td>输入，默认高电平</td>
+</tr>
+<tr>
+<td>下拉输入</td>
+<td><code>GPIO_Mode_IPD</code></td>
+<td>输入，默认低电平</td>
+</tr>
+<tr>
+<td>模拟输入</td>
+<td><code>GPIO_Mode_AIN</code></td>
+<td>给 ADC 用</td>
+</tr>
+<tr>
+<td>推挽输出</td>
+<td><code>GPIO_Mode_Out_PP</code></td>
+<td>普通数字输出</td>
+</tr>
+<tr>
+<td>开漏输出</td>
+<td><code>GPIO_Mode_Out_OD</code></td>
+<td>只能主动拉低</td>
+</tr>
+<tr>
+<td>复用推挽输出</td>
+<td><code>GPIO_Mode_AF_PP</code></td>
+<td>USART/PWM/SPI 等外设输出</td>
+</tr>
+<tr>
+<td>复用开漏输出</td>
+<td><code>GPIO_Mode_AF_OD</code></td>
+<td>I2C 等外设输出</td>
+</tr>
+</tbody>
+</table>
+<h2 id="42">4.2 输入模式说明<a class="headerlink" href="#42" title="Permanent link">&para;</a></h2>
+<h3 id="_7">浮空输入<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<ul>
+<li>没有内部上拉/下拉</li>
+<li>外部不驱动时电平可能飘</li>
+</ul>
+<h3 id="_8">上拉输入<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<ul>
+<li>内部接上拉电阻</li>
+<li>默认高电平</li>
+<li>按键最常用</li>
+</ul>
+<h3 id="_9">下拉输入<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<ul>
+<li>内部接下拉电阻</li>
+<li>默认低电平</li>
+</ul>
+<h3 id="_10">模拟输入<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<ul>
+<li>给 ADC 采样使用</li>
+<li>输入的是连续模拟电压</li>
+</ul>
+<h2 id="43">4.3 输出模式说明<a class="headerlink" href="#43" title="Permanent link">&para;</a></h2>
+<h3 id="_11">推挽输出<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<ul>
+<li>能主动输出高电平</li>
+<li>能主动输出低电平</li>
+<li>驱动能力强</li>
+<li>点 LED、控制模块最常用</li>
+</ul>
+<h3 id="_12">开漏输出<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<ul>
+<li>能主动拉低</li>
+<li>不能主动拉高</li>
+<li>高电平要靠外部上拉</li>
+<li>I2C 常用</li>
+</ul>
+<h3 id="_13">一句话记忆<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>推挽：高低都能主动输出</strong></li>
+<li><strong>开漏：只能主动拉低</strong></li>
+</ul>
+<h2 id="44-led">4.4 点 LED 建议用什么输出<a class="headerlink" href="#44-led" title="Permanent link">&para;</a></h2>
+<p>一般建议用：
+<div class="highlight"><pre><span></span><code><span class="n">GPIO_Mode_Out_PP</span>
+</code></pre></div>
+也就是 <strong>推挽输出</strong>。
+原因：
+- 控制简单
+- 高低电平都明确
+- 驱动普通 LED 最稳妥</p>
+<h2 id="45-led-setbits-resetbits">4.5 LED 是 <code>SetBits</code> 点亮还是 <code>ResetBits</code> 点亮<a class="headerlink" href="#45-led-setbits-resetbits" title="Permanent link">&para;</a></h2>
+<p>这<strong>不是由 GPIO 模式决定的</strong>，而是由 <strong>LED 的硬件接法决定的</strong>。</p>
+<h3 id="1_1">情况 1：高电平点亮<a class="headerlink" href="#1_1" title="Permanent link">&para;</a></h3>
+<p>如果接法是：
+<div class="highlight"><pre><span></span><code>GPIO --- 电阻 --- LED --- GND
+</code></pre></div>
+那么：
+- <code>SetBits</code>：亮
+- <code>ResetBits</code>：灭</p>
+<h3 id="2">情况 2：低电平点亮<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
+<p>如果接法是：
+<div class="highlight"><pre><span></span><code>VCC --- 电阻 --- LED --- GPIO
+</code></pre></div>
+那么：
+- <code>ResetBits</code>：亮
+- <code>SetBits</code>：灭</p>
+<h3 id="_14">实战判断方法<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
+<p>直接试：
+- <code>GPIO_SetBits(...)</code> 看灯亮不亮
+- <code>GPIO_ResetBits(...)</code> 看灯亮不亮
+很多开发板板载 LED 是 <strong>低电平点亮</strong>。</p>
+<h1 id="5-gpio-stm32f1">5. GPIO 常用寄存器（STM32F1）<a class="headerlink" href="#5-gpio-stm32f1" title="Permanent link">&para;</a></h1>
+<h2 id="51-gpioa">5.1 GPIOA 寄存器截图里的项目是什么意思<a class="headerlink" href="#51-gpioa" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>寄存器</th>
+<th>英文全称</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CRL</code></td>
+<td>Configuration Register Low</td>
+<td>配置 0~7 号引脚</td>
+</tr>
+<tr>
+<td><code>CRH</code></td>
+<td>Configuration Register High</td>
+<td>配置 8~15 号引脚</td>
+</tr>
+<tr>
+<td><code>IDR</code></td>
+<td>Input Data Register</td>
+<td>读取输入电平</td>
+</tr>
+<tr>
+<td><code>ODR</code></td>
+<td>Output Data Register</td>
+<td>保存输出电平状态</td>
+</tr>
+<tr>
+<td><code>BSRR</code></td>
+<td>Bit Set/Reset Register</td>
+<td>位置位/复位寄存器</td>
+</tr>
+<tr>
+<td><code>BRR</code></td>
+<td>Bit Reset Register</td>
+<td>位复位寄存器</td>
+</tr>
+<tr>
+<td><code>LCKR</code></td>
+<td>Lock Register</td>
+<td>锁定 GPIO 配置</td>
+</tr>
+</tbody>
+</table>
+<h2 id="52-odrbsrrbrr">5.2 ODR、BSRR、BRR 的区别<a class="headerlink" href="#52-odrbsrrbrr" title="Permanent link">&para;</a></h2>
+<h3 id="odr">ODR<a class="headerlink" href="#odr" title="Permanent link">&para;</a></h3>
+<p><code>ODR</code> = Output Data Register
+- 保存整个端口的输出状态
+- 改某一位通常是“读-改-写”</p>
+<h3 id="bsrr">BSRR<a class="headerlink" href="#bsrr" title="Permanent link">&para;</a></h3>
+<p><code>BSRR</code> = Bit Set/Reset Register
+- 低 16 位写 1：对应位输出高电平
+- 高 16 位写 1：对应位输出低电平
+- 原子性更好，更推荐用来控制单个引脚</p>
+<h3 id="brr">BRR<a class="headerlink" href="#brr" title="Permanent link">&para;</a></h3>
+<p><code>BRR</code> = Bit Reset Register
+- 写 1 到某位：对应引脚输出低电平</p>
+<h3 id="_15">一句话记忆<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>ODR：存输出状态</strong></li>
+<li><strong>BSRR：既能置 1 又能清 0</strong></li>
+<li><strong>BRR：专门清 0</strong></li>
+</ul>
+<h1 id="6-stm32">6. STM32 外设总览（常见模块）<a class="headerlink" href="#6-stm32" title="Permanent link">&para;</a></h1>
+<p>下面是你截图里那些常见外设的简要说明：</p>
+<table>
+<thead>
+<tr>
+<th>缩写</th>
+<th>英文</th>
+<th>中文/作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ADC</td>
+<td>Analog-to-Digital Converter</td>
+<td>模数转换器</td>
+</tr>
+<tr>
+<td>AFIO</td>
+<td>Alternate Function I/O</td>
+<td>复用功能与外部中断映射</td>
+</tr>
+<tr>
+<td>BKP</td>
+<td>Backup Registers</td>
+<td>备份寄存器/备份域</td>
+</tr>
+<tr>
+<td>CAN</td>
+<td>Controller Area Network</td>
+<td>CAN 总线通信</td>
+</tr>
+<tr>
+<td>CRC</td>
+<td>Cyclic Redundancy Check</td>
+<td>CRC 校验</td>
+</tr>
+<tr>
+<td>DAC</td>
+<td>Digital-to-Analog Converter</td>
+<td>数模转换器</td>
+</tr>
+<tr>
+<td>DBG</td>
+<td>Debug</td>
+<td>调试相关</td>
+</tr>
+<tr>
+<td>DMA</td>
+<td>Direct Memory Access</td>
+<td>直接存储器访问</td>
+</tr>
+<tr>
+<td>EXTI</td>
+<td>External Interrupt</td>
+<td>外部中断控制</td>
+</tr>
+<tr>
+<td>FLASH</td>
+<td>Flash Memory Interface</td>
+<td>Flash 控制</td>
+</tr>
+<tr>
+<td>FSMC</td>
+<td>Flexible Static Memory Controller</td>
+<td>外部静态存储器控制</td>
+</tr>
+<tr>
+<td>GPIO</td>
+<td>General Purpose I/O</td>
+<td>通用输入输出</td>
+</tr>
+<tr>
+<td>I2C</td>
+<td>Inter-Integrated Circuit</td>
+<td>I2C 总线</td>
+</tr>
+<tr>
+<td>IWDG</td>
+<td>Independent Watchdog</td>
+<td>独立看门狗</td>
+</tr>
+<tr>
+<td>NVIC</td>
+<td>Nested Vectored Interrupt Controller</td>
+<td>中断控制器</td>
+</tr>
+<tr>
+<td>PWR</td>
+<td>Power Control</td>
+<td>电源控制</td>
+</tr>
+<tr>
+<td>RCC</td>
+<td>Reset and Clock Control</td>
+<td>复位与时钟控制</td>
+</tr>
+<tr>
+<td>RTC</td>
+<td>Real-Time Clock</td>
+<td>实时时钟</td>
+</tr>
+<tr>
+<td>SDIO</td>
+<td>SD Input/Output</td>
+<td>SD 卡接口</td>
+</tr>
+<tr>
+<td>SPI</td>
+<td>Serial Peripheral Interface</td>
+<td>SPI 总线</td>
+</tr>
+<tr>
+<td>TIM</td>
+<td>Timer</td>
+<td>定时器</td>
+</tr>
+<tr>
+<td>USART</td>
+<td>Universal Synchronous/Asynchronous Receiver Transmitter</td>
+<td>串口</td>
+</tr>
+<tr>
+<td>USB</td>
+<td>Universal Serial Bus</td>
+<td>USB 接口</td>
+</tr>
+<tr>
+<td>WWDG</td>
+<td>Window Watchdog</td>
+<td>窗口看门狗</td>
+</tr>
+</tbody>
+</table>
+<h1 id="7-irqnvic">7. 中断系统：IRQ、NVIC、优先级<a class="headerlink" href="#7-irqnvic" title="Permanent link">&para;</a></h1>
+<h2 id="71-irq">7.1 IRQ 是什么<a class="headerlink" href="#71-irq" title="Permanent link">&para;</a></h2>
+<p><code>IRQ</code> = <strong>Interrupt Request</strong> / 中断请求
+含义：
+- 外设或事件向 CPU 发出“需要处理我”的请求
+- CPU 收到后会跳去执行对应的中断服务函数（ISR）
+例如：
+- 定时器更新中断
+- 串口接收中断
+- 外部中断 EXTI</p>
+<h2 id="72">7.2 抢占优先级和响应优先级<a class="headerlink" href="#72" title="Permanent link">&para;</a></h2>
+<p>STM32 NVIC 优先级通常分两部分：</p>
+<h3 id="preemption-priority">抢占优先级（Preemption Priority）<a class="headerlink" href="#preemption-priority" title="Permanent link">&para;</a></h3>
+<p>决定：<strong>一个中断能不能打断另一个正在执行的中断</strong>
+数值越小，优先级越高。</p>
+<h3 id="subpriority">响应优先级 / 子优先级（Subpriority）<a class="headerlink" href="#subpriority" title="Permanent link">&para;</a></h3>
+<p>决定：<strong>多个不能互相抢占的中断同时挂起时，谁先被响应</strong>
+数值越小，优先级越高。</p>
+<h3 id="_16">一句话记忆<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>抢占优先级：能不能插队</strong></li>
+<li><strong>响应优先级：大家排队时谁先来</strong></li>
+</ul>
+<h2 id="73-nvic_initstructure">7.3 为什么 <code>NVIC_InitStructure</code> 可以用两次<a class="headerlink" href="#73-nvic_initstructure" title="Permanent link">&para;</a></h2>
+<p>因为它只是一个普通结构体变量。
+你每次：
+1. 重新给结构体成员赋值
+2. 再调用 <code>NVIC_Init()</code>
+就是在配置一个新的中断。
+例如先配：
+- <code>EXTI0_IRQn</code>
+再改成员后配：
+- <code>EXTI1_IRQn</code>
+这完全正常。</p>
+<h2 id="74-itconfig">7.4 什么是 <code>ITConfig</code><a class="headerlink" href="#74-itconfig" title="Permanent link">&para;</a></h2>
+<p><code>IT</code> = <strong>Interrupt</strong>
+所以 <code>xxx_ITConfig()</code> 通常表示：<strong>给某个外设配置中断使能或中断相关功能</strong>
+例如：
+<div class="highlight"><pre><span></span><code><span class="n">TIM_ITConfig</span><span class="p">(</span><span class="n">TIM2</span><span class="p">,</span><span class="w"> </span><span class="n">TIM_IT_Update</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
+</code></pre></div>
+表示：<strong>使能 TIM2 的更新中断</strong>。</p>
+<h2 id="75-tim2_irqhandler">7.5 为什么没有主动调用 <code>TIM2_IRQHandler()</code>，但它仍然会执行<a class="headerlink" href="#75-tim2_irqhandler" title="Permanent link">&para;</a></h2>
+<p>因为中断服务函数不是靠你手动调用的，而是：
+- 外设产生中断事件
+- NVIC 检测到这个中断请求
+- CPU 自动跳转到对应 ISR 执行
+所以 <code>TIM2_IRQHandler()</code> 是由 <strong>硬件中断机制自动调用</strong> 的。</p>
+<h1 id="8_1">8. 编码器外部中断代码要点<a class="headerlink" href="#8_1" title="Permanent link">&para;</a></h1>
+<h2 id="81-encoder_init">8.1 为什么编码器例子里必须调用 <code>Encoder_Init()</code><a class="headerlink" href="#81-encoder_init" title="Permanent link">&para;</a></h2>
+<p>如果 <code>main()</code> 里没有调用：
+<div class="highlight"><pre><span></span><code><span class="n">Encoder_Init</span><span class="p">();</span>
+</code></pre></div>
+那么：
+- GPIO 不会初始化
+- EXTI 不会配置
+- NVIC 不会使能
+- 中断函数虽然写了，但永远不会真正触发</p>
+<h3 id="_17">结论<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h3>
+<p><strong>中断服务函数写出来不等于就能工作，前提是对应外设和 NVIC 必须先初始化。</strong></p>
+<h1 id="9">9. 定时器核心概念<a class="headerlink" href="#9" title="Permanent link">&para;</a></h1>
+<h2 id="91-update-event">9.1 什么是定时器更新事件（Update Event）<a class="headerlink" href="#91-update-event" title="Permanent link">&para;</a></h2>
+<p>更新事件通常表示：
+- 定时器计数器到达自动重装值 <code>ARR</code>
+- 发生溢出/更新
+- 于是产生一次“更新事件”
+如果更新中断开着，就会触发定时器更新中断。</p>
+<h3 id="_18">一句话理解<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h3>
+<p><strong>更新事件就是“这一轮计数结束了”。</strong></p>
+<h2 id="92-tim_clearflagtim2-tim_flag_update">9.2 为什么要写 <code>TIM_ClearFlag(TIM2, TIM_FLAG_Update)</code><a class="headerlink" href="#92-tim_clearflagtim2-tim_flag_update" title="Permanent link">&para;</a></h2>
+<p>定时器一旦发生更新事件，会置位对应标志位。
+如果不清除：
+- 中断可能持续触发
+- 后续更新事件处理会受影响
+所以中断服务中通常要清除：
+<div class="highlight"><pre><span></span><code><span class="n">TIM_ClearITPendingBit</span><span class="p">(</span><span class="n">TIM2</span><span class="p">,</span><span class="w"> </span><span class="n">TIM_IT_Update</span><span class="p">);</span>
+</code></pre></div>
+而初始化时有时也会先清一次旧标志，避免“刚开中断就立刻进入”。</p>
+<h2 id="93-tim_etrclockmode2config">9.3 <code>TIM_ETRClockMode2Config(...)</code> 是什么<a class="headerlink" href="#93-tim_etrclockmode2config" title="Permanent link">&para;</a></h2>
+<p>这个函数用于配置：<strong>定时器使用外部触发输入 ETR 作为时钟源（外部时钟模式 2）</strong>。
+主要可配置：
+- 外部触发信号预分频
+- 极性
+- 输入滤波
+常用于：
+- 外部脉冲计数
+- 外部时钟驱动定时器计数</p>
+<h2 id="94-ti1fp1">9.4 <code>TI1FP1</code> 是什么<a class="headerlink" href="#94-ti1fp1" title="Permanent link">&para;</a></h2>
+<p>这是定时器输入捕获/从模式控制里常见的命名。
+可以拆成：
+- <code>TI1</code>：定时器输入通道 1
+- <code>FP1</code>：经过滤波/极性处理后的输入信号 1
+更准确理解：<strong>TI1FP1 表示“定时器通道 1 的输入信号，经输入选择、极性和滤波后形成的内部信号”。</strong>
+这个信号常被用于：
+- 输入捕获
+- 从模式触发
+- 编码器接口</p>
+<h3 id="fp">关于 <code>FP</code><a class="headerlink" href="#fp" title="Permanent link">&para;</a></h3>
+<p>这里的 <code>FP</code> 更接近 <strong>Filtered Path / Filtered input</strong> 的意思，可以理解成“经过处理后的输入信号”。</p>
+<h2 id="95">9.5 定时器里的主模式和从模式<a class="headerlink" href="#95" title="Permanent link">&para;</a></h2>
+<p>这里更推荐按<strong>定时器同步</strong>来理解，而不是按串口/I2C 那套主从理解。</p>
+<h3 id="master">主模式（Master）<a class="headerlink" href="#master" title="Permanent link">&para;</a></h3>
+<p>一个定时器把自己的某个事件（如更新事件）通过 <code>TRGO</code> 输出出去，作为“触发源”。</p>
+<h3 id="slave">从模式（Slave）<a class="headerlink" href="#slave" title="Permanent link">&para;</a></h3>
+<p>另一个定时器把外部/内部触发输入 <code>TRGI</code> 当作控制信号，决定：
+- 何时启动
+- 何时复位
+- 何时门控计数
+- 何时外部时钟驱动</p>
+<h3 id="_19">一句话记忆<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>主模式：我发触发</strong></li>
+<li><strong>从模式：我听触发</strong></li>
+</ul>
+<h1 id="10-adc">10. ADC 基础知识<a class="headerlink" href="#10-adc" title="Permanent link">&para;</a></h1>
+<h2 id="101-eoc">10.1 EOC 是什么<a class="headerlink" href="#101-eoc" title="Permanent link">&para;</a></h2>
+<p><code>EOC</code> = <strong>End of Conversion</strong> / 转换结束标志
+意思是：<strong>ADC 一次转换完成了，结果已经准备好了。</strong>
+通常这时可以去读：
+<div class="highlight"><pre><span></span><code><span class="n">ADC1</span><span class="o">-&gt;</span><span class="n">DR</span>
+</code></pre></div></p>
+<h2 id="102-adc1-dr">10.2 <code>ADC1-&gt;DR</code> 是什么<a class="headerlink" href="#102-adc1-dr" title="Permanent link">&para;</a></h2>
+<p><code>DR</code> = <strong>Data Register</strong> / 数据寄存器
+作用：<strong>存放 ADC 转换结果</strong>
+例如 12 位 ADC：
+- 结果范围通常为 <code>0 ~ 4095</code>
+- 每完成一次采样，结果都会写入 <code>ADC1-&gt;DR</code></p>
+<h3 id="_20">一句话记忆<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h3>
+<p><strong>ADC1-&gt;DR 就是 ADC1 的转换结果存放处。</strong></p>
+<h1 id="11-dma">11. DMA 触发方式<a class="headerlink" href="#11-dma" title="Permanent link">&para;</a></h1>
+<h2 id="111-dma">11.1 DMA 的硬件触发和软件触发区别<a class="headerlink" href="#111-dma" title="Permanent link">&para;</a></h2>
+<h3 id="_21">硬件触发<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h3>
+<p>由外设事件自动触发 DMA 请求。
+例如：
+- ADC 转换完成
+- USART 收到数据
+- SPI 发送/接收事件
+- 定时器事件</p>
+<h3 id="_22">软件触发<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h3>
+<p>由程序手动开启或手动触发 DMA 传输。
+例如：
+<div class="highlight"><pre><span></span><code><span class="n">DMA_Cmd</span><span class="p">(</span><span class="n">DMA1_Channel1</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
+</code></pre></div></p>
+<h3 id="_23">一句话记忆<a class="headerlink" href="#_23" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>硬件触发：外设一有事，DMA 自动搬</strong></li>
+<li><strong>软件触发：程序手动让 DMA 开始搬</strong></li>
+</ul>
+<h1 id="12-adc-dma-ad_init">12. ADC + DMA 工作原理（你的 <code>AD_Init()</code> 代码）<a class="headerlink" href="#12-adc-dma-ad_init" title="Permanent link">&para;</a></h1>
+<p>这段代码的整体作用是：<strong>让 ADC1 按顺序不断采样 PA0、PA1、PA2、PA3 四个通道，并用 DMA 自动把结果搬到内存数组里。</strong></p>
+<h2 id="121">12.1 工作流程总览<a class="headerlink" href="#121" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>PA0/PA1/PA2/PA3 模拟电压
+        ↓
+ADC1 按顺序扫描采样
+        ↓
+每个结果写入 ADC1-&gt;DR
+        ↓
+ADC 发 DMA 请求
+        ↓
+DMA 把 DR 中数据搬到 ADC_Value[]
+        ↓
+采完 4 个通道后继续循环
+</code></pre></div>
+<h2 id="122">12.2 关键配置点<a class="headerlink" href="#122" title="Permanent link">&para;</a></h2>
+<h3 id="1gpio">1）GPIO 配为模拟输入<a class="headerlink" href="#1gpio" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">GPIO_Mode_AIN</span>
+</code></pre></div>
+<h3 id="2_1">2）规则组顺序配置<a class="headerlink" href="#2_1" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><span class="n">ADC_RegularChannelConfig</span><span class="p">(...)</span>
+</code></pre></div>
+表示按顺序采：
+1. <code>ADC_Channel_0</code>
+2. <code>ADC_Channel_1</code>
+3. <code>ADC_Channel_2</code>
+4. <code>ADC_Channel_3</code></p>
+<h3 id="3_1">3）扫描模式<a class="headerlink" href="#3_1" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><span class="n">ADC_ScanConvMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">;</span>
+</code></pre></div>
+表示多个通道按顺序采样。</p>
+<h3 id="4">4）连续转换模式<a class="headerlink" href="#4" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><span class="n">ADC_ContinuousConvMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">;</span>
+</code></pre></div>
+表示采完一轮后继续下一轮，不停。</p>
+<h3 id="5dma">5）DMA 方向<a class="headerlink" href="#5dma" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><span class="n">DMA_DIR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DMA_DIR_PeripheralSRC</span><span class="p">;</span>
+</code></pre></div>
+表示数据从外设（ADC）搬到内存。</p>
+<h3 id="6dma">6）DMA 循环模式<a class="headerlink" href="#6dma" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><span class="n">DMA_Mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DMA_Mode_Circular</span><span class="p">;</span>
+</code></pre></div>
+表示数组写满后又从头继续覆盖。</p>
+<h3 id="7adc">7）ADC 软件启动<a class="headerlink" href="#7adc" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><span class="n">ADC_SoftwareStartConvCmd</span><span class="p">(</span><span class="n">ADC1</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
+</code></pre></div>
+表示第一次转换由软件启动。</p>
+<h3 id="8dma">8）DMA 触发方式<a class="headerlink" href="#8dma" title="Permanent link">&para;</a></h3>
+<p>这里是：
+- <strong>ADC 启动是软件触发</strong>
+- <strong>DMA 搬运是 ADC 转换完成后的硬件触发</strong></p>
+<h1 id="13-usart-serial">13. 串口 USART / Serial 知识点<a class="headerlink" href="#13-usart-serial" title="Permanent link">&para;</a></h1>
+<h2 id="131">13.1 什么是硬件流控制<a class="headerlink" href="#131" title="Permanent link">&para;</a></h2>
+<p>硬件流控制用于避免串口双方速度不匹配导致丢数据。
+通常用两根握手线：
+- <code>RTS</code>
+- <code>CTS</code></p>
+<h3 id="_24">作用<a class="headerlink" href="#_24" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>RTS</code>：我告诉对方“你能不能给我发”</li>
+<li><code>CTS</code>：对方告诉我“你能不能发”</li>
+</ul>
+<h3 id="_25">一句话记忆<a class="headerlink" href="#_25" title="Permanent link">&para;</a></h3>
+<p><strong>硬件流控制 = 用 RTS/CTS 硬件线控制串口什么时候发、什么时候停。</strong></p>
+<h2 id="132-9600-8-1">13.2 “9600 波特率、8 位字长、无校验、1 位停止位、无流控、只有发送模式”是什么意思<a class="headerlink" href="#132-9600-8-1" title="Permanent link">&para;</a></h2>
+<p>表示串口参数为：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>9600 波特率</td>
+<td>每秒 9600 bit</td>
+</tr>
+<tr>
+<td>8 位字长</td>
+<td>1 帧中数据部分 8 位</td>
+</tr>
+<tr>
+<td>无校验</td>
+<td>不加奇偶校验位</td>
+</tr>
+<tr>
+<td>1 位停止位</td>
+<td>1 帧结束时 1 位停止位</td>
+</tr>
+<tr>
+<td>无流控</td>
+<td>不用 RTS/CTS</td>
+</tr>
+<tr>
+<td>只有发送模式</td>
+<td>只开 TX，不开 RX</td>
+</tr>
+</tbody>
+</table>
+<p>这类配置常简写为：<strong>9600，8N1，TX only</strong></p>
+<h2 id="133-while-string">13.3 <code>while (*String)</code> 为什么可以这么写<a class="headerlink" href="#133-while-string" title="Permanent link">&para;</a></h2>
+<p>例如：
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">Serial_SendString</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">String</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">String</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Serial_SendByte</span><span class="p">(</span><span class="o">*</span><span class="n">String</span><span class="o">++</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+原因：
+- <code>String</code> 是指针
+- <code>*String</code> 是当前字符
+- C 语言里：
+  - <code>0</code> 为假
+  - 非 <code>0</code> 为真
+字符串末尾有结束符：
+<div class="highlight"><pre><span></span><code><span class="sc">&#39;\0&#39;</span>
+</code></pre></div>
+它的值就是 <code>0</code>。
+所以：
+<div class="highlight"><pre><span></span><code><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">String</span><span class="p">)</span>
+</code></pre></div>
+本质上等价于：
+<div class="highlight"><pre><span></span><code><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">String</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="p">)</span>
+</code></pre></div></p>
+<h2 id="134-serial_printf">13.4 <code>Serial_Printf()</code> 的工作原理<a class="headerlink" href="#134-serial_printf" title="Permanent link">&para;</a></h2>
+<p>例如：
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">Serial_Printf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">Format</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">Buffer</span><span class="p">[</span><span class="mi">128</span><span class="p">];</span>
+<span class="w">    </span><span class="kt">va_list</span><span class="w"> </span><span class="n">Args</span><span class="p">;</span>
+<span class="w">    </span><span class="n">va_start</span><span class="p">(</span><span class="n">Args</span><span class="p">,</span><span class="w"> </span><span class="n">Format</span><span class="p">);</span>
+<span class="w">    </span><span class="n">vsnprintf</span><span class="p">(</span><span class="n">Buffer</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">Buffer</span><span class="p">),</span><span class="w"> </span><span class="n">Format</span><span class="p">,</span><span class="w"> </span><span class="n">Args</span><span class="p">);</span>
+<span class="w">    </span><span class="n">va_end</span><span class="p">(</span><span class="n">Args</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Serial_SendString</span><span class="p">(</span><span class="n">Buffer</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+作用：<strong>做一个串口版的 printf</strong>。</p>
+<h3 id="_26">流程<a class="headerlink" href="#_26" title="Permanent link">&para;</a></h3>
+<ol>
+<li>准备缓冲区 <code>Buffer</code></li>
+<li>用 <code>va_list</code> 接收可变参数</li>
+<li><code>vsnprintf()</code> 按格式字符串把参数拼成普通字符串</li>
+<li><code>Serial_SendString()</code> 发出去</li>
+</ol>
+<h3 id="_27">一句话记忆<a class="headerlink" href="#_27" title="Permanent link">&para;</a></h3>
+<p><strong>先格式化到字符串，再通过串口发送。</strong></p>
+<h1 id="14-c-sizeof">14. C 语言数组、字符串与 <code>sizeof</code><a class="headerlink" href="#14-c-sizeof" title="Permanent link">&para;</a></h1>
+<h2 id="141-sizeofarray">14.1 <code>sizeof(Array)</code> 得到的是什么<a class="headerlink" href="#141-sizeofarray" title="Permanent link">&para;</a></h2>
+<p>对数组来说：
+<div class="highlight"><pre><span></span><code><span class="k">sizeof</span><span class="p">(</span><span class="n">Array</span><span class="p">)</span>
+</code></pre></div>
+得到的是：<strong>整个数组占用的总字节数</strong>
+不是直接返回元素个数。</p>
+<h2 id="142-uint8_t-array-hello-world-sizeofarray">14.2 为什么 <code>uint8_t Array[] = "Hello, World!";</code> 里 <code>sizeof(Array)</code> 看起来像数组长度<a class="headerlink" href="#142-uint8_t-array-hello-world-sizeofarray" title="Permanent link">&para;</a></h2>
+<p>因为：
+- <code>uint8_t</code> 每个元素占 1 字节
+- 所以总字节数 = 元素个数
+例如：
+<div class="highlight"><pre><span></span><code><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Array</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Hello, World!&quot;</span><span class="p">;</span>
+</code></pre></div>
+实际包含结尾 <code>\0</code>，所以总字节数是 14。</p>
+<h3 id="_28">注意<a class="headerlink" href="#_28" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><span class="k">sizeof</span><span class="p">(</span><span class="n">Array</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span>
+</code></pre></div>
+常用于：<strong>发送字符串内容，但不发送结尾的 <code>\0</code></strong>。</p>
+<h2 id="143">14.3 任何情况下数组大小都等于所占字节数吗<a class="headerlink" href="#143" title="Permanent link">&para;</a></h2>
+<p>不一定。
+要区分：
+1. <strong>数组元素个数</strong>
+2. <strong>数组总字节数</strong>
+只有当元素类型大小为 1 字节时，它们才数值相等。
+例如：
+<div class="highlight"><pre><span></span><code><span class="kt">char</span><span class="w"> </span><span class="n">s</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;abc&quot;</span><span class="p">;</span><span class="w">   </span><span class="c1">// 4 个字节：a b c \0</span>
+<span class="kt">uint16_t</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span><span class="w">     </span><span class="c1">// 元素个数 10，总字节数 20</span>
+</code></pre></div></p>
+<h3 id="_29">一句话记忆<a class="headerlink" href="#_29" title="Permanent link">&para;</a></h3>
+<p><strong><code>sizeof(数组)</code> 返回总字节数，不是直接返回元素个数。</strong></p>
+<h1 id="15">15. 数据类型与溢出<a class="headerlink" href="#15" title="Permanent link">&para;</a></h1>
+<h2 id="151-uint8_t-keynum-666-154">15.1 为什么 <code>uint8_t KeyNum = 666;</code> 打印出来是 154<a class="headerlink" href="#151-uint8_t-keynum-666-154" title="Permanent link">&para;</a></h2>
+<p>因为 <code>uint8_t</code> 范围是：
+<div class="highlight"><pre><span></span><code>0 ~ 255
+</code></pre></div>
+而 <code>666</code> 超出了范围，所以只保留低 8 位，相当于：
+<div class="highlight"><pre><span></span><code>666 mod 256 = 154
+</code></pre></div>
+所以最终存进去的是 <code>154</code>。</p>
+<h3 id="_30">一句话记忆<a class="headerlink" href="#_30" title="Permanent link">&para;</a></h3>
+<p><strong>不是 printf 打错了，而是 <code>uint8_t</code> 装不下 666。</strong></p>
+<h1 id="16-stm32-initstructinitdeinit">16. STM32 标准库命名：<code>Init</code>、<code>StructInit</code>、<code>DeInit</code><a class="headerlink" href="#16-stm32-initstructinitdeinit" title="Permanent link">&para;</a></h1>
+<h2 id="161-structinit">16.1 <code>StructInit</code><a class="headerlink" href="#161-structinit" title="Permanent link">&para;</a></h2>
+<p>例如：
+<div class="highlight"><pre><span></span><code><span class="n">GPIO_StructInit</span><span class="p">(</span><span class="o">&amp;</span><span class="n">GPIO_InitStructure</span><span class="p">);</span>
+</code></pre></div>
+作用：<strong>给初始化结构体填默认值</strong>。
+目的是防止你忘记初始化某些字段。</p>
+<h2 id="162-deinit">16.2 <code>DeInit</code><a class="headerlink" href="#162-deinit" title="Permanent link">&para;</a></h2>
+<p>例如：
+<div class="highlight"><pre><span></span><code><span class="n">USART_DeInit</span><span class="p">(</span><span class="n">USART1</span><span class="p">);</span>
+</code></pre></div>
+作用：<strong>把外设恢复到复位后的默认状态</strong>。
+是对外设寄存器本身操作，不是对结构体操作。</p>
+<h3 id="_31">一句话记忆<a class="headerlink" href="#_31" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>StructInit：初始化结构体默认值</strong></li>
+<li><strong>DeInit：复位外设配置</strong></li>
+</ul>
+<h1 id="17">17. 常见寄存器/字段缩写总表<a class="headerlink" href="#17" title="Permanent link">&para;</a></h1>
+<p>下面整理常见的寄存器或字段缩写，方便记忆。</p>
+<h2 id="171">17.1 通用寄存器缩写<a class="headerlink" href="#171" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>缩写</th>
+<th>英文</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CR</code></td>
+<td>Control Register</td>
+<td>控制寄存器</td>
+</tr>
+<tr>
+<td><code>SR</code></td>
+<td>Status Register</td>
+<td>状态寄存器</td>
+</tr>
+<tr>
+<td><code>DR</code></td>
+<td>Data Register</td>
+<td>数据寄存器</td>
+</tr>
+<tr>
+<td><code>BRR</code></td>
+<td>Bit Reset Register / Baud Rate Register</td>
+<td>GPIO 中常表示位复位；USART 中常表示波特率寄存器</td>
+</tr>
+<tr>
+<td><code>BSRR</code></td>
+<td>Bit Set/Reset Register</td>
+<td>位置位/复位寄存器</td>
+</tr>
+<tr>
+<td><code>IDR</code></td>
+<td>Input Data Register</td>
+<td>输入数据寄存器</td>
+</tr>
+<tr>
+<td><code>ODR</code></td>
+<td>Output Data Register</td>
+<td>输出数据寄存器</td>
+</tr>
+<tr>
+<td><code>CNT</code></td>
+<td>Counter</td>
+<td>计数器</td>
+</tr>
+<tr>
+<td><code>PSC</code></td>
+<td>Prescaler</td>
+<td>预分频器</td>
+</tr>
+<tr>
+<td><code>ARR</code></td>
+<td>Auto Reload Register</td>
+<td>自动重装寄存器</td>
+</tr>
+<tr>
+<td><code>CCR</code></td>
+<td>Capture/Compare Register</td>
+<td>捕获比较寄存器</td>
+</tr>
+<tr>
+<td><code>CCMR</code></td>
+<td>Capture/Compare Mode Register</td>
+<td>捕获比较模式寄存器</td>
+</tr>
+<tr>
+<td><code>CCER</code></td>
+<td>Capture/Compare Enable Register</td>
+<td>捕获比较使能寄存器</td>
+</tr>
+<tr>
+<td><code>EGR</code></td>
+<td>Event Generation Register</td>
+<td>事件产生寄存器</td>
+</tr>
+<tr>
+<td><code>DIER</code></td>
+<td>DMA/Interrupt Enable Register</td>
+<td>DMA/中断使能寄存器</td>
+</tr>
+<tr>
+<td><code>PR</code></td>
+<td>Pending Register</td>
+<td>挂起标志寄存器</td>
+</tr>
+<tr>
+<td><code>IMR</code></td>
+<td>Interrupt Mask Register</td>
+<td>中断屏蔽寄存器</td>
+</tr>
+<tr>
+<td><code>EMR</code></td>
+<td>Event Mask Register</td>
+<td>事件屏蔽寄存器</td>
+</tr>
+<tr>
+<td><code>RTSR</code></td>
+<td>Rising Trigger Selection Register</td>
+<td>上升沿触发选择寄存器</td>
+</tr>
+<tr>
+<td><code>FTSR</code></td>
+<td>Falling Trigger Selection Register</td>
+<td>下降沿触发选择寄存器</td>
+</tr>
+<tr>
+<td><code>RCR</code></td>
+<td>Repetition Counter Register</td>
+<td>重复计数寄存器</td>
+</tr>
+<tr>
+<td><code>BDTR</code></td>
+<td>Break and Dead-Time Register</td>
+<td>断路与死区时间寄存器</td>
+</tr>
+</tbody>
+</table>
+<h2 id="172">17.2 常见字段/标志缩写<a class="headerlink" href="#172" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>缩写</th>
+<th>英文</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EOC</code></td>
+<td>End of Conversion</td>
+<td>ADC 转换结束</td>
+</tr>
+<tr>
+<td><code>TXE</code></td>
+<td>Transmit Data Register Empty</td>
+<td>发送数据寄存器空</td>
+</tr>
+<tr>
+<td><code>RXNE</code></td>
+<td>Receive Data Register Not Empty</td>
+<td>接收数据寄存器非空</td>
+</tr>
+<tr>
+<td><code>TC</code></td>
+<td>Transmission Complete</td>
+<td>发送完成</td>
+</tr>
+<tr>
+<td><code>DTG</code></td>
+<td>Dead-Time Generator</td>
+<td>死区时间相关字段</td>
+</tr>
+<tr>
+<td><code>REP</code></td>
+<td>Repetition Counter</td>
+<td>重复计数概念（常对应 <code>RCR</code>）</td>
+</tr>
+<tr>
+<td><code>RDP</code></td>
+<td>Read Protection</td>
+<td>读保护</td>
+</tr>
+<tr>
+<td><code>WRP</code></td>
+<td>Write Protection</td>
+<td>写保护</td>
+</tr>
+</tbody>
+</table>
+<h2 id="173-rc_w0">17.3 关于 <code>RC_W0</code> 是什么（重要更正）<a class="headerlink" href="#173-rc_w0" title="Permanent link">&para;</a></h2>
+<p>在 STM32 参考手册里，寄存器位的访问属性常见有：
+- <code>rw</code>：可读可写
+- <code>r</code>：只读
+- <code>w</code>：只写
+- <code>rc_w0</code>：<strong>read / clear by writing 0</strong>
+也就是：<strong>这个位可以读，软件写 0 可以清除它。</strong>
+这是寄存器位访问类型说明，不是某个具体寄存器名字。</p>
+<h3 id="_32">一句话记忆<a class="headerlink" href="#_32" title="Permanent link">&para;</a></h3>
+<p><strong><code>rc_w0</code> = 可读，写 0 清除。</strong></p>
+<h1 id="18-bootloader">18. 下载、BootLoader、选项字节与保护<a class="headerlink" href="#18-bootloader" title="Permanent link">&para;</a></h1>
+<h2 id="181-dtr-rts-bootloader">18.1 DTR / RTS 自动复位、自动进 BootLoader 是什么<a class="headerlink" href="#181-dtr-rts-bootloader" title="Permanent link">&para;</a></h2>
+<p>串口下载工具里常有 DTR / RTS 选项，用来控制：
+- 自动复位
+- 自动进入 BootLoader
+因为很多板子会把：
+- <code>DTR</code>
+- <code>RTS</code>
+接到板子的：
+- <code>RESET</code>
+- <code>BOOT0</code>
+但不同板子接法不同，所以软件里要让你选“高电平有效还是低电平有效、哪个脚负责复位、哪个脚负责进 BootLoader”。</p>
+<h3 id="_33">一句话记忆<a class="headerlink" href="#_33" title="Permanent link">&para;</a></h3>
+<p><strong>这些选项就是在配置串口工具如何用 DTR/RTS 自动控制复位和下载模式。</strong></p>
+<h2 id="182-option-bytes">18.2 什么是选项字节（Option Bytes）<a class="headerlink" href="#182-option-bytes" title="Permanent link">&para;</a></h2>
+<p>选项字节是 STM32 Flash 里的特殊区域，用来保存芯片级配置。
+常见配置包括：
+- 读保护
+- 写保护
+- 看门狗方式
+- Boot 相关配置
+- BOR 等特殊设置</p>
+<h3 id="_34">一句话记忆<a class="headerlink" href="#_34" title="Permanent link">&para;</a></h3>
+<p><strong>选项字节 = 芯片的“系统配置区”。</strong></p>
+<h2 id="183-read-protection">18.3 什么是读保护（Read Protection）<a class="headerlink" href="#183-read-protection" title="Permanent link">&para;</a></h2>
+<p>读保护用于：<strong>防止别人把你芯片里的程序读出来。</strong>
+常见等级：
+- <code>Level 0</code>：无保护
+- <code>Level 1</code>：开启保护，若要解除通常会整片擦除
+- <code>Level 2</code>：最高保护，很多系列不可逆</p>
+<h3 id="_35">一句话记忆<a class="headerlink" href="#_35" title="Permanent link">&para;</a></h3>
+<p><strong>读保护防“读走你的代码”。</strong></p>
+<h2 id="184-write-protection">18.4 什么是写保护（Write Protection）<a class="headerlink" href="#184-write-protection" title="Permanent link">&para;</a></h2>
+<p>写保护用于：<strong>防止某些 Flash 页被擦除或改写。</strong>
+常用于保护：
+- Bootloader
+- 关键参数区
+- 固件核心区</p>
+<h3 id="_36">一句话记忆<a class="headerlink" href="#_36" title="Permanent link">&para;</a></h3>
+<p><strong>写保护防“把关键区写坏”。</strong></p>
+<h1 id="19">19. 常见工程错误与排查<a class="headerlink" href="#19" title="Permanent link">&para;</a></h1>
+<h2 id="191-flash-download-failed-could-not-load-file-projectaxf">19.1 <code>Flash Download failed - Could not load file ... Project.axf</code><a class="headerlink" href="#191-flash-download-failed-could-not-load-file-projectaxf" title="Permanent link">&para;</a></h2>
+<p>如果终端里出现类似：
+<div class="highlight"><pre><span></span><code>null -b &quot;...Project.uvprojx&quot;
+</code></pre></div>
+并提示：
+<div class="highlight"><pre><span></span><code>&#39;null&#39; 不是内部或外部命令
+</code></pre></div>
+这通常不是代码问题，而是：<strong>VSCode/任务配置没有找到 Keil 的 <code>UV4.exe</code> 路径。</strong></p>
+<h3 id="_37">排查思路<a class="headerlink" href="#_37" title="Permanent link">&para;</a></h3>
+<ol>
+<li>确认已安装 Keil</li>
+<li>找到 <code>UV4.exe</code> 路径</li>
+<li>检查 <code>.vscode/tasks.json</code></li>
+<li>把 <code>command</code> 改成真实 Keil 路径</li>
+</ol>
+<h2 id="192-function-declared-implicitly">19.2 <code>function declared implicitly</code> 警告<a class="headerlink" href="#192-function-declared-implicitly" title="Permanent link">&para;</a></h2>
+<p>例如：
+<div class="highlight"><pre><span></span><code>function &quot;Key_Init&quot; declared implicitly
+</code></pre></div>
+说明：<strong>在使用这个函数时，编译器还没见过它的函数声明。</strong>
+通常原因：
+- 少写了 <code>#include "Key.h"</code>
+- <code>Key.h</code> 里没写函数原型
+- <code>Key.c</code> 没加入工程</p>
+<h3 id="_38">一句话记忆<a class="headerlink" href="#_38" title="Permanent link">&para;</a></h3>
+<p><strong>隐式声明警告 = 用了函数，但没提前声明。</strong></p>
+<h2 id="193-identifier-ado-is-undefined-too-many-arguments-in-function-call">19.3 <code>identifier "ADO" is undefined</code> / <code>too many arguments in function call</code><a class="headerlink" href="#193-identifier-ado-is-undefined-too-many-arguments-in-function-call" title="Permanent link">&para;</a></h2>
+<p>这类错误通常说明：
+1. 变量名写错了（如 <code>ADO</code> 其实应是 <code>AD0</code>）
+2. 函数声明和调用参数个数不匹配
+3. 头文件和源文件里的函数原型不一致</p>
+<h3 id="_39">典型排查<a class="headerlink" href="#_39" title="Permanent link">&para;</a></h3>
+<ul>
+<li>检查变量拼写</li>
+<li>检查函数原型</li>
+<li>检查头文件是否包含正确</li>
+</ul>
+<h1 id="20">20. 一些高频实战结论速记<a class="headerlink" href="#20" title="Permanent link">&para;</a></h1>
+<h2 id="201-led">20.1 点 LED<a class="headerlink" href="#201-led" title="Permanent link">&para;</a></h2>
+<ul>
+<li>建议模式：<code>GPIO_Mode_Out_PP</code></li>
+<li>是否 <code>SetBits</code> 点亮取决于硬件接法</li>
+</ul>
+<h2 id="202">20.2 按键<a class="headerlink" href="#202" title="Permanent link">&para;</a></h2>
+<ul>
+<li>常用模式：<code>GPIO_Mode_IPU</code></li>
+</ul>
+<h2 id="203-adc">20.3 ADC<a class="headerlink" href="#203-adc" title="Permanent link">&para;</a></h2>
+<ul>
+<li>模拟输入：<code>GPIO_Mode_AIN</code></li>
+<li>结果寄存器：<code>ADCx-&gt;DR</code></li>
+<li>转换完成标志：<code>EOC</code></li>
+</ul>
+<h2 id="204">20.4 串口<a class="headerlink" href="#204" title="Permanent link">&para;</a></h2>
+<ul>
+<li>最常见参数：<code>9600 8N1</code></li>
+<li>TX 引脚常用：<code>GPIO_Mode_AF_PP</code></li>
+<li>I2C 常用：<code>GPIO_Mode_AF_OD</code></li>
+</ul>
+<h2 id="205">20.5 中断<a class="headerlink" href="#205" title="Permanent link">&para;</a></h2>
+<ul>
+<li>ISR 不需要手动调用</li>
+<li>必须先配置外设 + NVIC</li>
+<li>抢占优先级决定能不能打断</li>
+<li>子优先级决定排队顺序</li>
+</ul>
+<h2 id="206-dma">20.6 DMA<a class="headerlink" href="#206-dma" title="Permanent link">&para;</a></h2>
+<ul>
+<li>硬件触发：外设事件自动搬</li>
+<li>软件触发：程序手动开始搬</li>
+</ul>
+<h1 id="21">21. 按问题类型归并的补充问题索引<a class="headerlink" href="#21" title="Permanent link">&para;</a></h1>
+<p>这一节把原来单独整理的对话问题，按题型并入当前 STM32 总笔记中，便于后续继续补充答案或回查。</p>
+<h2 id="211-c-c">21.1 C / C++ 基础与标准库<a class="headerlink" href="#211-c-c" title="Permanent link">&para;</a></h2>
+<ul>
+<li>内联函数和宏定义的区别与使用场景</li>
+<li><code>void MyI2C_W_SCL(uint8_t Bitvalue){ GPIO_WriteBit(GPIOB,GPIO_Pin_10,(BitAction)Bitvalue); Delay_us(10); }</code> 为什么可以写成 <code>(BitAction)Bitvalue</code></li>
+<li><code>time.h</code> 大概是做什么的</li>
+<li><code>struct tm</code> 为什么要写成 <code>struct tm time_data;</code>，不能直接写 <code>tm time_data;</code></li>
+<li>对于 <code>uint32</code> 来说能表示的最长时间是多少，到什么日期</li>
+<li>那么对于 <code>int32</code> 呢</li>
+</ul>
+<h2 id="212-i2c-spi-uart">21.2 I2C / SPI / UART / 通信协议基础<a class="headerlink" href="#212-i2c-spi-uart" title="Permanent link">&para;</a></h2>
+<h3 id="i2c">I2C 相关<a class="headerlink" href="#i2c" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>MyI2C_W_SDA(Byte&amp;0x80);</code> 这样调用时会发生什么</li>
+<li>为什么 MPU6050 默认地址是 <code>0x68</code>，代码里却写 <code>MyI2C_SendByte(0xD0);</code></li>
+<li><code>uint8_t MyI2C_ReceiveAck(void){...}</code> 这个函数有返回值，为什么别的地方可以直接写 <code>MyI2C_ReceiveAck();</code> 而不接收返回值</li>
+<li>读寄存器时最后的 <code>MyI2C_SendAck(1);</code> 为什么给的是非应答</li>
+<li>I2C 为什么用开漏</li>
+<li>I2C 的开漏为什么是弱上拉，为什么不能是强上拉</li>
+<li>弱上拉会有哪些缺点</li>
+<li>为什么 IIC 的时钟线叫 <code>SCL</code></li>
+<li>软件实现一个 I2C 通信协议时，是不是两个设备随便找两个 IO 口就可以，因为从始至终是自己设计时序、数据和格式</li>
+<li>STM32 的 I2C 引脚为什么要用“复用开漏”而不是普通“开漏”</li>
+<li>读寄存器流程里，为什么读的操作没有再次发送寄存器地址</li>
+<li>仲裁是如何执行的</li>
+</ul>
+<h3 id="spi">SPI 相关<a class="headerlink" href="#spi" title="Permanent link">&para;</a></h3>
+<ul>
+<li>SPI 的时钟线为什么叫 <code>SCK</code></li>
+<li>为什么 SPI 输入通常配置成上拉或者浮空</li>
+<li>什么是高阻态</li>
+<li>在 I2C 和 SPI 中，设备不传输时会把数据线设为高阻态；那任何输入模式都有可能被配置成高阻态吗</li>
+<li>对于 MISO，从机既要高阻态输出，又要配置成浮空输入或者上拉输入，对吗</li>
+<li>也就是说 SPI 主机的配置是输出开漏、输入上拉或者浮空；而从机的两根数据线在接收数据前都是高阻态吗</li>
+<li>高阻态是怎么做到的，它和从设备把 MISO 配置成输出（如开漏输出）不冲突吗</li>
+<li><code>while ((MySPI_SwapByte(W25Q64_DUMMY_BYTE) &amp; 0x01) == 0x01) { ... }</code> 和 <code>while((MySPI_SwapByte(W25Q64_DUMMY_BYTE) &amp; 0x01) &amp;&amp; timeout--){ break; }</code> 为什么第二种会出问题</li>
+<li>主模式全双工连续传输和非连续传输这两种 SPI 传输模式的原理和区别</li>
+<li><code>TDR</code>、<code>RDR</code> 和移位寄存器是不是同一个东西</li>
+<li>连续模式是如何协调输入和输出之间的时序的，会不会出现发送了很多数据但接收很少的情况</li>
+<li>非连续写法是：</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">SPI_I2S_GetFlagStatus</span><span class="p">(</span><span class="n">SPI1</span><span class="p">,</span><span class="n">SPI_I2S_FLAG_TXE</span><span class="p">));</span>
+<span class="n">SPI_I2S_SendData</span><span class="p">(</span><span class="n">SPI1</span><span class="p">,</span><span class="n">ByteSend</span><span class="p">);</span>
+
+<span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">SPI_I2S_GetFlagStatus</span><span class="p">(</span><span class="n">SPI1</span><span class="p">,</span><span class="n">SPI_I2S_FLAG_RXNE</span><span class="p">));</span>
+<span class="n">SPI_I2S_ReceiveData</span><span class="p">(</span><span class="n">SPI1</span><span class="p">);</span>
+</code></pre></div>
+<p>那连续传输应该怎么写</p>
+<h3 id="uart">UART / 术语<a class="headerlink" href="#uart" title="Permanent link">&para;</a></h3>
+<ul>
+<li>UART 发送时的 <code>TX</code> 里，<code>X</code> 是什么意思</li>
+</ul>
+<h3 id="_40">通信协议实现方式<a class="headerlink" href="#_40" title="Permanent link">&para;</a></h3>
+<ul>
+<li>通信协议的软件实现和硬件实现有什么区别</li>
+<li>软件和硬件实现分别实现的是哪一部分，是指协议时序吗，它们“长什么样”</li>
+</ul>
+<h2 id="213-gpio">21.3 GPIO / 复用 / 电气特性<a class="headerlink" href="#213-gpio" title="Permanent link">&para;</a></h2>
+<ul>
+<li>复用电路应该如何配置</li>
+<li>在 I2C 和 SPI 场景里，输入、开漏、复用开漏、浮空、上拉这些模式分别该怎么理解和选择</li>
+</ul>
+<h2 id="214-flash-w25q64">21.4 存储器 / Flash / 地址 / W25Q64<a class="headerlink" href="#214-flash-w25q64" title="Permanent link">&para;</a></h2>
+<h3 id="flash">Flash 与存储介质<a class="headerlink" href="#flash" title="Permanent link">&para;</a></h3>
+<ul>
+<li>常用的内存卡或者 U 盘是不是 Flash</li>
+<li>NAND 是什么意思，为什么它掉电不丢失，为什么其他存储不行</li>
+<li>为什么可以做到掉电不丢失，掉电丢失又是因为什么</li>
+<li>Flash 只能从 1 写 0，这个说法对吗</li>
+<li>为什么写入的时候必须先擦除</li>
+<li>NAND 闪存和 NOR 闪存的区别</li>
+<li>NAND 擦写次数较少，那岂不是 U 盘或者 SSD 用不久就坏了</li>
+</ul>
+<h3 id="_41">地址、页、扇区、块<a class="headerlink" href="#_41" title="Permanent link">&para;</a></h3>
+<ul>
+<li>某个芯片的寻址信号是六位的十六进制数，这个芯片的大小是多少，能算吗</li>
+<li>为什么常说每个地址单元代表 1 字节；有没有可能代表 2 字节或者更多字节；地址单元是不是指寄存器地址；我也见过 16 位寄存器</li>
+<li>扇区和页是什么</li>
+<li>块、扇区、页的区别</li>
+</ul>
+<h3 id="w25q64">W25Q64 / 代码细节<a class="headerlink" href="#w25q64" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>void W25Q64_SectorErase(uint32_t Address){ ... MySPI_SwapByte((Address &gt;&gt; 16) &amp; 0xFF); ... }</code> 这里为什么要 <code>&amp; 0xFF</code></li>
+</ul>
+<h3 id="_42">传输位宽<a class="headerlink" href="#_42" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>dual</code> 和 <code>quad</code> 是什么</li>
+</ul>
+<h2 id="215">21.5 显示与接口<a class="headerlink" href="#215" title="Permanent link">&para;</a></h2>
+<ul>
+<li>TN 屏是什么</li>
+<li>DSI 是什么</li>
+</ul>
+<h2 id="216-vs-code">21.6 VS Code / 补全 / 插件<a class="headerlink" href="#216-vs-code" title="Permanent link">&para;</a></h2>
+<ul>
+<li>截图里 <code>Completions – Completions limit reached</code> 等提示是什么意思</li>
+<li>VS Code 的代码补全是不是只有 Copilot</li>
+<li>ChatGPT 没有代码补全功能吗</li>
+<li>截图里的这个 <code>Codex</code> 好像不是官方的 Codex，这是什么</li>
+</ul>
+<h2 id="217-rtc-bkp">21.7 RTC / BKP / 时间系统<a class="headerlink" href="#217-rtc-bkp" title="Permanent link">&para;</a></h2>
+<ul>
+<li>RTC 和 BKP 是什么</li>
+<li>Unix、GMT、UTC 分别是什么</li>
+<li><code>PWR_CR</code> 寄存器的 <code>DBP</code> 位是什么</li>
+<li><code>MyRTC_Init / MyRTC_SetTime / MyRTC_ReadTime</code> 这段代码为什么一直格式报错</li>
+</ul>
+<h2 id="218-pwr">21.8 PWR / 低功耗 / 电源相关<a class="headerlink" href="#218-pwr" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>VBT</code> 是什么</li>
+<li><code>VBT</code> 引脚可以给芯片供电吗</li>
+<li><code>PWR</code> 是什么</li>
+<li>STM32 的睡眠、停止和待机模式分别有什么作用，怎么使用</li>
+<li>低功耗模式一览图（睡眠 / 停机 / 待机）该怎么理解</li>
+</ul>
+<h2 id="219">21.9 中断与事件<a class="headerlink" href="#219" title="Permanent link">&para;</a></h2>
+<ul>
+<li>中断和事件有什么区别，分别是什么</li>
+<li>如果配置了中断源但是不配置 NVIC，会不会产生事件</li>
+</ul>
+<h2 id="2110">21.10 代码流程理解<a class="headerlink" href="#2110" title="Permanent link">&para;</a></h2>
+<ul>
+<li>这一段硬件 I2C 代码的大概流程是什么：</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">I2C_GenerateSTART</span><span class="p">(</span><span class="n">I2C2</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
+<span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">I2C_CheckEvent</span><span class="p">(</span><span class="n">I2C2</span><span class="p">,</span><span class="w"> </span><span class="n">I2C_EVENT_MASTER_MODE_SELECT</span><span class="p">));</span>
+
+<span class="n">I2C_Send7bitAddress</span><span class="p">(</span><span class="n">I2C2</span><span class="p">,</span><span class="w"> </span><span class="n">MPU6050_ADDR</span><span class="p">,</span><span class="w"> </span><span class="n">I2C_Direction_Transmitter</span><span class="p">);</span>
+<span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">I2C_CheckEvent</span><span class="p">(</span><span class="n">I2C2</span><span class="p">,</span><span class="w"> </span><span class="n">I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED</span><span class="p">));</span>
+
+<span class="n">I2C_SendData</span><span class="p">(</span><span class="n">I2C2</span><span class="p">,</span><span class="w"> </span><span class="n">reg</span><span class="p">);</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">I2C_CheckEvent</span><span class="p">(</span><span class="n">I2C2</span><span class="p">,</span><span class="w"> </span><span class="n">I2C_EVENT_MASTER_BYTE_TRANSMITTED</span><span class="p">));</span>
+
+<span class="n">I2C_GenerateSTART</span><span class="p">(</span><span class="n">I2C2</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
+<span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">I2C_CheckEvent</span><span class="p">(</span><span class="n">I2C2</span><span class="p">,</span><span class="w"> </span><span class="n">I2C_EVENT_MASTER_MODE_SELECT</span><span class="p">));</span>
+
+<span class="n">I2C_Send7bitAddress</span><span class="p">(</span><span class="n">I2C2</span><span class="p">,</span><span class="w"> </span><span class="n">MPU6050_ADDR</span><span class="p">,</span><span class="w"> </span><span class="n">I2C_Direction_Receiver</span><span class="p">);</span>
+<span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">I2C_CheckEvent</span><span class="p">(</span><span class="n">I2C2</span><span class="p">,</span><span class="w"> </span><span class="n">I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED</span><span class="p">));</span>
+
+<span class="n">I2C_AcknowledgeConfig</span><span class="p">(</span><span class="n">I2C2</span><span class="p">,</span><span class="w"> </span><span class="n">DISABLE</span><span class="p">);</span>
+<span class="n">I2C_GenerateSTOP</span><span class="p">(</span><span class="n">I2C2</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">I2C_CheckEvent</span><span class="p">(</span><span class="n">I2C2</span><span class="p">,</span><span class="w"> </span><span class="n">I2C_EVENT_MASTER_BYTE_RECEIVED</span><span class="p">));</span>
+<span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">I2C_ReceiveData</span><span class="p">(</span><span class="n">I2C2</span><span class="p">);</span>
+
+<span class="n">I2C_AcknowledgeConfig</span><span class="p">(</span><span class="n">I2C2</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
+<span class="k">return</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+</code></pre></div>
+<h2 id="2111">21.11 元问题记录<a class="headerlink" href="#2111" title="Permanent link">&para;</a></h2>
+<ul>
+<li>帮我把在这个对话中的所有问题收集起来生成一个 <code>md</code> 文件，要求排版简洁，顺序合理</li>
+<li>帮我把在这个对话中的所有问题收集起来生成一个 <code>md</code> 文件，要求排版简洁，顺序合理（再次提出）</li>
+</ul>
+<h1 id="22">22. 最后总结（超短背诵版）<a class="headerlink" href="#22" title="Permanent link">&para;</a></h1>
+<ul>
+<li><code>PC13</code>：GPIOC 第 13 号引脚</li>
+<li><code>Port</code> 是一组 GPIO，<code>GPIO</code> 是单个引脚</li>
+<li><code>OLED</code> 的 <code>O</code> = Organic</li>
+<li><code>AHB</code> 管高速主干，<code>APB</code> 管普通外设</li>
+<li>STM32F1 里 GPIO 一般在 <code>APB2</code></li>
+<li>点 LED 常用推挽输出 <code>GPIO_Mode_Out_PP</code></li>
+<li><code>ODR</code> 存输出状态，<code>BSRR</code> 更适合单独置位/复位</li>
+<li><code>IRQ</code> 是中断请求，ISR 由硬件自动调用</li>
+<li>抢占优先级决定能不能打断，子优先级决定谁先响应</li>
+<li>定时器更新事件 = 一轮计数结束</li>
+<li><code>EOC</code> = ADC 转换完成</li>
+<li><code>ADC1-&gt;DR</code> = ADC 结果寄存器</li>
+<li>DMA 硬件触发靠外设事件，软件触发靠程序手动</li>
+<li><code>StructInit</code> 初始化结构体默认值，<code>DeInit</code> 复位外设</li>
+<li><code>rc_w0</code> = 可读，写 0 清除</li>
+<li>串口 <code>9600 8N1</code> 是最常见基础配置</li>
+<li><code>sizeof(数组)</code> 返回总字节数</li>
+<li><code>uint8_t</code> 装不下 666，结果会溢出成 154</li>
+<li>选项字节存芯片配置；读保护防读代码；写保护防改 Flash</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../../ros/code/" class="md-footer__link md-footer__link--prev" aria-label="上一页: code">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                code
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../%E5%A4%96%E8%AE%BE/" class="md-footer__link md-footer__link--next" aria-label="下一页: 外设">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                外设
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tabs", "navigation.indexes", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,4327 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Notes on embedded systems, robotics, C++, FPGA, and interview preparation.">
+      
+      
+      
+        <link rel="canonical" href="https://zhyun828.github.io/notes/linux/basic/">
+      
+      
+        <link rel="prev" href="../../ros/gazebo/basic/">
+      
+      
+        <link rel="next" href="../../LVGL/basic/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>basic - ZY Engineering Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/home.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#linux" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="ZY Engineering Notes" class="md-header__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ZY Engineering Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              basic
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal"  aria-label="深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="cyan"  aria-label="浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m3.55 19.09 1.41 1.41 1.8-1.79-1.42-1.42M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6c0-3.32-2.69-6-6-6m8 7h3v-2h-3m-2.76 7.71 1.8 1.79 1.41-1.41-1.79-1.8M20.45 5l-1.41-1.4-1.8 1.79 1.42 1.42M13 1h-2v3h2M6.76 5.39 4.96 3.6 3.55 5l1.79 1.81zM1 13h3v-2H1m12 9h-2v3h2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="ZY Engineering Notes" class="md-nav__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ZY Engineering Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../protocols/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通信协议
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    通信协议
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/usart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    USART
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/i2c/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I2C
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/spi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SPI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/can/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/tcp-udp-ip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TCP / UDP / IP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/modbus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modbus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/ethernet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ethernet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/lin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LIN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/http-https/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP / HTTPS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面试
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    面试
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E5%BF%AB%E9%80%9F%E6%A3%80%E7%B4%A2%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速检索表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E5%B5%8C%E5%85%A5%E5%BC%8F%E9%9D%A2%E8%AF%95%E6%B1%87%E6%80%BB%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    嵌入式面试汇总表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E9%AB%98%E9%A2%91%E9%A2%98%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高频题深度解析
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E9%97%AE%E7%AD%94%E9%9D%A2%E8%AF%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目经历问答面试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arduino
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Arduino
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/basics.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_2" id="__nav_2_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    projet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/projet.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/pre.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    pre
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/code.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/thoughts.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thoughts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cpp
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cpp
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cpp/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cpp/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cpp/cpp_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%AF%A6%E8%A7%A3_%E6%89%A9%E5%B1%95%E7%89%88/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    设计模式详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    embedded_system
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    embedded_system
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../embedded_system/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_6_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../embedded_system/TP/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TP
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    TP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FPGA
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    FPGA
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FPGA/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_8" id="__nav_2_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gazebo
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    gazebo
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ros/gazebo/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_9" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_9" id="__nav_2_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#linux_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linux 基础命令速记
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Linux 基础命令速记">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mkdir-p-catkin_wssrc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mkdir -p ~/catkin_ws/src
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nano-testcpp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        nano test.cpp
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ls
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linuxio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linux系统IO
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Linux系统IO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opencreat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        open、creat
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        read
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#write" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        write
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lseek" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lseek
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C标准库IO
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="C标准库IO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fopen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fopen
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fclose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fclose
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fread" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fread
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fwrite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fwrite
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fseek" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fseek
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fclose_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fclose
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        进程
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="进程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fork" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fork
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        进程终止
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#waitwaitpid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        wait、waitpid
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        exec
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        保活进程思路
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        进程间通信
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="进程间通信">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        匿名管道
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        命名管道
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        消息队列
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#posix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        共享内存（POSIX）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        信号量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        消息队列
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        信号
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        信号量
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        线程
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="线程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        互斥锁
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        线程同步
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#socket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Socket通信
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Socket通信">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TCP通信流程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#udp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UDP通信流程
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        程序运行
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_10" id="__nav_2_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVGL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LVGL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LVGL/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ros
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ros
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ros/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ros/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_12" id="__nav_2_12_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    stm32
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stm32/stm32_knowledge_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32_knowledge_notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stm32/%E5%A4%96%E8%AE%BE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    外设
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stm32/%E5%AF%84%E5%AD%98%E5%99%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    寄存器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#linux_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linux 基础命令速记
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Linux 基础命令速记">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mkdir-p-catkin_wssrc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mkdir -p ~/catkin_ws/src
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nano-testcpp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        nano test.cpp
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ls
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linuxio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linux系统IO
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Linux系统IO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#opencreat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        open、creat
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        read
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#write" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        write
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lseek" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lseek
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C标准库IO
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="C标准库IO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fopen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fopen
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fclose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fclose
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fread" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fread
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fwrite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fwrite
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fseek" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fseek
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fclose_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fclose
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        进程
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="进程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fork" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fork
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        进程终止
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#waitwaitpid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        wait、waitpid
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        exec
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        保活进程思路
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        进程间通信
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="进程间通信">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        匿名管道
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        命名管道
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        消息队列
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#posix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        共享内存（POSIX）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        信号量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        消息队列
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        信号
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        信号量
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        线程
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="线程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        互斥锁
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        线程同步
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#socket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Socket通信
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Socket通信">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TCP通信流程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#udp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UDP通信流程
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        程序运行
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="导航栏" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Notes
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="./" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    linux
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="linux">Linux 基础<a class="headerlink" href="#linux" title="Permanent link">&para;</a></h1>
+<p>Linux API速查手册网站 https://www.bookstack.cn/read/linuxapi/SUMMARY.md</p>
+<h2 id="linux_1">Linux 基础命令速记<a class="headerlink" href="#linux_1" title="Permanent link">&para;</a></h2>
+<h3 id="mkdir-p-catkin_wssrc"><code>mkdir -p ~/catkin_ws/src</code><a class="headerlink" href="#mkdir-p-catkin_wssrc" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>~/catkin_ws/src
+</code></pre></div>
+<ul>
+<li><code>mkdir</code> = make directory，创建文件夹。</li>
+<li><code>-p</code> = parents，表示中间目录不存在时也一起创建。</li>
+<li>如果不加 <code>-p</code>，直接执行 <code>mkdir catkin_ws/src</code>，而 <code>catkin_ws</code> 又不存在，就会直接报错。</li>
+<li><code>~</code> 表示当前用户的家目录。</li>
+</ul>
+<p>等价写法：</p>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>/home/你的用户名/catkin_ws/src
+</code></pre></div>
+<h3 id="nano-testcpp"><code>nano test.cpp</code><a class="headerlink" href="#nano-testcpp" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>nano<span class="w"> </span>test.cpp
+</code></pre></div>
+<p>用于打开并编辑文本文件；如果文件不存在，则会新建该文件。</p>
+<h3 id="ls"><code>ls</code><a class="headerlink" href="#ls" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code>ls
+</code></pre></div>
+用于列出当前目录中的文件和文件夹。</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.</code></td>
+<td>当前目录</td>
+</tr>
+<tr>
+<td><code>..</code></td>
+<td>上一级目录（父目录）</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code>drwxr-xr-x 29 yun  yun  4096 5月   7 07:29 .
+drwxr-xr-x  3 root root 4096 2月   4 00:00 ..
+</code></pre></div>
+<h2 id="linuxio">Linux系统IO<a class="headerlink" href="#linuxio" title="Permanent link">&para;</a></h2>
+<p>//ssize_t是有符号整数类型，表示读写的字节数，返回值为-1表示出错
+//off_t是有符号整数类型，表示文件偏移量，单位是字节
+//size_t是无符号整数类型，表示写入的字节数</p>
+<h3 id="opencreat"><code>open</code>、<code>creat</code><a class="headerlink" href="#opencreat" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fcntl.h&gt;</span><span class="c1">//fcntl是file control的缩写</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">pathname</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">flags</span><span class="p">);</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">pathname</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">flags</span><span class="p">,</span><span class="kt">mode_t</span><span class="w"> </span><span class="n">mode</span><span class="p">);</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">creat</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">pathname</span><span class="p">,</span><span class="kt">mode_t</span><span class="w"> </span><span class="n">mode</span><span class="p">);</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="read"><code>read</code><a class="headerlink" href="#read" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span>
+<span class="kt">ssize_t</span><span class="w"> </span><span class="nf">read</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">count</span><span class="p">);</span>
+<span class="c1">// fd   文件描述符</span>
+<span class="c1">// buf  读取的数据存放在buf指针指向的缓冲区</span>
+<span class="c1">// count    读取的字节数</span>
+</code></pre></div>
+<h3 id="write"><code>write</code><a class="headerlink" href="#write" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span>
+<span class="kt">ssize_t</span><span class="w"> </span><span class="nf">write</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">count</span><span class="p">);</span>
+<span class="c1">// 参数同read函数</span>
+</code></pre></div>
+<h3 id="lseek"><code>lseek</code><a class="headerlink" href="#lseek" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span>
+<span class="kt">off_t</span><span class="w"> </span><span class="nf">lseek</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="kt">off_t</span><span class="w"> </span><span class="n">offset</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">whence</span><span class="p">);</span>
+<span class="c1">// fd是文件描述符</span>
+<span class="c1">// offset是偏移量</span>
+<span class="c1">// whence是偏移量的基准位置。它的取值有三个</span>
+<span class="c1">// SEEK_SET: 开始位置</span>
+<span class="c1">// SEEK_CUR: 当前位置</span>
+<span class="c1">// SEEK_END: 末尾位置</span>
+</code></pre></div>
+<h2 id="cio">C标准库IO<a class="headerlink" href="#cio" title="Permanent link">&para;</a></h2>
+<h3 id="fopen"><code>fopen</code><a class="headerlink" href="#fopen" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="nf">fopen</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">pathname</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">mode</span><span class="p">);</span>
+<span class="c1">// pathname是文件路径</span>
+<span class="c1">// mode是打开文件的模式，常见的有：</span>
+<span class="c1">// &quot;r&quot;：只读模式，文件必须存在，否则返回NULL</span>
+<span class="c1">// &quot;w&quot;：写入模式，如果文件存在则清空内容，如果文件不存在则创建新文件</span>
+<span class="c1">// &quot;a&quot;：追加模式，如果文件存在则在末尾添加内容，如果文件不存在则创建新文件</span>
+<span class="c1">// &quot;r+&quot;：读写模式，文件必须存在，否则返回NULL</span>
+<span class="c1">// &quot;w+&quot;：读写模式，如果文件存在则清空内容，如果文件不存在则创建新文件</span>
+<span class="c1">// &quot;a+&quot;：读写模式，如果文件存在则在末尾添加内容，如果文件不存在则创建新文件</span>
+</code></pre></div>
+<h3 id="fclose"><code>fclose</code><a class="headerlink" href="#fclose" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">fclose</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">stream</span><span class="p">);</span>
+<span class="c1">// stream是指向FILE对象的指针，表示要关闭的文件流</span>
+</code></pre></div>
+<h3 id="fread"><code>fread</code><a class="headerlink" href="#fread" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="kt">size_t</span><span class="w"> </span><span class="nf">fread</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nmemb</span><span class="p">,</span><span class="w"> </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">stream</span><span class="p">);</span>
+<span class="c1">// ptr是指向一个内存块的指针，读取的数据将存储在此处</span>
+<span class="c1">// size是每个元素的大小，单位是字节</span>
+<span class="c1">// nmemb是要读取的元素数量</span>
+<span class="c1">// stream是指向FILE对象的指针，表示要读取的文件流</span>
+</code></pre></div>
+<h3 id="fwrite"><code>fwrite</code><a class="headerlink" href="#fwrite" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="kt">size_t</span><span class="w"> </span><span class="nf">fwrite</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nmemb</span><span class="p">,</span><span class="w"> </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">stream</span><span class="p">);</span>
+<span class="c1">// 参数同fread函数</span>
+</code></pre></div>
+<h3 id="fseek"><code>fseek</code><a class="headerlink" href="#fseek" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">fseek</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">stream</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">offset</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">whence</span><span class="p">);</span>
+<span class="c1">// stream是指向FILE对象的指针，表示要操作的文件流</span>
+<span class="c1">// offset是偏移量，单位是字节</span>
+<span class="c1">// whence是偏移量的基准位置。它的取值有三个</span>
+<span class="c1">// SEEK_SET: 开始位置</span>
+<span class="c1">// SEEK_CUR: 当前位置</span>
+<span class="c1">// SEEK_END: 末尾位置</span>
+</code></pre></div>
+<h3 id="fclose_1"><code>fclose</code><a class="headerlink" href="#fclose_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">fclose</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">stream</span><span class="p">);</span>
+<span class="c1">// stream是指向FILE对象的指针，表示要关闭的文件流</span>
+</code></pre></div>
+<h2 id="_1">进程<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>Linux 启动后会创建 PID 为 1 的初始进程，后续大多数进程都由它直接或间接创建，整体形成一棵进程树，可用 <code>pstree</code> 查看。</p>
+<ul>
+<li>父进程：创建子进程，可以发送信号、等待子进程结束并获取退出状态。</li>
+<li>子进程：由父进程创建，初始时相当于父进程的副本，拥有独立地址空间。</li>
+<li>孤儿进程：父进程先结束，子进程仍在运行，会被 PID 为 1 的进程收养。</li>
+<li>僵尸进程：子进程已退出，但父进程未调用 <code>wait</code> / <code>waitpid</code> 回收退出状态。</li>
+</ul>
+<h3 id="fork"><code>fork</code><a class="headerlink" href="#fork" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span>
+<span class="kt">pid_t</span><span class="w"> </span><span class="nf">fork</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</code></pre></div>
+<p><code>fork</code> 用于创建子进程。调用后父子进程都会从 <code>fork</code> 后继续执行，可通过返回值区分：
+- 父进程中返回子进程 PID。
+- 子进程中返回 <code>0</code>。
+- 失败返回 <code>-1</code>。</p>
+<div class="highlight"><pre><span></span><code><span class="kt">pid_t</span><span class="w"> </span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fork</span><span class="p">();</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pid</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;fork&quot;</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pid</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;child pid = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">getpid</span><span class="p">());</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;parent pid = %d, child pid = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">getpid</span><span class="p">(),</span><span class="w"> </span><span class="n">pid</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="_2">进程终止<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p>进程正常终止：
+- <code>main</code> 函数中 <code>return</code>。
+- 调用 <code>exit(status)</code>，<code>status</code> 是传给父进程的退出状态码。
+进程异常终止：收到信号后退出，例如 <code>SIGKILL</code>、<code>SIGSEGV</code>。</p>
+<h3 id="waitwaitpid"><code>wait</code>、<code>waitpid</code><a class="headerlink" href="#waitwaitpid" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/wait.h&gt;</span>
+<span class="kt">pid_t</span><span class="w"> </span><span class="nf">wait</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">status</span><span class="p">);</span>
+<span class="kt">pid_t</span><span class="w"> </span><span class="nf">waitpid</span><span class="p">(</span><span class="kt">pid_t</span><span class="w"> </span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">options</span><span class="p">);</span>
+</code></pre></div>
+<p>父进程通过 <code>wait</code> / <code>waitpid</code> 等待子进程结束，并回收子进程资源。
+- <code>pid &gt; 0</code>：等待指定 PID 的子进程。
+- <code>pid = -1</code>：等待任意子进程，等同于 <code>wait</code>。
+- <code>options = 0</code>：阻塞等待。
+- <code>options = WNOHANG</code>：非阻塞检查，子进程未退出时返回 <code>0</code>。</p>
+<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">status</span><span class="p">;</span>
+<span class="n">waitpid</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;child exit status = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">WEXITSTATUS</span><span class="p">(</span><span class="n">status</span><span class="p">));</span>
+</code></pre></div>
+<h3 id="exec"><code>exec</code><a class="headerlink" href="#exec" title="Permanent link">&para;</a></h3>
+<p><code>fork</code> 只会复制当前进程。如果希望子进程执行另一个程序，需要在子进程中调用 <code>exec</code> 系列函数。</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">execl</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">arg</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span>
+</code></pre></div>
+<p><code>exec</code> 成功后不会返回，当前进程的代码、数据会被新程序替换；失败返回 <code>-1</code>。</p>
+<div class="highlight"><pre><span></span><code><span class="kt">pid_t</span><span class="w"> </span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fork</span><span class="p">();</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pid</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">execl</span><span class="p">(</span><span class="s">&quot;/bin/ls&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ls&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;-l&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/etc&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">    </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;execl&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">status</span><span class="p">;</span>
+<span class="w">    </span><span class="n">waitpid</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>常见 <code>exec</code> 函数区别：
+- <code>l</code>：参数用列表传递，如 <code>execl</code>、<code>execlp</code>。
+- <code>v</code>：参数用数组传递，如 <code>execv</code>、<code>execvp</code>。
+- <code>p</code>：按 <code>PATH</code> 搜索程序，如 <code>execlp</code>、<code>execvp</code>。
+- <code>e</code>：可额外指定环境变量，如 <code>execle</code>、<code>execve</code>。</p>
+<h3 id="_3">保活进程思路<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>大型项目中可以用一个监控进程启动并管理业务进程：先 <code>fork</code>，子进程 <code>exec</code> 启动目标程序；父进程循环调用 <code>waitpid(pid, &amp;status, WNOHANG)</code> 检查状态，发现子进程退出后重新启动。</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/wait.h&gt;</span>
+<span class="cp">#define PROGRAM &quot;./hello&quot;</span>
+<span class="kt">pid_t</span><span class="w"> </span><span class="nf">start_program</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">pid_t</span><span class="w"> </span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fork</span><span class="p">();</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pid</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">execl</span><span class="p">(</span><span class="n">PROGRAM</span><span class="p">,</span><span class="w"> </span><span class="n">PROGRAM</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">        </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;execl&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pid</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;fork&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pid</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">pid_t</span><span class="w"> </span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">start_program</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">status</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">pid_t</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">waitpid</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">WNOHANG</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">pid</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;process exit, restart</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="n">pid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">start_program</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">perror</span><span class="p">(</span><span class="s">&quot;waitpid&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">usleep</span><span class="p">(</span><span class="mi">10</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="_4">进程间通信<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<h3 id="_5">匿名管道<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">pipe</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">pipefd</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+<span class="c1">// pipefd是一个长度为2的整数数组，pipefd[0]用于读取数据，pipefd[1]用于写入数据，成功返回0，失败返回-1</span>
+</code></pre></div>
+<p>1、只能用于亲缘关系的进程间通信（父子进程，兄弟进程）
+2、管道通信是单工的，一端读，一端写（需要程序实现设计好）。
+3、在创建管道后，确保关闭不再需要的文件描述符。例如，如果一个进程只需要读取数据，应该关闭写端；反之亦然。这可以防止文件描述符泄露，并确保管道在不再需要时能够正确关闭。
+4、管道有一个固定的缓冲区大小（通常是 64KB），如果写入的数据超过缓冲区大小，写操作会阻塞，直到有足够的空间。因此，确保读取速度跟上写入速度，避免阻塞。</p>
+<h3 id="_6">命名管道<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fcntl.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">mkfifo</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">pathname</span><span class="p">,</span><span class="w"> </span><span class="kt">mode_t</span><span class="w"> </span><span class="n">mode</span><span class="p">);</span>
+<span class="c1">// pathname是命名管道的路径</span>
+<span class="c1">// mode是命名管道的权限，例如，0666 表示所有用户都有读写权限。成功返回0，失败返回-1</span>
+</code></pre></div>
+<p>注意事项：
+1、有名管道可以使非亲缘的两个进程互相通信
+2、通过路径名来操作，在文件系统中可见，但内容存放在内存中</p>
+<h3 id="_7">消息队列<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/ipc.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/msg.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">msgget</span><span class="p">(</span><span class="kt">key_t</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">msgflg</span><span class="p">);</span>
+<span class="c1">// key是消息队列的键值，可以使用ftok函数生成</span>
+<span class="c1">// msgflg是消息队列的标志，常见的有：</span>
+<span class="c1">// IPC_CREAT: 如果消息队列不存在则创建</span>
+<span class="c1">// IPC_EXCL: 与IPC_CREAT一起使用，如果消息队列已存在则返回错误</span>
+</code></pre></div>
+<h3 id="posix">共享内存（POSIX）<a class="headerlink" href="#posix" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/mman.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fcntl.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">shm_open</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">oflag</span><span class="p">,</span><span class="w"> </span><span class="kt">mode_t</span><span class="w"> </span><span class="n">mode</span><span class="p">);</span>
+<span class="c1">//- 功能：创建或打开一个命名的共享内存对象。</span>
+<span class="c1">//- 参数：</span>
+<span class="c1">//  - name：共享内存对象的名字,使用路径字符串（如 ./my_shm）。</span>
+<span class="c1">//  - oflag：操作标志，如 O_CREAT, O_RDWR, O_RDONLY 等。O_RDONLY（只读）、O_WRONLY（只写）、O_RDWR（读写）O_CREAT（不存在则创建）、O_TRUNC（清空）、O_APPEND（追加）</span>
+<span class="c1">//  - mode：权限设置，常见的权限设置包括 0666（所有用户都有读写权限）。</span>
+<span class="c1">//- 返回值：成功返回文件描述符（fd），失败返回 -1。</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/mman.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">ftruncate</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="kt">off_t</span><span class="w"> </span><span class="n">length</span><span class="p">);</span><span class="c1">//设置共享内存大小</span>
+<span class="c1">// - 功能：设置由 shm_open 返回的共享内存对象的大小。</span>
+<span class="c1">// - 参数：</span>
+<span class="c1">//   - fd：由 shm_open 返回的文件描述符。</span>
+<span class="c1">//   - length：共享内存大小（字节）。</span>
+<span class="c1">// - 返回值：成功返回 0，失败返回 -1。</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/mman.h&gt;</span>
+<span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="nf">mmap</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">prot</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">flags</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="kt">off_t</span><span class="w"> </span><span class="n">offset</span><span class="p">);</span><span class="c1">//将共享内存映射到进程地址空间</span>
+<span class="c1">// - 功能：将共享内存映射到当前进程的虚拟地址空间中。</span>
+<span class="c1">// - 参数：</span>
+<span class="c1">//   - addr：建议的映射起始地址（通常为 NULL 让系统自动分配）。</span>
+<span class="c1">//   - length：要映射的内存长度。</span>
+<span class="c1">//   - prot：设置内存区域的保护模式（读/写/执行权限），如 PROT_READ可读、PROT_WRITE可写。</span>
+<span class="c1">//   - flags：映射标志，默认 MAP_SHARED适用于进程间通信，MAP_PRIVATE不会被其他进程看到，适用于只读映射或临时数据处理。</span>
+<span class="c1">//   - fd：由 shm_open 返回的文件描述符。</span>
+<span class="c1">//   - offset：偏移量（通常为 0）。</span>
+<span class="c1">// - 返回值：成功返回映射后的指针，失败返回 MAP_FAILED。</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/mman.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">munmap</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">length</span><span class="p">);</span><span class="c1">//解除映射</span>
+<span class="c1">// - 功能：解除之前通过 mmap 创建的内存映射关系。</span>
+<span class="c1">// - 参数：</span>
+<span class="c1">//   - addr：mmap 返回的映射地址。</span>
+<span class="c1">//   - length：映射的长度。</span>
+<span class="c1">// - 返回值：成功返回 0，失败返回 -1。</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/mman.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">shm_unlink</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">);</span><span class="c1">//删除共享内存对象</span>
+<span class="c1">// - 功能：删除一个命名的共享内存对象。</span>
+<span class="c1">// - 参数：</span>
+<span class="c1">//   - name：共享内存对象的名字（与 shm_open 中使用的名字相同）。</span>
+<span class="c1">// - 返回值：成功返回 0，失败返回 -1。</span>
+</code></pre></div>
+<p>注意事项：
+在 CMakeLists.txt 中，使用 target_link_libraries 显式链接 rt：
+target_link_libraries(your_program rt)  # 添加 -lrt
+表示链接 librt 库（rt 是 "Real-Time" 的缩写）。librt 提供了 POSIX 实时扩展功能</p>
+<h3 id="_8">信号量<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/ipc.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/sem.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">semget</span><span class="p">(</span><span class="kt">key_t</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nsems</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">semflg</span><span class="p">);</span>
+<span class="c1">// key是信号量集合的键值，可以使用ftok函数生成</span>
+<span class="c1">// nsems是信号量集合中的信号量数量</span>
+<span class="c1">// semflg是信号量集合的标志，常见的有：</span>
+<span class="c1">// IPC_CREAT: 如果信号量集合不存在则创建</span>
+<span class="c1">// IPC_EXCL: 与IPC_CREAT一起使用，如果信号量集合已存在则返回错误</span>
+</code></pre></div>
+<h3 id="_9">消息队列<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mqueue.h&gt;</span>
+<span class="n">mqd_t</span><span class="w"> </span><span class="nf">mq_open</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">oflag</span><span class="p">,</span><span class="w"> </span><span class="kt">mode_t</span><span class="w"> </span><span class="n">mode</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">mq_attr</span><span class="w"> </span><span class="o">*</span><span class="n">attr</span><span class="p">);</span>
+<span class="c1">// - 功能：创建或打开一个命名的消息队列。</span>
+<span class="c1">// - 参数：</span>
+<span class="c1">//   - name：消息队列名称（以 / 开头，如 /my_queue）。</span>
+<span class="c1">//   - oflag：操作标志，如 O_CREAT, O_RDONLY, O_WRONLY, O_RDWR。</span>
+<span class="c1">//   - mode：权限设置（如 0666），仅在创建时使用。</span>
+<span class="c1">//   - attr：指向 mq_attr 结构，指定最大消息数、每条消息最大长度等属性，如果 attr 为 NULL，则使用系统默认值（通常 mq_maxmsg=10，mq_msgsize=8192）</span>
+<span class="c1">// - 返回值：成功返回消息队列描述符（mqd_t），失败返回 (mqd_t) -1。</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">mq_attr</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="n">mq_flags</span><span class="p">;</span><span class="w">       </span><span class="c1">// 队列标志（O_NONBLOCK）</span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="n">mq_maxmsg</span><span class="p">;</span><span class="w">      </span><span class="c1">// 最大消息数</span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="n">mq_msgsize</span><span class="p">;</span><span class="w">     </span><span class="c1">// 每条消息最大长度</span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="n">mq_curmsgs</span><span class="p">;</span><span class="w">     </span><span class="c1">// 当前队列中的消息数</span>
+<span class="p">};</span>
+<span class="c1">//使用参考：</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">mq_attr</span><span class="w"> </span><span class="n">attr</span><span class="p">;</span>
+<span class="n">attr</span><span class="p">.</span><span class="n">mq_flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="n">attr</span><span class="p">.</span><span class="n">mq_maxmsg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="n">attr</span><span class="p">.</span><span class="n">mq_msgsize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">256</span><span class="p">;</span>
+<span class="n">attr</span><span class="p">.</span><span class="n">mq_curmsgs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mqueue.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">mq_send</span><span class="p">(</span><span class="n">mqd_t</span><span class="w"> </span><span class="n">mqdes</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">msg_ptr</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">msg_len</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">msg_prio</span><span class="p">);</span>
+<span class="kt">ssize_t</span><span class="w"> </span><span class="nf">mq_receive</span><span class="p">(</span><span class="n">mqd_t</span><span class="w"> </span><span class="n">mqdes</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">msg_ptr</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">msg_len</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">msg_prio</span><span class="p">);</span>
+<span class="c1">// - 功能：</span>
+<span class="c1">//   - mq_send 向队列中发送一条消息。</span>
+<span class="c1">//   - mq_receive 从队列中接收一条消息。</span>
+<span class="c1">// - 参数说明：</span>
+<span class="c1">//   - mqdes：由 mq_open 返回的消息队列描述符。</span>
+<span class="c1">//   - msg_ptr：消息内容缓冲区。</span>
+<span class="c1">//   - msg_len：消息长度（必须 ≥ 队列的最大消息长度）。</span>
+<span class="c1">//   - msg_prio：消息优先级（数值越大优先级越高）。</span>
+<span class="c1">// - 返回值：成功返回 0（发送）或实际读取字节数（接收），失败返回 -1。</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mqueue.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">mq_close</span><span class="p">(</span><span class="n">mqd_t</span><span class="w"> </span><span class="n">mqdes</span><span class="p">);</span><span class="c1">//关闭消息队列</span>
+</code></pre></div>
+<ul>
+<li>功能：关闭之前打开的消息队列描述符。</li>
+<li>返回值：成功返回 0，失败返回 -1。</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mqueue.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">mq_unlink</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">);</span><span class="c1">//删除消息队列</span>
+</code></pre></div>
+<ul>
+<li>功能：删除指定名称的消息队列（即使仍有进程打开也不会立即删除，直到所有引用关闭）。</li>
+<li>返回值：成功返回 0，失败返回 -1。</li>
+</ul>
+<h3 id="_10">信号<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;signal.h&gt;</span>
+</code></pre></div>
+<p>__sighandler_t signal(int __sig, __sighandler_t __handler) 设置信号处理函数</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 参数：</span>
+<span class="c1">// __sig：信号编号。</span>
+<span class="c1">// __handler：信号处理函数。</span>
+<span class="c1">// 返回值：</span>
+<span class="c1">// 成功时返回之前的信号处理函数指针。</span>
+<span class="c1">// 失败时返回 SIG_ERR。</span>
+<span class="c1">//__sighandler_t 是一个函数指针类型，我们可以基于它来传递函数。</span>
+<span class="c1">//使用示例：</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">signal_handler</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">sig</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Caught signal %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sig</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="n">signal</span><span class="p">(</span><span class="n">SIGINT</span><span class="p">,</span><span class="w"> </span><span class="n">signal_handler</span><span class="p">);</span><span class="w">  </span><span class="c1">// 捕获 Ctrl+C</span>
+<span class="c1">//发送信号给进程。</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;signal.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">kill</span><span class="p">(</span><span class="kt">pid_t</span><span class="w"> </span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">sig</span><span class="p">);</span>
+<span class="c1">// 参数：</span>
+<span class="c1">// pid：目标进程的 PID。</span>
+<span class="c1">// sig：要发送的信号编号。</span>
+<span class="c1">//使进程暂停，直到接收到信号。</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">pause</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="_11">信号量<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">//sem_open - 创建或打开有名信号量</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;semaphore.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fcntl.h&gt;</span><span class="c1">           /* For O_* constants */</span>
+<span class="n">sem_t</span><span class="w"> </span><span class="o">*</span><span class="nf">sem_open</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">oflag</span><span class="p">,</span><span class="w"> </span><span class="kt">mode_t</span><span class="w"> </span><span class="n">mode</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="c1">// - 功能：创建或打开一个命名信号量。</span>
+<span class="c1">// - 参数：</span>
+<span class="c1">//   - name：信号量名称（以 / 开头，如 /my_sem）。</span>
+<span class="c1">//   - oflag：操作标志，如 O_CREAT, O_RDWR。</span>
+<span class="c1">//   - mode：权限设置（如 0666）。</span>
+<span class="c1">//   - value：初始值。</span>
+<span class="c1">// - 返回值：成功返回指向 sem_t 的指针，失败返回 SEM_FAILED。</span>
+<span class="c1">// 例如</span>
+<span class="n">sem_open</span><span class="p">(</span><span class="n">SEM_NAME</span><span class="p">,</span><span class="w"> </span><span class="n">O_CREAT</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">O_RDWR</span><span class="p">,</span><span class="w"> </span><span class="mo">0666</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="c1">// ---</span>
+<span class="c1">// sem_close - 关闭有名信号量</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;semaphore.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">sem_close</span><span class="p">(</span><span class="n">sem_t</span><span class="w"> </span><span class="o">*</span><span class="n">sem</span><span class="p">);</span>
+<span class="c1">// - 功能：关闭之前由 sem_open 打开的信号量。</span>
+<span class="c1">// - 返回值：成功返回 0，失败返回 -1。</span>
+<span class="c1">//---</span>
+<span class="c1">// sem_unlink - 删除有名信号量</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;semaphore.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">sem_unlink</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">);</span>
+<span class="c1">// - 功能：删除指定名称的有名信号量（即使仍有进程打开也不会立即删除）。</span>
+<span class="c1">// - 返回值：成功返回 0，失败返回 -1。</span>
+<span class="c1">//---</span>
+<span class="c1">// sem_wait / sem_trywait - 等待信号量</span>
+<span class="c1">// sem_wait</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">sem_wait</span><span class="p">(</span><span class="n">sem_t</span><span class="w"> </span><span class="o">*</span><span class="n">sem</span><span class="p">);</span>
+<span class="c1">// - 阻塞直到信号量大于 0，并将其减 1。</span>
+<span class="c1">//sem_trywait</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">sem_trywait</span><span class="p">(</span><span class="n">sem_t</span><span class="w"> </span><span class="o">*</span><span class="n">sem</span><span class="p">);</span>
+<span class="c1">// - 非阻塞，如果信号量为 0，则立即返回 -1，否则减 1。</span>
+<span class="c1">//---</span>
+<span class="c1">//sem_post - 增加信号量值</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;semaphore.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">sem_post</span><span class="p">(</span><span class="n">sem_t</span><span class="w"> </span><span class="o">*</span><span class="n">sem</span><span class="p">);</span>
+<span class="c1">// - 功能：将信号量值加 1，唤醒正在等待的线程/进程。</span>
+<span class="c1">// - 返回值：成功返回 0，失败返回 -1。</span>
+</code></pre></div>
+<p>编译提示错误：undefined reference to symbol 'sem_close@@GLIBC_2.2.5'
+添加-lrt -lpthread</p>
+<h2 id="_12">线程<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pthread.h&gt;</span>
+<span class="n">pthread_create</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">pthread_create</span><span class="p">(</span><span class="n">pthread_t</span><span class="w"> </span><span class="o">*</span><span class="kr">thread</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">pthread_attr_t</span><span class="w"> </span><span class="o">*</span><span class="n">attr</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">start_routine</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">),</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">arg</span><span class="p">);</span>
+</code></pre></div>
+<p>功能：创建一个新的线程。
+参数：
+thread：用于存储新创建线程的标识符。
+attr：用于指定线程属性（如栈大小、优先级等）。通常设置为 NULL 表示使用默认属性。
+start_routine：线程的入口函数，类型为 void <em>(</em>start_routine)(void <em>)。
+arg：传递给 start_routine 函数的参数，类型为 void </em>。
+返回值：成功时返回 0，失败时返回错误码。</p>
+<div class="highlight"><pre><span></span><code><span class="n">pthread_join</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">pthread_join</span><span class="p">(</span><span class="n">pthread_t</span><span class="w"> </span><span class="kr">thread</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">**</span><span class="n">retval</span><span class="p">);</span>
+</code></pre></div>
+<p>功能：等待指定的线程结束，并获取其返回值。
+参数：
+thread：要等待的线程的标识符。
+retval：指向 void * 类型的指针，用于存储线程的返回值。如果不需要获取返回值，可以设置为 NULL。
+返回值：成功时返回 0，失败时返回错误码。</p>
+<div class="highlight"><pre><span></span><code><span class="n">pthread_exit</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">pthread_exit</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">retval</span><span class="p">);</span>
+</code></pre></div>
+<p>功能：使当前线程终止，并返回一个值。
+参数：
+retval：线程的返回值，类型为 void *。这个值可以通过 pthread_join 函数获取。
+返回值：无返回值，因为该函数不会返回。</p>
+<div class="highlight"><pre><span></span><code><span class="n">pthread_cancel</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">pthread_cancel</span><span class="p">(</span><span class="n">pthread_t</span><span class="w"> </span><span class="kr">thread</span><span class="p">);</span>
+</code></pre></div>
+<p>功能：请求取消指定的线程。可以用于一个线程取消另一个线程
+参数：
+thread：要取消的线程的标识符。
+返回值：成功时返回 0，失败时返回错误码。</p>
+<h3 id="_13">互斥锁<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<p>初始化互斥锁</p>
+<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">pthread_mutex_init</span><span class="p">(</span><span class="n">pthread_mutex_t</span><span class="w"> </span><span class="o">*</span><span class="n">mutex</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">pthread_mutexattr_t</span><span class="w"> </span><span class="o">*</span><span class="n">attr</span><span class="p">);</span>
+</code></pre></div>
+<p>功能：初始化一个互斥锁。
+参数：
+mutex：指向 pthread_mutex_t 类型的指针，用于存储互斥锁。
+attr：指向 pthread_mutexattr_t 类型的指针，用于指定互斥锁属性。通常设置为 NULL 表示使用默认属性。
+返回值：成功时返回 0，失败时返回错误码。</p>
+<p>获取互斥锁</p>
+<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">pthread_mutex_lock</span><span class="p">(</span><span class="n">pthread_mutex_t</span><span class="w"> </span><span class="o">*</span><span class="n">mutex</span><span class="p">);</span>
+</code></pre></div>
+<p>功能：获取互斥锁。如果锁已被其他线程占用，调用线程会阻塞，直到锁被释放。
+参数：
+mutex：指向 pthread_mutex_t 类型的指针，用于获取互斥锁。
+返回值：成功时返回 0，失败时返回错误码。</p>
+<p>尝试获取互斥锁</p>
+<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">pthread_mutex_trylock</span><span class="p">(</span><span class="n">pthread_mutex_t</span><span class="w"> </span><span class="o">*</span><span class="n">mutex</span><span class="p">);</span>
+</code></pre></div>
+<p>功能：尝试获取互斥锁，如果锁已被其他线程持有，则立即返回。
+参数：
+mutex：指向 pthread_mutex_t 类型的指针，用于尝试获取互斥锁。
+返回值：
+成功时返回 0。
+如果锁已被其他线程持有，返回 EBUSY。
+其他错误返回相应的错误码。</p>
+<p>释放互斥锁</p>
+<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">pthread_mutex_unlock</span><span class="p">(</span><span class="n">pthread_mutex_t</span><span class="w"> </span><span class="o">*</span><span class="n">mutex</span><span class="p">);</span>
+</code></pre></div>
+<p>功能：释放互斥锁。
+参数：
+mutex：指向 pthread_mutex_t 类型的指针，用于释放互斥锁。
+返回值：成功时返回 0，失败时返回错误码。</p>
+<p>销毁互斥锁</p>
+<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">pthread_mutex_destroy</span><span class="p">(</span><span class="n">pthread_mutex_t</span><span class="w"> </span><span class="o">*</span><span class="n">mutex</span><span class="p">);</span>
+</code></pre></div>
+<p>功能：销毁一个互斥锁。
+参数：
+mutex：指向 pthread_mutex_t 类型的指针，用于销毁互斥锁。
+返回值：成功时返回 0，失败时返回错误码。</p>
+<h3 id="_14">线程同步<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
+<p>初始化条件变量Condition Varialbes</p>
+<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">pthread_cond_init</span><span class="p">(</span><span class="n">pthread_cond_t</span><span class="w"> </span><span class="o">*</span><span class="n">cond</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">pthread_condattr_t</span><span class="w"> </span><span class="o">*</span><span class="n">attr</span><span class="p">);</span>
+</code></pre></div>
+<p>功能：初始化一个条件变量。
+参数：
+cond：指向 pthread_cond_t 类型的指针，用于存储条件变量。
+attr：指向 pthread_condattr_t 类型的指针，用于指定条件变量属性。通常设置为 NULL 表示使用默认属性。
+返回值：成功时返回 0，失败时返回错误码。</p>
+<p>唤醒一个等待的线程</p>
+<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">pthread_cond_signal</span><span class="p">(</span><span class="n">pthread_cond_t</span><span class="w"> </span><span class="o">*</span><span class="n">cond</span><span class="p">);</span>
+</code></pre></div>
+<p>功能：唤醒一个等待该条件变量的线程。
+参数：
+cond：指向 pthread_cond_t 类型的指针，表示要唤醒的条件变量。
+返回值：成功时返回 0，失败时返回错误码。</p>
+<p>等待条件变量</p>
+<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">pthread_cond_wait</span><span class="p">(</span><span class="n">pthread_cond_t</span><span class="w"> </span><span class="o">*</span><span class="n">cond</span><span class="p">,</span><span class="w"> </span><span class="n">pthread_mutex_t</span><span class="w"> </span><span class="o">*</span><span class="n">mutex</span><span class="p">);</span>
+</code></pre></div>
+<p>功能：等待条件变量。调用此函数的线程会释放互斥锁并进入等待状态，直到被其他线程唤醒。
+参数：
+cond：指向 pthread_cond_t 类型的指针，表示要等待的条件变量。
+mutex：指向 pthread_mutex_t 类型的指针，表示与条件变量关联的互斥锁。
+返回值：成功时返回 0，失败时返回错误码。</p>
+<p>销毁条件变量</p>
+<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">pthread_cond_destroy</span><span class="p">(</span><span class="n">pthread_cond_t</span><span class="w"> </span><span class="o">*</span><span class="n">cond</span><span class="p">);</span>
+</code></pre></div>
+<p>功能：销毁一个条件变量。
+参数：
+cond：指向 pthread_cond_t 类型的指针，用于销毁条件变量。
+返回值：成功时返回 0，失败时返回错误码。</p>
+<h2 id="socket">Socket通信<a class="headerlink" href="#socket" title="Permanent link">&para;</a></h2>
+<p><img alt="Socket通信" src="../assert/Socket%E9%80%9A%E4%BF%A1.png" /></p>
+<p>什么是Socket通信？
+Socket（套接字）是网络通信的编程接口，用于不同设备之间的数据传输。它基于IP地址 + 端口号的组合，允许应用程序通过网络发送和接收数据。
+Socket通信的核心是客户端-服务器模型：
+1. 服务器：监听某个端口，等待客户端连接。
+2. 客户端：主动向服务器的IP和端口发起连接请求。
+3. 建立连接后，双方可以互相发送数据。
+<div class="highlight"><pre><span></span><code><span class="o">+</span><span class="c1">-----------------------+</span>
+<span class="o">|</span><span class="w"> </span><span class="n">HTTP</span><span class="w"> </span><span class="n">FTP</span><span class="w"> </span><span class="n">MQTT</span><span class="p">(</span><span class="err">应用层</span><span class="p">)</span><span class="w">   </span><span class="o">|</span><span class="w">  </span><span class="err">←</span><span class="w"> </span><span class="err">基于文本</span><span class="o">/</span><span class="err">二进制的应用协议（如</span><span class="k">GET</span><span class="w"> </span><span class="o">/</span><span class="k">index</span><span class="p">.</span><span class="n">html</span><span class="err">）</span>
+<span class="o">+</span><span class="c1">-----------------------+</span>
+<span class="o">|</span><span class="w">    </span><span class="n">TCP</span><span class="w"> </span><span class="n">UDP</span><span class="p">(</span><span class="err">传输层</span><span class="p">)</span><span class="w">      </span><span class="o">|</span><span class="w">  </span><span class="err">←</span><span class="w"> </span><span class="err">可靠连接、流量控制、数据分段（端口号：</span><span class="mi">80</span><span class="o">/</span><span class="mi">443</span><span class="err">）</span>
+<span class="o">+</span><span class="c1">-----------------------+</span>
+<span class="o">|</span><span class="w">      </span><span class="n">IP</span><span class="w"> </span><span class="p">(</span><span class="err">网络层</span><span class="p">)</span><span class="w">        </span><span class="o">|</span><span class="w">  </span><span class="err">←</span><span class="w"> </span><span class="err">寻址和路由（如</span><span class="mi">192</span><span class="p">.</span><span class="mi">168</span><span class="p">.</span><span class="mi">1</span><span class="p">.</span><span class="mi">1</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="err">公网</span><span class="n">IP</span><span class="err">）</span>
+<span class="o">+</span><span class="c1">-----------------------+</span>
+<span class="o">|</span><span class="w">    </span><span class="n">Socket</span><span class="w"> </span><span class="p">(</span><span class="err">编程接口</span><span class="p">)</span><span class="w">    </span><span class="o">|</span><span class="w">  </span><span class="err">←</span><span class="w"> </span><span class="err">操作系统提供的</span><span class="n">API</span><span class="err">（如</span><span class="n">socket</span><span class="p">()</span><span class="err">、</span><span class="n">bind</span><span class="p">()</span><span class="err">、</span><span class="n">send</span><span class="p">()</span><span class="err">）</span>
+<span class="o">+</span><span class="c1">-----------------------+</span>
+<span class="o">|</span><span class="err">物理层</span><span class="p">(</span><span class="err">有线网络</span><span class="o">/</span><span class="n">WiFi模块</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w">  </span><span class="err">←</span><span class="w"> </span><span class="err">实际数据传输（如</span><span class="n">WiFi模组</span><span class="err">）</span>
+<span class="o">+</span><span class="c1">-----------------------+</span>
+</code></pre></div>
+TCP和UDP是两种计算机网络传输协议，用于在网络中传输数据。
+TCP（传输控制协议）是一种需要连接的，可靠的协议，它确保数据在发送和接收之间的完整性和顺序。它通过使用序列号、确认和重传机制来实现这一点。TCP在需要可靠传输的应用程序中使用，例如网页浏览器、电子邮件和文件传输。
+UDP（用户数据报协议）是一种无连接的，不可靠的协议，它不保证数据的完整性或顺序。UDP更适合需要快速传输数据的应用程序，例如视频和音频流媒体、在线游戏和DNS查询。UDP在传输数据时速度更快，因为它不需要进行确认或重传机制，但是在网络不稳定或拥塞时，会导致数据包丢失或错误。</p>
+<h3 id="tcp">TCP通信流程<a class="headerlink" href="#tcp" title="Permanent link">&para;</a></h3>
+<p><img alt="TCP通信流程" src="../assert/TCP%E9%80%9A%E4%BF%A1%E6%B5%81%E7%A8%8B.png" /></p>
+<p>TCP 通信流程
+服务器端
+创建套接字：使用 socket 函数创建一个套接字。
+绑定地址：使用 bind 函数将套接字绑定到本地地址和端口。
+监听连接：使用 listen 函数使套接字进入监听状态。
+接受连接：使用 accept 函数接受客户端的连接请求。
+读写数据：使用 read 和 write 函数进行数据的读写。
+关闭套接字：使用 close 函数关闭套接字。</p>
+<p>客户端
+创建套接字：使用 socket 函数创建一个套接字。
+连接服务器：使用 connect 函数连接到服务器。
+读写数据：使用 read 和 write 函数进行数据的读写。
+关闭套接字：使用 close 函数关闭套接字。
+TCP 通信流程
+服务器端
+创建套接字：使用 socket 函数创建一个套接字。
+绑定地址：使用 bind 函数将套接字绑定到本地地址和端口。
+监听连接：使用 listen 函数使套接字进入监听状态。
+接受连接：使用 accept 函数接受客户端的连接请求。
+读写数据：使用 read 和 write 函数进行数据的读写。
+关闭套接字：使用 close 函数关闭套接字。</p>
+<p>客户端
+创建套接字：使用 socket 函数创建一个套接字。
+连接服务器：使用 connect 函数连接到服务器。
+读写数据：使用 read 和 write 函数进行数据的读写。
+关闭套接字：使用 close 函数关闭套接字。
+创建套接字</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="cpf">&lt;sys/socket.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">socket</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">domain</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">protocol</span><span class="p">);</span>
+</code></pre></div>
+<p>socket() 为通讯创建一个端点，为套接字返回一个文件描述符。</p>
+<p>参数：
+domain 为创建的套接字指定协议集。 例如：
+AF_INET 表示IPv4网络协议
+AF_INET6 表示IPv6
+type 参数指定套接字的类型
+常见的类型有 SOCK_STREAM（流套接字/TCP 套接字）和 SOCK_DGRAM（数据报套接字/UDP套接字）等。
+protocol 指定实际使用的传输协议。
+最常见的就是IPPROTO_TCP、IPPROTO_SCTP、IPPROTO_UDP、IPPROTO_DCCP。
+如果该项为0的话，即根据选定的domain和type选择使用缺省协议。
+返回值：</p>
+<p>socket 函数的返回值为新创建的套接字的文件描述符，如果创建失败则返回 -1。</p>
+<p>示例：
+创建TCP套接字</p>
+<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span><span class="w"> </span><span class="n">SOCK_STREAM</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</code></pre></div>
+<p>创建UDP套接字</p>
+<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span><span class="w"> </span><span class="n">SOCK_DGRAM</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</code></pre></div>
+<p>设置服务器监听/客户端连接的IP和端口信息</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="cpf">&lt;netinet/in.h&gt;</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr_in</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">sa_family_t</span><span class="w">    </span><span class="n">sin_family</span><span class="p">;</span><span class="w"> </span><span class="cm">/* 套接字协议族 IPV4  AF_INET */</span>
+<span class="w">    </span><span class="n">in_port_t</span><span class="w">      </span><span class="n">sin_port</span><span class="p">;</span><span class="w">   </span><span class="cm">/* 端口号 例如 8888*/</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">in_addr</span><span class="w"> </span><span class="n">sin_addr</span><span class="p">;</span><span class="w">   </span><span class="cm">/* IP 地址 */</span>
+<span class="p">};</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">in_addr</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w">       </span><span class="n">s_addr</span><span class="p">;</span><span class="w">     </span><span class="cm">/* IP地址 */</span>
+<span class="p">};</span>
+</code></pre></div>
+<p>示例：</p>
+<div class="highlight"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr_in</span><span class="w"> </span><span class="n">serv_addr</span><span class="p">;</span>
+<span class="n">serv_addr</span><span class="p">.</span><span class="n">sin_family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AF_INET</span><span class="p">;</span><span class="w"> </span><span class="c1">//IPV4</span>
+<span class="n">serv_addr</span><span class="p">.</span><span class="n">sin_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">htons</span><span class="p">(</span><span class="mi">8080</span><span class="p">);</span><span class="w"> </span><span class="c1">//端口设置</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1">// 将 IP 地址从字符串转换为二进制形式并存入serv_addr.sin_addr</span>
+<span class="n">inet_pton</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;127.0.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">serv_addr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">)</span>
+</code></pre></div>
+<p>htons说明：</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;arpa/inet.h&gt;</span>
+<span class="kt">uint16_t</span><span class="w"> </span><span class="nf">htons</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">hostshort</span><span class="p">);</span>
+</code></pre></div>
+<p>作用：将 16位无符号整数 从 主机字节序 转换为 网络字节序
+"htons" 是 "host to network short" 的缩写
+字节序背景：
+主机字节序：可能是大端序(Big-Endian)或小端序(Little-Endian)，取决于CPU架构
+网络字节序：TCP/IP协议规定使用大端序(Big-Endian)</p>
+<p>inet_pton说明：</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;arpa/inet.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">inet_pton</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">af</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">src</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">dst</span><span class="p">);</span>
+</code></pre></div>
+<p>作用：将 IP 地址从字符串转换为二进制形式
+参数类型说明
+afint地址族 (Address Family)：
+• AF_INET - IPv4地址
+• AF_INET6 - IPv6地址
+srcconst char<em>源字符串（IP字符串："127.0.0.1"）
+dstvoid</em>目标缓冲区：
+• IPv4: 指向struct in_addr
+• IPv6: 指向struct in6_addr
+返回值：
+返回1转换成功，其它值转换失败</p>
+<p>connect，用于客户端，连接服务器</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socket.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">connect</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="kt">socklen_t</span><span class="w"> </span><span class="n">addrlen</span><span class="p">);</span>
+</code></pre></div>
+<p>函数参数说明：
+sockfd：通过socket()创建的有效套接字描述符
+addr：参数 addr 是指向目标服务器地址的指针，通常是一个 sockaddr_in(IPV4 结构体) 或 sockaddr_in6(IPV6 结构体) 结构体类型的指针。
+addrlen：目标服务器地址的长度。
+通常使用sizeof(struct sockaddr_in)或sizeof(struct sockaddr_in6)
+返回值：
+0连接成功建立
+-1连接失败，错误码存储在errno中</p>
+<p>示例：</p>
+<div class="highlight"><pre><span></span><code><span class="n">connect</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">serv_addr</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">sockaddr_in</span><span class="p">));</span>
+</code></pre></div>
+<p>bind，用于服务器端，绑定监听地址和端口</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="cpf">&lt;sys/socket.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">bind</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="kt">socklen_t</span><span class="w"> </span><span class="n">addrlen</span><span class="p">);</span>
+</code></pre></div>
+<p>bind 函数的作用是将一个 socket 绑定到一个具体的地址和端口上。这个地址和端口可以是任意的本地或远程地址和端口，但必须是未被其他 socket 使用的地址和端口。</p>
+<p>参数：
+sockfd：表示要绑定的 socket 描述符。
+addr：表示要绑定的地址信息，是一个指向 struct sockaddr 类型的指针。
+addrlen：表示地址信息的长度，通常使用 sizeof 运算符获取。</p>
+<p>返回值
+成功时返回 0
+失败时返回 -1</p>
+<p>示例</p>
+<div class="highlight"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr_in</span><span class="w"> </span><span class="n">address</span><span class="p">;</span>
+<span class="n">address</span><span class="p">.</span><span class="n">sin_family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AF_INET</span><span class="p">;</span>
+<span class="n">address</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">INADDR_ANY</span><span class="p">;</span>
+<span class="n">address</span><span class="p">.</span><span class="n">sin_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">htons</span><span class="p">(</span><span class="n">PORT</span><span class="p">);</span>
+<span class="n">bind</span><span class="p">(</span><span class="n">server_fd</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">address</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">address</span><span class="p">));</span>
+</code></pre></div>
+<p>listen，用于服务器端，将套接字设置为监听模式，使其能够接收来自客户端的连接请求。</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socket.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">listen</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">backlog</span><span class="p">);</span>
+</code></pre></div>
+<p>将套接字设置为监听模式，使其能够接收来自客户端的连接请求。
+参数：
+sockfd 套接字文件描述符
+backlog：决定监听队列大小</p>
+<p>函数成功执行时返回 0，失败返回 -1</p>
+<p>accept，用于服务器端，接受客户端的连接请求并创建一个新的套接字来处理与该客户端的通信。</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/types.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socket.h&gt;</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">accept</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="kt">socklen_t</span><span class="w"> </span><span class="o">*</span><span class="n">addrlen</span><span class="p">);</span>
+</code></pre></div>
+<p>用于接受客户端的连接请求并创建一个新的套接字来处理与该客户端的通信。</p>
+<p>sockfd：表示监听套接字的文件描述符。
+addr：表示传出参数，指向客户端地址的结构体指针。
+addrlen：表示传入传出参数，传入的是指向客户端地址结构体的长度，传出的是客户端地址结构体的实际长度。</p>
+<p>如果 accept() 函数调用成功，则返回一个新的套接字描述符，这个套接字描述符用于和客户端进行通信。
+如果调用失败，则返回 -1。</p>
+<p>当一个客户端发起连接请求时，服务器端的 accept() 函数会从连接请求队列中取出一个连接请求，然后创建一个新的套接字用于和该客户端进行通信
+连接成功后，通过write或read函数进行读写，使用完成使用close函数关闭。</p>
+<h3 id="udp">UDP通信流程<a class="headerlink" href="#udp" title="Permanent link">&para;</a></h3>
+<p><img alt="UDP通信流程" src="../assert/UDP%20%E9%80%9A%E4%BF%A1%E6%B5%81%E7%A8%8B.png" /></p>
+<p>服务器端
+创建套接字：使用 socket 函数创建一个套接字。
+绑定地址：使用 bind 函数将套接字绑定到本地地址和端口。
+读写数据：使用 recvfrom 和 sendto 函数进行数据的读写。
+关闭套接字：使用 close 函数关闭套接字。</p>
+<p>客户端
+创建套接字：使用 socket 函数创建一个套接字。
+读写数据：使用 sendto 和 recvfrom 函数进行数据的读写。
+关闭套接字：使用 close 函数关闭套接字。</p>
+<p>recvfrom指定地址接收函数</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socket.h&gt;</span>
+<span class="kt">ssize_t</span><span class="w"> </span><span class="nf">recvfrom</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="p">,</span><span class="w">                </span><span class="c1">// Socket 文件描述符</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">,</span><span class="w">                 </span><span class="c1">// 接收数据的缓冲区</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w">                </span><span class="c1">// 缓冲区大小</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">flags</span><span class="p">,</span><span class="w">                 </span><span class="c1">// 控制标志（通常填 0-默认阻塞）</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr</span><span class="w"> </span><span class="o">*</span><span class="n">src_addr</span><span class="p">,</span><span class="w"> </span><span class="c1">// 发送方的地址信息（输出参数）</span>
+<span class="w">    </span><span class="kt">socklen_t</span><span class="w"> </span><span class="o">*</span><span class="n">addrlen</span><span class="w">         </span><span class="c1">// 地址结构体长度（输入输出参数）</span>
+<span class="p">);</span>
+</code></pre></div>
+<p>参数：
+sockfd：UDP Socket文件描述符
+buf：存放接收数据的缓冲区
+len：缓冲区大小
+flags：控制选项-0（默认阻塞）-MSG_DONTWAIT（非阻塞）
+src_addr：存放发送方的 IP + 端口，如果不需要发送方信息，可以传 NULL
+addrlen：src_addr结构体的大小</p>
+<p>返回值
+成功：返回接收到的字节数（&gt; 0）
+失败：返回 -1</p>
+<p>使用示例：</p>
+<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span><span class="w"> </span><span class="n">SOCK_DGRAM</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr_in</span><span class="w"> </span><span class="n">sender_addr</span><span class="p">;</span>
+<span class="kt">socklen_t</span><span class="w"> </span><span class="n">sender_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">sender_addr</span><span class="p">);</span>
+<span class="c1">// 阻塞接收数据</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">recvfrom</span><span class="p">(</span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">sender_addr</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sender_len</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;recvfrom failed&quot;</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">buffer</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="p">;</span><span class="w">  </span><span class="c1">// 确保字符串终止</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Received %d bytes from %s:%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">,</span>
+<span class="w">           </span><span class="n">inet_ntoa</span><span class="p">(</span><span class="n">sender_addr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">),</span><span class="w"> </span><span class="n">ntohs</span><span class="p">(</span><span class="n">sender_addr</span><span class="p">.</span><span class="n">sin_port</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>sendto指定地址发送函数</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/socket.h&gt;</span>
+<span class="kt">ssize_t</span><span class="w"> </span><span class="nf">sendto</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="p">,</span><span class="w">                      </span><span class="c1">// Socket 文件描述符</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">,</span><span class="w">                 </span><span class="c1">// 要发送的数据</span>
+<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w">                      </span><span class="c1">// 数据长度</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">flags</span><span class="p">,</span><span class="w">                       </span><span class="c1">// 控制标志（通常填 0）</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr</span><span class="w"> </span><span class="o">*</span><span class="n">dest_addr</span><span class="p">,</span><span class="w"> </span><span class="c1">// 目标地址（IP + 端口）</span>
+<span class="w">    </span><span class="kt">socklen_t</span><span class="w"> </span><span class="n">addrlen</span><span class="w">                </span><span class="c1">// 目标地址结构体长度</span>
+<span class="p">);</span>
+</code></pre></div>
+<p>参数：
+sockfd：UDP Socket文件描述符
+buf：要发送的数据
+len：数据长度
+flags：控制选项，-0（默认阻塞）-MSG_DONTWAIT（非阻塞）
+dest_addr：目标地址
+addrlen：目标地址结构体长度
+返回值
+成功：返回实际发送的字节数（通常等于 len）
+失败：返回 -1</p>
+<p>示例：
+初始化服务器信息：</p>
+<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">sockfd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span><span class="w"> </span><span class="n">SOCK_DGRAM</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr_in</span><span class="w"> </span><span class="n">server_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">sin_family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AF_INET</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">sin_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">htons</span><span class="p">(</span><span class="mi">8080</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inet_addr</span><span class="p">(</span><span class="s">&quot;127.0.0.1&quot;</span><span class="p">)</span>
+<span class="p">};</span>
+<span class="c1">// 发送数据到UDP服务器</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Hello, UDP Server!&quot;</span><span class="p">;</span>
+<span class="n">sendto</span><span class="p">(</span><span class="n">sockfd</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">message</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">,(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">server_addr</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">server_addr</span><span class="p">));</span>
+</code></pre></div>
+<p>UDP服务端</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;arpa/inet.h&gt;</span>
+
+<span class="cp">#define PORT 8080</span>
+<span class="cp">#define BUFFER_SIZE 1024</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">server_fd</span><span class="p">;</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr_in</span><span class="w"> </span><span class="n">address</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">addrlen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">address</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 创建套接字</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">server_fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span><span class="w"> </span><span class="n">SOCK_DGRAM</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;socket failed&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="c1">// 绑定地址</span>
+<span class="w">    </span><span class="n">address</span><span class="p">.</span><span class="n">sin_family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AF_INET</span><span class="p">;</span>
+<span class="w">    </span><span class="n">address</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">INADDR_ANY</span><span class="p">;</span>
+<span class="w">    </span><span class="n">address</span><span class="p">.</span><span class="n">sin_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">htons</span><span class="p">(</span><span class="n">PORT</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bind</span><span class="p">(</span><span class="n">server_fd</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">address</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">address</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;bind failed&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">close</span><span class="p">(</span><span class="n">server_fd</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;UDP Server listening on port %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">PORT</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 读取数据</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">recvfrom</span><span class="p">(</span><span class="n">server_fd</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">address</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">socklen_t</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">addrlen</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Received from client: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// 发送数据</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Hello from server&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="n">sendto</span><span class="p">(</span><span class="n">server_fd</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">message</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">address</span><span class="p">,</span><span class="w"> </span><span class="n">addrlen</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 关闭套接字</span>
+<span class="w">    </span><span class="n">close</span><span class="p">(</span><span class="n">server_fd</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>UDP客户端</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;arpa/inet.h&gt;</span>
+
+<span class="cp">#define PORT 8080</span>
+<span class="cp">#define BUFFER_SIZE 1024</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">sock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr_in</span><span class="w"> </span><span class="n">serv_addr</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 创建套接字</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">sock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span><span class="w"> </span><span class="n">SOCK_DGRAM</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;socket failed&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">serv_addr</span><span class="p">.</span><span class="n">sin_family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AF_INET</span><span class="p">;</span>
+<span class="w">    </span><span class="n">serv_addr</span><span class="p">.</span><span class="n">sin_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">htons</span><span class="p">(</span><span class="n">PORT</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// 将 IP 地址从字符串转换为二进制形式</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">inet_pton</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;127.0.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">serv_addr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;inet_pton failed&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">close</span><span class="p">(</span><span class="n">sock</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// 发送数据</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Hello from client&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="n">sendto</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">message</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">sockaddr</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">serv_addr</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">serv_addr</span><span class="p">));</span>
+
+<span class="w">    </span><span class="c1">// 读取数据</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">recvfrom</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">BUFFER_SIZE</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Received from server: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 关闭套接字</span>
+<span class="w">    </span><span class="n">close</span><span class="p">(</span><span class="n">sock</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="_15">程序运行<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/ioctl.h&gt;</span><span class="c1">  // 头文件</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">ioctl</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="cm">/* arg */</span><span class="p">);</span>
+</code></pre></div>
+<p>参数说明
+fd已打开的设备文件描述符（如 /dev/fb0 的 framebuffer_fd）
+request控制命令（由设备驱动定义，如 FBIOGET_VSCREENINFO）
+arg可选参数，通常是指向某个数据结构的指针
+返回值
+成功：返回 0 或设备驱动定义的非负值。
+失败：返回 -1，并设置 errno（可通过 perror 查看错误原因）。</p>
+<p>ioctl 的用途非常广泛，主要用于：
+获取/设置设备信息（如屏幕分辨率、串口波特率）。
+控制设备行为（如摄像头调整曝光、调整屏幕亮度）。
+特殊硬件操作（如磁盘格式化、网络接口配置）。</p>
+<p>例如：读取&amp;设置波特率</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;termios.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/ioctl.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">termios</span><span class="w"> </span><span class="n">tty</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">fd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/dev/ttyS0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">O_RDWR</span><span class="p">);</span>
+<span class="w">    </span><span class="n">ioctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">TCGETS</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tty</span><span class="p">);</span><span class="w">  </span><span class="c1">// 获取终端属性</span>
+<span class="w">    </span><span class="n">tty</span><span class="p">.</span><span class="n">c_cflag</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">B9600</span><span class="p">;</span><span class="w">     </span><span class="c1">// 设置波特率 9600</span>
+<span class="w">    </span><span class="n">ioctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">TCSETS</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">tty</span><span class="p">);</span><span class="w">  </span><span class="c1">// 应用新属性</span>
+<span class="w">    </span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../../ros/gazebo/basic/" class="md-footer__link md-footer__link--prev" aria-label="上一页: basic">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                basic
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../LVGL/basic/" class="md-footer__link md-footer__link--next" aria-label="下一页: basic">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                basic
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tabs", "navigation.indexes", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
