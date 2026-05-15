@@ -85,9 +85,11 @@ nav:
       - FPGA:
           - basics: notes/FPGA/basics.md
       - gazebo:
-          - basic: notes/gazebo/basic.md
+          - basic: notes/ros/gazebo/basic.md
       - linux:
           - basic: notes/linux/basic.md
+      - LVGL:
+          - basic: notes/LVGL/basic.md
       - ros:
           - basic: notes/ros/basic.md
           - code: notes/ros/code.md

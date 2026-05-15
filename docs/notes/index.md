@@ -35,7 +35,7 @@ hide:
         <h3>FPGA</h3>
         <p>FPGA &#23398;&#20064;&#31508;&#35760;&#19982;&#30456;&#20851;&#22522;&#30784;&#20869;&#23481;&#12290;</p>
       </a>
-      <a class="category-card" href="/notes/gazebo/basic/">
+      <a class="category-card" href="/notes/ros/gazebo/basic/">
         <h3>gazebo</h3>
         <p>Gazebo &#20223;&#30495;&#22522;&#30784;&#20869;&#23481;&#12290;</p>
       </a>
