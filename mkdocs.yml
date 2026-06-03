@@ -88,6 +88,13 @@ nav:
           - basic: notes/ros/gazebo/basic.md
       - linux:
           - basic: notes/linux/basic.md
+          - linux驱动:
+              - 下载资料: notes/linux/linux驱动/00_下载资料.md
+              - 搭建开发环境: notes/linux/linux驱动/01_搭建开发环境.md
+              - 通用的驱动框架: notes/linux/linux驱动/02_通用的驱动框架.md
+              - 使用模板操作硬件: notes/linux/linux驱动/03_使用模板操作硬件.md
+              - 平台总线设备模型和设备树: notes/linux/linux驱动/04_平台总线设备模型和设备树.md
+              - I2C驱动程序模板: notes/linux/linux驱动/05_I2C驱动程序模板.md
       - LVGL:
           - basic: notes/LVGL/basic.md
       - ros:
