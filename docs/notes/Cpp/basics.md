@@ -317,38 +317,7 @@ public:
     delete p;
 }
 ```
-## 类被继承，并且你会用“基类指针删除子类”
-这是继承里最危险的坑。
-例如：
-```cpp
-class Base {
-public:
-    ~Base() {
-        std::cout << "Base destructor\n";
-    }
-};
 
-class Derived : public Base {
-public:
-    ~Derived() {
-        std::cout << "Derived destructor\n";
-    }
-};
-
-// 然后：
-Base* p = new Derived();
-delete p;
-
-// 输出是：
-Base destructor
-
-// 正确做法
-// 如果类会被继承，应该写：
-class Base {
-public:
-    virtual ~Base() {}
-};
-```
 ## 迭代器
 
 迭代器可以先理解成“位置”。
@@ -905,6 +874,102 @@ class C : public A
 
 > 封装、继承、多态
 
+## C++ 继承中的虚析构函数
+在 C++ 继承中，有一个很重要的规则：
+> 如果一个类可能被继承，并且将来可能通过“基类指针”删除子类对象，那么基类的析构函数应该声明为 `virtual`。
+例如：
+```cpp
+class Base {
+public:
+    ~Base() {
+        std::cout << "Base destructor\n";
+    }
+};
+class Derived : public Base {
+public:
+    ~Derived() {
+        std::cout << "Derived destructor\n";
+    }
+};
+```
+如果这样使用：
+```cpp
+Base* p = new Derived();
+delete p;
+```
+`p` 的类型是 `Base*`，但是它实际指向的是一个 `Derived` 对象。
+如果 `Base` 的析构函数不是虚函数，那么通过 `delete p` 删除对象时，可能只会调用基类的析构函数：
+```cpp
+Base destructor
+```
+而不会调用子类 `Derived` 的析构函数。
+这会带来严重问题：如果子类中申请了内存、打开了文件、创建了线程，或者占用了其他资源，那么这些资源可能无法被正确释放。
+正确写法应该是：
+```cpp
+class Base {
+public:
+    virtual ~Base() {
+        std::cout << "Base destructor\n";
+    }
+};
+class Derived : public Base {
+public:
+    ~Derived() {
+        std::cout << "Derived destructor\n";
+    }
+};
+```
+这时再执行：
+```cpp
+Base* p = new Derived();
+delete p;
+```
+析构函数的调用顺序是：
+```cpp
+Derived destructor
+Base destructor
+```
+也就是说，先析构子类部分，再析构基类部分。
+注意：虚析构函数不等于抽象类
+一个类被继承，并不代表它一定要写成抽象类。
+抽象类指的是包含纯虚函数的类，例如：
+```cpp
+class Base {
+public:
+    virtual void run() = 0;
+};
+```
+这里的 `= 0` 表示纯虚函数，所以 `Base` 是抽象类，不能直接创建对象。
+但是下面这个类不是抽象类：
+```cpp
+class Base {
+public:
+    virtual ~Base() {}
+};
+```
+
+虽然它有虚析构函数，但析构函数不是纯虚函数，所以这个类仍然可以创建对象。
+
+## 总结
+
+继承本身不要求基类必须是抽象类。
+
+但是，只要一个类会作为基类使用，并且可能出现下面这种写法：
+
+```cpp
+Base* p = new Derived();
+delete p;
+```
+
+那么基类的析构函数就应该写成虚析构函数：
+
+```cpp
+virtual ~Base() {}
+```
+
+这样可以保证删除对象时，子类和基类的析构函数都会被正确调用，避免资源泄漏。
+
+
 ## 多态
 
 多态（Polymorphism）字面意思是：
@@ -1047,7 +1112,7 @@ dev->init();
 
 多态是指同一接口在不同对象上表现出不同的行为。在 C++ 中通常通过继承和虚函数实现运行时多态，依赖虚函数表进行动态绑定。
 
-## 十、和抽象类的关系
+## 和抽象类的关系
 
 抽象类通常用来实现多态。
 
@@ -1062,3 +1127,553 @@ dev->init();
 ↓
 产生多态
 ```
+
+## 为什么不直接创建 Dog 和 Cat，而要用多态
+
+如果程序里只处理几个确定对象，可以直接创建具体类。
+
+```cpp
+Dog d;
+Cat c;
+d.speak();
+c.speak();
+```
+
+这种写法简单直接，完全没问题。
+但是如果希望用一套统一代码处理多种不同对象，就适合使用多态。
+
+```cpp
+void makeSpeak(Animal& a) {
+    a.speak();
+}
+```
+
+这里 `makeSpeak()` 不关心传进来的是 `Dog` 还是 `Cat`，只要求它是一个 `Animal`。
+
+```cpp
+Dog d;
+Cat c;
+makeSpeak(d);
+makeSpeak(c);
+```
+
+如果 `speak()` 是虚函数，那么虽然参数类型是 `Animal&`，实际执行时会根据真实对象类型调用对应版本。
+
+```cpp
+Animal& a = d;
+a.speak(); // 实际调用 Dog::speak()
+```
+
+多态的核心作用是：用统一接口处理不同类型对象，减少重复代码，方便以后扩展新类型。
+
+## 继承、抽象类、多态分别是什么
+
+继承表示“是一种”的关系。
+
+```cpp
+class Dog : public Animal {};
+```
+
+意思是 `Dog` 是一种 `Animal`。
+继承适合把多个类的共同特征抽出来，形成统一的父类类型。
+抽象类一般用来定义规则，而不是直接创建对象。
+
+```cpp
+class Animal {
+public:
+    virtual void speak() = 0;
+};
+```
+
+这里 `= 0` 表示纯虚函数，`Animal` 就变成抽象类。
+抽象类适合规定所有子类必须实现某些函数。
+
+```cpp
+class Dog : public Animal {
+public:
+    void speak() override {
+        cout << "Dog: Woof" << endl;
+    }
+};
+```
+
+如果 `Dog` 不实现 `speak()`，那么 `Dog` 也会继续是抽象类，不能创建对象。
+多态指的是：同一个接口，不同对象有不同表现。
+
+```cpp
+Animal* a = new Dog();
+a->speak(); // 调用 Dog 的版本
+```
+
+多态通常需要：有继承关系，父类函数是 `virtual`，子类重写该函数，通过父类指针或父类引用调用。
+
+## 多态的典型使用场景
+
+多态适合处理“类型不同，但行为接口相同”的对象。
+例如动物系统中，不同动物都可以 `speak()`。
+
+```cpp
+vector<Animal*> animals;
+animals.push_back(new Dog());
+animals.push_back(new Cat());
+for (Animal* a : animals) {
+    a->speak();
+}
+```
+
+循环中代码只有一份：
+
+```cpp
+a->speak();
+```
+
+但实际执行时，可能调用 `Dog::speak()`，也可能调用 `Cat::speak()`。
+实际开发中，多态常用于通信接口、设备接口、驱动接口、任务接口等。
+
+```cpp
+class Communication {
+public:
+    virtual void send() = 0;
+};
+class UART : public Communication {
+public:
+    void send() override {
+        cout << "Send by UART" << endl;
+    }
+};
+class CAN : public Communication {
+public:
+    void send() override {
+        cout << "Send by CAN" << endl;
+    }
+};
+```
+
+主程序只依赖统一接口：
+
+```cpp
+void sendData(Communication& com) {
+    com.send();
+}
+```
+
+以后新增 `TCP`、`RS485` 等通信方式时，原来的 `sendData()` 不需要修改。
+
+## 基类引用和基类指针都可以实现多态
+
+这个参数不是指针，而是引用。
+
+```cpp
+void sendData(Communication& com) {
+    com.send();
+}
+```
+
+`Communication&` 表示基类引用，`com` 是传入对象的别名。
+
+```cpp
+UART uart;
+sendData(uart);
+```
+
+只要 `send()` 是虚函数，真实对象是 `UART`，就会调用 `UART::send()`。
+指针版本也可以。
+
+```cpp
+void sendData(Communication* com) {
+    com->send();
+}
+UART uart;
+sendData(&uart);
+```
+
+也可以动态创建对象。
+
+```cpp
+Communication* p = new UART();
+sendData(p);
+delete p;
+```
+
+但是简单场景下更推荐引用和局部对象，因为不用手动 `new` 和 `delete`。
+不要用值传递实现多态。
+
+```cpp
+void sendData(Communication com) {
+    com.send();
+}
+```
+
+这种写法会发生对象切片，只保留基类部分，子类部分会丢失，多态会失效。
+
+## std::function 是什么
+
+`std::function` 是 C++ 里的通用函数包装器，头文件是：
+
+```cpp
+#include <functional>
+```
+
+它可以保存“能像函数一样被调用的东西”，比如普通函数、lambda、函数对象、绑定后的成员函数。
+基本语法：
+
+```cpp
+std::function<返回值类型(参数类型列表)> 变量名;
+```
+
+常见形式：
+
+```cpp
+std::function<void()> f1;          // 无参数，无返回值
+std::function<int(int, int)> f2;   // 两个 int 参数，返回 int
+std::function<void(int)> f3;       // 一个 int 参数，无返回值
+```
+
+保存普通函数：
+
+```cpp
+int add(int a, int b) {
+    return a + b;
+}
+std::function<int(int, int)> f = add;
+cout << f(3, 5) << endl;
+```
+
+`std::function` 常用于回调函数，也就是把一个函数行为作为参数传给另一个函数。
+
+## lambda 是什么
+
+lambda 可以理解成“没有名字的临时函数”。
+普通函数写法：
+
+```cpp
+void hello() {
+    cout << "Hello" << endl;
+}
+```
+
+lambda 写法：
+
+```cpp
+[]() {
+    cout << "Hello" << endl;
+}
+```
+
+lambda 常用于只需要临时使用一次的小函数，不想单独起名字。
+它也可以保存到 `std::function` 里。
+
+```cpp
+std::function<void()> f = []() {
+    cout << "Hello lambda" << endl;
+};
+f();
+```
+
+这里 `f` 是一个函数变量，里面保存了这个 lambda，`f()` 就是调用它。
+
+## lambda 中 [](){} 分别是什么意思
+
+lambda 基本格式是：
+
+```cpp
+[捕获列表](参数列表) {
+    函数体
+};
+```
+
+`[]` 是捕获列表，用来捕获外部变量。
+
+```cpp
+[] // 不捕获外部变量
+```
+
+`()` 是参数列表，和普通函数参数一样。
+
+```cpp
+[](int a, int b) {
+    return a + b;
+}
+```
+
+`{}` 是函数体，里面写真正执行的代码。
+
+```cpp
+[]() {
+    cout << "Hello lambda" << endl;
+}
+```
+
+这段 lambda 表示：不捕获外部变量，没有参数，执行时输出一行文字。
+如果要使用外部变量，可以写捕获列表：
+
+```cpp
+int x = 10;
+auto f = [x]() {
+    cout << x << endl;
+};
+f();
+```
+
+这里 `[x]` 表示把外部变量 `x` 捕获进 lambda。
+
+## callback 为什么没有单独定义也能调用
+
+在下面这段代码中，`callback` 不是普通函数名，而是函数参数名。
+
+```cpp
+void process(std::function<void()> callback) {
+    callback();
+}
+```
+
+它的类型是：
+
+```cpp
+std::function<void()>
+```
+
+意思是 `callback` 可以保存一个“无参数、无返回值”的可调用对象。
+调用 `process()` 时，可以直接传入 lambda。
+
+```cpp
+process([]() {
+    cout << "This is callback" << endl;
+});
+```
+
+这相当于把这个匿名函数传给 `callback` 参数。
+进入 `process()` 后，`callback` 里面已经保存了这个 lambda，所以可以写：
+
+```cpp
+callback();
+```
+
+这不是调用一个提前写好的普通函数，而是调用传进来的函数对象。
+可以类比普通参数：
+
+```cpp
+void func(int x) {
+    cout << x << endl;
+}
+func(10);
+```
+
+`x` 没有提前单独定义，但它是函数参数，所以可以在函数内部使用。
+同理，`callback` 也是函数参数，只不过它保存的是一个函数行为。
+
+## std::function 和函数指针的区别
+
+函数指针可以保存普通函数。
+
+```cpp
+void hello() {
+    cout << "Hello" << endl;
+}
+void (*fp)() = hello;
+fp();
+```
+
+但是函数指针不能方便地保存带捕获的 lambda。
+
+```cpp
+int x = 10;
+// void (*fp)() = [x]() { cout << x << endl; }; // 错误
+```
+
+`std::function` 可以保存带捕获的 lambda。
+
+```cpp
+int x = 10;
+std::function<void()> f = [x]() {
+    cout << x << endl;
+};
+f();
+```
+
+简单理解：函数指针更轻量，但功能简单；`std::function` 更灵活，但有一定额外开销。
+在嵌入式裸机或资源很小的 MCU 上，经常使用函数指针；在 Linux、上位机、ROS、普通 C++ 应用里，`std::function` 很常见。
+
+## unique_ptr 是什么
+
+`std::unique_ptr` 是 C++ 里的智能指针，头文件是：
+
+```cpp
+#include <memory>
+```
+
+它可以理解成“自动 delete 的指针”，并且独占它管理的对象。
+
+```cpp
+auto p = std::make_unique<Dog>();
+p->speak();
+```
+
+当 `p` 生命周期结束时，它会自动释放对象，不需要手动 `delete`。
+`unique_ptr` 不能复制，只能转移所有权。
+
+```cpp
+std::unique_ptr<Dog> p1 = std::make_unique<Dog>();
+// std::unique_ptr<Dog> p2 = p1; // 错误
+std::unique_ptr<Dog> p2 = std::move(p1); // 正确
+```
+
+转移后，`p1` 变空，`p2` 接管对象。
+`unique_ptr` 常用于替代裸指针的 `new/delete`，也常和多态一起使用。
+
+```cpp
+std::unique_ptr<Animal> a = std::make_unique<Dog>();
+a->speak();
+```
+
+如果函数只是临时使用对象，一般传引用。
+
+```cpp
+void makeSpeak(Animal& animal) {
+    animal.speak();
+}
+auto dog = std::make_unique<Dog>();
+makeSpeak(*dog);
+```
+
+如果函数要接管对象所有权，才传 `unique_ptr`，并用 `std::move`。
+
+```cpp
+void takeAnimal(std::unique_ptr<Animal> animal) {
+    animal->speak();
+}
+auto dog = std::make_unique<Dog>();
+takeAnimal(std::move(dog));
+```
+
+## shared_ptr 是什么
+
+`std::shared_ptr` 也是智能指针，头文件是：
+
+```cpp
+#include <memory>
+```
+
+它可以理解成“多个指针共同管理同一个对象”。
+
+```cpp
+auto p1 = std::make_shared<Dog>();
+auto p2 = p1;
+```
+
+这时 `p1` 和 `p2` 共同拥有同一个 `Dog` 对象。
+`shared_ptr` 内部有引用计数，记录当前有多少个 `shared_ptr` 正在管理这个对象。
+
+```cpp
+cout << p1.use_count() << endl;
+```
+
+当最后一个 `shared_ptr` 消失时，对象才会自动释放。
+
+```cpp
+std::shared_ptr<Animal> a = std::make_shared<Dog>();
+a->speak();
+```
+
+如果函数只是使用对象，不保存它，推荐传引用。
+
+```cpp
+void makeSpeak(Animal& animal) {
+    animal.speak();
+}
+auto a = std::make_shared<Dog>();
+makeSpeak(*a);
+```
+
+如果函数要保存对象，让对象在函数结束后继续存在，可以传 `shared_ptr`。
+
+```cpp
+void saveAnimal(std::shared_ptr<Animal> animal) {
+    animal->speak();
+}
+auto a = std::make_shared<Dog>();
+saveAnimal(a);
+```
+
+这会复制一份 `shared_ptr`，引用计数会增加。
+
+## shared_ptr 的循环引用问题
+
+`shared_ptr` 最大的坑是循环引用。
+
+```cpp
+class B;
+class A {
+public:
+    std::shared_ptr<B> b;
+};
+class B {
+public:
+    std::shared_ptr<A> a;
+};
+```
+
+如果 `A` 持有 `B`，`B` 又持有 `A`，它们的引用计数可能永远无法变成 0。
+解决方法是让其中一边使用 `weak_ptr`。
+
+```cpp
+class B {
+public:
+    std::weak_ptr<A> a;
+};
+```
+
+`weak_ptr` 只观察对象，不增加引用计数，所以可以打破循环引用。
+
+## unique_ptr、shared_ptr、weak_ptr 的区别
+
+```text
+unique_ptr：独占，不能复制，只能 move
+shared_ptr：共享，可以复制，有引用计数
+weak_ptr：观察，不拥有对象，不增加引用计数
+```
+
+一般优先用 `unique_ptr`，确实需要多个地方共享对象时再用 `shared_ptr`。
+
+## 综合例子：多态 + unique_ptr
+
+```cpp
+#include <iostream>
+#include <memory>
+#include <vector>
+using namespace std;
+class Animal {
+public:
+    virtual ~Animal() = default;
+    virtual void speak() = 0;
+};
+class Dog : public Animal {
+public:
+    void speak() override {
+        cout << "Dog: Woof" << endl;
+    }
+};
+class Cat : public Animal {
+public:
+    void speak() override {
+        cout << "Cat: Meow" << endl;
+    }
+};
+void makeSpeak(Animal& animal) {
+    animal.speak();
+}
+int main() {
+    vector<unique_ptr<Animal>> animals;
+    animals.push_back(make_unique<Dog>());
+    animals.push_back(make_unique<Cat>());
+    for (auto& animal : animals) {
+        makeSpeak(*animal);
+    }
+    return 0;
+}
+```
+
+这个例子里，`vector<unique_ptr<Animal>>` 保存的是基类智能指针，但实际对象可以是 `Dog` 或 `Cat`。
+`makeSpeak(Animal& animal)` 使用基类引用接收不同子类对象。
+`speak()` 是虚函数，所以运行时会根据真实对象类型调用对应版本。
+`unique_ptr` 负责自动释放对象，不需要手动 `delete`。
