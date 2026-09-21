@@ -318,6 +318,243 @@ public:
 }
 ```
 
+## 成员函数和友元函数
+成员函数就是“属于这个类的函数”；友元函数不是这个类的成员，但被这个类授权，可以访问它的 private / protected。
+```cpp
+成员函数格式
+class ClassName
+{
+public:
+    ReturnType functionName(ParameterList)
+    {
+        // function body
+    }
+};
+友元函数格式
+class ClassName
+{
+public:
+    friend ReturnType functionName(ParameterList);
+};
+```
+例子：
+```cpp
+class Vector2D
+{
+public:
+    Vector2D(int x, int y) : x_(x), y_(y) {}
+
+    Vector2D operator+(const Vector2D& other) const
+    {
+        return Vector2D(x_ + other.x_, y_ + other.y_);
+    }
+
+private:
+    int x_;
+    int y_;
+};
+```
+这里：
+```cpp
+Vector2D operator+(const Vector2D& other) const
+```
+就是成员函数。
+
+它其实等价于：
+```cpp
+Vector2D operator+(const Vector2D& other) const
+{
+    return Vector2D(this->x_ + other.x_,
+                    this->y_ + other.y_);
+}
+```
+这里的：
+
+this就是当前对象。
+
+比如：
+```cpp
+Vector2D first(1, 2);
+Vector2D second(3, 4);
+
+first + second;
+// 实际上调用的是：first.operator+(second);
+```
+所以：
+this指向 first
+other就是 second
+
+也就是说：
+
+x_其实就是：this->x_
+
+成员函数最常见的写法有两种。
+
+第一种，直接写在类里面：
+```cpp
+class Student
+{
+public:
+    void hello()
+    {
+        std::cout << "hello" << std::endl;
+    }
+};
+
+调用：
+
+Student s;
+s.hello();
+```
+
+第二种，类里面只声明，类外定义：
+```cpp
+class Student
+{
+public:
+    void hello();
+};
+
+然后类外：
+
+void Student::hello()
+{
+    std::cout << "hello" << std::endl;
+}
+```
+这里：
+
+Student::
+
+表示：hello() 是 Student 类的成员函数。
+
+成员函数有几个重要特点。
+
+第一，它属于类。
+
+所以调用方式通常是：obj.function();比如：first.operator+(second);
+
+第二，它有隐含的 this 指针。
+
+所以成员函数里面可以直接访问：x_,y_。而不需要写：first.x_
+
+第三，成员函数天然可以访问本类的：public、protected、private
+
+再看友元函数。
+
+例如：
+```cpp
+class Vector2D
+{
+public:
+    Vector2D(int x, int y) : x_(x), y_(y) {}
+
+    friend std::ostream& operator<<(std::ostream& os,
+                                    const Vector2D& vector)
+    {
+        return os << "("
+                  << vector.x_
+                  << ", "
+                  << vector.y_
+                  << ")";
+    }
+
+private:
+    int x_;
+    int y_;
+};
+```
+这个：
+
+operator<< 
+
+虽然写在类里面，但它不是成员函数。
+
+所以不能写：
+
+this->x_
+
+因为它根本没有 this。
+
+它必须通过参数：
+vector.x_
+vector.y_
+访问对象。
+
+但是因为前面有：
+
+friend
+
+所以即使：
+
+x_,y_是 private，它也可以访问。
+
+比如成员函数：
+```cpp
+class A
+{
+private:
+    int x_;
+
+public:
+    void show()
+    {
+        std::cout << x_;
+    }
+};
+```
+调用：
+
+A a;
+a.show();
+
+本质上：
+
+a.show();
+
+里面：
+
+this == &a
+
+友元函数：
+```cpp
+class A
+{
+private:
+    int x_;
+
+public:
+    friend void show(const A& a);
+};
+
+类外定义：
+
+void show(const A& a)
+{
+    std::cout << a.x_;
+}
+```
+调用：
+
+A a;
+show(a);
+
+注意这里不是：a.show();
+
+因为 show 不是成员函数。
+
+为什么有时候要用友元函数，而不全写成员函数？
+
+最经典就是：
+
+std::cout << obj;
+
+因为左边是：
+
+std::cout
+
+不是你的对象。
+
 ## 运算符重载
 
 基本语法：
@@ -332,6 +569,11 @@ public:
     int x, y;
 
     Point(int x, int y) : x(x), y(y) {}
+
+    friend std::ostream& operator<<(std::ostream& os, const Point& p) {
+        os << p.x << ", " << p.y;
+        return os;
+    }
 
     Point operator+(const Point& other) {
         return Point(x + other.x, y + other.y);
@@ -387,10 +629,11 @@ a++   -> a.operator++(0)
 
 输出运算符 << 通常写成非成员函数：
 
-friend ostream& operator<<(ostream& os, const Point& p) {
+friend std::ostream& operator<<(std::ostream& os, const Point& p) {
     os << p.x << ", " << p.y;
     return os;
-}
+} 
+
 
 使用：
 
@@ -400,6 +643,42 @@ cout << p;
 
 operator<<(cout, p);
 ```
+
+C++ 里面没有“幂运算符” `^`。
+
+```cpp
+2 ^ 31   // ❌ 不是 2 的 31 次方，而是按位异或
+```
+
+例如：
+
+```text
+ 2  = 00010
+31  = 11111
+-----------
+XOR = 11101 = 29
+```
+
+真正表示 `2` 的 `31` 次方，常见写法是：
+
+```cpp
+pow(2, 31);   // 需要 <cmath>
+1 << 31;      // 也是常见位运算写法
+```
+
+运算符重载的核心是：允许程序员为自定义类型定义运算符行为，让它们像内置类型一样使用。
+
+1. `a + b` 本质上可以写成 `operator+(a, b)`，或者成员函数形式 `a.operator+(b)`
+2. 运算符重载通常有两种实现方式：外部函数 / 成员函数
+3. 外部函数写法：不属于类，没有 `this` 指针，所有操作数都作为参数传入
+4. 成员函数写法：左操作数就是 `this`，右操作数作为参数传入
+
+典型声明示例：
+
+```cpp
+const T operator+(const T& a, const T& b);
+```
+
 ## 迭代器
 
 迭代器可以先理解成“位置”。
@@ -828,41 +1107,6 @@ s.push_back('!');
 
 这里 `s` 是对象，`erase` 和 `push_back` 是操作这个对象的方法。
 
-## 运算符重载
-C++ 里面没有“幂运算符” `^`。
-
-```cpp
-2 ^ 31   // ❌ 不是 2 的 31 次方，而是按位异或
-```
-
-例如：
-
-```text
- 2  = 00010
-31  = 11111
------------
-XOR = 11101 = 29
-```
-
-真正表示 `2` 的 `31` 次方，常见写法是：
-
-```cpp
-pow(2, 31);   // 需要 <cmath>
-1 << 31;      // 也是常见位运算写法
-```
-
-运算符重载的核心是：允许程序员为自定义类型定义运算符行为，让它们像内置类型一样使用。
-
-1. `a + b` 本质上可以写成 `operator+(a, b)`，或者成员函数形式 `a.operator+(b)`
-2. 运算符重载通常有两种实现方式：外部函数 / 成员函数
-3. 外部函数写法：不属于类，没有 `this` 指针，所有操作数都作为参数传入
-4. 成员函数写法：左操作数就是 `this`，右操作数作为参数传入
-
-典型声明示例：
-
-```cpp
-const T operator+(const T& a, const T& b);
-```
 
 ## 抽象类
 
