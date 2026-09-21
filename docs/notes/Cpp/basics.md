@@ -285,9 +285,9 @@ stackArray(int size = default_size);
 
 静态变量只创建一次，生命周期贯穿整个程序。例如 `static int cpt = 0;` 在某函数中一旦被创建，即使后续再次调用该函数，也不会重新初始化。它的内存同样在程序启动时分配，在程序结束时释放。
 
-## `this`
+## `this` `other`
 
-`this` 是一个指针，指向“当前正在使用这个成员函数的那个对象”。
+`this` 是一个指针，指向“当前正在使用这个成员函数的那个对象”。`other` 没有什么特殊语法意义，它只是程序员自己起的参数名字。
 
 ## 构造函数
 
@@ -301,7 +301,7 @@ stackArray(int size = default_size);
 
 一定要写析构函数的典型情况：
 
-## 类里有 new 
+类里有 new 
 ```cpp
 class A {
     int* p;
@@ -318,6 +318,88 @@ public:
 }
 ```
 
+## 运算符重载
+
+基本语法：
+返回类型 operator运算符(参数)
+{
+    // 操作
+}
+
+```cpp
+class Point {
+public:
+    int x, y;
+
+    Point(int x, int y) : x(x), y(y) {}
+
+    Point operator+(const Point& other) {
+        return Point(x + other.x, y + other.y);
+    }
+};
+//使用：
+Point a(1, 2);
+Point b(3, 4);
+
+Point c = a + b;
+
+//等价于：
+Point c = a.operator+(b);
+```
+```cpp
+常见运算符
+
+==：
+
+bool operator==(const Point& other) const {
+    return x == other.x && y == other.y;
+}
+
++=：
+
+Point& operator+=(const Point& other) {
+    x += other.x;
+    y += other.y;
+    return *this;
+}
+
+前置 ++：
+
+Point& operator++() {
+    ++x;
+    ++y;
+    return *this;
+}
+
+后置 ++：
+
+Point operator++(int) {
+    Point temp = *this;
+    ++x;
+    ++y;
+    return temp;
+}
+
+区别：
+
+++a   -> a.operator++()
+a++   -> a.operator++(0)
+
+输出运算符 << 通常写成非成员函数：
+
+friend ostream& operator<<(ostream& os, const Point& p) {
+    os << p.x << ", " << p.y;
+    return os;
+}
+
+使用：
+
+cout << p;
+
+可以理解为：
+
+operator<<(cout, p);
+```
 ## 迭代器
 
 迭代器可以先理解成“位置”。
