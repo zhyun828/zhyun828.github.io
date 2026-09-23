@@ -84,6 +84,7 @@ nav:
               - README: notes/embedded_system/TP/README.md
       - FPGA:
           - basics: notes/FPGA/basics.md
+          - Zynq 硬件乘法加速器: notes/FPGA/zynq-hardware-acceleration-intro.md
       - gazebo:
           - basic: notes/ros/gazebo/basic.md
       - linux:
