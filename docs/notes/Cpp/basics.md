@@ -570,11 +570,6 @@ public:
 
     Point(int x, int y) : x(x), y(y) {}
 
-    friend std::ostream& operator<<(std::ostream& os, const Point& p) {
-        os << p.x << ", " << p.y;
-        return os;
-    }
-
     Point operator+(const Point& other) {
         return Point(x + other.x, y + other.y);
     }
