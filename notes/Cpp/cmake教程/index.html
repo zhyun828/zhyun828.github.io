@@ -1,0 +1,6339 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Notes on embedded systems, robotics, C++, FPGA, and interview preparation.">
+      
+      
+      
+        <link rel="canonical" href="https://zhyun828.github.io/notes/Cpp/cmake%E6%95%99%E7%A8%8B/">
+      
+      
+        <link rel="prev" href="../code/">
+      
+      
+        <link rel="next" href="../cpp_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%AF%A6%E8%A7%A3_%E6%89%A9%E5%B1%95%E7%89%88/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>CMake 与 CMakeLists.txt - ZY Engineering Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/home.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cmake-cmakeliststxt" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="ZY Engineering Notes" class="md-header__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ZY Engineering Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CMake 与 CMakeLists.txt
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal"  aria-label="深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="cyan"  aria-label="浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m3.55 19.09 1.41 1.41 1.8-1.79-1.42-1.42M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6c0-3.32-2.69-6-6-6m8 7h3v-2h-3m-2.76 7.71 1.8 1.79 1.41-1.41-1.79-1.8M20.45 5l-1.41-1.4-1.8 1.79 1.42 1.42M13 1h-2v3h2M6.76 5.39 4.96 3.6 3.55 5l1.79 1.81zM1 13h3v-2H1m12 9h-2v3h2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="ZY Engineering Notes" class="md-nav__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ZY Engineering Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../protocols/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通信协议
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    通信协议
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/usart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    USART
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/i2c/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I2C
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/spi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SPI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/can/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/tcp-udp-ip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TCP / UDP / IP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/modbus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modbus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/ethernet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ethernet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/lin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LIN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/http-https/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP / HTTPS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面试
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    面试
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E5%BF%AB%E9%80%9F%E6%A3%80%E7%B4%A2%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速检索表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E5%B5%8C%E5%85%A5%E5%BC%8F%E9%9D%A2%E8%AF%95%E6%B1%87%E6%80%BB%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    嵌入式面试汇总表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E9%AB%98%E9%A2%91%E9%A2%98%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高频题深度解析
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E9%97%AE%E7%AD%94%E9%9D%A2%E8%AF%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目经历问答面试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arduino
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Arduino
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/basics.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_2" id="__nav_2_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    projet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/projet.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/pre.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    pre
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/code.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/thoughts.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thoughts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cpp
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cpp
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CMake 与 CMakeLists.txt
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CMake 与 CMakeLists.txt
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cmake-gccg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        零、开始使用 CMake 前：先认识编译文件与 gcc/g++
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="零、开始使用 CMake 前：先认识编译文件与 gcc/g++">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-cc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. C/C++ 从源码到程序会产生哪些文件
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-gcc-g" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. gcc 与 g++ 的区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-gccg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 使用 gcc/g++ 查看四个编译阶段
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 使用 gcc/g++ 查看四个编译阶段">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cpp-ii" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        仅预处理：.cpp → .ii
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cpp-s" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        编译成汇编：.cpp → .s
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cpp-o" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        编译但不链接：.cpp → .o
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#o" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        链接：多个 .o → 可执行文件
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-gccg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. gcc/g++ 常用编译选项
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 手工创建和使用库
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 手工创建和使用库">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        静态库
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        动态库
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-cmakeliststxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. CMakeLists.txt 的基础格式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-cmake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 常用 CMake 命令与“是否必选”
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一、先理解完整构建流程
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二、第一个 CMake 项目
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二、第一个 CMake 项目">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 项目结构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 配置、构建和运行
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmakeliststxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三、CMakeLists.txt 基础语法
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三、CMakeLists.txt 基础语法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 命令与参数
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 注释
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 变量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 字符串与引号
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 条件判断
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 循环
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 函数
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#target" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四、最重要的概念：目标 target
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#privatepublic-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        五、PRIVATE、PUBLIC 与 INTERFACE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#target_" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        六、常用的 target_* 命令
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="六、常用的 target_* 命令">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 添加源文件
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 添加头文件搜索路径
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 指定 C++ 标准
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 添加编译宏
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 添加编译选项
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 链接库
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 设置输出名称和目录
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        七、多目录项目
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="七、多目录项目">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 推荐结构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 常用路径变量
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        八、构建类型与生成器
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="八、构建类型与生成器">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 单配置生成器
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 多配置生成器
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 指定生成器
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        九、选项、缓存变量与配置头文件
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="九、选项、缓存变量与配置头文件">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 定义可选功能
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 缓存变量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 生成配置头文件
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        十、查找与使用第三方库
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十、查找与使用第三方库">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-find_package" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. find_package
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-fetchcontent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. FetchContent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-add_subdirectory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. add_subdirectory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 包管理器
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        十一、生成器表达式
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ctest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        十二、单元测试与 CTest
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十二、单元测试与 CTest">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 最小测试配置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 测试属性
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        十三、安装项目
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmake-presets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        十四、CMake Presets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        十五、交叉编译
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        十六、自定义命令与代码生成
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十六、自定义命令与代码生成">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 生成文件
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 自定义目标
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmake_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        十七、调试 CMake
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十七、调试 CMake">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 查看变量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 查看实际编译命令
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-compile_commandsjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 导出 compile_commands.json
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 跟踪配置过程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 常见缓存问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        十八、常见错误与改进方式
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十八、常见错误与改进方式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-include_directories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 全局 include_directories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-add_definitions-cxx_flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 全局 add_definitions 或 CXX_FLAGS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 使用相对路径导致定位混乱
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 手工填写库文件名
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-cmakeliststxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 修改 CMakeLists.txt 后仍使用旧结果
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-visual-studio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Visual Studio 下找不到程序
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-undefined-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 链接阶段出现 undefined reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        十九、一份可直接复用的项目模板
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二十、常用命令速查
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二十一、推荐实践清单
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cpp_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%AF%A6%E8%A7%A3_%E6%89%A9%E5%B1%95%E7%89%88/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    设计模式详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    embedded_system
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    embedded_system
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../embedded_system/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_6_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../embedded_system/TP/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TP
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    TP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FPGA
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    FPGA
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FPGA/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FPGA/zynq-hardware-acceleration-intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zynq 硬件乘法加速器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_8" id="__nav_2_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gazebo
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    gazebo
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ros/gazebo/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_9" id="__nav_2_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_9_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_9_2" id="__nav_2_9_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux驱动
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_9_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_9_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    linux驱动
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/linux%E9%A9%B1%E5%8A%A8/00_%E4%B8%8B%E8%BD%BD%E8%B5%84%E6%96%99/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    下载资料
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/linux%E9%A9%B1%E5%8A%A8/01_%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    搭建开发环境
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/linux%E9%A9%B1%E5%8A%A8/02_%E9%80%9A%E7%94%A8%E7%9A%84%E9%A9%B1%E5%8A%A8%E6%A1%86%E6%9E%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用的驱动框架
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/linux%E9%A9%B1%E5%8A%A8/03_%E4%BD%BF%E7%94%A8%E6%A8%A1%E6%9D%BF%E6%93%8D%E4%BD%9C%E7%A1%AC%E4%BB%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    使用模板操作硬件
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/linux%E9%A9%B1%E5%8A%A8/04_%E5%B9%B3%E5%8F%B0%E6%80%BB%E7%BA%BF%E8%AE%BE%E5%A4%87%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AE%BE%E5%A4%87%E6%A0%91/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    平台总线设备模型和设备树
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/linux%E9%A9%B1%E5%8A%A8/05_I2C%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F%E6%A8%A1%E6%9D%BF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I2C驱动程序模板
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_10" id="__nav_2_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVGL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LVGL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LVGL/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ros
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ros
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ros/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ros/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_12" id="__nav_2_12_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    stm32
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stm32/stm32_knowledge_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32_knowledge_notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stm32/%E5%A4%96%E8%AE%BE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    外设
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stm32/%E5%AF%84%E5%AD%98%E5%99%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    寄存器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cmake-gccg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        零、开始使用 CMake 前：先认识编译文件与 gcc/g++
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="零、开始使用 CMake 前：先认识编译文件与 gcc/g++">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-cc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. C/C++ 从源码到程序会产生哪些文件
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-gcc-g" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. gcc 与 g++ 的区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-gccg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 使用 gcc/g++ 查看四个编译阶段
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 使用 gcc/g++ 查看四个编译阶段">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cpp-ii" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        仅预处理：.cpp → .ii
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cpp-s" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        编译成汇编：.cpp → .s
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cpp-o" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        编译但不链接：.cpp → .o
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#o" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        链接：多个 .o → 可执行文件
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-gccg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. gcc/g++ 常用编译选项
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 手工创建和使用库
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 手工创建和使用库">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        静态库
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        动态库
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-cmakeliststxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. CMakeLists.txt 的基础格式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-cmake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 常用 CMake 命令与“是否必选”
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        一、先理解完整构建流程
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmake" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二、第一个 CMake 项目
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二、第一个 CMake 项目">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 项目结构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 配置、构建和运行
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmakeliststxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        三、CMakeLists.txt 基础语法
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三、CMakeLists.txt 基础语法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 命令与参数
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 注释
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 变量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 字符串与引号
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 条件判断
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 循环
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 函数
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#target" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        四、最重要的概念：目标 target
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#privatepublic-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        五、PRIVATE、PUBLIC 与 INTERFACE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#target_" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        六、常用的 target_* 命令
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="六、常用的 target_* 命令">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 添加源文件
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 添加头文件搜索路径
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 指定 C++ 标准
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 添加编译宏
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 添加编译选项
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 链接库
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 设置输出名称和目录
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        七、多目录项目
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="七、多目录项目">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 推荐结构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 常用路径变量
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        八、构建类型与生成器
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="八、构建类型与生成器">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 单配置生成器
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 多配置生成器
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 指定生成器
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        九、选项、缓存变量与配置头文件
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="九、选项、缓存变量与配置头文件">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 定义可选功能
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 缓存变量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 生成配置头文件
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        十、查找与使用第三方库
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十、查找与使用第三方库">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-find_package" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. find_package
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-fetchcontent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. FetchContent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-add_subdirectory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. add_subdirectory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 包管理器
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        十一、生成器表达式
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ctest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        十二、单元测试与 CTest
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十二、单元测试与 CTest">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 最小测试配置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 测试属性
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        十三、安装项目
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmake-presets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        十四、CMake Presets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        十五、交叉编译
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        十六、自定义命令与代码生成
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十六、自定义命令与代码生成">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 生成文件
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 自定义目标
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cmake_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        十七、调试 CMake
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十七、调试 CMake">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 查看变量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 查看实际编译命令
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-compile_commandsjson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 导出 compile_commands.json
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 跟踪配置过程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 常见缓存问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        十八、常见错误与改进方式
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十八、常见错误与改进方式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-include_directories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 全局 include_directories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-add_definitions-cxx_flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 全局 add_definitions 或 CXX_FLAGS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 使用相对路径导致定位混乱
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 手工填写库文件名
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-cmakeliststxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 修改 CMakeLists.txt 后仍使用旧结果
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-visual-studio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Visual Studio 下找不到程序
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-undefined-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 链接阶段出现 undefined reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        十九、一份可直接复用的项目模板
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二十、常用命令速查
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        二十一、推荐实践清单
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="导航栏" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Notes
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../basics/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Cpp
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="cmake-cmakeliststxt">CMake 与 CMakeLists.txt 教程<a class="headerlink" href="#cmake-cmakeliststxt" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>CMake 不是编译器，而是<strong>构建系统生成器</strong>。它读取项目中的 <code>CMakeLists.txt</code>，再生成 Ninja、Makefile、Visual Studio 工程等真正执行编译的构建文件。</p>
+</blockquote>
+<p>本文以现代 CMake 的“目标（target）”思想为主线，适合从零入门，也可作为日常速查手册。</p>
+<hr />
+<h2 id="cmake-gccg">零、开始使用 CMake 前：先认识编译文件与 gcc/g++<a class="headerlink" href="#cmake-gccg" title="Permanent link">&para;</a></h2>
+<h3 id="1-cc">1. C/C++ 从源码到程序会产生哪些文件<a class="headerlink" href="#1-cc" title="Permanent link">&para;</a></h3>
+<p>C/C++ 程序通常要经过<strong>预处理、编译、汇编、链接</strong>四个阶段：</p>
+<div class="highlight"><pre><span></span><code>源文件              预处理文件          汇编文件       目标文件          最终产物
+.c / .cpp  ───────▶  .i / .ii  ───────▶  .s  ───────▶  .o / .obj  ───────▶  可执行文件或库
+             预处理             编译          汇编              链接
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>扩展名或文件</th>
+<th>含义</th>
+<th>所处阶段或用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.c</code></td>
+<td>C 源文件</td>
+<td>程序员编写的源码</td>
+</tr>
+<tr>
+<td><code>.cc</code>、<code>.cpp</code>、<code>.cxx</code></td>
+<td>C++ 源文件</td>
+<td>三者都是常见的 C++ 源文件命名方式</td>
+</tr>
+<tr>
+<td><code>.h</code></td>
+<td>头文件</td>
+<td>可用于 C 或 C++，存放声明、宏、类型等</td>
+</tr>
+<tr>
+<td><code>.hpp</code>、<code>.hxx</code></td>
+<td>C++ 头文件</td>
+<td>通常表示其中包含 C++ 代码</td>
+</tr>
+<tr>
+<td><code>.i</code></td>
+<td>预处理后的 C 文件</td>
+<td>宏已展开，头文件内容已插入</td>
+</tr>
+<tr>
+<td><code>.ii</code></td>
+<td>预处理后的 C++ 文件</td>
+<td>与 <code>.i</code> 类似，但用于 C++</td>
+</tr>
+<tr>
+<td><code>.s</code>、<code>.asm</code></td>
+<td>汇编代码</td>
+<td>编译器产生或程序员手写的汇编源码</td>
+</tr>
+<tr>
+<td><code>.o</code></td>
+<td>目标文件</td>
+<td>GCC/Clang 在 Linux、macOS 等平台生成的机器码文件，尚未完成链接</td>
+</tr>
+<tr>
+<td><code>.obj</code></td>
+<td>目标文件</td>
+<td>Windows/MSVC 常用的目标文件扩展名</td>
+</tr>
+<tr>
+<td><code>.d</code></td>
+<td>依赖文件</td>
+<td>记录某个源文件依赖哪些头文件，常用于增量构建</td>
+</tr>
+<tr>
+<td><code>.a</code></td>
+<td>静态库</td>
+<td>Linux 等平台上多个 <code>.o</code> 的归档集合，链接时复制所需代码</td>
+</tr>
+<tr>
+<td><code>.lib</code></td>
+<td>静态库或导入库</td>
+<td>Windows 上可能是静态库，也可能是 DLL 对应的导入库</td>
+</tr>
+<tr>
+<td><code>.so</code></td>
+<td>动态库</td>
+<td>Linux 的共享库，程序运行时加载</td>
+</tr>
+<tr>
+<td><code>.dll</code></td>
+<td>动态库</td>
+<td>Windows 的动态链接库</td>
+</tr>
+<tr>
+<td><code>.dylib</code></td>
+<td>动态库</td>
+<td>macOS 的动态库</td>
+</tr>
+<tr>
+<td><code>.exe</code></td>
+<td>可执行文件</td>
+<td>Windows 的程序文件；Linux 可执行文件通常没有扩展名</td>
+</tr>
+<tr>
+<td><code>.pdb</code></td>
+<td>调试符号文件</td>
+<td>MSVC 常用，供调试器映射源码、函数和变量</td>
+</tr>
+<tr>
+<td><code>.dSYM</code></td>
+<td>调试符号包</td>
+<td>macOS 常见的调试信息目录</td>
+</tr>
+<tr>
+<td><code>compile_commands.json</code></td>
+<td>编译命令数据库</td>
+<td>记录每个源文件的实际编译命令，供 clangd、clang-tidy 等工具使用</td>
+</tr>
+<tr>
+<td><code>CMakeCache.txt</code></td>
+<td>CMake 配置缓存</td>
+<td>保存编译器路径、选项和探测结果，不是编译器产生的目标文件</td>
+</tr>
+</tbody>
+</table>
+<p>其中最容易混淆的是 <code>.o</code>：</p>
+<div class="highlight"><pre><span></span><code>main.cpp ──编译──▶ main.o ─┐
+                            ├──链接──▶ app
+math.cpp ──编译──▶ math.o ─┘
+</code></pre></div>
+<p>每个 <code>.cpp</code> 通常先单独变成一个 <code>.o</code>。<code>.o</code> 中已经是机器码，但其中可能仍引用其他文件定义的函数，所以一般不能直接作为完整程序运行。链接器负责解析这些符号引用，并把目标文件和库组合成最终程序。</p>
+<blockquote>
+<p><code>.o</code>、<code>.obj</code>、<code>.i</code>、<code>.ii</code> 和 <code>.s</code> 通常属于构建产物，应放在 <code>build/</code> 中并排除在 Git 版本控制之外。</p>
+</blockquote>
+<h3 id="2-gcc-g">2. gcc 与 g++ 的区别<a class="headerlink" href="#2-gcc-g" title="Permanent link">&para;</a></h3>
+<p>GCC 是 GNU Compiler Collection。日常命令中：</p>
+<ul>
+<li><code>gcc</code> 通常作为 C 编译驱动程序；</li>
+<li><code>g++</code> 通常作为 C++ 编译驱动程序；</li>
+<li>两者都能根据文件扩展名调用相应的编译前端；</li>
+<li>最明显的区别在链接阶段：<code>g++</code> 会自动链接 C++ 标准库，而 <code>gcc</code> 默认不会。</li>
+</ul>
+<p>因此推荐：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># C 程序使用 gcc</span>
+gcc<span class="w"> </span>main.c<span class="w"> </span>-o<span class="w"> </span>app
+
+<span class="c1"># C++ 程序使用 g++</span>
+g++<span class="w"> </span>main.cpp<span class="w"> </span>-o<span class="w"> </span>app
+</code></pre></div>
+<p>不建议直接使用 <code>gcc</code> 链接普通 C++ 程序，否则可能出现 <code>std::cout</code>、<code>std::string</code> 等符号未定义的问题。</p>
+<h3 id="3-gccg">3. 使用 gcc/g++ 查看四个编译阶段<a class="headerlink" href="#3-gccg" title="Permanent link">&para;</a></h3>
+<p>以下命令以 C++ 文件 <code>main.cpp</code> 为例。</p>
+<h4 id="cpp-ii">仅预处理：<code>.cpp</code> → <code>.ii</code><a class="headerlink" href="#cpp-ii" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>g++<span class="w"> </span>-E<span class="w"> </span>main.cpp<span class="w"> </span>-o<span class="w"> </span>main.ii
+</code></pre></div>
+<p><code>-E</code> 表示完成预处理后停止。该阶段会处理：</p>
+<ul>
+<li><code>#include</code> 头文件包含；</li>
+<li><code>#define</code> 宏替换；</li>
+<li><code>#if</code>、<code>#ifdef</code> 等条件编译；</li>
+<li>删除注释。</li>
+</ul>
+<h4 id="cpp-s">编译成汇编：<code>.cpp</code> → <code>.s</code><a class="headerlink" href="#cpp-s" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>g++<span class="w"> </span>-S<span class="w"> </span>main.cpp<span class="w"> </span>-o<span class="w"> </span>main.s
+</code></pre></div>
+<p><code>-S</code> 表示生成汇编代码后停止。</p>
+<h4 id="cpp-o">编译但不链接：<code>.cpp</code> → <code>.o</code><a class="headerlink" href="#cpp-o" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>g++<span class="w"> </span>-c<span class="w"> </span>main.cpp<span class="w"> </span>-o<span class="w"> </span>main.o
+</code></pre></div>
+<p><code>-c</code> 表示只生成目标文件，不执行链接。这也是构建系统编译多个源文件时的基本方式。</p>
+<h4 id="o">链接：多个 <code>.o</code> → 可执行文件<a class="headerlink" href="#o" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>g++<span class="w"> </span>main.o<span class="w"> </span>math.o<span class="w"> </span>-o<span class="w"> </span>app
+</code></pre></div>
+<p>也可以用一条命令完成编译和链接：</p>
+<div class="highlight"><pre><span></span><code>g++<span class="w"> </span>main.cpp<span class="w"> </span>math.cpp<span class="w"> </span>-o<span class="w"> </span>app
+</code></pre></div>
+<p>但项目较大时，如果只修改了 <code>main.cpp</code>，分开编译只需重新生成 <code>main.o</code>，然后重新链接，不必再次编译 <code>math.cpp</code>。CMake 生成的构建系统会自动完成这种增量构建。</p>
+<h3 id="4-gccg">4. gcc/g++ 常用编译选项<a class="headerlink" href="#4-gccg" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>作用</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-o &lt;文件&gt;</code></td>
+<td>指定输出文件</td>
+<td><code>g++ main.cpp -o app</code></td>
+</tr>
+<tr>
+<td><code>-c</code></td>
+<td>只编译，不链接</td>
+<td><code>g++ -c main.cpp -o main.o</code></td>
+</tr>
+<tr>
+<td><code>-E</code></td>
+<td>只进行预处理</td>
+<td><code>g++ -E main.cpp -o main.ii</code></td>
+</tr>
+<tr>
+<td><code>-S</code></td>
+<td>编译到汇编阶段</td>
+<td><code>g++ -S main.cpp -o main.s</code></td>
+</tr>
+<tr>
+<td><code>-I&lt;目录&gt;</code></td>
+<td>添加头文件搜索目录</td>
+<td><code>g++ -Iinclude main.cpp -o app</code></td>
+</tr>
+<tr>
+<td><code>-L&lt;目录&gt;</code></td>
+<td>添加库文件搜索目录</td>
+<td><code>g++ main.o -Llib -lmath -o app</code></td>
+</tr>
+<tr>
+<td><code>-l&lt;名称&gt;</code></td>
+<td>链接指定库</td>
+<td><code>-lm</code> 表示查找 <code>libm.so</code> 或 <code>libm.a</code></td>
+</tr>
+<tr>
+<td><code>-lm</code></td>
+<td>链接数学库</td>
+<td>用于使用 <code>sqrt</code>、<code>sin</code> 等数学函数；等价于链接 <code>libm.so</code> 或 <code>libm.a</code></td>
+</tr>
+<tr>
+<td><code>-D&lt;宏&gt;</code></td>
+<td>定义预处理宏</td>
+<td><code>-DENABLE_LOGGING=1</code></td>
+</tr>
+<tr>
+<td><code>-U&lt;宏&gt;</code></td>
+<td>取消预处理宏定义</td>
+<td><code>-UDEBUG</code></td>
+</tr>
+<tr>
+<td><code>-std=c++17</code></td>
+<td>指定 C++ 标准</td>
+<td>也可使用 <code>c++20</code>、<code>c++23</code> 等</td>
+</tr>
+<tr>
+<td><code>-std=c11</code></td>
+<td>指定 C 标准</td>
+<td>也可使用 <code>c17</code> 等</td>
+</tr>
+<tr>
+<td><code>-Wall</code></td>
+<td>开启一组常用警告</td>
+<td>建议开发时开启</td>
+</tr>
+<tr>
+<td><code>-Wextra</code></td>
+<td>开启更多警告</td>
+<td>通常与 <code>-Wall</code> 一起使用</td>
+</tr>
+<tr>
+<td><code>-Wpedantic</code></td>
+<td>检查非标准扩展</td>
+<td>有助于提高可移植性</td>
+</tr>
+<tr>
+<td><code>-Werror</code></td>
+<td>将警告视为错误</td>
+<td>适合严格的 CI，日常引入旧项目时需谨慎</td>
+</tr>
+<tr>
+<td><code>-g</code></td>
+<td>生成调试信息</td>
+<td>供 GDB 等调试器使用</td>
+</tr>
+<tr>
+<td><code>-O0</code></td>
+<td>关闭优化</td>
+<td>适合调试</td>
+</tr>
+<tr>
+<td><code>-O2</code></td>
+<td>开启常用优化</td>
+<td>常用于发布版本</td>
+</tr>
+<tr>
+<td><code>-O3</code></td>
+<td>更激进地优化</td>
+<td>不一定总比 <code>-O2</code> 更适合</td>
+</tr>
+<tr>
+<td><code>-MMD -MP</code></td>
+<td>生成用户头文件依赖信息</td>
+<td>常用于 Makefile 增量构建</td>
+</tr>
+<tr>
+<td><code>-pthread</code></td>
+<td>启用 POSIX 线程相关编译和链接选项</td>
+<td>Linux 多线程程序常用</td>
+</tr>
+</tbody>
+</table>
+<p>一个适合开发调试的 C++ 命令：</p>
+<div class="highlight"><pre><span></span><code>g++<span class="w"> </span>-std<span class="o">=</span>c++17<span class="w"> </span>-Wall<span class="w"> </span>-Wextra<span class="w"> </span>-Wpedantic<span class="w"> </span>-g<span class="w"> </span>-O0<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-Iinclude<span class="w"> </span>src/main.cpp<span class="w"> </span>src/math.cpp<span class="w"> </span>-o<span class="w"> </span>app
+</code></pre></div>
+<p>一个简单的发布构建命令：</p>
+<div class="highlight"><pre><span></span><code>g++<span class="w"> </span>-std<span class="o">=</span>c++17<span class="w"> </span>-O2<span class="w"> </span>-DNDEBUG<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-Iinclude<span class="w"> </span>src/main.cpp<span class="w"> </span>src/math.cpp<span class="w"> </span>-o<span class="w"> </span>app
+</code></pre></div>
+<h3 id="5">5. 手工创建和使用库<a class="headerlink" href="#5" title="Permanent link">&para;</a></h3>
+<h4 id="_1">静态库<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h4>
+<p>先编译目标文件，再使用 <code>ar</code> 创建静态库：</p>
+<div class="highlight"><pre><span></span><code>g++<span class="w"> </span>-std<span class="o">=</span>c++17<span class="w"> </span>-Iinclude<span class="w"> </span>-c<span class="w"> </span>src/math.cpp<span class="w"> </span>-o<span class="w"> </span>math.o
+ar<span class="w"> </span>rcs<span class="w"> </span>libmath.a<span class="w"> </span>math.o
+</code></pre></div>
+<p>链接静态库：</p>
+<div class="highlight"><pre><span></span><code>g++<span class="w"> </span>-std<span class="o">=</span>c++17<span class="w"> </span>-Iinclude<span class="w"> </span>main.cpp<span class="w"> </span>-L.<span class="w"> </span>-lmath<span class="w"> </span>-o<span class="w"> </span>app
+</code></pre></div>
+<p><code>-lmath</code> 会查找名为 <code>libmath.a</code> 或 <code>libmath.so</code> 的库。参数顺序在部分平台上会影响静态库符号解析，通常把库参数放在使用它的目标文件之后。</p>
+<h4 id="_2">动态库<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h4>
+<p>Linux 下可这样创建共享库：</p>
+<div class="highlight"><pre><span></span><code>g++<span class="w"> </span>-std<span class="o">=</span>c++17<span class="w"> </span>-fPIC<span class="w"> </span>-Iinclude<span class="w"> </span>-c<span class="w"> </span>src/math.cpp<span class="w"> </span>-o<span class="w"> </span>math.o
+g++<span class="w"> </span>-shared<span class="w"> </span>math.o<span class="w"> </span>-o<span class="w"> </span>libmath.so
+</code></pre></div>
+<p>链接共享库：</p>
+<div class="highlight"><pre><span></span><code>g++<span class="w"> </span>-std<span class="o">=</span>c++17<span class="w"> </span>-Iinclude<span class="w"> </span>main.cpp<span class="w"> </span>-L.<span class="w"> </span>-lmath<span class="w"> </span>-o<span class="w"> </span>app
+</code></pre></div>
+<p>运行时，系统还必须能找到 <code>libmath.so</code>。实际项目应通过规范的安装目录、RPATH 或系统动态库配置解决，不建议长期依赖临时修改环境变量。</p>
+<p>这些手工命令有助于理解构建原理，但跨平台项目一般应让 CMake 根据目标声明自动生成正确命令。</p>
+<h3 id="6-cmakeliststxt">6. CMakeLists.txt 的基础格式<a class="headerlink" href="#6-cmakeliststxt" title="Permanent link">&para;</a></h3>
+<p>下面是一份最常用的基础模板。标记的含义为：</p>
+<ul>
+<li><strong>【必选】</strong>：规范的独立 CMake 项目应当提供；</li>
+<li><strong>【目标必选】</strong>：要产生程序或库时，至少需要定义一个构建目标；</li>
+<li><strong>【二选一】</strong>：根据最终产物选择其中一种；</li>
+<li><strong>【可选】</strong>：没有对应需求时可以删除；</li>
+<li><strong>【按需】</strong>：由项目代码和依赖决定。</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c"># 【必选】指定项目要求的最低 CMake 版本，并确定相关策略行为。</span>
+<span class="c"># 应放在顶层 CMakeLists.txt 开头。</span>
+<span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.20</span><span class="p">)</span>
+
+<span class="c"># 【必选】声明项目。</span>
+<span class="c"># 项目名称 HelloProject 必须填写；VERSION、DESCRIPTION、LANGUAGES 为可选参数。</span>
+<span class="c"># 对纯 C++ 项目推荐明确写 LANGUAGES CXX，避免探测不需要的 C 编译器。</span>
+<span class="nb">project</span><span class="p">(</span>
+<span class="w">    </span><span class="s">HelloProject</span><span class="w">                         </span><span class="c"># 【必选】项目名称</span>
+<span class="w">    </span><span class="s">VERSION</span><span class="w"> </span><span class="s">1.0.0</span><span class="w">                        </span><span class="c"># 【可选】项目版本</span>
+<span class="w">    </span><span class="s">DESCRIPTION</span><span class="w"> </span><span class="s2">"A simple CMake project"</span><span class="w"> </span><span class="c"># 【可选】项目描述</span>
+<span class="w">    </span><span class="s">LANGUAGES</span><span class="w"> </span><span class="s">CXX</span><span class="w">                        </span><span class="c"># 【可选】项目语言；省略时默认启用 C 和 CXX</span>
+<span class="p">)</span>
+
+<span class="c"># 【可选】定义允许用户通过 -D 修改的构建选项。</span>
+<span class="nb">option</span><span class="p">(</span><span class="s">ENABLE_LOGGING</span><span class="w"> </span><span class="s2">"Enable logging"</span><span class="w"> </span><span class="s">ON</span><span class="p">)</span>
+
+<span class="c"># 【目标必选，二选一】创建可执行文件。</span>
+<span class="c"># app 是目标名，后面列出生成它所需的源文件。</span>
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">app</span>
+<span class="w">    </span><span class="s">src/main.cpp</span><span class="w">                         </span><span class="c"># 【必选】该目标至少要有可编译源码，可在此处或稍后添加</span>
+<span class="w">    </span><span class="s">src/math.cpp</span><span class="w">                         </span><span class="c"># 【按需】其他源文件</span>
+<span class="p">)</span>
+
+<span class="c"># 【目标必选，二选一】如果项目要生成库，则使用 add_library。</span>
+<span class="c"># STATIC 可替换为 SHARED；如果已经创建 app 且不需要库，可删除下面这一段。</span>
+<span class="c"># add_library(math STATIC</span>
+<span class="c">#     src/math.cpp</span>
+<span class="c"># )</span>
+
+<span class="c"># 【推荐】声明目标需要的 C++ 标准。</span>
+<span class="c"># PRIVATE 表示该要求只用于编译 app，不向其他目标传递。</span>
+<span class="nb">target_compile_features</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">cxx_std_17</span><span class="p">)</span>
+
+<span class="c"># 【按需】添加头文件搜索目录。</span>
+<span class="nb">target_include_directories</span><span class="p">(</span><span class="s">app</span>
+<span class="w">    </span><span class="s">PRIVATE</span>
+<span class="w">        </span><span class="o">${</span><span class="nv">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="s">/include</span>
+<span class="p">)</span>
+
+<span class="c"># 【按需】添加预处理宏，相当于编译命令中的 -D。</span>
+<span class="nb">if</span><span class="p">(</span><span class="s">ENABLE_LOGGING</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">target_compile_definitions</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">ENABLE_LOGGING=1</span><span class="p">)</span>
+<span class="nb">endif</span><span class="p">()</span>
+
+<span class="c"># 【可选但推荐】开启常用编译警告，并处理 MSVC 与 GCC/Clang 的差异。</span>
+<span class="nb">if</span><span class="p">(</span><span class="s">MSVC</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">target_compile_options</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">/W4</span><span class="w"> </span><span class="s">/permissive-</span><span class="p">)</span>
+<span class="nb">else</span><span class="p">()</span>
+<span class="w">    </span><span class="nb">target_compile_options</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">-Wall</span><span class="w"> </span><span class="s">-Wextra</span><span class="w"> </span><span class="s">-Wpedantic</span><span class="p">)</span>
+<span class="nb">endif</span><span class="p">()</span>
+
+<span class="c"># 【按需】链接项目内部库或 find_package 找到的第三方库。</span>
+<span class="c"># target_link_libraries(app PRIVATE math)</span>
+
+<span class="c"># 【可选】定义安装规则。</span>
+<span class="c"># install(TARGETS app RUNTIME DESTINATION bin)</span>
+</code></pre></div>
+<p>模板最精简后只需：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.20</span><span class="p">)</span><span class="w">  </span><span class="c"># 【必选】最低版本</span>
+<span class="nb">project</span><span class="p">(</span><span class="s">Hello</span><span class="w"> </span><span class="s">LANGUAGES</span><span class="w"> </span><span class="s">CXX</span><span class="p">)</span><span class="w">          </span><span class="c"># 【必选】项目声明</span>
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">hello</span><span class="w"> </span><span class="s">main.cpp</span><span class="p">)</span><span class="w">        </span><span class="c"># 【目标必选】创建构建目标</span>
+</code></pre></div>
+<p>对应命令：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 1. 配置：读取 CMakeLists.txt，在 build 中生成构建系统</span>
+cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span><span class="c1"># -S 指定源码目录，-B 指定构建目录, . 代表当前目录 build, 代表在 `build/` 目录内部生成**构建文件**</span>
+
+<span class="c1"># 2. 构建：让 CMake 调用生成器，再由生成器调用编译器</span>
+cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span><span class="c1">#--build 告诉cmake去执行编译 build就是上一步生成的构建系统所在目录</span>
+</code></pre></div>
+<blockquote>
+<p>严格来说，CMake 对某些缺失命令可能会采用默认行为并给出警告，但一个清晰、可维护的顶层项目应显式写出 <code>cmake_minimum_required()</code> 和 <code>project()</code>。产生实际构建结果时，还必须通过 <code>add_executable()</code>、<code>add_library()</code> 或子目录中的等价声明创建目标。</p>
+</blockquote>
+<h3 id="7-cmake">7. 常用 CMake 命令与“是否必选”<a class="headerlink" href="#7-cmake" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>是否必选</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cmake_minimum_required()</code></td>
+<td>顶层项目必选</td>
+<td>指定最低版本，并采用对应版本的策略行为</td>
+</tr>
+<tr>
+<td><code>project()</code></td>
+<td>顶层项目必选</td>
+<td>声明项目名称，可同时声明版本和语言</td>
+</tr>
+<tr>
+<td><code>add_executable()</code></td>
+<td>按产物选择</td>
+<td>创建可执行目标；程序项目通常需要</td>
+</tr>
+<tr>
+<td><code>add_library()</code></td>
+<td>按产物选择</td>
+<td>创建库目标；库项目或分层项目常用</td>
+</tr>
+<tr>
+<td><code>add_subdirectory()</code></td>
+<td>多目录项目按需</td>
+<td>处理子目录中的 <code>CMakeLists.txt</code></td>
+</tr>
+<tr>
+<td><code>target_sources()</code></td>
+<td>按需</td>
+<td>创建目标后继续添加源文件</td>
+</tr>
+<tr>
+<td><code>target_compile_features()</code></td>
+<td>推荐</td>
+<td>以跨平台方式声明 C++ 标准或语言特性</td>
+</tr>
+<tr>
+<td><code>target_include_directories()</code></td>
+<td>有自定义头文件目录时需要</td>
+<td>添加头文件搜索路径</td>
+</tr>
+<tr>
+<td><code>target_compile_definitions()</code></td>
+<td>有编译宏时需要</td>
+<td>添加宏定义</td>
+</tr>
+<tr>
+<td><code>target_compile_options()</code></td>
+<td>可选</td>
+<td>添加警告、优化等目标专属编译选项</td>
+</tr>
+<tr>
+<td><code>target_link_libraries()</code></td>
+<td>有库依赖时需要</td>
+<td>链接库，并传播相应使用要求</td>
+</tr>
+<tr>
+<td><code>find_package()</code></td>
+<td>使用外部包时通常需要</td>
+<td>查找已安装或工具链提供的依赖包</td>
+</tr>
+<tr>
+<td><code>option()</code></td>
+<td>可选</td>
+<td>向用户暴露开关</td>
+</tr>
+<tr>
+<td><code>enable_testing()</code> / <code>include(CTest)</code></td>
+<td>有测试时需要</td>
+<td>启用 CTest 测试功能</td>
+</tr>
+<tr>
+<td><code>install()</code></td>
+<td>需要安装或发布时使用</td>
+<td>声明安装规则</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_3">一、先理解完整构建流程<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>一个 C++ 项目从源码到可执行文件，通常经历：</p>
+<div class="highlight"><pre><span></span><code>CMakeLists.txt
+      │  cmake -S . -B build
+      ▼
+构建系统（Ninja / Makefile / Visual Studio 工程）
+      │  cmake --build build
+      ▼
+编译 .cpp → 目标文件 .o/.obj → 链接 → 可执行文件或库
+</code></pre></div>
+<p>常见工具的职责：</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GCC、Clang、MSVC</td>
+<td>编译和链接 C/C++ 代码</td>
+</tr>
+<tr>
+<td>Ninja、Make</td>
+<td>按依赖关系执行具体构建命令</td>
+</tr>
+<tr>
+<td>CMake</td>
+<td>根据统一配置生成上述构建系统</td>
+</tr>
+<tr>
+<td>CTest</td>
+<td>运行由 CMake 注册的测试</td>
+</tr>
+<tr>
+<td>CPack</td>
+<td>将构建结果制作成安装包</td>
+</tr>
+</tbody>
+</table>
+<p>使用 CMake 的主要价值是：</p>
+<ul>
+<li>同一份项目配置可以适配 Windows、Linux 和 macOS；</li>
+<li>可以管理源文件、头文件、库和它们之间的依赖；</li>
+<li>可以切换编译器、构建类型和编译选项；</li>
+<li>能与测试、安装、打包和 IDE 集成。</li>
+</ul>
+<hr />
+<h2 id="cmake">二、第一个 CMake 项目<a class="headerlink" href="#cmake" title="Permanent link">&para;</a></h2>
+<h3 id="1">1. 项目结构<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>hello_cmake/
+├── CMakeLists.txt
+└── main.cpp
+</code></pre></div>
+<p><code>main.cpp</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Hello, CMake!</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>CMakeLists.txt</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="c"># 声明所需的最低 CMake 版本</span>
+<span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.20</span><span class="p">)</span>
+
+<span class="c"># 定义项目名称、版本和使用的语言</span>
+<span class="nb">project</span><span class="p">(</span><span class="s">HelloCMake</span><span class="w"> </span><span class="s">VERSION</span><span class="w"> </span><span class="s">1.0.0</span><span class="w"> </span><span class="s">LANGUAGES</span><span class="w"> </span><span class="s">CXX</span><span class="p">)</span>
+
+<span class="c"># 创建可执行目标 hello，并指定它的源文件</span>
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">hello</span><span class="w"> </span><span class="s">main.cpp</span><span class="p">)</span>
+
+<span class="c"># 让目标使用 C++17；不必手写 -std=c++17 或 /std:c++17</span>
+<span class="nb">target_compile_features</span><span class="p">(</span><span class="s">hello</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">cxx_std_17</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="2">2. 配置、构建和运行<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
+<p>在项目根目录执行：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># -S 指定源码目录，-B 指定构建目录</span>
+cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build
+
+<span class="c1"># 调用生成的构建系统进行编译</span>
+cmake<span class="w"> </span>--build<span class="w"> </span>build
+</code></pre></div>
+<p>运行程序：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Linux / macOS，以及 Ninja 等单配置生成器</span>
+./build/hello
+
+<span class="c1"># Windows 常见情况</span>
+.<span class="se">\b</span>uild<span class="se">\D</span>ebug<span class="se">\h</span>ello.exe
+</code></pre></div>
+<p>建议始终使用独立的 <code>build/</code> 目录，不要让缓存和中间文件污染源码目录。这种方式称为 <strong>out-of-source build</strong>。</p>
+<p>清理项目时通常直接删除 <code>build/</code> 即可，源码不受影响。</p>
+<hr />
+<h2 id="cmakeliststxt">三、CMakeLists.txt 基础语法<a class="headerlink" href="#cmakeliststxt" title="Permanent link">&para;</a></h2>
+<h3 id="1_1">1. 命令与参数<a class="headerlink" href="#1_1" title="Permanent link">&para;</a></h3>
+<p>CMake 命令不区分大小写，但现代项目通常统一使用小写命令：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">add_executable</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">main.cpp</span><span class="p">)</span>
+</code></pre></div>
+<p>参数以空格或换行分隔，圆括号内不需要逗号或分号：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">add_executable</span><span class="p">(</span><span class="s">app</span>
+<span class="w">    </span><span class="s">src/main.cpp</span>
+<span class="w">    </span><span class="s">src/config.cpp</span>
+<span class="p">)</span>
+</code></pre></div>
+<h3 id="2_1">2. 注释<a class="headerlink" href="#2_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c"># 单行注释</span>
+
+<span class="c">#[[</span>
+<span class="c">多行注释</span>
+<span class="c">可以跨越多行</span>
+<span class="c">]]</span>
+</code></pre></div>
+<h3 id="3">3. 变量<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">set</span><span class="p">(</span><span class="s">APP_NAME</span><span class="w"> </span><span class="s">demo</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">APP_SOURCES</span>
+<span class="w">    </span><span class="s">src/main.cpp</span>
+<span class="w">    </span><span class="s">src/config.cpp</span>
+<span class="p">)</span>
+
+<span class="nb">add_executable</span><span class="p">(</span><span class="o">${</span><span class="nv">APP_NAME</span><span class="o">}</span><span class="w"> </span><span class="o">${</span><span class="nv">APP_SOURCES</span><span class="o">}</span><span class="p">)</span>
+</code></pre></div>
+<p>读取变量时使用 <code>${变量名}</code>。列表在 CMake 内部以分号分隔，因此下面两种写法等价：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">set</span><span class="p">(</span><span class="s">SOURCES</span><span class="w"> </span><span class="s">a.cpp</span><span class="w"> </span><span class="s">b.cpp</span><span class="w"> </span><span class="s">c.cpp</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">SOURCES</span><span class="w"> </span><span class="s2">"a.cpp;b.cpp;c.cpp"</span><span class="p">)</span>
+</code></pre></div>
+<p>取消变量：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">unset</span><span class="p">(</span><span class="s">APP_NAME</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="4">4. 字符串与引号<a class="headerlink" href="#4" title="Permanent link">&para;</a></h3>
+<p>没有空格的普通参数通常可以不加引号；文件路径或字符串可能包含空格时，应加引号：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">set</span><span class="p">(</span><span class="s">MESSAGE_TEXT</span><span class="w"> </span><span class="s2">"hello cmake"</span><span class="p">)</span>
+<span class="nb">message</span><span class="p">(</span><span class="s">STATUS</span><span class="w"> </span><span class="s2">"message = ${MESSAGE_TEXT}"</span><span class="p">)</span>
+</code></pre></div>
+<p>常用消息等级：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">message</span><span class="p">(</span><span class="s">STATUS</span><span class="w"> </span><span class="s2">"普通状态信息"</span><span class="p">)</span>
+<span class="nb">message</span><span class="p">(</span><span class="s">WARNING</span><span class="w"> </span><span class="s2">"警告，但继续配置"</span><span class="p">)</span>
+<span class="nb">message</span><span class="p">(</span><span class="s">FATAL_ERROR</span><span class="w"> </span><span class="s2">"错误，并立即终止配置"</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="5_1">5. 条件判断<a class="headerlink" href="#5_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">if</span><span class="p">(</span><span class="s">WIN32</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">message</span><span class="p">(</span><span class="s">STATUS</span><span class="w"> </span><span class="s2">"Windows platform"</span><span class="p">)</span>
+<span class="nb">elseif</span><span class="p">(</span><span class="s">APPLE</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">message</span><span class="p">(</span><span class="s">STATUS</span><span class="w"> </span><span class="s2">"Apple platform"</span><span class="p">)</span>
+<span class="nb">elseif</span><span class="p">(</span><span class="s">UNIX</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">message</span><span class="p">(</span><span class="s">STATUS</span><span class="w"> </span><span class="s2">"Unix-like platform"</span><span class="p">)</span>
+<span class="nb">endif</span><span class="p">()</span>
+</code></pre></div>
+<p>常见判断：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">if</span><span class="p">(</span><span class="s">TARGET</span><span class="w"> </span><span class="s">mylib</span><span class="p">)</span><span class="w">                 </span><span class="c"># 目标是否存在</span>
+<span class="nb">endif</span><span class="p">()</span>
+
+<span class="nb">if</span><span class="p">(</span><span class="s">EXISTS</span><span class="w"> </span><span class="s2">"${CMAKE_SOURCE_DIR}/config.json"</span><span class="p">)</span>
+<span class="nb">endif</span><span class="p">()</span>
+
+<span class="nb">if</span><span class="p">(</span><span class="s">CMAKE_CXX_COMPILER_ID</span><span class="w"> </span><span class="s">STREQUAL</span><span class="w"> </span><span class="s2">"GNU"</span><span class="p">)</span>
+<span class="nb">endif</span><span class="p">()</span>
+
+<span class="nb">if</span><span class="p">(</span><span class="s">MSVC</span><span class="p">)</span><span class="w">                         </span><span class="c"># 是否使用 Microsoft 编译器</span>
+<span class="nb">endif</span><span class="p">()</span>
+</code></pre></div>
+<p>布尔运算使用 <code>AND</code>、<code>OR</code> 和 <code>NOT</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">if</span><span class="p">(</span><span class="s">ENABLE_TESTS</span><span class="w"> </span><span class="s">AND</span><span class="w"> </span><span class="s">NOT</span><span class="w"> </span><span class="s">WIN32</span><span class="p">)</span>
+<span class="w">    </span><span class="c"># ...</span>
+<span class="nb">endif</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="6">6. 循环<a class="headerlink" href="#6" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">foreach</span><span class="p">(</span><span class="s">source</span><span class="w"> </span><span class="s">IN</span><span class="w"> </span><span class="s">ITEMS</span><span class="w"> </span><span class="s">main.cpp</span><span class="w"> </span><span class="s">config.cpp</span><span class="w"> </span><span class="s">log.cpp</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">message</span><span class="p">(</span><span class="s">STATUS</span><span class="w"> </span><span class="s2">"source: ${source}"</span><span class="p">)</span>
+<span class="nb">endforeach</span><span class="p">()</span>
+
+<span class="nb">set</span><span class="p">(</span><span class="s">MODULES</span><span class="w"> </span><span class="s">core</span><span class="w"> </span><span class="s">network</span><span class="w"> </span><span class="s">storage</span><span class="p">)</span>
+<span class="nb">foreach</span><span class="p">(</span><span class="s">module</span><span class="w"> </span><span class="s">IN</span><span class="w"> </span><span class="s">LISTS</span><span class="w"> </span><span class="s">MODULES</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">message</span><span class="p">(</span><span class="s">STATUS</span><span class="w"> </span><span class="s2">"module: ${module}"</span><span class="p">)</span>
+<span class="nb">endforeach</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="7">7. 函数<a class="headerlink" href="#7" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">function</span><span class="p">(</span><span class="s">enable_project_warnings</span><span class="w"> </span><span class="s">target_name</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">if</span><span class="p">(</span><span class="s">MSVC</span><span class="p">)</span>
+<span class="w">        </span><span class="nb">target_compile_options</span><span class="p">(</span><span class="o">${</span><span class="nv">target_name</span><span class="o">}</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">/W4</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">else</span><span class="p">()</span>
+<span class="w">        </span><span class="nb">target_compile_options</span><span class="p">(</span><span class="o">${</span><span class="nv">target_name</span><span class="o">}</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">-Wall</span><span class="w"> </span><span class="s">-Wextra</span><span class="w"> </span><span class="s">-Wpedantic</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">endif</span><span class="p">()</span>
+<span class="nb">endfunction</span><span class="p">()</span>
+
+<span class="nb">enable_project_warnings</span><span class="p">(</span><span class="s">app</span><span class="p">)</span>
+</code></pre></div>
+<p>函数有自己的变量作用域，更适合封装可复用逻辑。</p>
+<hr />
+<h2 id="target">四、最重要的概念：目标 target<a class="headerlink" href="#target" title="Permanent link">&para;</a></h2>
+<p>现代 CMake 的核心不是“设置一堆全局变量”，而是：</p>
+<ol>
+<li>创建目标；</li>
+<li>给目标附加属性；</li>
+<li>建立目标之间的依赖关系。</li>
+</ol>
+<p>常见目标类型：</p>
+<div class="highlight"><pre><span></span><code><span class="c"># 可执行文件</span>
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">src/main.cpp</span><span class="p">)</span>
+
+<span class="c"># 静态库：Linux 通常生成 libmath.a，Windows 通常生成 math.lib</span>
+<span class="nb">add_library</span><span class="p">(</span><span class="s">math</span><span class="w"> </span><span class="s">STATIC</span><span class="w"> </span><span class="s">src/math.cpp</span><span class="p">)</span>
+
+<span class="c"># 动态库：Linux 通常生成 libnetwork.so，Windows 通常生成 .dll 和导入库</span>
+<span class="nb">add_library</span><span class="p">(</span><span class="s">network</span><span class="w"> </span><span class="s">SHARED</span><span class="w"> </span><span class="s">src/network.cpp</span><span class="p">)</span>
+
+<span class="c"># 由 BUILD_SHARED_LIBS 决定生成静态库还是动态库</span>
+<span class="nb">add_library</span><span class="p">(</span><span class="s">common</span><span class="w"> </span><span class="s">src/common.cpp</span><span class="p">)</span>
+
+<span class="c"># 只有使用要求、不直接编译源码的接口库</span>
+<span class="nb">add_library</span><span class="p">(</span><span class="s">project_options</span><span class="w"> </span><span class="s">INTERFACE</span><span class="p">)</span>
+</code></pre></div>
+<p><code>app</code>、<code>math</code>、<code>network</code> 都是逻辑目标名。后续应围绕目标设置头文件目录、编译选项、宏和依赖。</p>
+<hr />
+<h2 id="privatepublic-interface">五、PRIVATE、PUBLIC 与 INTERFACE<a class="headerlink" href="#privatepublic-interface" title="Permanent link">&para;</a></h2>
+<p>这三个关键字描述“使用要求”是否传递：</p>
+<table>
+<thead>
+<tr>
+<th>关键字</th>
+<th style="text-align: center;">当前目标使用</th>
+<th style="text-align: center;">依赖当前目标的目标使用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PRIVATE</code></td>
+<td style="text-align: center;">是</td>
+<td style="text-align: center;">否</td>
+</tr>
+<tr>
+<td><code>PUBLIC</code></td>
+<td style="text-align: center;">是</td>
+<td style="text-align: center;">是</td>
+</tr>
+<tr>
+<td><code>INTERFACE</code></td>
+<td style="text-align: center;">否</td>
+<td style="text-align: center;">是</td>
+</tr>
+</tbody>
+</table>
+<p>假设项目结构如下：</p>
+<div class="highlight"><pre><span></span><code>project/
+├── CMakeLists.txt
+├── include/
+│   └── math/add.hpp
+└── src/
+    ├── add.cpp
+    └── main.cpp
+</code></pre></div>
+<p>配置：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">add_library</span><span class="p">(</span><span class="s">math</span><span class="w"> </span><span class="s">STATIC</span><span class="w"> </span><span class="s">src/add.cpp</span><span class="p">)</span>
+
+<span class="c"># math 自己和使用 math 的目标都需要看到公开头文件，所以用 PUBLIC</span>
+<span class="nb">target_include_directories</span><span class="p">(</span><span class="s">math</span>
+<span class="w">    </span><span class="s">PUBLIC</span>
+<span class="w">        </span><span class="o">${</span><span class="nv">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="s">/include</span>
+<span class="p">)</span>
+
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">src/main.cpp</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">math</span><span class="p">)</span>
+</code></pre></div>
+<p>因为 <code>math</code> 将 <code>include/</code> 声明为 <code>PUBLIC</code>，<code>app</code> 链接 <code>math</code> 后会自动继承该头文件搜索路径。不要再给 <code>app</code> 重复添加同一路径。</p>
+<p>判断方法：</p>
+<ul>
+<li>只在 <code>.cpp</code> 内部使用的依赖：<code>PRIVATE</code>；</li>
+<li>出现在公开头文件中、使用者也必须知道的依赖：<code>PUBLIC</code>；</li>
+<li>当前目标本身不使用，只要求使用者使用：<code>INTERFACE</code>。</li>
+</ul>
+<p>例如纯头文件库：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">add_library</span><span class="p">(</span><span class="s">vector_math</span><span class="w"> </span><span class="s">INTERFACE</span><span class="p">)</span>
+<span class="nb">target_include_directories</span><span class="p">(</span><span class="s">vector_math</span>
+<span class="w">    </span><span class="s">INTERFACE</span>
+<span class="w">        </span><span class="o">${</span><span class="nv">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="s">/include</span>
+<span class="p">)</span>
+<span class="nb">target_compile_features</span><span class="p">(</span><span class="s">vector_math</span><span class="w"> </span><span class="s">INTERFACE</span><span class="w"> </span><span class="s">cxx_std_20</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="target_">六、常用的 target_* 命令<a class="headerlink" href="#target_" title="Permanent link">&para;</a></h2>
+<h3 id="1_2">1. 添加源文件<a class="headerlink" href="#1_2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">add_executable</span><span class="p">(</span><span class="s">app</span><span class="p">)</span>
+
+<span class="nb">target_sources</span><span class="p">(</span><span class="s">app</span>
+<span class="w">    </span><span class="s">PRIVATE</span>
+<span class="w">        </span><span class="s">src/main.cpp</span>
+<span class="w">        </span><span class="s">src/config.cpp</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>优先显式列出源码。这样新增、删除文件时，构建配置的变化更清楚。</p>
+<p>若确实需要自动收集文件，可使用：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">file</span><span class="p">(</span><span class="s">GLOB</span><span class="w"> </span><span class="s">APP_SOURCES</span><span class="w"> </span><span class="s">CONFIGURE_DEPENDS</span><span class="w"> </span><span class="s2">"src/*.cpp"</span><span class="p">)</span>
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="o">${</span><span class="nv">APP_SOURCES</span><span class="o">}</span><span class="p">)</span>
+</code></pre></div>
+<p><code>CONFIGURE_DEPENDS</code> 会要求 CMake 在文件集合变化时重新检查，但大型项目中仍通常推荐显式维护列表。</p>
+<h3 id="2_2">2. 添加头文件搜索路径<a class="headerlink" href="#2_2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">target_include_directories</span><span class="p">(</span><span class="s">app</span>
+<span class="w">    </span><span class="s">PRIVATE</span>
+<span class="w">        </span><span class="o">${</span><span class="nv">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="s">/src</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>使用库时，可分别声明构建阶段和安装阶段的路径：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">target_include_directories</span><span class="p">(</span><span class="s">math</span>
+<span class="w">    </span><span class="s">PUBLIC</span>
+<span class="w">        </span><span class="o">$&lt;</span><span class="nv">BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="o">$&lt;</span><span class="nv">INSTALL_INTERFACE:include</span><span class="o">&gt;</span>
+<span class="p">)</span>
+</code></pre></div>
+<h3 id="3-c">3. 指定 C++ 标准<a class="headerlink" href="#3-c" title="Permanent link">&para;</a></h3>
+<p>推荐写法：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">target_compile_features</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">cxx_std_20</span><span class="p">)</span>
+</code></pre></div>
+<p>也可以用属性强制指定：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">set_target_properties</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PROPERTIES</span>
+<span class="w">    </span><span class="s">CXX_STANDARD</span><span class="w"> </span><span class="s">20</span>
+<span class="w">    </span><span class="s">CXX_STANDARD_REQUIRED</span><span class="w"> </span><span class="s">ON</span>
+<span class="w">    </span><span class="s">CXX_EXTENSIONS</span><span class="w"> </span><span class="s">OFF</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>其中 <code>CXX_EXTENSIONS OFF</code> 表示尽量使用标准模式，例如 GCC 使用 <code>-std=c++20</code>，而不是 <code>-std=gnu++20</code>。</p>
+<h3 id="4_1">4. 添加编译宏<a class="headerlink" href="#4_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">target_compile_definitions</span><span class="p">(</span><span class="s">app</span>
+<span class="w">    </span><span class="s">PRIVATE</span>
+<span class="w">        </span><span class="s">APP_VERSION=</span><span class="s2">"${PROJECT_VERSION}"</span>
+<span class="w">        </span><span class="s">ENABLE_LOGGING</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>C++ 代码中即可使用：</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#ifdef ENABLE_LOGGING</span>
+<span class="c1">// 日志代码</span>
+<span class="cp">#endif</span>
+</code></pre></div>
+<p>不要在 CMake 中写 <code>-DENABLE_LOGGING</code>，<code>target_compile_definitions</code> 会负责添加平台对应的参数。</p>
+<h3 id="5_2">5. 添加编译选项<a class="headerlink" href="#5_2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">if</span><span class="p">(</span><span class="s">MSVC</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">target_compile_options</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">/W4</span><span class="w"> </span><span class="s">/permissive-</span><span class="p">)</span>
+<span class="nb">else</span><span class="p">()</span>
+<span class="w">    </span><span class="nb">target_compile_options</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">-Wall</span><span class="w"> </span><span class="s">-Wextra</span><span class="w"> </span><span class="s">-Wpedantic</span><span class="p">)</span>
+<span class="nb">endif</span><span class="p">()</span>
+</code></pre></div>
+<p><code>target_compile_options</code> 用于编译选项，而链接选项应使用：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">target_link_options</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">...</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="6_1">6. 链接库<a class="headerlink" href="#6_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">app</span>
+<span class="w">    </span><span class="s">PRIVATE</span>
+<span class="w">        </span><span class="s">math</span>
+<span class="w">        </span><span class="s">network</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>只要有对应的 CMake 目标，优先链接目标名，不要手工拼接 <code>.a</code>、<code>.so</code>、<code>.lib</code> 或 <code>.dll</code> 路径。</p>
+<h3 id="7_1">7. 设置输出名称和目录<a class="headerlink" href="#7_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">set_target_properties</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PROPERTIES</span>
+<span class="w">    </span><span class="s">OUTPUT_NAME</span><span class="w"> </span><span class="s2">"my_app"</span>
+<span class="w">    </span><span class="s">RUNTIME_OUTPUT_DIRECTORY</span><span class="w"> </span><span class="s2">"${CMAKE_BINARY_DIR}/bin"</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>库还可使用：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">set_target_properties</span><span class="p">(</span><span class="s">math</span><span class="w"> </span><span class="s">PROPERTIES</span>
+<span class="w">    </span><span class="s">ARCHIVE_OUTPUT_DIRECTORY</span><span class="w"> </span><span class="s2">"${CMAKE_BINARY_DIR}/lib"</span>
+<span class="w">    </span><span class="s">LIBRARY_OUTPUT_DIRECTORY</span><span class="w"> </span><span class="s2">"${CMAKE_BINARY_DIR}/lib"</span>
+<span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="_4">七、多目录项目<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<h3 id="1_3">1. 推荐结构<a class="headerlink" href="#1_3" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>calculator/
+├── CMakeLists.txt
+├── app/
+│   ├── CMakeLists.txt
+│   └── main.cpp
+├── include/
+│   └── calculator/calculator.hpp
+├── src/
+│   ├── CMakeLists.txt
+│   └── calculator.cpp
+└── tests/
+    ├── CMakeLists.txt
+    └── calculator_test.cpp
+</code></pre></div>
+<p>根目录 <code>CMakeLists.txt</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.20</span><span class="p">)</span>
+<span class="nb">project</span><span class="p">(</span><span class="s">Calculator</span><span class="w"> </span><span class="s">VERSION</span><span class="w"> </span><span class="s">1.0.0</span><span class="w"> </span><span class="s">LANGUAGES</span><span class="w"> </span><span class="s">CXX</span><span class="p">)</span>
+
+<span class="nb">option</span><span class="p">(</span><span class="s">BUILD_TESTING</span><span class="w"> </span><span class="s2">"Build project tests"</span><span class="w"> </span><span class="s">ON</span><span class="p">)</span>
+
+<span class="nb">add_subdirectory</span><span class="p">(</span><span class="s">src</span><span class="p">)</span>
+<span class="nb">add_subdirectory</span><span class="p">(</span><span class="s">app</span><span class="p">)</span>
+
+<span class="nb">if</span><span class="p">(</span><span class="s">BUILD_TESTING</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">enable_testing</span><span class="p">()</span>
+<span class="w">    </span><span class="nb">add_subdirectory</span><span class="p">(</span><span class="s">tests</span><span class="p">)</span>
+<span class="nb">endif</span><span class="p">()</span>
+</code></pre></div>
+<p><code>src/CMakeLists.txt</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">add_library</span><span class="p">(</span><span class="s">calculator</span>
+<span class="w">    </span><span class="s">calculator.cpp</span>
+<span class="p">)</span>
+
+<span class="nb">target_include_directories</span><span class="p">(</span><span class="s">calculator</span>
+<span class="w">    </span><span class="s">PUBLIC</span>
+<span class="w">        </span><span class="o">$&lt;</span><span class="nv">BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="o">$&lt;</span><span class="nv">INSTALL_INTERFACE:include</span><span class="o">&gt;</span>
+<span class="p">)</span>
+
+<span class="nb">target_compile_features</span><span class="p">(</span><span class="s">calculator</span><span class="w"> </span><span class="s">PUBLIC</span><span class="w"> </span><span class="s">cxx_std_17</span><span class="p">)</span>
+</code></pre></div>
+<p><code>app/CMakeLists.txt</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">add_executable</span><span class="p">(</span><span class="s">calculator_app</span><span class="w"> </span><span class="s">main.cpp</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">calculator_app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">calculator</span><span class="p">)</span>
+</code></pre></div>
+<p><code>add_subdirectory()</code> 会立即处理子目录中的 <code>CMakeLists.txt</code>。应先添加定义库的目录，再添加使用该库的目录。</p>
+<h3 id="2_3">2. 常用路径变量<a class="headerlink" href="#2_3" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CMAKE_SOURCE_DIR</code></td>
+<td>最顶层项目的源码根目录</td>
+</tr>
+<tr>
+<td><code>CMAKE_BINARY_DIR</code></td>
+<td>最顶层项目的构建根目录</td>
+</tr>
+<tr>
+<td><code>CMAKE_CURRENT_SOURCE_DIR</code></td>
+<td>当前 <code>CMakeLists.txt</code> 所在源码目录</td>
+</tr>
+<tr>
+<td><code>CMAKE_CURRENT_BINARY_DIR</code></td>
+<td>当前配置文件对应的构建目录</td>
+</tr>
+<tr>
+<td><code>PROJECT_SOURCE_DIR</code></td>
+<td>最近一次 <code>project()</code> 对应的源码根目录</td>
+</tr>
+<tr>
+<td><code>PROJECT_BINARY_DIR</code></td>
+<td>最近一次 <code>project()</code> 对应的构建根目录</td>
+</tr>
+</tbody>
+</table>
+<p>编写可被其他项目引入的子项目时，通常优先使用 <code>PROJECT_SOURCE_DIR</code> 或 <code>CMAKE_CURRENT_SOURCE_DIR</code>，避免错误依赖最外层工程路径。</p>
+<hr />
+<h2 id="_5">八、构建类型与生成器<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<h3 id="1_4">1. 单配置生成器<a class="headerlink" href="#1_4" title="Permanent link">&para;</a></h3>
+<p>Ninja 和 Unix Makefiles 通常在配置时选择构建类型：</p>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Debug
+cmake<span class="w"> </span>--build<span class="w"> </span>build
+</code></pre></div>
+<p>常见构建类型：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>一般用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Debug</code></td>
+<td>带调试信息，通常关闭优化</td>
+</tr>
+<tr>
+<td><code>Release</code></td>
+<td>开启优化，通常关闭断言</td>
+</tr>
+<tr>
+<td><code>RelWithDebInfo</code></td>
+<td>优化并保留调试信息</td>
+</tr>
+<tr>
+<td><code>MinSizeRel</code></td>
+<td>优先减小产物体积</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2_4">2. 多配置生成器<a class="headerlink" href="#2_4" title="Permanent link">&para;</a></h3>
+<p>Visual Studio、Xcode 和 Ninja Multi-Config 通常在构建时选择配置：</p>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build
+cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--config<span class="w"> </span>Release
+</code></pre></div>
+<p>不要在 <code>CMakeLists.txt</code> 中强制覆盖 <code>CMAKE_BUILD_TYPE</code>，否则会妨碍调用者、IDE 和 CI 自由选择配置。</p>
+<h3 id="3_1">3. 指定生成器<a class="headerlink" href="#3_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-G<span class="w"> </span>Ninja
+</code></pre></div>
+<p>Windows 上也可选择 Visual Studio 生成器：</p>
+<div class="highlight"><pre><span></span><code><span class="n">cmake</span> <span class="n">-S</span> <span class="p">.</span> <span class="n">-B</span> <span class="n">build</span> <span class="n">-G</span> <span class="s2">"Visual Studio 17 2022"</span> <span class="n">-A</span> <span class="n">x64</span>
+<span class="n">cmake</span> <span class="p">-</span><span class="n">-build</span> <span class="n">build</span> <span class="p">-</span><span class="n">-config</span> <span class="n">Debug</span>
+</code></pre></div>
+<p>同一个构建目录不能随意更换生成器或编译器。需要切换时，应使用新的构建目录或清理原构建目录。</p>
+<hr />
+<h2 id="_6">九、选项、缓存变量与配置头文件<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<h3 id="1_5">1. 定义可选功能<a class="headerlink" href="#1_5" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">option</span><span class="p">(</span><span class="s">ENABLE_LOGGING</span><span class="w"> </span><span class="s2">"Enable application logging"</span><span class="w"> </span><span class="s">ON</span><span class="p">)</span>
+<span class="nb">option</span><span class="p">(</span><span class="s">BUILD_EXAMPLES</span><span class="w"> </span><span class="s2">"Build example programs"</span><span class="w"> </span><span class="s">OFF</span><span class="p">)</span>
+
+<span class="nb">if</span><span class="p">(</span><span class="s">ENABLE_LOGGING</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">target_compile_definitions</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">ENABLE_LOGGING</span><span class="p">)</span>
+<span class="nb">endif</span><span class="p">()</span>
+</code></pre></div>
+<p>命令行修改选项：</p>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-DENABLE_LOGGING<span class="o">=</span>OFF<span class="w"> </span>-DBUILD_EXAMPLES<span class="o">=</span>ON
+</code></pre></div>
+<h3 id="2_5">2. 缓存变量<a class="headerlink" href="#2_5" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">set</span><span class="p">(</span><span class="s">APP_BACKEND</span><span class="w"> </span><span class="s2">"mock"</span><span class="w"> </span><span class="s">CACHE</span><span class="w"> </span><span class="s">STRING</span><span class="w"> </span><span class="s2">"Backend implementation"</span><span class="p">)</span>
+<span class="nb">set_property</span><span class="p">(</span><span class="s">CACHE</span><span class="w"> </span><span class="s">APP_BACKEND</span><span class="w"> </span><span class="s">PROPERTY</span><span class="w"> </span><span class="s">STRINGS</span><span class="w"> </span><span class="s">mock</span><span class="w"> </span><span class="s">sqlite</span><span class="w"> </span><span class="s">network</span><span class="p">)</span>
+</code></pre></div>
+<p>缓存变量保存在构建目录的 <code>CMakeCache.txt</code> 中，可被命令行、GUI 和 IDE 修改。</p>
+<p>查看常用缓存变量：</p>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-LAH
+</code></pre></div>
+<h3 id="3_2">3. 生成配置头文件<a class="headerlink" href="#3_2" title="Permanent link">&para;</a></h3>
+<p><code>config.hpp.in</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#pragma once</span>
+
+<span class="cp">#define APP_VERSION "@PROJECT_VERSION@"</span>
+<span class="cp">#cmakedefine01 ENABLE_LOGGING</span>
+</code></pre></div>
+<p><code>CMakeLists.txt</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">configure_file</span><span class="p">(</span>
+<span class="w">    </span><span class="o">${</span><span class="nv">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="s">/config.hpp.in</span>
+<span class="w">    </span><span class="o">${</span><span class="nv">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span><span class="s">/generated/config.hpp</span>
+<span class="p">)</span>
+
+<span class="nb">target_include_directories</span><span class="p">(</span><span class="s">app</span>
+<span class="w">    </span><span class="s">PRIVATE</span>
+<span class="w">        </span><span class="o">${</span><span class="nv">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span><span class="s">/generated</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>生成的头文件会类似：</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#define APP_VERSION "1.0.0"</span>
+<span class="cp">#define ENABLE_LOGGING 1</span>
+</code></pre></div>
+<hr />
+<h2 id="_7">十、查找与使用第三方库<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<h3 id="1-find_package">1. find_package<a class="headerlink" href="#1-find_package" title="Permanent link">&para;</a></h3>
+<p>以 Threads 为例：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">find_package</span><span class="p">(</span><span class="s">Threads</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">Threads::Threads</span><span class="p">)</span>
+</code></pre></div>
+<p>以系统已安装的 fmt 为例：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">find_package</span><span class="p">(</span><span class="s">fmt</span><span class="w"> </span><span class="s">CONFIG</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">fmt::fmt</span><span class="p">)</span>
+</code></pre></div>
+<p>现代包通常提供带命名空间的导入目标，例如 <code>fmt::fmt</code>。目标中已经记录了头文件路径、编译定义和传递依赖，比直接使用若干 <code>*_INCLUDE_DIRS</code>、<code>*_LIBRARIES</code> 变量更可靠。</p>
+<p>如果包安装在非标准位置：</p>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-DCMAKE_PREFIX_PATH<span class="o">=</span><span class="s2">"/path/to/prefix"</span>
+</code></pre></div>
+<h3 id="2-fetchcontent">2. FetchContent<a class="headerlink" href="#2-fetchcontent" title="Permanent link">&para;</a></h3>
+<p>可在配置阶段下载并引入依赖：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">include</span><span class="p">(</span><span class="s">FetchContent</span><span class="p">)</span>
+
+<span class="nb">FetchContent_Declare</span><span class="p">(</span>
+<span class="w">    </span><span class="s">fmt</span>
+<span class="w">    </span><span class="s">GIT_REPOSITORY</span><span class="w"> </span><span class="s">https://github.com/fmtlib/fmt.git</span>
+<span class="w">    </span><span class="s">GIT_TAG</span><span class="w">        </span><span class="s">11.0.2</span>
+<span class="p">)</span>
+
+<span class="nb">FetchContent_MakeAvailable</span><span class="p">(</span><span class="s">fmt</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">fmt::fmt</span><span class="p">)</span>
+</code></pre></div>
+<p>实际项目应固定到明确版本或提交，避免依赖上游变化导致构建不可复现。离线开发、企业内网或大型依赖通常更适合包管理器、系统包或预先下载的源码。</p>
+<h3 id="3-add_subdirectory">3. add_subdirectory<a class="headerlink" href="#3-add_subdirectory" title="Permanent link">&para;</a></h3>
+<p>若第三方库源码已包含在仓库中并提供自己的 <code>CMakeLists.txt</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">add_subdirectory</span><span class="p">(</span><span class="s">external/somelib</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">somelib</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="4_2">4. 包管理器<a class="headerlink" href="#4_2" title="Permanent link">&para;</a></h3>
+<p>CMake 本身不是通用包管理器。常见组合有：</p>
+<ul>
+<li>CMake + vcpkg；</li>
+<li>CMake + Conan；</li>
+<li>CMake + 系统包管理器；</li>
+<li>CMake + FetchContent。</li>
+</ul>
+<p>无论依赖来自哪里，理想结果都是获得一个可供 <code>target_link_libraries()</code> 使用的 CMake 目标。</p>
+<hr />
+<h2 id="_8">十一、生成器表达式<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<p>生成器表达式形如 <code>$&lt;...&gt;</code>，在生成或构建阶段求值，可按配置、平台和语言设置属性。</p>
+<p>按构建配置定义宏：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">target_compile_definitions</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span>
+<span class="w">    </span><span class="o">$&lt;</span><span class="nv">$&lt;CONFIG:Debug</span><span class="o">&gt;</span><span class="s">:APP_DEBUG&gt;</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>按编译器设置警告：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">target_compile_options</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span>
+<span class="w">    </span><span class="o">$&lt;</span><span class="nv">$&lt;CXX_COMPILER_ID:MSVC</span><span class="o">&gt;</span><span class="s">:/W4&gt;</span>
+<span class="w">    </span><span class="o">$&lt;</span><span class="nv">$&lt;CXX_COMPILER_ID:GNU,Clang,AppleClang</span><span class="o">&gt;</span><span class="s">:-Wall;-Wextra;-Wpedantic&gt;</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>按语言设置选项：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">target_compile_options</span><span class="p">(</span><span class="s">mixed_target</span><span class="w"> </span><span class="s">PRIVATE</span>
+<span class="w">    </span><span class="o">$&lt;</span><span class="nv">$&lt;COMPILE_LANGUAGE:CXX</span><span class="o">&gt;</span><span class="s">:-Wall&gt;</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>生成器表达式很强大，但过度嵌套会降低可读性。复杂逻辑可考虑先用普通 <code>if()</code> 或封装函数整理。</p>
+<hr />
+<h2 id="ctest">十二、单元测试与 CTest<a class="headerlink" href="#ctest" title="Permanent link">&para;</a></h2>
+<h3 id="1_6">1. 最小测试配置<a class="headerlink" href="#1_6" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">include</span><span class="p">(</span><span class="s">CTest</span><span class="p">)</span><span class="w">  </span><span class="c"># 定义 BUILD_TESTING，并在启用时调用 enable_testing()</span>
+
+<span class="nb">if</span><span class="p">(</span><span class="s">BUILD_TESTING</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">add_executable</span><span class="p">(</span><span class="s">calculator_test</span><span class="w"> </span><span class="s">tests/calculator_test.cpp</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">calculator_test</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">calculator</span><span class="p">)</span>
+
+<span class="w">    </span><span class="nb">add_test</span><span class="p">(</span>
+<span class="w">        </span><span class="s">NAME</span><span class="w"> </span><span class="s">calculator.unit</span>
+<span class="w">        </span><span class="s">COMMAND</span><span class="w"> </span><span class="s">calculator_test</span>
+<span class="w">    </span><span class="p">)</span>
+<span class="nb">endif</span><span class="p">()</span>
+</code></pre></div>
+<p>构建和运行测试：</p>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-DBUILD_TESTING<span class="o">=</span>ON
+cmake<span class="w"> </span>--build<span class="w"> </span>build
+ctest<span class="w"> </span>--test-dir<span class="w"> </span>build<span class="w"> </span>--output-on-failure
+</code></pre></div>
+<p>多配置生成器需指定配置：</p>
+<div class="highlight"><pre><span></span><code>ctest<span class="w"> </span>--test-dir<span class="w"> </span>build<span class="w"> </span>-C<span class="w"> </span>Debug<span class="w"> </span>--output-on-failure
+</code></pre></div>
+<h3 id="2_6">2. 测试属性<a class="headerlink" href="#2_6" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">add_test</span><span class="p">(</span><span class="s">NAME</span><span class="w"> </span><span class="s">network.integration</span><span class="w"> </span><span class="s">COMMAND</span><span class="w"> </span><span class="s">network_test</span><span class="p">)</span>
+
+<span class="nb">set_tests_properties</span><span class="p">(</span><span class="s">network.integration</span><span class="w"> </span><span class="s">PROPERTIES</span>
+<span class="w">    </span><span class="s">TIMEOUT</span><span class="w"> </span><span class="s">30</span>
+<span class="w">    </span><span class="s">LABELS</span><span class="w"> </span><span class="s2">"integration;network"</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>只运行带某标签的测试：</p>
+<div class="highlight"><pre><span></span><code>ctest<span class="w"> </span>--test-dir<span class="w"> </span>build<span class="w"> </span>-L<span class="w"> </span>unit
+</code></pre></div>
+<hr />
+<h2 id="_9">十三、安装项目<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<p>假设项目提供库 <code>calculator</code> 和程序 <code>calculator_app</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">include</span><span class="p">(</span><span class="s">GNUInstallDirs</span><span class="p">)</span>
+
+<span class="nb">install</span><span class="p">(</span>
+<span class="w">    </span><span class="s">TARGETS</span><span class="w"> </span><span class="s">calculator</span><span class="w"> </span><span class="s">calculator_app</span>
+<span class="w">    </span><span class="s">EXPORT</span><span class="w"> </span><span class="s">CalculatorTargets</span>
+<span class="w">    </span><span class="s">RUNTIME</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_INSTALL_BINDIR</span><span class="o">}</span>
+<span class="w">    </span><span class="s">LIBRARY</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_INSTALL_LIBDIR</span><span class="o">}</span>
+<span class="w">    </span><span class="s">ARCHIVE</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_INSTALL_LIBDIR</span><span class="o">}</span>
+<span class="w">    </span><span class="s">INCLUDES</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_INSTALL_INCLUDEDIR</span><span class="o">}</span>
+<span class="p">)</span>
+
+<span class="nb">install</span><span class="p">(</span>
+<span class="w">    </span><span class="s">DIRECTORY</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_SOURCE_DIR</span><span class="o">}</span><span class="s">/include/</span>
+<span class="w">    </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_INSTALL_INCLUDEDIR</span><span class="o">}</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>执行安装：</p>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>--install<span class="w"> </span>build<span class="w"> </span>--prefix<span class="w"> </span>./install
+</code></pre></div>
+<p>多配置生成器：</p>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>--install<span class="w"> </span>build<span class="w"> </span>--config<span class="w"> </span>Release<span class="w"> </span>--prefix<span class="w"> </span>./install
+</code></pre></div>
+<p>导出目标，供其他 CMake 项目导入：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">install</span><span class="p">(</span>
+<span class="w">    </span><span class="s">EXPORT</span><span class="w"> </span><span class="s">CalculatorTargets</span>
+<span class="w">    </span><span class="s">FILE</span><span class="w"> </span><span class="s">CalculatorTargets.cmake</span>
+<span class="w">    </span><span class="s">NAMESPACE</span><span class="w"> </span><span class="s">Calculator::</span>
+<span class="w">    </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_INSTALL_LIBDIR</span><span class="o">}</span><span class="s">/cmake/Calculator</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>要让别人能够完整使用 <code>find_package(Calculator)</code>，通常还需要生成并安装 <code>CalculatorConfig.cmake</code> 和版本文件。这属于库发布阶段的内容，应用项目一般不必配置。</p>
+<hr />
+<h2 id="cmake-presets">十四、CMake Presets<a class="headerlink" href="#cmake-presets" title="Permanent link">&para;</a></h2>
+<p><code>CMakePresets.json</code> 可以把常用配置保存为可复用预设，避免每个人记忆不同的长命令。</p>
+<p>项目根目录创建 <code>CMakePresets.json</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"cmakeMinimumRequired"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"major"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"minor"</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"patch"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"configurePresets"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"debug"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"displayName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Debug build"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"generator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ninja"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"binaryDir"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${sourceDir}/build/debug"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"cacheVariables"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"CMAKE_BUILD_TYPE"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Debug"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"BUILD_TESTING"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ON"</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"release"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"displayName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Release build"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"generator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ninja"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"binaryDir"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${sourceDir}/build/release"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"cacheVariables"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"CMAKE_BUILD_TYPE"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Release"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"BUILD_TESTING"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OFF"</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"buildPresets"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"debug"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"configurePreset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"debug"</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"release"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"configurePreset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"release"</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"testPresets"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"debug"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"configurePreset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"debug"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"output"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"outputOnFailure"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>使用预设：</p>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>--preset<span class="w"> </span>debug
+cmake<span class="w"> </span>--build<span class="w"> </span>--preset<span class="w"> </span>debug
+ctest<span class="w"> </span>--preset<span class="w"> </span>debug
+</code></pre></div>
+<p>通常将团队共享的 <code>CMakePresets.json</code> 提交到版本库，将开发者个人使用的 <code>CMakeUserPresets.json</code> 加入 <code>.gitignore</code>。</p>
+<hr />
+<h2 id="_10">十五、交叉编译<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
+<p>为 STM32、ARM Linux 等其他平台构建时，需要通过工具链文件描述目标环境。</p>
+<p>示例 <code>cmake/toolchains/arm-none-eabi.cmake</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_SYSTEM_NAME</span><span class="w"> </span><span class="s">Generic</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_SYSTEM_PROCESSOR</span><span class="w"> </span><span class="s">arm</span><span class="p">)</span>
+
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_C_COMPILER</span><span class="w"> </span><span class="s">arm-none-eabi-gcc</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_COMPILER</span><span class="w"> </span><span class="s">arm-none-eabi-g++</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_ASM_COMPILER</span><span class="w"> </span><span class="s">arm-none-eabi-gcc</span><span class="p">)</span>
+
+<span class="c"># 裸机程序通常无法在配置机器上运行测试程序</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_TRY_COMPILE_TARGET_TYPE</span><span class="w"> </span><span class="s">STATIC_LIBRARY</span><span class="p">)</span>
+</code></pre></div>
+<p>配置时指定工具链文件：</p>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build-arm<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-DCMAKE_TOOLCHAIN_FILE<span class="o">=</span>cmake/toolchains/arm-none-eabi.cmake
+cmake<span class="w"> </span>--build<span class="w"> </span>build-arm
+</code></pre></div>
+<p>工具链文件必须在第一次配置构建目录时指定。已有缓存的构建目录不应再切换工具链。</p>
+<p>嵌入式项目往往还需要：</p>
+<ul>
+<li>芯片相关编译参数，如 <code>-mcpu</code>、<code>-mthumb</code>；</li>
+<li>启动文件和链接脚本；</li>
+<li>生成 <code>.hex</code>、<code>.bin</code> 的构建后命令；</li>
+<li>烧录与调试目标。</li>
+</ul>
+<p>生成额外固件格式的示意写法：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">add_custom_command</span><span class="p">(</span>
+<span class="w">    </span><span class="s">TARGET</span><span class="w"> </span><span class="s">firmware</span><span class="w"> </span><span class="s">POST_BUILD</span>
+<span class="w">    </span><span class="s">COMMAND</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_OBJCOPY</span><span class="o">}</span><span class="w"> </span><span class="s">-O</span><span class="w"> </span><span class="s">ihex</span>
+<span class="w">            </span><span class="o">$&lt;</span><span class="nv">TARGET_FILE:firmware</span><span class="o">&gt;</span>
+<span class="w">            </span><span class="o">$&lt;</span><span class="nv">TARGET_FILE_DIR:firmware</span><span class="o">&gt;</span><span class="s">/firmware.hex</span>
+<span class="w">    </span><span class="s">COMMENT</span><span class="w"> </span><span class="s2">"Generating firmware.hex"</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>这里使用 <code>$&lt;TARGET_FILE:firmware&gt;</code>，比手写输出文件路径更稳健。</p>
+<hr />
+<h2 id="_11">十六、自定义命令与代码生成<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
+<h3 id="1_7">1. 生成文件<a class="headerlink" href="#1_7" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">add_custom_command</span><span class="p">(</span>
+<span class="w">    </span><span class="s">OUTPUT</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span><span class="s">/generated/version.cpp</span>
+<span class="w">    </span><span class="s">COMMAND</span><span class="w"> </span><span class="s">version_generator</span>
+<span class="w">            </span><span class="o">${</span><span class="nv">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span><span class="s">/generated/version.cpp</span>
+<span class="w">    </span><span class="s">DEPENDS</span><span class="w"> </span><span class="s">version_generator</span><span class="w"> </span><span class="s">version.txt</span>
+<span class="w">    </span><span class="s">COMMENT</span><span class="w"> </span><span class="s2">"Generating version.cpp"</span>
+<span class="w">    </span><span class="s">VERBATIM</span>
+<span class="p">)</span>
+
+<span class="nb">target_sources</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span>
+<span class="w">    </span><span class="o">${</span><span class="nv">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span><span class="s">/generated/version.cpp</span>
+<span class="p">)</span>
+</code></pre></div>
+<p><code>OUTPUT</code> 声明命令生成什么，<code>DEPENDS</code> 声明何时需要重新生成。<code>VERBATIM</code> 可让 CMake 更安全地处理命令参数中的转义。</p>
+<h3 id="2_7">2. 自定义目标<a class="headerlink" href="#2_7" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">add_custom_target</span><span class="p">(</span><span class="s">format</span>
+<span class="w">    </span><span class="s">COMMAND</span><span class="w"> </span><span class="s">clang-format</span><span class="w"> </span><span class="s">-i</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_SOURCE_DIR</span><span class="o">}</span><span class="s">/src/main.cpp</span>
+<span class="w">    </span><span class="s">WORKING_DIRECTORY</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_SOURCE_DIR</span><span class="o">}</span>
+<span class="w">    </span><span class="s">COMMENT</span><span class="w"> </span><span class="s2">"Formatting source files"</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>执行：</p>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span>format
+</code></pre></div>
+<p>如果目标之间只存在构建顺序关系，可使用：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">add_dependencies</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">generated_resources</span><span class="p">)</span>
+</code></pre></div>
+<p>如果本质是链接依赖，应优先使用 <code>target_link_libraries()</code>，它会同时表达链接关系和构建顺序。</p>
+<hr />
+<h2 id="cmake_1">十七、调试 CMake<a class="headerlink" href="#cmake_1" title="Permanent link">&para;</a></h2>
+<h3 id="1_8">1. 查看变量<a class="headerlink" href="#1_8" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">message</span><span class="p">(</span><span class="s">STATUS</span><span class="w"> </span><span class="s2">"Compiler: ${CMAKE_CXX_COMPILER}"</span><span class="p">)</span>
+<span class="nb">message</span><span class="p">(</span><span class="s">STATUS</span><span class="w"> </span><span class="s2">"Compiler ID: ${CMAKE_CXX_COMPILER_ID}"</span><span class="p">)</span>
+<span class="nb">message</span><span class="p">(</span><span class="s">STATUS</span><span class="w"> </span><span class="s2">"Source dir: ${CMAKE_CURRENT_SOURCE_DIR}"</span><span class="p">)</span>
+<span class="nb">message</span><span class="p">(</span><span class="s">STATUS</span><span class="w"> </span><span class="s2">"Binary dir: ${CMAKE_CURRENT_BINARY_DIR}"</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="2_8">2. 查看实际编译命令<a class="headerlink" href="#2_8" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>--verbose
+</code></pre></div>
+<p>Ninja 也可使用：</p>
+<div class="highlight"><pre><span></span><code>ninja<span class="w"> </span>-C<span class="w"> </span>build<span class="w"> </span>-v
+</code></pre></div>
+<h3 id="3-compile_commandsjson">3. 导出 compile_commands.json<a class="headerlink" href="#3-compile_commandsjson" title="Permanent link">&para;</a></h3>
+<p>对 Ninja 和 Makefile 生成器，可在配置时启用：</p>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-DCMAKE_EXPORT_COMPILE_COMMANDS<span class="o">=</span>ON
+</code></pre></div>
+<p>生成的 <code>build/compile_commands.json</code> 可供 clangd、clang-tidy 和多种 IDE 使用。也可以写入预设：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">"CMAKE_EXPORT_COMPILE_COMMANDS"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ON"</span>
+</code></pre></div>
+<h3 id="4_3">4. 跟踪配置过程<a class="headerlink" href="#4_3" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>--trace-expand
+</code></pre></div>
+<p>该输出通常很多，适合在普通 <code>message()</code> 无法定位问题时使用。</p>
+<h3 id="5_3">5. 常见缓存问题<a class="headerlink" href="#5_3" title="Permanent link">&para;</a></h3>
+<p>如果移动了源码目录、切换了编译器或生成器，旧的 <code>CMakeCache.txt</code> 可能仍保存过时信息。最可靠的处理方式是使用新的构建目录重新配置。</p>
+<hr />
+<h2 id="_12">十八、常见错误与改进方式<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
+<h3 id="1-include_directories">1. 全局 include_directories<a class="headerlink" href="#1-include_directories" title="Permanent link">&para;</a></h3>
+<p>不推荐：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">include_directories</span><span class="p">(</span><span class="s">include</span><span class="p">)</span>
+</code></pre></div>
+<p>推荐：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">target_include_directories</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">include</span><span class="p">)</span>
+</code></pre></div>
+<p>原因是全局命令会隐式影响当前目录及其子目录，项目变大后很难判断路径来自哪里。</p>
+<h3 id="2-add_definitions-cxx_flags">2. 全局 add_definitions 或 CXX_FLAGS<a class="headerlink" href="#2-add_definitions-cxx_flags" title="Permanent link">&para;</a></h3>
+<p>不推荐：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_FLAGS</span><span class="w"> </span><span class="s2">"${CMAKE_CXX_FLAGS} -Wall -std=c++17"</span><span class="p">)</span>
+<span class="nb">add_definitions</span><span class="p">(</span><span class="s">-DENABLE_LOGGING</span><span class="p">)</span>
+</code></pre></div>
+<p>推荐：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">target_compile_features</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">cxx_std_17</span><span class="p">)</span>
+<span class="nb">target_compile_options</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">-Wall</span><span class="p">)</span>
+<span class="nb">target_compile_definitions</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">ENABLE_LOGGING</span><span class="p">)</span>
+</code></pre></div>
+<p>这样能保证设置只作用于需要它的目标，也便于跨平台处理。</p>
+<h3 id="3_3">3. 使用相对路径导致定位混乱<a class="headerlink" href="#3_3" title="Permanent link">&para;</a></h3>
+<p>在子目录配置中，明确使用：</p>
+<div class="highlight"><pre><span></span><code><span class="err">${CMAKE_CURRENT_SOURCE_DIR}</span>
+<span class="err">${CMAKE_CURRENT_BINARY_DIR}</span>
+</code></pre></div>
+<p>不要假设 CMake 总从项目根目录解析所有路径。</p>
+<h3 id="4_4">4. 手工填写库文件名<a class="headerlink" href="#4_4" title="Permanent link">&para;</a></h3>
+<p>不推荐：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">/usr/lib/libfoo.so</span><span class="p">)</span>
+</code></pre></div>
+<p>推荐：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">find_package</span><span class="p">(</span><span class="s">foo</span><span class="w"> </span><span class="s">CONFIG</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">app</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">foo::foo</span><span class="p">)</span>
+</code></pre></div>
+<p>导入目标能够携带平台差异、依赖和头文件路径。</p>
+<h3 id="5-cmakeliststxt">5. 修改 CMakeLists.txt 后仍使用旧结果<a class="headerlink" href="#5-cmakeliststxt" title="Permanent link">&para;</a></h3>
+<p><code>cmake --build build</code> 通常会自动触发重新配置，但如果修改了编译器、工具链或生成器，应该重新创建构建目录。</p>
+<h3 id="6-visual-studio">6. Visual Studio 下找不到程序<a class="headerlink" href="#6-visual-studio" title="Permanent link">&para;</a></h3>
+<p>Visual Studio 是多配置生成器，可执行文件通常在：</p>
+<div class="highlight"><pre><span></span><code>build/Debug/
+build/Release/
+</code></pre></div>
+<p>构建和测试时也要使用 <code>--config Debug</code> 或 <code>-C Debug</code>。</p>
+<h3 id="7-undefined-reference">7. 链接阶段出现 undefined reference<a class="headerlink" href="#7-undefined-reference" title="Permanent link">&para;</a></h3>
+<p>常见原因：</p>
+<ul>
+<li>只添加了头文件目录，没有链接实现库；</li>
+<li>某个 <code>.cpp</code> 没有加入目标；</li>
+<li>静态库依赖没有正确通过 <code>PUBLIC</code> 或 <code>INTERFACE</code> 传递；</li>
+<li>函数声明与定义的签名不一致；</li>
+<li>C 与 C++ 代码混合时缺少 <code>extern "C"</code>。</li>
+</ul>
+<p>先用 <code>cmake --build build --verbose</code> 检查实际链接命令。</p>
+<hr />
+<h2 id="_13">十九、一份可直接复用的项目模板<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
+<p>项目结构：</p>
+<div class="highlight"><pre><span></span><code>modern_cpp_project/
+├── CMakeLists.txt
+├── CMakePresets.json
+├── app/
+│   └── main.cpp
+├── include/
+│   └── myproject/greeting.hpp
+├── src/
+│   └── greeting.cpp
+└── tests/
+    └── greeting_test.cpp
+</code></pre></div>
+<p>根目录 <code>CMakeLists.txt</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.20</span><span class="p">)</span>
+
+<span class="nb">project</span><span class="p">(</span>
+<span class="w">    </span><span class="s">ModernCppProject</span>
+<span class="w">    </span><span class="s">VERSION</span><span class="w"> </span><span class="s">1.0.0</span>
+<span class="w">    </span><span class="s">DESCRIPTION</span><span class="w"> </span><span class="s2">"A small modern CMake example"</span>
+<span class="w">    </span><span class="s">LANGUAGES</span><span class="w"> </span><span class="s">CXX</span>
+<span class="p">)</span>
+
+<span class="nb">option</span><span class="p">(</span><span class="s">BUILD_TESTING</span><span class="w"> </span><span class="s2">"Build tests"</span><span class="w"> </span><span class="s">ON</span><span class="p">)</span>
+
+<span class="nb">add_library</span><span class="p">(</span><span class="s">project_warnings</span><span class="w"> </span><span class="s">INTERFACE</span><span class="p">)</span>
+<span class="nb">if</span><span class="p">(</span><span class="s">MSVC</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">target_compile_options</span><span class="p">(</span><span class="s">project_warnings</span><span class="w"> </span><span class="s">INTERFACE</span><span class="w"> </span><span class="s">/W4</span><span class="w"> </span><span class="s">/permissive-</span><span class="p">)</span>
+<span class="nb">else</span><span class="p">()</span>
+<span class="w">    </span><span class="nb">target_compile_options</span><span class="p">(</span><span class="s">project_warnings</span><span class="w"> </span><span class="s">INTERFACE</span>
+<span class="w">        </span><span class="s">-Wall</span><span class="w"> </span><span class="s">-Wextra</span><span class="w"> </span><span class="s">-Wpedantic</span>
+<span class="w">    </span><span class="p">)</span>
+<span class="nb">endif</span><span class="p">()</span>
+
+<span class="nb">add_library</span><span class="p">(</span><span class="s">myproject</span>
+<span class="w">    </span><span class="s">src/greeting.cpp</span>
+<span class="p">)</span>
+<span class="nb">add_library</span><span class="p">(</span><span class="s">MyProject::myproject</span><span class="w"> </span><span class="s">ALIAS</span><span class="w"> </span><span class="s">myproject</span><span class="p">)</span>
+
+<span class="nb">target_compile_features</span><span class="p">(</span><span class="s">myproject</span><span class="w"> </span><span class="s">PUBLIC</span><span class="w"> </span><span class="s">cxx_std_17</span><span class="p">)</span>
+<span class="nb">target_include_directories</span><span class="p">(</span><span class="s">myproject</span>
+<span class="w">    </span><span class="s">PUBLIC</span>
+<span class="w">        </span><span class="o">$&lt;</span><span class="nv">BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="o">$&lt;</span><span class="nv">INSTALL_INTERFACE:include</span><span class="o">&gt;</span>
+<span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">myproject</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">project_warnings</span><span class="p">)</span>
+
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">my_app</span><span class="w"> </span><span class="s">app/main.cpp</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">my_app</span>
+<span class="w">    </span><span class="s">PRIVATE</span>
+<span class="w">        </span><span class="s">MyProject::myproject</span>
+<span class="w">        </span><span class="s">project_warnings</span>
+<span class="p">)</span>
+
+<span class="nb">if</span><span class="p">(</span><span class="s">BUILD_TESTING</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">enable_testing</span><span class="p">()</span>
+
+<span class="w">    </span><span class="nb">add_executable</span><span class="p">(</span><span class="s">greeting_test</span><span class="w"> </span><span class="s">tests/greeting_test.cpp</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">greeting_test</span>
+<span class="w">        </span><span class="s">PRIVATE</span>
+<span class="w">            </span><span class="s">MyProject::myproject</span>
+<span class="w">            </span><span class="s">project_warnings</span>
+<span class="w">    </span><span class="p">)</span>
+
+<span class="w">    </span><span class="nb">add_test</span><span class="p">(</span><span class="s">NAME</span><span class="w"> </span><span class="s">greeting.unit</span><span class="w"> </span><span class="s">COMMAND</span><span class="w"> </span><span class="s">greeting_test</span><span class="p">)</span>
+<span class="nb">endif</span><span class="p">()</span>
+</code></pre></div>
+<p><code>include/myproject/greeting.hpp</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#pragma once</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string&gt;</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">myproject</span><span class="w"> </span><span class="p">{</span>
+<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">greeting</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>src/greeting.cpp</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"myproject/greeting.hpp"</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">myproject</span><span class="w"> </span><span class="p">{</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">greeting</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="s">"Hello, "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"!"</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">}</span><span class="w">  </span><span class="c1">// namespace myproject</span>
+</code></pre></div>
+<p><code>app/main.cpp</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"myproject/greeting.hpp"</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">myproject</span><span class="o">::</span><span class="n">greeting</span><span class="p">(</span><span class="s">"CMake"</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">'\n'</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>tests/greeting_test.cpp</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"myproject/greeting.hpp"</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cassert&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">myproject</span><span class="o">::</span><span class="n">greeting</span><span class="p">(</span><span class="s">"CMake"</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">"Hello, CMake!"</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>构建并测试：</p>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Debug
+cmake<span class="w"> </span>--build<span class="w"> </span>build
+ctest<span class="w"> </span>--test-dir<span class="w"> </span>build<span class="w"> </span>--output-on-failure
+</code></pre></div>
+<hr />
+<h2 id="_14">二十、常用命令速查<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>目的</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>配置项目</td>
+<td><code>cmake -S . -B build</code></td>
+</tr>
+<tr>
+<td>指定 Ninja</td>
+<td><code>cmake -S . -B build -G Ninja</code></td>
+</tr>
+<tr>
+<td>Debug 配置</td>
+<td><code>cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug</code></td>
+</tr>
+<tr>
+<td>构建全部目标</td>
+<td><code>cmake --build build</code></td>
+</tr>
+<tr>
+<td>并行构建</td>
+<td><code>cmake --build build --parallel</code></td>
+</tr>
+<tr>
+<td>构建指定目标</td>
+<td><code>cmake --build build --target app</code></td>
+</tr>
+<tr>
+<td>多配置构建</td>
+<td><code>cmake --build build --config Release</code></td>
+</tr>
+<tr>
+<td>显示详细命令</td>
+<td><code>cmake --build build --verbose</code></td>
+</tr>
+<tr>
+<td>运行测试</td>
+<td><code>ctest --test-dir build --output-on-failure</code></td>
+</tr>
+<tr>
+<td>安装</td>
+<td><code>cmake --install build --prefix ./install</code></td>
+</tr>
+<tr>
+<td>查看 CMake 版本</td>
+<td><code>cmake --version</code></td>
+</tr>
+<tr>
+<td>查看帮助</td>
+<td><code>cmake --help</code></td>
+</tr>
+<tr>
+<td>列出所有目标</td>
+<td><code>cmake --build build --target help</code></td>
+</tr>
+</tbody>
+</table>
+<p>常用 CMake 命令速查：</p>
+<table>
+<thead>
+<tr>
+<th>CMake 命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cmake_minimum_required()</code></td>
+<td>指定最低 CMake 版本并设置策略</td>
+</tr>
+<tr>
+<td><code>project()</code></td>
+<td>定义项目名称、版本和语言</td>
+</tr>
+<tr>
+<td><code>add_executable()</code></td>
+<td>创建可执行目标</td>
+</tr>
+<tr>
+<td><code>add_library()</code></td>
+<td>创建库目标</td>
+</tr>
+<tr>
+<td><code>add_subdirectory()</code></td>
+<td>引入子目录</td>
+</tr>
+<tr>
+<td><code>target_sources()</code></td>
+<td>给目标添加源文件</td>
+</tr>
+<tr>
+<td><code>target_include_directories()</code></td>
+<td>给目标添加头文件搜索路径</td>
+</tr>
+<tr>
+<td><code>target_compile_features()</code></td>
+<td>声明语言特性或 C++ 标准</td>
+</tr>
+<tr>
+<td><code>target_compile_definitions()</code></td>
+<td>添加编译宏</td>
+</tr>
+<tr>
+<td><code>target_compile_options()</code></td>
+<td>添加编译选项</td>
+</tr>
+<tr>
+<td><code>target_link_libraries()</code></td>
+<td>链接目标或库</td>
+</tr>
+<tr>
+<td><code>find_package()</code></td>
+<td>查找外部包</td>
+</tr>
+<tr>
+<td><code>configure_file()</code></td>
+<td>从模板生成配置文件</td>
+</tr>
+<tr>
+<td><code>add_test()</code></td>
+<td>注册测试</td>
+</tr>
+<tr>
+<td><code>install()</code></td>
+<td>定义安装规则</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_15">二十一、推荐实践清单<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h2>
+<ul>
+<li>使用源码目录外构建：<code>cmake -S . -B build</code>；</li>
+<li>围绕目标使用 <code>target_*</code> 命令，尽量减少全局状态；</li>
+<li>正确区分 <code>PRIVATE</code>、<code>PUBLIC</code> 和 <code>INTERFACE</code>；</li>
+<li>用 <code>target_compile_features()</code> 表达 C++ 标准要求；</li>
+<li>链接 CMake 目标，而不是手写库文件绝对路径；</li>
+<li>不在项目配置里强制固定编译器和构建类型；</li>
+<li>对团队常用配置使用 <code>CMakePresets.json</code>；</li>
+<li>使用 <code>CTest</code> 统一运行测试；</li>
+<li>第三方依赖固定版本，保证构建可复现；</li>
+<li>把 <code>build/</code>、<code>CMakeUserPresets.json</code> 和本地安装目录加入 <code>.gitignore</code>。</li>
+</ul>
+<p>掌握 CMake 的关键不是记住所有命令，而是建立“目标及其使用要求”的思维：<strong>谁需要源码、谁需要头文件、谁需要编译宏、谁依赖谁，以及这些要求是否应该继续传递。</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../code/" class="md-footer__link md-footer__link--prev" aria-label="上一页: code">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                code
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../cpp_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%AF%A6%E8%A7%A3_%E6%89%A9%E5%B1%95%E7%89%88/" class="md-footer__link md-footer__link--next" aria-label="下一页: 设计模式详解">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                设计模式详解
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tabs", "navigation.indexes", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

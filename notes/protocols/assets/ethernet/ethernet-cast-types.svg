@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="520" viewBox="0 0 1040 520" role="img" aria-labelledby="title desc">
+  <title id="title">Ethernet unicast broadcast multicast</title>
+  <desc id="desc">Unicast sends to one host, broadcast to all hosts, multicast to a subscribed group.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.host{fill:#fff;stroke:#334155;stroke-width:2;rx:10}.src{fill:#dbeafe;stroke:#2563eb;stroke-width:2;rx:10}.group{fill:#dcfce7;stroke:#16a34a;stroke-width:2;rx:10}
+      .text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:18px;fill:#0f172a}.title{font-size:25px;font-weight:700}.small{font-size:15px;fill:#475569}
+      .u{stroke:#2563eb;stroke-width:3;marker-end:url(#blue)}.b{stroke:#dc2626;stroke-width:3;marker-end:url(#red)}.m{stroke:#16a34a;stroke-width:3;marker-end:url(#green)}
+    </style>
+    <marker id="blue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#2563eb"/></marker>
+    <marker id="red" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#dc2626"/></marker>
+    <marker id="green" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#16a34a"/></marker>
+  </defs>
+  <rect class="bg" width="1040" height="520"/>
+  <text class="text title" x="520" y="45" text-anchor="middle">单播 / 广播 / 组播</text>
+  <rect class="src" x="90" y="210" width="120" height="60"/><text class="text" x="150" y="247" text-anchor="middle">发送者</text>
+  <rect class="host" x="450" y="80" width="120" height="58"/><text class="text" x="510" y="115" text-anchor="middle">主机 A</text>
+  <rect class="group" x="760" y="100" width="120" height="58"/><text class="text" x="820" y="135" text-anchor="middle">组成员</text>
+  <rect class="host" x="450" y="220" width="120" height="58"/><text class="text" x="510" y="255" text-anchor="middle">主机 B</text>
+  <rect class="group" x="760" y="240" width="120" height="58"/><text class="text" x="820" y="275" text-anchor="middle">组成员</text>
+  <rect class="host" x="450" y="360" width="120" height="58"/><text class="text" x="510" y="395" text-anchor="middle">主机 C</text>
+  <rect class="host" x="760" y="380" width="120" height="58"/><text class="text" x="820" y="415" text-anchor="middle">非组成员</text>
+
+  <line class="u" x1="210" y1="235" x2="450" y2="249"/><text class="small" x="320" y="223" text-anchor="middle">单播：一个目标</text>
+  <line class="b" x1="210" y1="230" x2="450" y2="109"/><line class="b" x1="210" y1="245" x2="450" y2="389"/><text class="small" x="320" y="132" text-anchor="middle">广播：所有主机</text>
+  <line class="m" x1="210" y1="220" x2="760" y2="129"/><line class="m" x1="210" y1="255" x2="760" y2="269"/><text class="small" x="540" y="185" text-anchor="middle">组播：订阅的一组主机</text>
+  <text class="small" x="520" y="485" text-anchor="middle">广播 MAC 为 FF:FF:FF:FF:FF:FF；组播需要设备和网络配置共同支持。</text>
+</svg>

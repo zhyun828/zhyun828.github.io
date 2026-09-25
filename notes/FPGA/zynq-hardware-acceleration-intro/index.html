@@ -1,0 +1,4450 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Notes on embedded systems, robotics, C++, FPGA, and interview preparation.">
+      
+      
+      
+        <link rel="canonical" href="https://zhyun828.github.io/notes/FPGA/zynq-hardware-acceleration-intro/">
+      
+      
+        <link rel="prev" href="../basics/">
+      
+      
+        <link rel="next" href="../../ros/gazebo/basic/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Zynq 硬件乘法加速器 - ZY Engineering Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/home.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#zynq-xc7z020-pspl-axi" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="ZY Engineering Notes" class="md-header__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ZY Engineering Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Zynq 硬件乘法加速器
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal"  aria-label="深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="cyan"  aria-label="浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m3.55 19.09 1.41 1.41 1.8-1.79-1.42-1.42M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6c0-3.32-2.69-6-6-6m8 7h3v-2h-3m-2.76 7.71 1.8 1.79 1.41-1.41-1.79-1.8M20.45 5l-1.41-1.4-1.8 1.79 1.42 1.42M13 1h-2v3h2M6.76 5.39 4.96 3.6 3.55 5l1.79 1.81zM1 13h3v-2H1m12 9h-2v3h2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="ZY Engineering Notes" class="md-nav__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ZY Engineering Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../protocols/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通信协议
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    通信协议
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/usart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    USART
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/i2c/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I2C
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/spi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SPI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/can/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/tcp-udp-ip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TCP / UDP / IP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/modbus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modbus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/ethernet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ethernet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/lin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LIN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/http-https/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP / HTTPS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面试
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    面试
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E5%BF%AB%E9%80%9F%E6%A3%80%E7%B4%A2%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速检索表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E5%B5%8C%E5%85%A5%E5%BC%8F%E9%9D%A2%E8%AF%95%E6%B1%87%E6%80%BB%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    嵌入式面试汇总表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E9%AB%98%E9%A2%91%E9%A2%98%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高频题深度解析
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E9%97%AE%E7%AD%94%E9%9D%A2%E8%AF%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目经历问答面试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arduino
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Arduino
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/basics.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4_2" id="__nav_2_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    projet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/projet.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/pre.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    pre
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/code.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Arduino/projet/thoughts.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thoughts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cpp
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cpp
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cpp/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cpp/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cpp/cmake%E6%95%99%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CMake 与 CMakeLists.txt
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Cpp/cpp_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%AF%A6%E8%A7%A3_%E6%89%A9%E5%B1%95%E7%89%88/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    设计模式详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    embedded_system
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    embedded_system
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../embedded_system/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_6_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../embedded_system/TP/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TP
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    TP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FPGA
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    FPGA
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zynq 硬件乘法加速器
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zynq 硬件乘法加速器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 项目目标、结果与核心思想
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-zynq-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Zynq 架构与 FPGA 加速的本质
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Zynq 架构与 FPGA 加速的本质">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-zynq-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Zynq 与普通 FPGA 的区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-cpu-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 CPU 执行指令，FPGA 构造电路
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-ps-pl-axismartconnect-mmio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. PS 与 PL 的通信：AXI、SmartConnect 与 MMIO
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. PS 与 PL 的通信：AXI、SmartConnect 与 MMIO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-axi4-lite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 AXI4-Lite 与主从关系
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-axi-smartconnect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 AXI SmartConnect 的作用
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-memory-mapped-io" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Memory-Mapped I/O
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-axi-gpio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 为什么先用 AXI GPIO 验证通信
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-mult_accel-ip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 自定义 mult_accel IP 与寄存器映射
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 自定义 mult_accel IP 与寄存器映射">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-axi4-lite-slave-peripheral" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 AXI4-Lite Slave Peripheral
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-ip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 IP 内部如何进行地址译码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-cpu-a-b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 CPU 写 A 和 B
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-pl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. PL 中的乘法、读写属性与结果位宽
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. PL 中的乘法、读写属性与结果位宽">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 真正的硬件乘法
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-startdone-busy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 为什么第一版没有 START、DONE 和 BUSY
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-result-cpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Result 为什么不能由 CPU 写
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-cpu-result-32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 CPU 如何读 Result，以及为什么只返回低 32 位
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-vivado-block-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Vivado Block Design、时钟与复位
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Vivado Block Design、时钟与复位">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-clock" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Clock
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Reset
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-vivadovitisxsaplatform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Vivado、Vitis、XSA、Platform 与产物
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Vivado、Vitis、XSA、Platform 与产物">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-vivado-vitis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Vivado 和 Vitis 的职责
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-xsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 XSA 是什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-platformdomain-standalone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 Platform、Domain 与 Standalone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74-bitelf-xsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 .bit、.elf 和 XSA 的区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-arm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. ARM 裸机程序与完整读写链路
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. ARM 裸机程序与完整读写链路">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 测试程序
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-xil_out32-xil_in32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Xil_Out32 和 Xil_In32
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 三步操作的内部过程
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 构建、下载、验证与当前内存限制
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. 构建、下载、验证与当前内存限制">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 从硬件到软件的完整流程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 如何验证成功
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-ocm-ddr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.3 当前使用 OCM，以及 DDR 遗留问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. 性能认识、升级方向与知识索引
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. 性能认识、升级方向与知识索引">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 为什么它还只是“最小硬件加速器”
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 真正有意义的加速形式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 推荐学习路线
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#104" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.4 核心概念速查
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_8" id="__nav_2_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gazebo
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    gazebo
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ros/gazebo/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_9" id="__nav_2_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_9_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_9_2" id="__nav_2_9_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux驱动
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_9_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_9_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    linux驱动
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/linux%E9%A9%B1%E5%8A%A8/00_%E4%B8%8B%E8%BD%BD%E8%B5%84%E6%96%99/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    下载资料
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/linux%E9%A9%B1%E5%8A%A8/01_%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    搭建开发环境
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/linux%E9%A9%B1%E5%8A%A8/02_%E9%80%9A%E7%94%A8%E7%9A%84%E9%A9%B1%E5%8A%A8%E6%A1%86%E6%9E%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用的驱动框架
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/linux%E9%A9%B1%E5%8A%A8/03_%E4%BD%BF%E7%94%A8%E6%A8%A1%E6%9D%BF%E6%93%8D%E4%BD%9C%E7%A1%AC%E4%BB%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    使用模板操作硬件
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/linux%E9%A9%B1%E5%8A%A8/04_%E5%B9%B3%E5%8F%B0%E6%80%BB%E7%BA%BF%E8%AE%BE%E5%A4%87%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AE%BE%E5%A4%87%E6%A0%91/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    平台总线设备模型和设备树
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux/linux%E9%A9%B1%E5%8A%A8/05_I2C%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F%E6%A8%A1%E6%9D%BF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I2C驱动程序模板
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_10" id="__nav_2_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVGL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LVGL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LVGL/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ros
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ros
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ros/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ros/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_12" id="__nav_2_12_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    stm32
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stm32/stm32_knowledge_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32_knowledge_notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stm32/%E5%A4%96%E8%AE%BE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    外设
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../stm32/%E5%AF%84%E5%AD%98%E5%99%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    寄存器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 项目目标、结果与核心思想
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-zynq-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Zynq 架构与 FPGA 加速的本质
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Zynq 架构与 FPGA 加速的本质">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-zynq-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Zynq 与普通 FPGA 的区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-cpu-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 CPU 执行指令，FPGA 构造电路
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-ps-pl-axismartconnect-mmio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. PS 与 PL 的通信：AXI、SmartConnect 与 MMIO
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. PS 与 PL 的通信：AXI、SmartConnect 与 MMIO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-axi4-lite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 AXI4-Lite 与主从关系
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-axi-smartconnect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 AXI SmartConnect 的作用
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-memory-mapped-io" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Memory-Mapped I/O
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-axi-gpio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 为什么先用 AXI GPIO 验证通信
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-mult_accel-ip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 自定义 mult_accel IP 与寄存器映射
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 自定义 mult_accel IP 与寄存器映射">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-axi4-lite-slave-peripheral" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 AXI4-Lite Slave Peripheral
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-ip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 IP 内部如何进行地址译码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-cpu-a-b" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 CPU 写 A 和 B
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-pl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. PL 中的乘法、读写属性与结果位宽
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. PL 中的乘法、读写属性与结果位宽">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 真正的硬件乘法
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-startdone-busy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 为什么第一版没有 START、DONE 和 BUSY
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-result-cpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Result 为什么不能由 CPU 写
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-cpu-result-32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 CPU 如何读 Result，以及为什么只返回低 32 位
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-vivado-block-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Vivado Block Design、时钟与复位
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Vivado Block Design、时钟与复位">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-clock" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Clock
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Reset
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-vivadovitisxsaplatform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Vivado、Vitis、XSA、Platform 与产物
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Vivado、Vitis、XSA、Platform 与产物">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-vivado-vitis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Vivado 和 Vitis 的职责
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-xsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 XSA 是什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-platformdomain-standalone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 Platform、Domain 与 Standalone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74-bitelf-xsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 .bit、.elf 和 XSA 的区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-arm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. ARM 裸机程序与完整读写链路
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. ARM 裸机程序与完整读写链路">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 测试程序
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-xil_out32-xil_in32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Xil_Out32 和 Xil_In32
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 三步操作的内部过程
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 构建、下载、验证与当前内存限制
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. 构建、下载、验证与当前内存限制">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 从硬件到软件的完整流程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 如何验证成功
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-ocm-ddr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.3 当前使用 OCM，以及 DDR 遗留问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. 性能认识、升级方向与知识索引
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. 性能认识、升级方向与知识索引">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 为什么它还只是“最小硬件加速器”
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 真正有意义的加速形式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 推荐学习路线
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#104" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.4 核心概念速查
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="导航栏" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Notes
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../basics/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    FPGA
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="zynq-xc7z020-pspl-axi">Zynq XC7Z020 硬件乘法加速器：从零理解 PS、PL 与 AXI<a class="headerlink" href="#zynq-xc7z020-pspl-axi" title="Permanent link">&para;</a></h1>
+<p>这篇笔记完整梳理一个最小但真实的 Zynq 硬件加速项目：ARM Cortex-A9 通过 AXI4-Lite 把两个操作数写入 PL 中的自定义 <code>mult_accel</code> IP，由 FPGA 里的 VHDL 乘法电路完成计算，再由 ARM 读回结果。</p>
+<p>项目中间的软件安装、界面操作和排错过程不在本文范围内。本文只保留需要长期掌握的架构、硬件、软件和数据流知识。</p>
+<h2 id="1">1. 项目目标、结果与核心思想<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<p>最终实现的数据流是：</p>
+<div class="highlight"><pre><span></span><code>ARM Cortex-A9
+    │
+    │ 写 A = 10
+    │ 写 B = 20
+    ▼
+AXI4-Lite
+    ▼
+┌─────────────────────┐
+│      PL / FPGA      │
+│                     │
+│      A × B          │
+│       ↓             │
+│      200            │
+└─────────┬───────────┘
+          │
+          │ AXI 读取
+          ▼
+ARM 得到 result = 200
+</code></pre></div>
+<p>调试器中读到：</p>
+<div class="highlight"><pre><span></span><code>result = 0x000000C8
+</code></pre></div>
+<p>因为：</p>
+<div class="highlight"><pre><span></span><code>0xC8 = 200
+10 × 20 = 200
+</code></pre></div>
+<p>这证明了完整链路已经工作：ARM 写入输入，PL 完成乘法，ARM 再读回结果。这里最关键的不是数值 200，而是职责分工：</p>
+<div class="highlight"><pre><span></span><code>PS 负责控制和数据传输
+PL 负责计算
+AXI 负责 PS 与 PL 之间的通信
+</code></pre></div>
+<p>乘法不是 ARM 软件算完再写给 FPGA 的，而是由 PL 中综合出的真实硬件电路完成。ARM 程序只负责“写输入、读结果”。这就是最基础的 Zynq 硬件加速模型。</p>
+<h2 id="2-zynq-fpga">2. Zynq 架构与 FPGA 加速的本质<a class="headerlink" href="#2-zynq-fpga" title="Permanent link">&para;</a></h2>
+<h3 id="21-zynq-fpga">2.1 Zynq 与普通 FPGA 的区别<a class="headerlink" href="#21-zynq-fpga" title="Permanent link">&para;</a></h3>
+<p>本项目使用 Zynq-7000 系列的 <code>XC7Z020</code>。Zynq 可以理解为在同一颗芯片中集成了处理器系统和可编程逻辑：</p>
+<div class="highlight"><pre><span></span><code>┌────────────────────────────┐
+│           Zynq             │
+│                            │
+│  PS                    PL  │
+│ ┌─────────┐        ┌─────┐ │
+│ │ ARM CPU │ ←AXI→  │FPGA │ │
+│ └─────────┘        └─────┘ │
+│                            │
+└────────────────────────────┘
+</code></pre></div>
+<p><code>PS</code> 是 Processing System，内部包括：</p>
+<ul>
+<li>ARM Cortex-A9 处理器；</li>
+<li>DDR Controller；</li>
+<li>UART、SPI、I2C、GPIO；</li>
+<li>Timer 等常用处理器外设。</li>
+</ul>
+<p><code>PL</code> 是 Programmable Logic，也就是 FPGA 部分，可以使用 VHDL、Verilog 或 HLS 描述和构造数字电路。</p>
+<p>因此，Zynq 的核心特点是：</p>
+<div class="highlight"><pre><span></span><code>CPU + FPGA
+</code></pre></div>
+<p>软件控制和专用硬件计算可以在同一颗芯片内配合工作。</p>
+<h3 id="22-cpu-fpga">2.2 CPU 执行指令，FPGA 构造电路<a class="headerlink" href="#22-cpu-fpga" title="Permanent link">&para;</a></h3>
+<p>如果完全由 CPU 计算：</p>
+<div class="highlight"><pre><span></span><code><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+</code></pre></div>
+<p>CPU 会按照取指、译码、执行和保存结果的过程运行指令。FPGA 的思路不同：我们直接在 PL 中构造乘法电路。</p>
+<div class="highlight"><pre><span></span><code>A ───────┐
+         × ────── Result
+B ───────┘
+</code></pre></div>
+<p>VHDL 中的核心描述是：</p>
+<div class="highlight"><pre><span></span><code><span class="n">mult_result</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="kt">unsigned</span><span class="p">(</span><span class="n">slv_reg0</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="kt">unsigned</span><span class="p">(</span><span class="n">slv_reg1</span><span class="p">);</span>
+</code></pre></div>
+<p>综合后，这不是“保存在 FPGA 里等待执行的一条软件指令”，而是变成 FPGA 内部的硬件逻辑。可以先记住：</p>
+<div class="highlight"><pre><span></span><code>CPU：执行程序
+FPGA：构造电路
+</code></pre></div>
+<p>只实现一个乘法器时，性能优势并不明显。FPGA 的价值会在多个乘法器并行工作、MAC 阵列、流水线、矩阵乘法、卷积或 FIR 等场景中体现出来。</p>
+<h2 id="3-ps-pl-axismartconnect-mmio">3. PS 与 PL 的通信：AXI、SmartConnect 与 MMIO<a class="headerlink" href="#3-ps-pl-axismartconnect-mmio" title="Permanent link">&para;</a></h2>
+<h3 id="31-axi4-lite">3.1 AXI4-Lite 与主从关系<a class="headerlink" href="#31-axi4-lite" title="Permanent link">&para;</a></h3>
+<p>本项目用 <code>AXI4-Lite</code> 连接 ARM 和自定义加速器。可以先把 AXI 理解为 ARM 与 FPGA 外设之间的一套标准通信协议。</p>
+<div class="highlight"><pre><span></span><code>Cortex-A9
+    │
+    ▼
+M_AXI_GP0
+    │
+    ▼
+AXI SmartConnect
+    │
+    ├──── AXI GPIO
+    │
+    └──── mult_accel
+</code></pre></div>
+<p>这里需要理解 Master 和 Slave：</p>
+<ul>
+<li>PS 侧的 <code>M_AXI_GP0</code> 中，<code>M</code> 表示 Master，由 ARM 主动发起读写操作；</li>
+<li><code>mult_accel</code> 的接口是 <code>S00_AXI</code>，<code>S</code> 表示 Slave，它等待 ARM 访问。</li>
+</ul>
+<p>也就是：</p>
+<div class="highlight"><pre><span></span><code>ARM         = AXI Master
+mult_accel  = AXI Slave
+</code></pre></div>
+<h3 id="32-axi-smartconnect">3.2 AXI SmartConnect 的作用<a class="headerlink" href="#32-axi-smartconnect" title="Permanent link">&para;</a></h3>
+<p>ARM 的一个 <code>M_AXI_GP0</code> 可能要连接多个 PL 外设，例如 AXI GPIO、自定义加速器、Timer、DMA 或 UART Lite。<code>AXI SmartConnect</code> 可以理解成 AXI 交换机或路由器：</p>
+<div class="highlight"><pre><span></span><code>                    ┌── AXI GPIO
+ARM → SmartConnect ─┤
+                    └── mult_accel
+</code></pre></div>
+<p>它根据 ARM 发出的地址，把访问请求转发给对应的外设。</p>
+<h3 id="33-memory-mapped-io">3.3 Memory-Mapped I/O<a class="headerlink" href="#33-memory-mapped-io" title="Permanent link">&para;</a></h3>
+<p>CPU 不会发出“访问 FPGA 乘法器”这样的抽象命令，它只会访问地址。本项目为 <code>mult_accel</code> 分配的基地址是：</p>
+<div class="highlight"><pre><span></span><code>Base Address = 0x43C00000
+</code></pre></div>
+<p>因此，CPU 执行：</p>
+<div class="highlight"><pre><span></span><code><span class="n">Xil_Out32</span><span class="p">(</span><span class="mh">0x43C00000</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+</code></pre></div>
+<p>实际数据流是：</p>
+<div class="highlight"><pre><span></span><code>ARM
+↓
+写地址 0x43C00000，写数据 10
+↓
+AXI
+↓
+mult_accel
+</code></pre></div>
+<p>这种“外设像内存一样通过地址访问”的机制称为 Memory-Mapped I/O，简称 MMIO。</p>
+<h3 id="34-axi-gpio">3.4 为什么先用 AXI GPIO 验证通信<a class="headerlink" href="#34-axi-gpio" title="Permanent link">&para;</a></h3>
+<p>在实现乘法器之前，先做了最简单的 AXI GPIO 实验：</p>
+<div class="highlight"><pre><span></span><code>ARM → AXI → AXI GPIO
+</code></pre></div>
+<p>AXI GPIO 的基地址是 <code>0x41200000</code>。ARM 写入再读回：</p>
+<div class="highlight"><pre><span></span><code><span class="n">Xil_Out32</span><span class="p">(</span><span class="mh">0x41200000</span><span class="p">,</span><span class="w"> </span><span class="mh">0x12345678</span><span class="p">);</span>
+<span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Xil_In32</span><span class="p">(</span><span class="mh">0x41200000</span><span class="p">);</span>
+</code></pre></div>
+<p>最终读到 <code>0x12345678</code>，说明下面这条往返通信路径正常：</p>
+<div class="highlight"><pre><span></span><code>ARM → AXI → PL → ARM
+</code></pre></div>
+<p>这个实验本身不是硬件加速，而是把通信与计算拆开，先验证 AXI 基础链路。因此 AXI GPIO 是很合适的 AXI 入门实验。</p>
+<h2 id="4-mult_accel-ip">4. 自定义 <code>mult_accel</code> IP 与寄存器映射<a class="headerlink" href="#4-mult_accel-ip" title="Permanent link">&para;</a></h2>
+<h3 id="41-axi4-lite-slave-peripheral">4.1 AXI4-Lite Slave Peripheral<a class="headerlink" href="#41-axi4-lite-slave-peripheral" title="Permanent link">&para;</a></h3>
+<p><code>mult_accel</code> 是一个自定义的 AXI4-Lite Slave Peripheral。Vivado 模板为它生成了 4 个 32 位寄存器：</p>
+<div class="highlight"><pre><span></span><code><span class="n">slv_reg0</span>
+<span class="n">slv_reg1</span>
+<span class="n">slv_reg2</span>
+<span class="n">slv_reg3</span>
+</code></pre></div>
+<p>因为一个寄存器是 32 bit，也就是 4 Byte，所以相邻寄存器的地址偏移每次增加 4：</p>
+<table>
+<thead>
+<tr>
+<th>偏移</th>
+<th>实际地址</th>
+<th>功能</th>
+<th>访问属性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0x00</code></td>
+<td><code>0x43C00000</code></td>
+<td>A</td>
+<td>CPU 写入</td>
+</tr>
+<tr>
+<td><code>0x04</code></td>
+<td><code>0x43C00004</code></td>
+<td>B</td>
+<td>CPU 写入</td>
+</tr>
+<tr>
+<td><code>0x08</code></td>
+<td><code>0x43C00008</code></td>
+<td>Result</td>
+<td>CPU 读取</td>
+</tr>
+<tr>
+<td><code>0x0C</code></td>
+<td><code>0x43C0000C</code></td>
+<td>Reserved</td>
+<td>备用</td>
+</tr>
+</tbody>
+</table>
+<p>地址访问遵循统一形式：</p>
+<div class="highlight"><pre><span></span><code>实际寄存器地址 = IP Base Address + Register Offset
+</code></pre></div>
+<h3 id="42-ip">4.2 IP 内部如何进行地址译码<a class="headerlink" href="#42-ip" title="Permanent link">&para;</a></h3>
+<p>AXI 地址进入 IP 后，需要判断当前访问的是哪个寄存器。模板中有：</p>
+<div class="highlight"><pre><span></span><code><span class="k">constant</span><span class="w"> </span><span class="n">ADDR_LSB</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">integer</span><span class="w"> </span><span class="o">:=</span>
+<span class="w">    </span><span class="p">(</span><span class="n">C_S_AXI_DATA_WIDTH</span><span class="o">/</span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</code></pre></div>
+<p>数据宽度为 32 bit 时，<code>ADDR_LSB = 2</code>。这是因为 AXI 地址按 Byte 编址，一个 32 位寄存器占 4 Byte，地址最低两位用于选择一个 32 位字中的字节，不用于选择寄存器。</p>
+<div class="highlight"><pre><span></span><code>Offset 0x00 = 0000
+Offset 0x04 = 0100
+Offset 0x08 = 1000
+Offset 0x0C = 1100
+</code></pre></div>
+<p>去掉最低两个 byte-address bit 后：</p>
+<div class="highlight"><pre><span></span><code>00 → Reg0
+01 → Reg1
+10 → Reg2 / Result
+11 → Reg3
+</code></pre></div>
+<p>这就是 VHDL 地址译码中以下分支的来源：</p>
+<div class="highlight"><pre><span></span><code><span class="k">when</span><span class="w"> </span><span class="mb">b"00"</span><span class="w"> </span><span class="o">=&gt;</span>
+<span class="k">when</span><span class="w"> </span><span class="mb">b"01"</span><span class="w"> </span><span class="o">=&gt;</span>
+<span class="k">when</span><span class="w"> </span><span class="mb">b"10"</span><span class="w"> </span><span class="o">=&gt;</span>
+<span class="k">when</span><span class="w"> </span><span class="mb">b"11"</span><span class="w"> </span><span class="o">=&gt;</span>
+</code></pre></div>
+<h3 id="43-cpu-a-b">4.3 CPU 写 A 和 B<a class="headerlink" href="#43-cpu-a-b" title="Permanent link">&para;</a></h3>
+<p>ARM 执行：</p>
+<div class="highlight"><pre><span></span><code><span class="n">Xil_Out32</span><span class="p">(</span><span class="n">MULT_BASE_ADDR</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+</code></pre></div>
+<p>IP 看到偏移 <code>0x00</code>，译码成 <code>"00"</code>，将 AXI 写数据 <code>S_AXI_WDATA</code> 写入 <code>slv_reg0</code>：</p>
+<div class="highlight"><pre><span></span><code>slv_reg0 = 10
+</code></pre></div>
+<p>然后执行：</p>
+<div class="highlight"><pre><span></span><code><span class="n">Xil_Out32</span><span class="p">(</span><span class="n">MULT_BASE_ADDR</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">);</span>
+</code></pre></div>
+<p>偏移 <code>0x04</code> 被译码成 <code>"01"</code>，数据写入 <code>slv_reg1</code>：</p>
+<div class="highlight"><pre><span></span><code>slv_reg1 = 20
+</code></pre></div>
+<p>至此，FPGA 内部保存了两个输入操作数。</p>
+<h2 id="5-pl">5. PL 中的乘法、读写属性与结果位宽<a class="headerlink" href="#5-pl" title="Permanent link">&para;</a></h2>
+<h3 id="51">5.1 真正的硬件乘法<a class="headerlink" href="#51" title="Permanent link">&para;</a></h3>
+<p>32 位无符号数相乘，完整结果最多需要 64 位，因此定义：</p>
+<div class="highlight"><pre><span></span><code><span class="k">signal</span><span class="w"> </span><span class="n">mult_result</span><span class="w"> </span><span class="o">:</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">C_S_AXI_DATA_WIDTH</span><span class="o">-</span><span class="mi">1</span><span class="w"> </span><span class="k">downto</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</code></pre></div>
+<p>当 <code>C_S_AXI_DATA_WIDTH = 32</code> 时，<code>mult_result</code> 宽度就是 64 bit。计算逻辑为：</p>
+<div class="highlight"><pre><span></span><code><span class="n">mult_result</span><span class="w"> </span><span class="o">&lt;=</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="p">(</span><span class="n">slv_reg0</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="kt">unsigned</span><span class="p">(</span><span class="n">slv_reg1</span><span class="p">);</span>
+</code></pre></div>
+<p>对应的硬件关系是：</p>
+<div class="highlight"><pre><span></span><code>             PL
+
+slv_reg0
+   10
+    │
+    ├────┐
+         │
+         × ─────── mult_result = 200
+         │
+    ├────┘
+    │
+   20
+slv_reg1
+</code></pre></div>
+<p>这段逻辑才是整个项目真正的 Accelerator。</p>
+<h3 id="52-startdone-busy">5.2 为什么第一版没有 START、DONE 和 BUSY<a class="headerlink" href="#52-startdone-busy" title="Permanent link">&para;</a></h3>
+<p>第一版乘法器使用组合逻辑：只要 A 或 B 变化，乘法结果就自动变化。</p>
+<div class="highlight"><pre><span></span><code>A 或 B 变化
+↓
+组合乘法电路重新传播
+↓
+Result 自动变化
+</code></pre></div>
+<p>因此这一版不需要 <code>START</code>、<code>DONE</code> 或 <code>BUSY</code> 控制信号。CPU 写入 A 和 B 后，PL 就会形成结果。</p>
+<p>矩阵乘法、向量点积、FIR 或 CNN 等需要多个周期的复杂加速器，通常才需要控制寄存器或握手信号，用于表达启动、忙碌和完成状态。</p>
+<h3 id="53-result-cpu">5.3 Result 为什么不能由 CPU 写<a class="headerlink" href="#53-result-cpu" title="Permanent link">&para;</a></h3>
+<p>原始 AXI 模板允许 CPU 写 4 个寄存器，但 <code>Reg2</code> 已被定义为硬件计算结果，不应再允许软件覆盖。因此写地址译码的 <code>"10"</code> 分支改成：</p>
+<div class="highlight"><pre><span></span><code><span class="k">when</span><span class="w"> </span><span class="mb">b"10"</span><span class="w"> </span><span class="o">=&gt;</span>
+<span class="w">    </span><span class="k">null</span><span class="p">;</span>
+</code></pre></div>
+<p>最终访问属性是：</p>
+<div class="highlight"><pre><span></span><code>Reg0 → CPU 写，作为输入 A
+Reg1 → CPU 写，作为输入 B
+Reg2 → CPU 不能写，读取时返回硬件结果
+Reg3 → 备用
+</code></pre></div>
+<h3 id="54-cpu-result-32">5.4 CPU 如何读 Result，以及为什么只返回低 32 位<a class="headerlink" href="#54-cpu-result-32" title="Permanent link">&para;</a></h3>
+<p>读取偏移 <code>0x08</code> 时，返回：</p>
+<div class="highlight"><pre><span></span><code><span class="kt">std_logic_vector</span><span class="p">(</span>
+<span class="w">    </span><span class="n">mult_result</span><span class="p">(</span><span class="n">C_S_AXI_DATA_WIDTH</span><span class="o">-</span><span class="mi">1</span><span class="w"> </span><span class="k">downto</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>也就是 <code>mult_result[31:0]</code>。这是因为 AXI 数据宽度当前为 32 bit，而 <code>32 bit × 32 bit</code> 的完整结果可能是 64 bit。例如 <code>0xFFFFFFFF × 0xFFFFFFFF</code> 明显不能装进 32 位。</p>
+<p>本实验的 <code>10 × 20 = 200</code> 不会溢出，读取低 32 位完全足够。如果以后需要完整的 64 位结果，可以重新安排寄存器：</p>
+<div class="highlight"><pre><span></span><code>0x08 → Result Low
+0x0C → Result High
+</code></pre></div>
+<p>软件再组合为：</p>
+<div class="highlight"><pre><span></span><code>Result64 = (ResultHigh &lt;&lt; 32) | ResultLow
+</code></pre></div>
+<h2 id="6-vivado-block-design">6. Vivado Block Design、时钟与复位<a class="headerlink" href="#6-vivado-block-design" title="Permanent link">&para;</a></h2>
+<p>最终的主要硬件结构是：</p>
+<div class="highlight"><pre><span></span><code>                 ┌───────────────┐
+                 │ Cortex-A9 PS  │
+                 │               │
+                 │ M_AXI_GP0     │
+                 └───────┬───────┘
+                         │
+                         ▼
+                 ┌───────────────┐
+                 │ SmartConnect  │
+                 └───┬───────┬───┘
+                     │       │
+                     ▼       ▼
+                 AXI GPIO  mult_accel
+                              │
+                              ▼
+                            A × B
+</code></pre></div>
+<p>其中 AXI GPIO 是前一步通信测试留下的外设，真正的计算加速器是 <code>mult_accel</code>。</p>
+<h3 id="61-clock">6.1 Clock<a class="headerlink" href="#61-clock" title="Permanent link">&para;</a></h3>
+<p>PL 的 AXI 部分工作在：</p>
+<div class="highlight"><pre><span></span><code>FCLK_CLK0 = 50 MHz
+</code></pre></div>
+<p>对应时钟周期：</p>
+<div class="highlight"><pre><span></span><code>T = 1 / 50 MHz = 20 ns
+</code></pre></div>
+<p>这个时钟由 PS 产生，再通过 <code>processing_system7_0/FCLK_CLK0</code> 送到 PL。SmartConnect、AXI GPIO 和 <code>mult_accel</code> 都使用这一路时钟。</p>
+<h3 id="62-reset">6.2 Reset<a class="headerlink" href="#62-reset" title="Permanent link">&para;</a></h3>
+<p>PS 输出 <code>FCLK_RESET0_N</code>，名称末尾的 <code>_N</code> 表示低电平有效。设计中再通过 Processor System Reset 模块产生适合 AXI 外设与互连使用的复位信号：</p>
+<div class="highlight"><pre><span></span><code>PS Reset
+   ↓
+Processor System Reset
+   ├── interconnect_aresetn → SmartConnect
+   └── peripheral_aresetn   → mult_accel 等外设
+</code></pre></div>
+<p>时钟决定所有同步逻辑何时工作，复位负责让互连和外设从确定状态开始运行。二者都属于完整 AXI 系统的一部分，不只是“辅助连线”。</p>
+<h2 id="7-vivadovitisxsaplatform">7. Vivado、Vitis、XSA、Platform 与产物<a class="headerlink" href="#7-vivadovitisxsaplatform" title="Permanent link">&para;</a></h2>
+<h3 id="71-vivado-vitis">7.1 Vivado 和 Vitis 的职责<a class="headerlink" href="#71-vivado-vitis" title="Permanent link">&para;</a></h3>
+<p>这个项目可以清楚分成硬件和软件两部分。</p>
+<p>Vivado 负责硬件，包括：</p>
+<ul>
+<li>Zynq PS 配置；</li>
+<li>AXI SmartConnect 和 AXI GPIO；</li>
+<li>自定义 <code>mult_accel</code> IP；</li>
+<li>AXI 地址分配；</li>
+<li>Clock 和 Reset；</li>
+<li>综合、实现与 Bitstream。</li>
+</ul>
+<p>Vitis 负责 ARM 软件，包括：</p>
+<ul>
+<li><code>main.c</code>；</li>
+<li>BSP 和驱动；</li>
+<li>Standalone 域；</li>
+<li>ARM 程序编译与 ELF；</li>
+<li>JTAG 下载和调试。</li>
+</ul>
+<p>可以概括为：</p>
+<div class="highlight"><pre><span></span><code>Vivado → 搭硬件
+Vitis  → 写 ARM 程序
+</code></pre></div>
+<h3 id="72-xsa">7.2 XSA 是什么<a class="headerlink" href="#72-xsa" title="Permanent link">&para;</a></h3>
+<p>Vivado 完成硬件设计后导出 XSA。XSA 可以理解为 Vivado 用来告诉 Vitis“硬件长什么样”的文件，其中包含：</p>
+<ul>
+<li>Processor 和 Memory 信息；</li>
+<li>AXI 外设及其地址；</li>
+<li>Bitstream；</li>
+<li>其他硬件元数据。</li>
+</ul>
+<p>只要硬件发生变化，例如新增 <code>mult_accel</code> 或修改地址，就需要更新整条链路：</p>
+<div class="highlight"><pre><span></span><code>Generate Bitstream
+↓
+Export XSA
+↓
+Vitis 重新读取 XSA
+</code></pre></div>
+<p>否则软件平台仍然描述旧硬件。</p>
+<h3 id="73-platformdomain-standalone">7.3 Platform、Domain 与 Standalone<a class="headerlink" href="#73-platformdomain-standalone" title="Permanent link">&para;</a></h3>
+<p>Vitis 读取 XSA 后建立 <code>zynq_hw_platform</code>。Platform 连接硬件设计和软件开发，大致包含：</p>
+<div class="highlight"><pre><span></span><code>XSA
+ ↓
+Platform
+ ├── CPU 信息
+ ├── BSP
+ ├── 驱动
+ ├── Memory Map
+ └── Hardware Information
+</code></pre></div>
+<p>本项目的 Domain 是：</p>
+<div class="highlight"><pre><span></span><code>standalone_ps7_cortexa9_0
+</code></pre></div>
+<p>它表示：</p>
+<div class="highlight"><pre><span></span><code>OS        = standalone
+Processor = ps7_cortexa9_0
+</code></pre></div>
+<p>也就是程序以裸机方式运行在 Cortex-A9 Core 0 上。Standalone 没有 Linux 或复杂操作系统，程序基本沿着 <code>main() → BSP → 硬件</code> 的路径运行，特别适合学习 GPIO、AXI、中断、DMA、Timer 和硬件加速。</p>
+<h3 id="74-bitelf-xsa">7.4 <code>.bit</code>、<code>.elf</code> 和 XSA 的区别<a class="headerlink" href="#74-bitelf-xsa" title="Permanent link">&para;</a></h3>
+<p>这三个产物不要混淆：</p>
+<table>
+<thead>
+<tr>
+<th>产物</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.bit</code></td>
+<td>配置 PL，决定 FPGA 中有哪些硬件电路</td>
+</tr>
+<tr>
+<td><code>.elf</code></td>
+<td>ARM 可执行程序，包含写 A、写 B、读结果等软件指令</td>
+</tr>
+<tr>
+<td>XSA</td>
+<td>把 Vivado 硬件信息交给 Vitis，连接硬件与软件开发</td>
+</tr>
+</tbody>
+</table>
+<p>运行时需要先让 PL 中存在正确的加速器硬件，再让 ARM 运行与这份硬件地址映射匹配的软件。</p>
+<h2 id="8-arm">8. ARM 裸机程序与完整读写链路<a class="headerlink" href="#8-arm" title="Permanent link">&para;</a></h2>
+<h3 id="81">8.1 测试程序<a class="headerlink" href="#81" title="Permanent link">&para;</a></h3>
+<p>最终测试程序的核心是：</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">"xil_io.h"</span>
+
+<span class="cp">#define MULT_BASE_ADDR 0x43C00000U</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">Xil_Out32</span><span class="p">(</span><span class="n">MULT_BASE_ADDR</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Xil_Out32</span><span class="p">(</span><span class="n">MULT_BASE_ADDR</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Xil_In32</span><span class="p">(</span><span class="n">MULT_BASE_ADDR</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x08</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>程序只做三件事：</p>
+<ol>
+<li>向 <code>Base + 0x00</code> 写入 A；</li>
+<li>向 <code>Base + 0x04</code> 写入 B；</li>
+<li>从 <code>Base + 0x08</code> 读取 Result。</li>
+</ol>
+<h3 id="82-xil_out32-xil_in32">8.2 <code>Xil_Out32</code> 和 <code>Xil_In32</code><a class="headerlink" href="#82-xil_out32-xil_in32" title="Permanent link">&para;</a></h3>
+<p>可以把它们简单理解为 32 位 MMIO 访问函数：</p>
+<div class="highlight"><pre><span></span><code><span class="n">Xil_Out32</span><span class="p">(</span><span class="n">address</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"> </span><span class="c1">// 向指定硬件地址写 32 位数据</span>
+<span class="n">Xil_In32</span><span class="p">(</span><span class="n">address</span><span class="p">);</span><span class="w">         </span><span class="c1">// 从指定硬件地址读 32 位数据</span>
+</code></pre></div>
+<p>它们不是普通 C 变量赋值，而是通过处理器的地址空间发起真实总线事务。BSP 提供这些接口，让软件不必手写底层的易失指针访问细节。</p>
+<h3 id="83">8.3 三步操作的内部过程<a class="headerlink" href="#83" title="Permanent link">&para;</a></h3>
+<p>第一步：</p>
+<div class="highlight"><pre><span></span><code><span class="n">Xil_Out32</span><span class="p">(</span><span class="n">MULT_BASE_ADDR</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+</code></pre></div>
+<p>等价于向 <code>0x43C00000</code> 写 10，最终得到：</p>
+<div class="highlight"><pre><span></span><code>slv_reg0 = 10
+</code></pre></div>
+<p>第二步：</p>
+<div class="highlight"><pre><span></span><code><span class="n">Xil_Out32</span><span class="p">(</span><span class="n">MULT_BASE_ADDR</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">);</span>
+</code></pre></div>
+<p>最终得到：</p>
+<div class="highlight"><pre><span></span><code>slv_reg1 = 20
+</code></pre></div>
+<p>此时 PL 组合乘法电路自动形成：</p>
+<div class="highlight"><pre><span></span><code>mult_result = 10 × 20 = 200
+</code></pre></div>
+<p>第三步：</p>
+<div class="highlight"><pre><span></span><code><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Xil_In32</span><span class="p">(</span><span class="n">MULT_BASE_ADDR</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x08</span><span class="p">);</span>
+</code></pre></div>
+<p>ARM 发起地址 <code>0x43C00008</code> 的读取。IP 将偏移 <code>0x08</code> 译码为 <code>"10"</code>，选择 <code>mult_result</code> 的低 32 位，并经 AXI 返回 200。</p>
+<p>完整链路可以展开为：</p>
+<div class="highlight"><pre><span></span><code>ARM 执行 Xil_Out32
+↓
+PS 的 M_AXI_GP0 发起 AXI 写事务
+↓
+SmartConnect 根据地址选择 mult_accel
+↓
+IP 地址译码，把数据写入 slv_reg0 / slv_reg1
+↓
+PL 组合乘法电路产生 mult_result
+↓
+ARM 执行 Xil_In32
+↓
+M_AXI_GP0 发起 AXI 读事务
+↓
+IP 返回 mult_result[31:0]
+↓
+ARM 变量 result 得到 200
+</code></pre></div>
+<h2 id="9">9. 构建、下载、验证与当前内存限制<a class="headerlink" href="#9" title="Permanent link">&para;</a></h2>
+<h3 id="91">9.1 从硬件到软件的完整流程<a class="headerlink" href="#91" title="Permanent link">&para;</a></h3>
+<p>不考虑具体界面操作，项目的逻辑流程是：</p>
+<div class="highlight"><pre><span></span><code>设计并修改 mult_accel 的 VHDL
+↓
+综合自定义 IP 并重新打包
+↓
+把 mult_accel 加入 Vivado Block Design
+↓
+连接 AXI、Clock、Reset，并分配地址
+↓
+Validate Design
+↓
+Synthesis → Implementation → Generate Bitstream
+↓
+导出包含 Bitstream 的 XSA
+↓
+Vitis Platform 读取新 XSA 并重新构建
+↓
+编译 ARM 应用，得到 ELF
+↓
+通过 JTAG 配置 PL 并运行 ARM 程序
+↓
+在调试器中检查 result
+</code></pre></div>
+<p>硬件设计改变后，必须重新生成 Bitstream 和 XSA，并让 Vitis Platform 使用新 XSA；只重新编译 <code>main.c</code> 并不能把新硬件放进 PL。</p>
+<h3 id="92">9.2 如何验证成功<a class="headerlink" href="#92" title="Permanent link">&para;</a></h3>
+<p>程序在 <code>while (1)</code> 处停住后，通过调试器查看 <code>result</code>：</p>
+<div class="highlight"><pre><span></span><code>result = 0x000000C8
+</code></pre></div>
+<p>这同时验证了：</p>
+<ul>
+<li>ARM 软件正常运行；</li>
+<li>基地址和偏移正确；</li>
+<li>PS 到 PL 的 AXI 写通路正常；</li>
+<li><code>slv_reg0</code> 和 <code>slv_reg1</code> 正确接收数据；</li>
+<li>PL 中的乘法逻辑正常；</li>
+<li>AXI 读通路能把 Result 返回给 ARM。</li>
+</ul>
+<p>因此这不是只验证一行乘法表达式，而是验证了一条完整的软硬件协同链路。</p>
+<h3 id="93-ocm-ddr">9.3 当前使用 OCM，以及 DDR 遗留问题<a class="headerlink" href="#93-ocm-ddr" title="Permanent link">&para;</a></h3>
+<p>当前程序链接并运行在 OCM，即 <code>ps7_ram_0_memory_0</code>，而不是 DDR。原因是板子的 DDR/PS preset 还没有完全配置正确。</p>
+<p>这不影响当前小规模 AXI 寄存器实验，因为程序和数据量都很小；但后续做大数组、DMA、向量或矩阵计算时，OCM 容量不够，必须修正 DDR 配置。</p>
+<p>因此要区分两件事：</p>
+<div class="highlight"><pre><span></span><code>当前乘法加速器与 AXI 链路：已经验证成功
+DDR 配置：仍是后续进入大数据搬运前必须解决的问题
+</code></pre></div>
+<h2 id="10">10. 性能认识、升级方向与知识索引<a class="headerlink" href="#10" title="Permanent link">&para;</a></h2>
+<h3 id="101">10.1 为什么它还只是“最小硬件加速器”<a class="headerlink" href="#101" title="Permanent link">&para;</a></h3>
+<p>虽然这已经是真正的硬件加速结构，但性能上仍很初级。一次乘法需要：</p>
+<div class="highlight"><pre><span></span><code>ARM 写 A
+↓
+一次 AXI transaction
+
+ARM 写 B
+↓
+一次 AXI transaction
+
+FPGA 乘法
+↓
+
+ARM 读 Result
+↓
+一次 AXI transaction
+</code></pre></div>
+<p>为了一个 <code>A × B</code> 产生三次 AXI 访问，而 ARM 自己执行 <code>a * b</code> 可能反而更快。因此必须记住：</p>
+<blockquote>
+<p>把一个操作放进 FPGA，并不自动意味着获得加速。</p>
+</blockquote>
+<p>硬件计算时间只是总时间的一部分。是否加速还取决于启动、数据搬运、总线事务和结果回传的开销，以及一次传输能让 FPGA 连续完成多少有效计算。</p>
+<h3 id="102">10.2 真正有意义的加速形式<a class="headerlink" href="#102" title="Permanent link">&para;</a></h3>
+<p>下一步可以实现向量点积。例如：</p>
+<div class="highlight"><pre><span></span><code>A = [1, 2, 3, 4]
+B = [5, 6, 7, 8]
+</code></pre></div>
+<p>计算：</p>
+<div class="highlight"><pre><span></span><code>1×5 + 2×6 + 3×7 + 4×8
+</code></pre></div>
+<p>CPU 通常使用循环：</p>
+<div class="highlight"><pre><span></span><code><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="k">for</span><span class="w"> </span><span class="p">(...)</span>
+<span class="w">    </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</code></pre></div>
+<p>FPGA 可以构造多个并行乘法器和加法树：</p>
+<div class="highlight"><pre><span></span><code>A0 × B0 ─┐
+A1 × B1 ─┤
+A2 × B2 ─┼── 加法树 → Result
+A3 × B3 ─┘
+</code></pre></div>
+<p>再进一步加入 Pipeline、DSP48、AXI Stream、DMA 和 DDR，才能持续处理大量数据，逐渐进入真正意义上的 FPGA 加速设计。</p>
+<h3 id="103">10.3 推荐学习路线<a class="headerlink" href="#103" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>Level 0  PS / PL / AXI 基础                         ✅
+   ↓
+Level 1  ARM ↔ AXI GPIO                            ✅
+   ↓
+Level 2  ARM ↔ 自定义乘法 Accelerator              ✅
+   ↓
+Level 3  MAC 加速器：sum = sum + A × B
+   ↓
+Level 4  向量点积：Σ A[i] × B[i]
+   ↓
+Level 5  Pipeline + DSP
+   ↓
+Level 6  AXI Stream
+   ↓
+Level 7  DMA：DDR → DMA → FPGA → DMA → DDR
+   ↓
+Level 8  比较 CPU 计算时间、FPGA 计算时间和数据传输开销
+</code></pre></div>
+<p>到 DMA 加向量或矩阵计算阶段，就会真正理解硬件加速不是简单地“把 C 代码换成 VHDL”，而是重新设计数据流，让 FPGA 利用并行、流水线和专用硬件资源持续处理大量数据。</p>
+<h3 id="104">10.4 核心概念速查<a class="headerlink" href="#104" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PS</td>
+<td>ARM 处理器系统，负责控制与软件执行</td>
+</tr>
+<tr>
+<td>PL</td>
+<td>FPGA 可编程逻辑，负责构造计算电路</td>
+</tr>
+<tr>
+<td>AXI4-Lite</td>
+<td>适合控制寄存器读写的内存映射总线</td>
+</tr>
+<tr>
+<td>AXI Master</td>
+<td>主动发起事务的一方，本项目中是 ARM</td>
+</tr>
+<tr>
+<td>AXI Slave</td>
+<td>等待被访问的一方，本项目中是 <code>mult_accel</code></td>
+</tr>
+<tr>
+<td>AXI SmartConnect</td>
+<td>AXI 路由与互连，根据地址选择外设</td>
+</tr>
+<tr>
+<td>MMIO</td>
+<td>用处理器地址空间访问硬件寄存器</td>
+</tr>
+<tr>
+<td>Base + Offset</td>
+<td>定位某个 IP 内部的具体寄存器</td>
+</tr>
+<tr>
+<td><code>Xil_Out32</code></td>
+<td>ARM 通过 AXI 写 32 位寄存器</td>
+</tr>
+<tr>
+<td><code>Xil_In32</code></td>
+<td>ARM 通过 AXI 读 32 位寄存器</td>
+</tr>
+<tr>
+<td><code>slv_reg0</code></td>
+<td>输入 A</td>
+</tr>
+<tr>
+<td><code>slv_reg1</code></td>
+<td>输入 B</td>
+</tr>
+<tr>
+<td><code>mult_result</code></td>
+<td>PL 中乘法电路产生的 64 位结果</td>
+</tr>
+<tr>
+<td><code>0x43C00008</code></td>
+<td>Result 低 32 位的读取地址</td>
+</tr>
+<tr>
+<td><code>.bit</code></td>
+<td>用来配置 FPGA 硬件</td>
+</tr>
+<tr>
+<td><code>.elf</code></td>
+<td>ARM 运行的软件</td>
+</tr>
+<tr>
+<td>XSA</td>
+<td>Vivado 向 Vitis 描述硬件的平台文件</td>
+</tr>
+<tr>
+<td>OCM</td>
+<td>当前程序使用的片上存储器</td>
+</tr>
+<tr>
+<td>DDR</td>
+<td>后续大数组和 DMA 场景需要使用的外部存储器</td>
+</tr>
+</tbody>
+</table>
+<p>这个小项目最终建立的不是“会写一个乘法器”这一项孤立技能，而是一条完整认知链：</p>
+<div class="highlight"><pre><span></span><code>ARM 软件
+↓ MMIO
+AXI 地址与事务
+↓
+自定义寄存器接口
+↓
+PL 硬件计算
+↓
+AXI 返回结果
+</code></pre></div>
+<p>这条链路是继续学习 MAC、向量点积、AXI Stream、DMA 和更大规模 FPGA 加速器的基础。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../basics/" class="md-footer__link md-footer__link--prev" aria-label="上一页: basics">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                basics
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../ros/gazebo/basic/" class="md-footer__link md-footer__link--next" aria-label="下一页: basic">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                basic
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tabs", "navigation.indexes", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

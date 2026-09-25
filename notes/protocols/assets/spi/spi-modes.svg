@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="520" viewBox="0 0 1080 520" role="img" aria-label="SPI four modes">
+  <rect width="1080" height="520" fill="#ffffff"/>
+  <style>
+    text{font-family:Arial,"Microsoft YaHei",sans-serif;fill:#1f2933}
+    .title{font-size:24px;font-weight:700}
+    .label{font-size:18px;font-weight:700}
+    .small{font-size:15px}
+    .clk{stroke:#243b53;stroke-width:3;fill:none}
+    .data{stroke:#2563eb;stroke-width:3;fill:none}
+    .sample{stroke:#ef4444;stroke-width:2;stroke-dasharray:6 5}
+    .shift{stroke:#64748b;stroke-width:2;stroke-dasharray:3 5}
+    .panel{fill:#f8fafc;stroke:#d0d7de}
+  </style>
+  <text x="36" y="38" class="title">SPI 四种时钟模式：CPOL 决定空闲电平，CPHA 决定第几个边沿采样</text>
+  <text x="36" y="65" class="small">红色虚线表示采样边沿，灰色虚线表示移位/准备下一位数据的边沿</text>
+  <g transform="translate(40,95)">
+    <rect class="panel" x="0" y="0" width="480" height="175" rx="10"/>
+    <text x="20" y="30" class="label">Mode 0: CPOL=0, CPHA=0</text>
+    <path class="clk" d="M30 80 H70 V45 H110 V80 H150 V45 H190 V80 H230 V45 H270 V80 H310 V45 H350 V80 H390 V45 H430 V80"/>
+    <path class="data" d="M30 125 H80 L95 105 H150 L165 125 H220 L235 105 H290 L305 125 H360 L375 105 H430"/>
+    <line class="sample" x1="70" y1="38" x2="70" y2="145"/><line class="sample" x1="150" y1="38" x2="150" y2="145"/><line class="sample" x1="230" y1="38" x2="230" y2="145"/>
+    <line class="shift" x1="110" y1="38" x2="110" y2="145"/><line class="shift" x1="190" y1="38" x2="190" y2="145"/><line class="shift" x1="270" y1="38" x2="270" y2="145"/>
+  </g>
+  <g transform="translate(560,95)">
+    <rect class="panel" x="0" y="0" width="480" height="175" rx="10"/>
+    <text x="20" y="30" class="label">Mode 1: CPOL=0, CPHA=1</text>
+    <path class="clk" d="M30 80 H70 V45 H110 V80 H150 V45 H190 V80 H230 V45 H270 V80 H310 V45 H350 V80 H390 V45 H430 V80"/>
+    <path class="data" d="M30 125 H80 L95 105 H150 L165 125 H220 L235 105 H290 L305 125 H360 L375 105 H430"/>
+    <line class="shift" x1="70" y1="38" x2="70" y2="145"/><line class="shift" x1="150" y1="38" x2="150" y2="145"/><line class="shift" x1="230" y1="38" x2="230" y2="145"/>
+    <line class="sample" x1="110" y1="38" x2="110" y2="145"/><line class="sample" x1="190" y1="38" x2="190" y2="145"/><line class="sample" x1="270" y1="38" x2="270" y2="145"/>
+  </g>
+  <g transform="translate(40,300)">
+    <rect class="panel" x="0" y="0" width="480" height="175" rx="10"/>
+    <text x="20" y="30" class="label">Mode 2: CPOL=1, CPHA=0</text>
+    <path class="clk" d="M30 45 H70 V80 H110 V45 H150 V80 H190 V45 H230 V80 H270 V45 H310 V80 H350 V45 H390 V80 H430 V45"/>
+    <path class="data" d="M30 125 H80 L95 105 H150 L165 125 H220 L235 105 H290 L305 125 H360 L375 105 H430"/>
+    <line class="sample" x1="70" y1="38" x2="70" y2="145"/><line class="sample" x1="150" y1="38" x2="150" y2="145"/><line class="sample" x1="230" y1="38" x2="230" y2="145"/>
+    <line class="shift" x1="110" y1="38" x2="110" y2="145"/><line class="shift" x1="190" y1="38" x2="190" y2="145"/><line class="shift" x1="270" y1="38" x2="270" y2="145"/>
+  </g>
+  <g transform="translate(560,300)">
+    <rect class="panel" x="0" y="0" width="480" height="175" rx="10"/>
+    <text x="20" y="30" class="label">Mode 3: CPOL=1, CPHA=1</text>
+    <path class="clk" d="M30 45 H70 V80 H110 V45 H150 V80 H190 V45 H230 V80 H270 V45 H310 V80 H350 V45 H390 V80 H430 V45"/>
+    <path class="data" d="M30 125 H80 L95 105 H150 L165 125 H220 L235 105 H290 L305 125 H360 L375 105 H430"/>
+    <line class="shift" x1="70" y1="38" x2="70" y2="145"/><line class="shift" x1="150" y1="38" x2="150" y2="145"/><line class="shift" x1="230" y1="38" x2="230" y2="145"/>
+    <line class="sample" x1="110" y1="38" x2="110" y2="145"/><line class="sample" x1="190" y1="38" x2="190" y2="145"/><line class="sample" x1="270" y1="38" x2="270" y2="145"/>
+  </g>
+</svg>

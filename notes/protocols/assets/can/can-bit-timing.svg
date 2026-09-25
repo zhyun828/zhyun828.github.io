@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="300" viewBox="0 0 1040 300" role="img" aria-label="CAN bit timing segments">
+  <rect width="1040" height="300" fill="#fff"/>
+  <style>
+    text{font-family:Arial,"Microsoft YaHei",sans-serif;fill:#1f2933}
+    .title{font-size:24px;font-weight:700}
+    .small{font-size:16px}
+    .cell{stroke:#243b53;stroke-width:1.5}
+    .sample{stroke:#ef4444;stroke-width:3;stroke-dasharray:8 6}
+  </style>
+  <text x="36" y="42" class="title">CAN 位时序：一个 bit 被划分为多个 Tq 时间段</text>
+  <g transform="translate(60,95)">
+    <rect x="0" y="0" width="100" height="80" fill="#fee2e2" class="cell"/><text x="30" y="45" class="small">SS</text><text x="29" y="65" class="small">1Tq</text>
+    <rect x="100" y="0" width="230" height="80" fill="#dbeafe" class="cell"/><text x="175" y="45" class="small">PTS</text><text x="178" y="65" class="small">1~8Tq</text>
+    <rect x="330" y="0" width="250" height="80" fill="#ede9fe" class="cell"/><text x="430" y="45" class="small">PBS1</text><text x="430" y="65" class="small">1~8Tq</text>
+    <rect x="580" y="0" width="250" height="80" fill="#dcfce7" class="cell"/><text x="680" y="45" class="small">PBS2</text><text x="680" y="65" class="small">2~8Tq</text>
+    <line x1="580" y1="-25" x2="580" y2="115" class="sample"/>
+    <text x="535" y="-35" class="small">Sample Point</text>
+  </g>
+  <text x="60" y="230" class="small">SS 用于同步边沿；PTS 补偿传播延迟；PBS1/PBS2 用于相位调整，采样点通常落在 PBS1 末尾。</text>
+</svg>

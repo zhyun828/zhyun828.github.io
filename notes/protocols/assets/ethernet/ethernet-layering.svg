@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="540" viewBox="0 0 1040 540" role="img" aria-labelledby="title desc">
+  <title id="title">Ethernet position in network stack</title>
+  <desc id="desc">Ethernet is below IP TCP UDP and application protocols in the network stack.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.box{fill:#fff;stroke:#334155;stroke-width:2;rx:12}.app{fill:#dbeafe}.tcp{fill:#dcfce7}.ip{fill:#fef3c7}.eth{fill:#fee2e2}.phy{fill:#ede9fe}
+      .text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:21px;fill:#0f172a}.title{font-size:26px;font-weight:700}.small{font-size:16px;fill:#475569}
+      .arrow{stroke:#64748b;stroke-width:3;marker-end:url(#arrow)}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#64748b"/></marker>
+  </defs>
+  <rect class="bg" width="1040" height="540"/>
+  <text class="text title" x="520" y="45" text-anchor="middle">Ethernet 在协议栈中的位置</text>
+  <rect class="box app" x="210" y="80" width="620" height="62"/><text class="text" x="520" y="118" text-anchor="middle">应用层：HTTP / MQTT / Modbus TCP</text>
+  <rect class="box tcp" x="210" y="165" width="620" height="62"/><text class="text" x="520" y="203" text-anchor="middle">传输层：TCP / UDP，使用端口号</text>
+  <rect class="box ip" x="210" y="250" width="620" height="62"/><text class="text" x="520" y="288" text-anchor="middle">网络层：IPv4 / IPv6，使用 IP 地址</text>
+  <rect class="box eth" x="210" y="335" width="620" height="62"/><text class="text" x="520" y="373" text-anchor="middle">链路层：Ethernet，使用 MAC 地址和帧</text>
+  <rect class="box phy" x="210" y="420" width="620" height="62"/><text class="text" x="520" y="458" text-anchor="middle">物理层：PHY、网线、RJ45、电信号</text>
+  <line class="arrow" x1="520" y1="142" x2="520" y2="162"/>
+  <line class="arrow" x1="520" y1="227" x2="520" y2="247"/>
+  <line class="arrow" x1="520" y1="312" x2="520" y2="332"/>
+  <line class="arrow" x1="520" y1="397" x2="520" y2="417"/>
+  <text class="small" x="520" y="515" text-anchor="middle">Ethernet 不是 TCP/IP；它通常承载 IP 数据报，是局域网链路层基础。</text>
+</svg>

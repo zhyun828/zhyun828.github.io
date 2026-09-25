@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="520" viewBox="0 0 1080 520" role="img" aria-labelledby="title desc">
+  <title id="title">HTTP request and response structure</title>
+  <desc id="desc">HTTP request has request line headers blank line and body; response has status line headers blank line and body.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.panel{fill:#fff;stroke:#334155;stroke-width:2;rx:14}.line{fill:#dbeafe;stroke:#2563eb;stroke-width:2;rx:8}.head{fill:#dcfce7;stroke:#16a34a;stroke-width:2;rx:8}.blank{fill:#fef3c7;stroke:#d97706;stroke-width:2;rx:8}.body{fill:#fee2e2;stroke:#dc2626;stroke-width:2;rx:8}
+      .text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:18px;fill:#0f172a}.title{font-size:25px;font-weight:700}.small{font-size:15px;fill:#475569}
+    </style>
+  </defs>
+  <rect class="bg" width="1080" height="520"/>
+  <text class="text title" x="540" y="45" text-anchor="middle">HTTP 请求 / 响应结构</text>
+  <rect class="panel" x="70" y="85" width="440" height="350"/>
+  <text class="text title" x="290" y="125" text-anchor="middle">Request</text>
+  <rect class="line" x="110" y="155" width="360" height="48"/><text class="text" x="290" y="185" text-anchor="middle">请求行：GET /api HTTP/1.1</text>
+  <rect class="head" x="110" y="220" width="360" height="70"/><text class="text" x="290" y="250" text-anchor="middle">请求头：Host / Content-Type</text><text class="small" x="290" y="275" text-anchor="middle">Authorization / Cookie ...</text>
+  <rect class="blank" x="110" y="307" width="360" height="38"/><text class="small" x="290" y="332" text-anchor="middle">空行</text>
+  <rect class="body" x="110" y="362" width="360" height="48"/><text class="text" x="290" y="392" text-anchor="middle">请求体：JSON / 表单 / 文件</text>
+
+  <rect class="panel" x="570" y="85" width="440" height="350"/>
+  <text class="text title" x="790" y="125" text-anchor="middle">Response</text>
+  <rect class="line" x="610" y="155" width="360" height="48"/><text class="text" x="790" y="185" text-anchor="middle">状态行：HTTP/1.1 200 OK</text>
+  <rect class="head" x="610" y="220" width="360" height="70"/><text class="text" x="790" y="250" text-anchor="middle">响应头：Content-Type</text><text class="small" x="790" y="275" text-anchor="middle">Set-Cookie / Cache-Control ...</text>
+  <rect class="blank" x="610" y="307" width="360" height="38"/><text class="small" x="790" y="332" text-anchor="middle">空行</text>
+  <rect class="body" x="610" y="362" width="360" height="48"/><text class="text" x="790" y="392" text-anchor="middle">响应体：HTML / JSON / 图片</text>
+  <text class="small" x="540" y="480" text-anchor="middle">HTTP/2 和 HTTP/3 传输编码不同，但语义上仍有方法、状态码、头字段和内容。</text>
+</svg>

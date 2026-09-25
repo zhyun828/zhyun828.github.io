@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="360" viewBox="0 0 760 360" role="img" aria-label="LVGL no gap objects">
+  <rect width="760" height="360" fill="#f8fafc"/>
+  <rect x="70" y="34" width="620" height="292" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <line x1="380" y1="34" x2="380" y2="326" stroke="#e2e8f0" stroke-dasharray="8 8"/>
+  <rect x="330" y="80" width="100" height="100" rx="0" fill="#111827"/>
+  <rect x="330" y="180" width="100" height="100" rx="0" fill="#ef4444"/>
+  <path d="M448 180 H514" stroke="#22c55e" stroke-width="4"/>
+  <path d="M504 172 L514 180 L504 188" fill="none" stroke="#22c55e" stroke-width="4"/>
+  <g font-family="Arial, sans-serif" fill="#0f172a">
+    <text x="380" y="26" font-size="20" font-weight="700" text-anchor="middle">pad / border / outline / radius 设置为 0 后贴合</text>
+    <text x="525" y="185" font-size="16">无间隙</text>
+  </g>
+</svg>
