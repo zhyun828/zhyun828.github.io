@@ -483,6 +483,76 @@ stackArray(int size = default_size);
 
 构造函数是类的一种特殊成员函数，用于在创建对象时初始化对象。构造函数名称与类名相同，没有返回类型。
 
+### 类内声明与类外定义
+
+成员函数可以只在头文件的类中声明，再到 `.cpp` 文件中定义。类外定义时需要使用作用域解析运算符 `::`，说明这个函数属于哪个类：
+
+```cpp
+// Sensor.h
+class Sensor {
+public:
+    explicit Sensor(double initialValue);
+
+private:
+    double value;
+    bool active;
+};
+```
+
+```cpp
+// Sensor.cpp
+#include "Sensor.h"
+
+Sensor::Sensor(double initialValue)
+    : value(initialValue), active(false)
+{
+}
+```
+
+这段构造函数定义可以按三部分理解：
+
+| 语法 | 含义 |
+| --- | --- |
+| `Sensor::Sensor(double initialValue)` | `::` 指定右侧的构造函数属于 `Sensor` 类 |
+| `: value(initialValue)` | 单个冒号开始构造函数的成员初始化列表 |
+| `, active(false)` | 逗号分隔多个成员初始化项 |
+
+`::` 用于限定名字所属的作用域，不只用于类，也用于命名空间，例如 `std::string`。类内已经处于该类的作用域，所以在类内直接写 `Sensor(...)`；到了类外，则要写成 `Sensor::Sensor(...)`。
+
+### 成员初始化列表
+
+初始化列表会在进入构造函数体之前直接初始化成员，比先默认初始化、再在函数体中赋值更准确：
+
+```cpp
+// 推荐：直接初始化
+Sensor::Sensor(double initialValue)
+    : value(initialValue), active(false)
+{
+}
+
+// 这是先初始化、后赋值，并不完全等价
+Sensor::Sensor(double initialValue)
+{
+    value = initialValue;
+    active = false;
+}
+```
+
+`const` 成员、引用成员、没有默认构造函数的对象成员，以及基类部分，必须通过初始化列表初始化。成员真正的初始化顺序只由它们在类中的**声明顺序**决定，而不是由初始化列表的书写顺序决定，因此最好让两者保持一致：
+
+```cpp
+class Record {
+    const int id;
+    std::string name;
+
+public:
+    Record(int value, const std::string& text)
+        : id(value), name(text) {}
+};
+```
+
+需要注意，同一个符号可能在不同语法位置承担不同职责：`public:` 中的冒号标记访问控制区域，构造函数参数列表后的冒号开始初始化列表，而初始化项之间使用逗号分隔。判断含义时应结合它所在的语法位置。
+
 ## 析构函数
 
 析构函数用于在对象生命周期结束时执行清理操作。析构函数名称与类名相同，但前面加波浪号 `~`，并且没有返回类型和参数。
