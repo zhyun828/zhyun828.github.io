@@ -6,6 +6,312 @@
 
 ---
 
+## 零、开始使用 CMake 前：先认识编译文件与 gcc/g++
+
+### 1. C/C++ 从源码到程序会产生哪些文件
+
+C/C++ 程序通常要经过**预处理、编译、汇编、链接**四个阶段：
+
+```text
+源文件              预处理文件          汇编文件       目标文件          最终产物
+.c / .cpp  ───────▶  .i / .ii  ───────▶  .s  ───────▶  .o / .obj  ───────▶  可执行文件或库
+             预处理             编译          汇编              链接
+```
+
+| 扩展名或文件 | 含义 | 所处阶段或用途 |
+| --- | --- | --- |
+| `.c` | C 源文件 | 程序员编写的源码 |
+| `.cc`、`.cpp`、`.cxx` | C++ 源文件 | 三者都是常见的 C++ 源文件命名方式 |
+| `.h` | 头文件 | 可用于 C 或 C++，存放声明、宏、类型等 |
+| `.hpp`、`.hxx` | C++ 头文件 | 通常表示其中包含 C++ 代码 |
+| `.i` | 预处理后的 C 文件 | 宏已展开，头文件内容已插入 |
+| `.ii` | 预处理后的 C++ 文件 | 与 `.i` 类似，但用于 C++ |
+| `.s`、`.asm` | 汇编代码 | 编译器产生或程序员手写的汇编源码 |
+| `.o` | 目标文件 | GCC/Clang 在 Linux、macOS 等平台生成的机器码文件，尚未完成链接 |
+| `.obj` | 目标文件 | Windows/MSVC 常用的目标文件扩展名 |
+| `.d` | 依赖文件 | 记录某个源文件依赖哪些头文件，常用于增量构建 |
+| `.a` | 静态库 | Linux 等平台上多个 `.o` 的归档集合，链接时复制所需代码 |
+| `.lib` | 静态库或导入库 | Windows 上可能是静态库，也可能是 DLL 对应的导入库 |
+| `.so` | 动态库 | Linux 的共享库，程序运行时加载 |
+| `.dll` | 动态库 | Windows 的动态链接库 |
+| `.dylib` | 动态库 | macOS 的动态库 |
+| `.exe` | 可执行文件 | Windows 的程序文件；Linux 可执行文件通常没有扩展名 |
+| `.pdb` | 调试符号文件 | MSVC 常用，供调试器映射源码、函数和变量 |
+| `.dSYM` | 调试符号包 | macOS 常见的调试信息目录 |
+| `compile_commands.json` | 编译命令数据库 | 记录每个源文件的实际编译命令，供 clangd、clang-tidy 等工具使用 |
+| `CMakeCache.txt` | CMake 配置缓存 | 保存编译器路径、选项和探测结果，不是编译器产生的目标文件 |
+
+其中最容易混淆的是 `.o`：
+
+```text
+main.cpp ──编译──▶ main.o ─┐
+                            ├──链接──▶ app
+math.cpp ──编译──▶ math.o ─┘
+```
+
+每个 `.cpp` 通常先单独变成一个 `.o`。`.o` 中已经是机器码，但其中可能仍引用其他文件定义的函数，所以一般不能直接作为完整程序运行。链接器负责解析这些符号引用，并把目标文件和库组合成最终程序。
+
+> `.o`、`.obj`、`.i`、`.ii` 和 `.s` 通常属于构建产物，应放在 `build/` 中并排除在 Git 版本控制之外。
+
+### 2. gcc 与 g++ 的区别
+
+GCC 是 GNU Compiler Collection。日常命令中：
+
+- `gcc` 通常作为 C 编译驱动程序；
+- `g++` 通常作为 C++ 编译驱动程序；
+- 两者都能根据文件扩展名调用相应的编译前端；
+- 最明显的区别在链接阶段：`g++` 会自动链接 C++ 标准库，而 `gcc` 默认不会。
+
+因此推荐：
+
+```bash
+# C 程序使用 gcc
+gcc main.c -o app
+
+# C++ 程序使用 g++
+g++ main.cpp -o app
+```
+
+不建议直接使用 `gcc` 链接普通 C++ 程序，否则可能出现 `std::cout`、`std::string` 等符号未定义的问题。
+
+### 3. 使用 gcc/g++ 查看四个编译阶段
+
+以下命令以 C++ 文件 `main.cpp` 为例。
+
+#### 仅预处理：`.cpp` → `.ii`
+
+```bash
+g++ -E main.cpp -o main.ii
+```
+
+`-E` 表示完成预处理后停止。该阶段会处理：
+
+- `#include` 头文件包含；
+- `#define` 宏替换；
+- `#if`、`#ifdef` 等条件编译；
+- 删除注释。
+
+#### 编译成汇编：`.cpp` → `.s`
+
+```bash
+g++ -S main.cpp -o main.s
+```
+
+`-S` 表示生成汇编代码后停止。
+
+#### 编译但不链接：`.cpp` → `.o`
+
+```bash
+g++ -c main.cpp -o main.o
+```
+
+`-c` 表示只生成目标文件，不执行链接。这也是构建系统编译多个源文件时的基本方式。
+
+#### 链接：多个 `.o` → 可执行文件
+
+```bash
+g++ main.o math.o -o app
+```
+
+也可以用一条命令完成编译和链接：
+
+```bash
+g++ main.cpp math.cpp -o app
+```
+
+但项目较大时，如果只修改了 `main.cpp`，分开编译只需重新生成 `main.o`，然后重新链接，不必再次编译 `math.cpp`。CMake 生成的构建系统会自动完成这种增量构建。
+
+### 4. gcc/g++ 常用编译选项
+
+| 选项 | 作用 | 示例 |
+| --- | --- | --- |
+| `-o <文件>` | 指定输出文件 | `g++ main.cpp -o app` |
+| `-c` | 只编译，不链接 | `g++ -c main.cpp -o main.o` |
+| `-E` | 只进行预处理 | `g++ -E main.cpp -o main.ii` |
+| `-S` | 编译到汇编阶段 | `g++ -S main.cpp -o main.s` |
+| `-I<目录>` | 添加头文件搜索目录 | `g++ -Iinclude main.cpp -o app` |
+| `-L<目录>` | 添加库文件搜索目录 | `g++ main.o -Llib -lmath -o app` |
+| `-l<名称>` | 链接指定库 | `-lm` 表示查找 `libm.so` 或 `libm.a` |
+| `-lm` | 链接数学库 | 用于使用 `sqrt`、`sin` 等数学函数；等价于链接 `libm.so` 或 `libm.a` |
+| `-D<宏>` | 定义预处理宏 | `-DENABLE_LOGGING=1` |
+| `-U<宏>` | 取消预处理宏定义 | `-UDEBUG` |
+| `-std=c++17` | 指定 C++ 标准 | 也可使用 `c++20`、`c++23` 等 |
+| `-std=c11` | 指定 C 标准 | 也可使用 `c17` 等 |
+| `-Wall` | 开启一组常用警告 | 建议开发时开启 |
+| `-Wextra` | 开启更多警告 | 通常与 `-Wall` 一起使用 |
+| `-Wpedantic` | 检查非标准扩展 | 有助于提高可移植性 |
+| `-Werror` | 将警告视为错误 | 适合严格的 CI，日常引入旧项目时需谨慎 |
+| `-g` | 生成调试信息 | 供 GDB 等调试器使用 |
+| `-O0` | 关闭优化 | 适合调试 |
+| `-O2` | 开启常用优化 | 常用于发布版本 |
+| `-O3` | 更激进地优化 | 不一定总比 `-O2` 更适合 |
+| `-MMD -MP` | 生成用户头文件依赖信息 | 常用于 Makefile 增量构建 |
+| `-pthread` | 启用 POSIX 线程相关编译和链接选项 | Linux 多线程程序常用 |
+
+一个适合开发调试的 C++ 命令：
+
+```bash
+g++ -std=c++17 -Wall -Wextra -Wpedantic -g -O0 \
+    -Iinclude src/main.cpp src/math.cpp -o app
+```
+
+一个简单的发布构建命令：
+
+```bash
+g++ -std=c++17 -O2 -DNDEBUG \
+    -Iinclude src/main.cpp src/math.cpp -o app
+```
+
+### 5. 手工创建和使用库
+
+#### 静态库
+
+先编译目标文件，再使用 `ar` 创建静态库：
+
+```bash
+g++ -std=c++17 -Iinclude -c src/math.cpp -o math.o
+ar rcs libmath.a math.o
+```
+
+链接静态库：
+
+```bash
+g++ -std=c++17 -Iinclude main.cpp -L. -lmath -o app
+```
+
+`-lmath` 会查找名为 `libmath.a` 或 `libmath.so` 的库。参数顺序在部分平台上会影响静态库符号解析，通常把库参数放在使用它的目标文件之后。
+
+#### 动态库
+
+Linux 下可这样创建共享库：
+
+```bash
+g++ -std=c++17 -fPIC -Iinclude -c src/math.cpp -o math.o
+g++ -shared math.o -o libmath.so
+```
+
+链接共享库：
+
+```bash
+g++ -std=c++17 -Iinclude main.cpp -L. -lmath -o app
+```
+
+运行时，系统还必须能找到 `libmath.so`。实际项目应通过规范的安装目录、RPATH 或系统动态库配置解决，不建议长期依赖临时修改环境变量。
+
+这些手工命令有助于理解构建原理，但跨平台项目一般应让 CMake 根据目标声明自动生成正确命令。
+
+### 6. CMakeLists.txt 的基础格式
+
+下面是一份最常用的基础模板。标记的含义为：
+
+- **【必选】**：规范的独立 CMake 项目应当提供；
+- **【目标必选】**：要产生程序或库时，至少需要定义一个构建目标；
+- **【二选一】**：根据最终产物选择其中一种；
+- **【可选】**：没有对应需求时可以删除；
+- **【按需】**：由项目代码和依赖决定。
+
+```cmake
+# 【必选】指定项目要求的最低 CMake 版本，并确定相关策略行为。
+# 应放在顶层 CMakeLists.txt 开头。
+cmake_minimum_required(VERSION 3.20)
+
+# 【必选】声明项目。
+# 项目名称 HelloProject 必须填写；VERSION、DESCRIPTION、LANGUAGES 为可选参数。
+# 对纯 C++ 项目推荐明确写 LANGUAGES CXX，避免探测不需要的 C 编译器。
+project(
+    HelloProject                         # 【必选】项目名称
+    VERSION 1.0.0                        # 【可选】项目版本
+    DESCRIPTION "A simple CMake project" # 【可选】项目描述
+    LANGUAGES CXX                        # 【可选】项目语言；省略时默认启用 C 和 CXX
+)
+
+# 【可选】定义允许用户通过 -D 修改的构建选项。
+option(ENABLE_LOGGING "Enable logging" ON)
+
+# 【目标必选，二选一】创建可执行文件。
+# app 是目标名，后面列出生成它所需的源文件。
+add_executable(app
+    src/main.cpp                         # 【必选】该目标至少要有可编译源码，可在此处或稍后添加
+    src/math.cpp                         # 【按需】其他源文件
+)
+
+# 【目标必选，二选一】如果项目要生成库，则使用 add_library。
+# STATIC 可替换为 SHARED；如果已经创建 app 且不需要库，可删除下面这一段。
+# add_library(math STATIC
+#     src/math.cpp
+# )
+
+# 【推荐】声明目标需要的 C++ 标准。
+# PRIVATE 表示该要求只用于编译 app，不向其他目标传递。
+target_compile_features(app PRIVATE cxx_std_17)
+
+# 【按需】添加头文件搜索目录。
+target_include_directories(app
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+# 【按需】添加预处理宏，相当于编译命令中的 -D。
+if(ENABLE_LOGGING)
+    target_compile_definitions(app PRIVATE ENABLE_LOGGING=1)
+endif()
+
+# 【可选但推荐】开启常用编译警告，并处理 MSVC 与 GCC/Clang 的差异。
+if(MSVC)
+    target_compile_options(app PRIVATE /W4 /permissive-)
+else()
+    target_compile_options(app PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+
+# 【按需】链接项目内部库或 find_package 找到的第三方库。
+# target_link_libraries(app PRIVATE math)
+
+# 【可选】定义安装规则。
+# install(TARGETS app RUNTIME DESTINATION bin)
+```
+
+模板最精简后只需：
+
+```cmake
+cmake_minimum_required(VERSION 3.20)  # 【必选】最低版本
+project(Hello LANGUAGES CXX)          # 【必选】项目声明
+add_executable(hello main.cpp)        # 【目标必选】创建构建目标
+```
+
+对应命令：
+
+```bash
+# 1. 配置：读取 CMakeLists.txt，在 build 中生成构建系统
+cmake -S . -B build # -S 指定源码目录，-B 指定构建目录, . 代表当前目录 build, 代表在 `build/` 目录内部生成**构建文件**
+
+# 2. 构建：让 CMake 调用生成器，再由生成器调用编译器
+cmake --build build #--build 告诉cmake去执行编译 build就是上一步生成的构建系统所在目录
+```
+
+> 严格来说，CMake 对某些缺失命令可能会采用默认行为并给出警告，但一个清晰、可维护的顶层项目应显式写出 `cmake_minimum_required()` 和 `project()`。产生实际构建结果时，还必须通过 `add_executable()`、`add_library()` 或子目录中的等价声明创建目标。
+
+### 7. 常用 CMake 命令与“是否必选”
+
+| 命令 | 是否必选 | 说明 |
+| --- | --- | --- |
+| `cmake_minimum_required()` | 顶层项目必选 | 指定最低版本，并采用对应版本的策略行为 |
+| `project()` | 顶层项目必选 | 声明项目名称，可同时声明版本和语言 |
+| `add_executable()` | 按产物选择 | 创建可执行目标；程序项目通常需要 |
+| `add_library()` | 按产物选择 | 创建库目标；库项目或分层项目常用 |
+| `add_subdirectory()` | 多目录项目按需 | 处理子目录中的 `CMakeLists.txt` |
+| `target_sources()` | 按需 | 创建目标后继续添加源文件 |
+| `target_compile_features()` | 推荐 | 以跨平台方式声明 C++ 标准或语言特性 |
+| `target_include_directories()` | 有自定义头文件目录时需要 | 添加头文件搜索路径 |
+| `target_compile_definitions()` | 有编译宏时需要 | 添加宏定义 |
+| `target_compile_options()` | 可选 | 添加警告、优化等目标专属编译选项 |
+| `target_link_libraries()` | 有库依赖时需要 | 链接库，并传播相应使用要求 |
+| `find_package()` | 使用外部包时通常需要 | 查找已安装或工具链提供的依赖包 |
+| `option()` | 可选 | 向用户暴露开关 |
+| `enable_testing()` / `include(CTest)` | 有测试时需要 | 启用 CTest 测试功能 |
+| `install()` | 需要安装或发布时使用 | 声明安装规则 |
+
+---
+
 ## 一、先理解完整构建流程
 
 一个 C++ 项目从源码到可执行文件，通常经历：
