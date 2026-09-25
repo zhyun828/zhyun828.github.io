@@ -4,3 +4,7 @@ ZY的个人笔记
 git add .
 git commit -m "fix folder structure and paths"
 git push
+
+启动本地服务
+cd C:\Users\ZhangYun\Desktop\notes\zhyun828.github.io
+mkdocs serve

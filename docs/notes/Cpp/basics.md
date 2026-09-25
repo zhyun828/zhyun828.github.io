@@ -32,6 +32,7 @@
 | `<filesystem>`    | 文件系统    | `path` `exists`                              | 路径管理  |
 | `<cstdio>`        | C输入输出   | `printf` `scanf`                             | 串口调试  |
 | `<bits/stdc++.h>` | 全部STL   | —                                            | 竞赛专用  |
+
 ## 类型转换
 | 转换方式               | 头文件          | 作用                     | 示例                                |
 | ------------------ | ------------ | ---------------------- | --------------------------------- |
@@ -62,6 +63,103 @@
 | `tolower`          | `<cctype>`   | char → 小写              |                                   |
 | `bitset::to_ulong` | `<bitset>`   | bitset → unsigned long |                                   |
 | `to_integer`       | `<cstddef>`  | byte → 整数              |                                   |
+
+### 类型转换的选择与注意事项
+
+#### 1. 隐式转换
+
+编译器会自动进行部分转换，但从范围大的类型转向范围小的类型时可能丢失数据：
+
+```cpp
+double pi = 3.14;
+int value = pi;          // 隐式转换，结果为 3，小数部分被截断
+int safe{42};            // 列表初始化会阻止明显的窄化转换
+// int error{3.14};      // 编译错误：double 窄化为 int
+```
+
+#### 2. 四种 C++ 显式转换
+
+```cpp
+int n = static_cast<int>(3.14);  // 常规数值转换，最常用
+
+Base* base = getObject();
+Derived* child = dynamic_cast<Derived*>(base); // 多态向下转换，失败返回 nullptr
+
+const int* p = &n;
+int* writable = const_cast<int*>(p);           // 改变 const 属性，需谨慎
+
+std::uintptr_t address = reinterpret_cast<std::uintptr_t>(p); // 底层位模式转换
+```
+
+- 普通常规转换优先使用 `static_cast`；
+- `dynamic_cast` 用于含虚函数的多态类型，指针转换失败得到 `nullptr`；
+- `const_cast` 只改变 `const/volatile` 属性，修改原本真正为常量的对象会产生未定义行为；
+- `reinterpret_cast` 主要用于底层编程，应尽量少用；
+- C++ 中不推荐 C 风格强制转换，因为它不容易看出实际采用了哪种转换。
+
+#### 3. 字符串转数字
+
+```cpp
+try {
+    int value = std::stoi("123");
+} catch (const std::invalid_argument&) {
+    // 字符串不是有效数字
+} catch (const std::out_of_range&) {
+    // 数值超出 int 范围
+}
+```
+
+`std::stoi` 使用方便但会抛异常；对性能敏感或不希望使用异常时，可选择 `<charconv>` 中的 `std::from_chars`，并检查其返回的错误码。
+
+> `floor`、`ceil` 和 `round` 是取整运算，但返回值仍是浮点类型；需要整数时还要进行范围检查并显式转换。
+
+## 异常处理：`try`、`throw` 与 `catch`
+
+C++ 异常用于处理函数无法在本地正常解决的错误：`throw` 抛出异常，`try` 包围可能失败的代码，`catch` 根据异常类型进行处理。
+
+```cpp
+#include <iostream>
+#include <stdexcept>
+
+double divide(double a, double b) {
+    if (b == 0.0) {
+        throw std::invalid_argument("除数不能为 0");
+    }
+    return a / b;
+}
+
+int main() {
+    try {
+        std::cout << divide(10.0, 0.0) << '\n';
+    } catch (const std::invalid_argument& e) {
+        // 优先捕获更具体的异常类型
+        std::cerr << "参数错误：" << e.what() << '\n';
+    } catch (const std::exception& e) {
+        // 标准异常的通用基类，what() 返回错误说明
+        std::cerr << "程序异常：" << e.what() << '\n';
+    } catch (...) {
+        // 捕获其他所有类型的异常，但无法直接取得异常信息
+        std::cerr << "未知异常\n";
+    }
+}
+```
+
+异常抛出后，程序会沿函数调用栈向外寻找第一个匹配的 `catch`。查找过程中，已经创建的局部对象会自动析构，这称为**栈展开**；因此资源应交给 `std::string`、容器和智能指针等 RAII 对象管理。
+
+常用标准异常包括 `std::invalid_argument`（参数无效）、`std::out_of_range`（超出范围）和 `std::runtime_error`（运行时错误）。通常按值 `throw`、按 `const` 引用捕获，避免复制和对象切片：
+
+```cpp
+throw std::runtime_error("读取配置失败");
+
+try {
+    loadConfig();
+} catch (const std::exception& e) {
+    logError(e.what());
+    throw;  // 不写对象，原样重新抛出当前异常
+}
+```
+
+不要使用 `throw e;` 代替重新抛出的 `throw;`，前者可能复制异常并丢失派生类型信息。具体类型的 `catch` 应放在基类之前；如果异常一直没有被捕获，程序最终会调用 `std::terminate()`。标记为 `noexcept` 的函数承诺异常不会逃出函数，一旦违背同样会终止程序，所以只应在确实不会向外抛出异常时使用。
 
 ## 字符串
 
