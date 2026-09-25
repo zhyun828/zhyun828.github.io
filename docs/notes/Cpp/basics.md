@@ -161,6 +161,98 @@ r = b;   // ❌ 不是改引用对象
 a = b;
 ```
 
+### 引用的基本用法
+
+引用不是一个独立的对象，而是已有对象的另一个名字。通过引用读写变量，实际操作的仍然是被引用的对象。
+
+```cpp
+int n = 10;
+int& ref = n;
+
+cout << ref << endl;  // 读取 n
+ref = 20;             // 修改 n
+cout << n << endl;    // 20
+```
+
+引用必须绑定到一个对象，不能直接绑定到 `nullptr`，也不能像指针一样通过赋值改变绑定关系。可以通过 `&` 获取对象地址，验证引用和原对象指向同一位置：
+
+```cpp
+cout << &n << endl;
+cout << &ref << endl; // 与 &n 相同
+```
+
+### 常量引用
+
+在引用前加 `const`，表示不能通过该引用修改对象：
+
+```cpp
+int n = 10;
+const int& ref = n;
+// ref = 20;           // ❌ 不能通过 const 引用修改 n
+n = 20;                // ✅ 仍然可以直接修改 n
+```
+
+常量引用可以绑定到常量和临时对象，因此常用于函数参数，既避免复制，又保证函数不会修改实参：
+
+```cpp
+void print(const string& text) {
+    cout << text << endl;
+}
+
+print("hello"); // 可以绑定到临时的 string 对象
+```
+
+### 引用作为函数参数
+
+使用普通引用作为参数，可以让函数直接修改调用者提供的变量：
+
+```cpp
+void swapValue(int& a, int& b) {
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+int x = 1, y = 2;
+swapValue(x, y); // x == 2，y == 1
+```
+
+如果函数不需要修改参数，优先使用 `const` 引用；如果参数很小且复制成本低，也可以直接按值传递。
+
+### 引用作为返回值
+
+函数可以返回引用，以便直接操作原对象：
+
+```cpp
+int& maxValue(int& a, int& b) {
+    return a > b ? a : b;
+}
+
+int x = 1, y = 2;
+maxValue(x, y) = 10; // y 被修改为 10
+```
+
+返回引用时，不能返回局部变量的引用，因为局部变量在函数结束后已经销毁，会产生悬空引用：
+
+```cpp
+int& wrong() {
+    int local = 1;
+    return local; // ❌ 返回局部变量的引用
+}
+```
+
+### 引用与指针的区别
+
+| 特性 | 引用 | 指针 |
+| --- | --- | --- |
+| 是否必须初始化 | 是 | 否 |
+| 是否可以为空 | 否 | 可以为 `nullptr` |
+| 是否可以重新绑定 | 不可以 | 可以修改指向 |
+| 使用对象 | 直接使用 | 通常需要解引用 `*` |
+| 是否支持算术运算 | 不支持 | 支持指针运算 |
+
+引用适合表示“必定存在的对象别名”；需要表示空值、改变指向或进行指针运算时，应使用指针。
+
 ## Makefile
 
 ## 普通编译
@@ -342,7 +434,9 @@ public:
 class Vector2D
 {
 public:
-    Vector2D(int x, int y) : x_(x), y_(y) {}
+    Vector2D(int x, int y) : x_(x), y_(y) {
+        std::cout << "构造Vector2D" << std::endl;
+    }
 
     Vector2D operator+(const Vector2D& other) const
     {
@@ -570,7 +664,7 @@ public:
 
     Point(int x, int y) : x(x), y(y) {}
 
-    Point operator+(const Point& other) {
+    Point operator+(const Point& other) const {//最后一个const表示这个成员函数不会修改当前对象this指向的对象
         return Point(x + other.x, y + other.y);
     }
 };

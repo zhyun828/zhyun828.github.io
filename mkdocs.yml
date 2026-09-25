@@ -77,6 +77,7 @@ nav:
       - Cpp:
           - basics: notes/Cpp/basics.md
           - code: notes/Cpp/code.md
+          - CMake 与 CMakeLists.txt: notes/Cpp/cmake教程.md
           - 设计模式详解: notes/Cpp/cpp_设计模式详解_扩展版.md
       - embedded_system:
           - basic: notes/embedded_system/basic.md
