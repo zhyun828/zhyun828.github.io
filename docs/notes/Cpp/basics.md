@@ -553,6 +553,63 @@ public:
 
 需要注意，同一个符号可能在不同语法位置承担不同职责：`public:` 中的冒号标记访问控制区域，构造函数参数列表后的冒号开始初始化列表，而初始化项之间使用逗号分隔。判断含义时应结合它所在的语法位置。
 
+### 拷贝构造函数
+
+拷贝构造函数用一个同类型的已有对象初始化新对象，典型签名是 `T(const T&)`：
+
+```cpp
+class Buffer {
+    std::unique_ptr<int> data;
+
+public:
+    explicit Buffer(int value) : data(std::make_unique<int>(value)) {}
+
+    // 深拷贝：为新对象创建独立资源
+    Buffer(const Buffer& other)
+        : data(std::make_unique<int>(*other.data)) {}
+};
+
+Buffer a(10);
+Buffer b = a;  // 调用拷贝构造函数
+Buffer c(a);   // 同上
+// b = a;      // 这是拷贝赋值，不是拷贝构造
+```
+
+按值传参以及按值返回对象时也可能发生拷贝，但编译器常会通过 RVO/NRVO 省略它。参数通常必须写成 `const T&`；若按值接收会为了构造参数再次调用拷贝构造，形成无限递归。
+
+如果类只包含 `std::string`、`std::vector` 等可拷贝成员，优先使用编译器生成的版本；管理裸指针等资源时，默认的逐成员拷贝可能造成多个对象共享同一资源，进而重复释放。现代 C++ 应优先使用标准容器和智能指针，遵循 **Rule of Zero**；确实需要控制复制时，可显式写 `= default`、`= delete`，或同时考虑析构、拷贝和移动操作（Rule of Five）。
+
+### RVO 与 NRVO
+
+RVO（返回值优化）会省略返回临时对象时的拷贝/移动；NRVO（命名返回值优化）针对返回函数内的具名局部对象。对象会直接在调用方的存储位置构造：
+
+```cpp
+Buffer makeRvo() {
+    return Buffer(1);  // RVO：C++17 起保证省略拷贝/移动
+}
+
+Buffer makeNrvo() {
+    Buffer result(2);
+    return result;     // NRVO：允许但不保证
+}
+
+Buffer choose(bool first) {
+    Buffer a(3);
+    Buffer b(4);
+    return first ? a : b; // 返回不同对象，通常无法进行 NRVO
+}
+
+Buffer x = makeRvo();
+Buffer y = makeNrvo();
+```
+
+要点：
+
+- C++17 起，`return T{...};` 这类同类型纯右值会直接构造结果对象，即使拷贝/移动构造函数被删除也可以成立。
+- NRVO 仍是可选优化；若没有发生，编译器通常先尝试移动，不能移动时再拷贝，因此相应构造函数必须可用。
+- 不要写 `return std::move(result);` 来“帮助”优化：它会把表达式变成右值，通常反而阻止 NRVO。
+- 不应依赖拷贝/移动构造函数中的副作用，因为是否省略可能改变它们的调用次数。
+
 ## 析构函数
 
 析构函数用于在对象生命周期结束时执行清理操作。析构函数名称与类名相同，但前面加波浪号 `~`，并且没有返回类型和参数。
