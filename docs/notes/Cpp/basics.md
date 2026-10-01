@@ -282,7 +282,7 @@ cout << &ref << endl; // 与 &n 相同
 ### 常量引用
 
 在引用前加 `const`，表示不能通过该引用修改对象：
-
+被引用对象的生命周期必须比引用长。
 ```cpp
 int n = 10;
 const int& ref = n;
@@ -352,8 +352,7 @@ int& wrong() {
 引用适合表示“必定存在的对象别名”；需要表示空值、改变指向或进行指针运算时，应使用指针。
 
 ## Makefile
-
-## 普通编译
+普通编译
 
 ```bash
 g++ test.cpp -o test -std=c++17 -Wall -Wextra
@@ -1713,6 +1712,33 @@ int main() {
     delete a2;
 }
 ```
+
+## `override` 与 `final`
+
+`override` 表示子类函数要重写基类虚函数。若函数名、参数或 `const` 等签名不匹配，编译器会直接报错，因此重写虚函数时建议始终添加：
+
+```cpp
+class Device {
+public:
+    virtual void start() const = 0;
+};
+
+class Sensor : public Device {
+public:
+    void start() const override final {}  // 正确重写，并禁止继续重写
+};
+```
+
+`final` 用在虚函数后表示禁止子类再次重写，用在类名后表示禁止该类被继承：
+
+```cpp
+class FixedDevice final : public Device {
+public:
+    void start() const override {}
+};
+```
+
+简单记忆：`override` 是“确认我在重写”，`final` 是“到这里为止”。
 
 ## 如果没有 virtual 会怎样？
 
