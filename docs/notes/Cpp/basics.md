@@ -196,6 +196,14 @@ s.find('o', pos);                            // 从 pos 开始查找字符 'o'
 - `find()` 没找到时会返回 `string::npos`。
 
 ## 输入输出控制
+
+`<iostream>` 是头文件；`std::istream`、`std::ostream` 和 `std::iostream` 是流类型，分别表示输入流、输出流和可同时输入输出的流。`std::cin`、`std::cout` 则是标准库预先创建的对象：`cin` 是 `istream` 对象，`cout` 是 `ostream` 对象。
+
+```cpp
+std::istream& input = std::cin;    // 类型是 istream，对象是 cin
+std::ostream& output = std::cout;  // 类型是 ostream，对象是 cout
+```
+
 | 控制符 | 作用 |
 | ---- | ---- |
 | `fixed` | 使用固定小数格式 |
@@ -552,6 +560,33 @@ public:
 
 需要注意，同一个符号可能在不同语法位置承担不同职责：`public:` 中的冒号标记访问控制区域，构造函数参数列表后的冒号开始初始化列表，而初始化项之间使用逗号分隔。判断含义时应结合它所在的语法位置。
 
+### 构造技巧：委托构造、`= default` 与 `= delete`
+
+一个构造函数可以调用同一个类的另一个构造函数，这称为**委托构造**，可以避免重复初始化代码：
+
+```cpp
+class Device {
+    int id;
+
+public:
+    Device() : Device(0) {}            // 委托给下面的构造函数
+    explicit Device(int value) : id(value) {}
+
+    Device(const Device&) = default;   // 要求编译器生成默认拷贝构造
+};
+```
+
+`= default` 表示使用编译器生成的默认实现；`= delete` 表示明确禁止某种调用。例如，不允许对象被复制：
+
+```cpp
+class NonCopyable {
+public:
+    NonCopyable() = default;
+    NonCopyable(const NonCopyable&) = delete;
+    NonCopyable& operator=(const NonCopyable&) = delete;
+};
+```
+
 ### `explicit`：禁止隐式转换
 
 只有一个参数的构造函数有时会被编译器当作“类型转换规则”。例如：
@@ -575,11 +610,14 @@ public:
     explicit Temperature(double value) {}
 };
 
+Temperature a(36.5);                  // 正确：直接初始化
+Temperature b{36.5};                  // 正确：直接列表初始化
+// Temperature c = 36.5;              // 错误：拷贝初始化不使用 explicit 构造函数
 // printTemperature(36.5);             // 错误：不再允许隐式转换
 printTemperature(Temperature(36.5));   // 正确：明确创建对象
 ```
 
-简单记忆：`explicit` 表示“必须明确地构造对象”。能接收单个其他类型实参的构造函数通常建议加上它，除非确实希望两种类型可以自动转换。
+直接初始化会考虑 `explicit` 构造函数，拷贝初始化则不会。简单记忆：`explicit` 表示“必须明确地构造对象”。能接收单个其他类型实参的构造函数通常建议加上它，除非确实希望两种类型可以自动转换。
 
 ### 拷贝构造函数
 
@@ -610,11 +648,56 @@ Record d("Bob", 80);
 d = a;                      // 对象 d 已经存在，这是拷贝赋值
 ```
 
-拷贝构造发生在“创建新对象”时；拷贝赋值发生在“修改已有对象”时。按值传参以及按值返回对象时也可能发生拷贝，但返回对象的拷贝经常会被 RVO/NRVO 省略。
+拷贝构造（copy construction）发生在“创建新对象”时；拷贝赋值（copy assignment）发生在“修改已有对象”时。**有没有创建新对象，是判断 copy constructor 和 `operator=` 的关键。**按值传参以及按值返回对象时也可能发生拷贝，但返回对象的拷贝经常会被 RVO/NRVO 省略。
+
+赋值（assignment）还可分为两种：
+
+```cpp
+T& operator=(const T& other); // copy assignment：复制内容，保留源对象
+T& operator=(T&& other);      // move assignment：转移资源
+```
+
+移动赋值通常接收右值，把源对象持有的资源转交给目标对象；移动后源对象仍可析构和重新赋值，但不应依赖它原来的内容。
 
 参数使用 `const Record&` 有三个原因：引用避免为了传参再次拷贝，`const` 保证不修改原对象，并且还能接收常量对象。拷贝构造函数不能按值接收同类型参数，因为初始化这个参数本身就需要调用拷贝构造函数。
 
-如果成员都是 `int`、`std::string`、`std::vector` 等可正常复制的类型，通常不必手写，编译器生成的拷贝构造函数就够了。若类直接管理裸指针，默认行为只会复制地址，两个对象可能指向同一块内存，这称为**浅拷贝**，容易导致重复释放；为新对象创建独立资源称为**深拷贝**。现代 C++ 应优先让标准容器或智能指针管理资源（Rule of Zero）：容器可直接复制，而 `unique_ptr` 会明确禁止复制，避免意外共享资源。
+**如果没有自己写拷贝构造函数，编译器通常会自动生成一个。**如果成员都是 `int`、`std::string`、`std::vector` 等可正常复制的类型，这个默认版本通常就够了。若类直接管理裸指针，默认行为只会复制地址，两个对象可能指向同一块内存，这称为**浅拷贝**，容易导致修改互相影响或重复释放；为了避免这些风险，需要让新对象拥有独立资源，也就是**深拷贝**。现代 C++ 应优先让标准容器或智能指针管理资源（Rule of Zero）：容器可直接复制，而 `unique_ptr` 会明确禁止复制，避免意外共享资源。
+
+下面用裸指针直观展示深拷贝。关键是 `new int(*other.value)`：先申请一块新内存，再把原对象保存的值复制进去。
+
+```cpp
+class Box {
+    int* value;
+
+public:
+    Box(int n) : value(new int(n)) {}
+
+    Box(const Box& other)
+        : value(new int(*other.value)) {} // 深拷贝：地址不同，数值相同
+
+    Box& operator=(const Box& other) {
+        if (this != &other) {              // 防止 a = a 这种自赋值
+            int* newValue = new int(*other.value);
+            delete value;
+            value = newValue;
+        }
+        return *this;
+    }
+
+    ~Box() { delete value; }
+
+    void setValue(int n) { *value = n; }
+    int getValue() const { return *value; }
+};
+
+Box a(10);
+Box b = a;
+b.setValue(20);
+
+std::cout << a.getValue(); // 10，说明 a 和 b 拥有独立的数据
+```
+
+`if (this != &other)` 比较当前对象和源对象的地址，避免 `a = a;` 这种 self-assignment（自赋值）破坏自己的资源。这个例子用于说明资源复制的原理，实际项目通常优先使用标准容器和智能指针。
 
 ### RVO 与 NRVO
 
