@@ -491,7 +491,7 @@ stackArray(int size = default_size);
 // Sensor.h
 class Sensor {
 public:
-    explicit Sensor(double initialValue);
+    Sensor(double initialValue);
 
 private:
     double value;
@@ -553,54 +553,93 @@ public:
 
 需要注意，同一个符号可能在不同语法位置承担不同职责：`public:` 中的冒号标记访问控制区域，构造函数参数列表后的冒号开始初始化列表，而初始化项之间使用逗号分隔。判断含义时应结合它所在的语法位置。
 
-### 拷贝构造函数
+### `explicit`：禁止隐式转换
 
-拷贝构造函数用一个同类型的已有对象初始化新对象，典型签名是 `T(const T&)`：
+只有一个参数的构造函数有时会被编译器当作“类型转换规则”。例如：
 
 ```cpp
-class Buffer {
-    std::unique_ptr<int> data;
-
+class Temperature {
 public:
-    explicit Buffer(int value) : data(std::make_unique<int>(value)) {}
-
-    // 深拷贝：为新对象创建独立资源
-    Buffer(const Buffer& other)
-        : data(std::make_unique<int>(*other.data)) {}
+    Temperature(double value) {}
 };
 
-Buffer a(10);
-Buffer b = a;  // 调用拷贝构造函数
-Buffer c(a);   // 同上
-// b = a;      // 这是拷贝赋值，不是拷贝构造
+void printTemperature(Temperature value) {}
+
+printTemperature(36.5); // 编译器自动把 36.5 转成 Temperature
 ```
 
-按值传参以及按值返回对象时也可能发生拷贝，但编译器常会通过 RVO/NRVO 省略它。参数通常必须写成 `const T&`；若按值接收会为了构造参数再次调用拷贝构造，形成无限递归。
+如果不希望发生这种不明显的自动转换，就在构造函数前加 `explicit`：
 
-如果类只包含 `std::string`、`std::vector` 等可拷贝成员，优先使用编译器生成的版本；管理裸指针等资源时，默认的逐成员拷贝可能造成多个对象共享同一资源，进而重复释放。现代 C++ 应优先使用标准容器和智能指针，遵循 **Rule of Zero**；确实需要控制复制时，可显式写 `= default`、`= delete`，或同时考虑析构、拷贝和移动操作（Rule of Five）。
+```cpp
+class Temperature {
+public:
+    explicit Temperature(double value) {}
+};
+
+// printTemperature(36.5);             // 错误：不再允许隐式转换
+printTemperature(Temperature(36.5));   // 正确：明确创建对象
+```
+
+简单记忆：`explicit` 表示“必须明确地构造对象”。能接收单个其他类型实参的构造函数通常建议加上它，除非确实希望两种类型可以自动转换。
+
+### 拷贝构造函数
+
+拷贝构造函数的作用是：**根据一个已有对象，创建一个内容相同的新对象**。典型签名是 `类名(const 类名& other)`：
+
+```cpp
+class Record {
+    std::string name;
+    int score;
+
+public:
+    Record(const std::string& n, int s) : name(n), score(s) {}
+
+    Record(const Record& other)
+        : name(other.name), score(other.score) {}
+
+    void setScore(int value) { score = value; }
+    int getScore() const { return score; }
+};
+
+Record a("Alice", 90);
+Record b = a;               // 写法一：调用拷贝构造函数
+Record c(a);                // 写法二：同样调用拷贝构造函数
+b.setScore(100);            // b 是独立的新对象，不影响 a
+std::cout << a.getScore();  // 仍然输出 90
+
+Record d("Bob", 80);
+d = a;                      // 对象 d 已经存在，这是拷贝赋值
+```
+
+拷贝构造发生在“创建新对象”时；拷贝赋值发生在“修改已有对象”时。按值传参以及按值返回对象时也可能发生拷贝，但返回对象的拷贝经常会被 RVO/NRVO 省略。
+
+参数使用 `const Record&` 有三个原因：引用避免为了传参再次拷贝，`const` 保证不修改原对象，并且还能接收常量对象。拷贝构造函数不能按值接收同类型参数，因为初始化这个参数本身就需要调用拷贝构造函数。
+
+如果成员都是 `int`、`std::string`、`std::vector` 等可正常复制的类型，通常不必手写，编译器生成的拷贝构造函数就够了。若类直接管理裸指针，默认行为只会复制地址，两个对象可能指向同一块内存，这称为**浅拷贝**，容易导致重复释放；为新对象创建独立资源称为**深拷贝**。现代 C++ 应优先让标准容器或智能指针管理资源（Rule of Zero）：容器可直接复制，而 `unique_ptr` 会明确禁止复制，避免意外共享资源。
 
 ### RVO 与 NRVO
 
 RVO（返回值优化）会省略返回临时对象时的拷贝/移动；NRVO（命名返回值优化）针对返回函数内的具名局部对象。对象会直接在调用方的存储位置构造：
 
 ```cpp
-Buffer makeRvo() {
-    return Buffer(1);  // RVO：C++17 起保证省略拷贝/移动
+Record makeRvo() {
+    return Record("RVO", 1);  // 临时对象：C++17 起保证省略拷贝/移动
 }
 
-Buffer makeNrvo() {
-    Buffer result(2);
-    return result;     // NRVO：允许但不保证
+Record makeNrvo() {
+    Record result("NRVO", 2);
+    return result;             // 具名局部对象：NRVO 允许但不保证
 }
 
-Buffer choose(bool first) {
-    Buffer a(3);
-    Buffer b(4);
-    return first ? a : b; // 返回不同对象，通常无法进行 NRVO
+Record choose(bool first) {
+    Record a("A", 3);
+    Record b("B", 4);
+    if (first) return a;
+    return b;                  // 可能返回不同对象，通常无法进行 NRVO
 }
 
-Buffer x = makeRvo();
-Buffer y = makeNrvo();
+Record x = makeRvo();
+Record y = makeNrvo();
 ```
 
 要点：
@@ -2141,6 +2180,15 @@ f();
 ```cpp
 #include <memory>
 ```
+
+`std::make_unique<T>(参数)` 会创建一个 `T` 类型的对象，并立即交给 `unique_ptr` 管理。例如：
+
+```cpp
+auto number = std::make_unique<int>(42);
+std::cout << *number; // 输出 42；*number 取得它管理的 int
+```
+
+这里的 `int` 是要创建的类型，圆括号中的 `42` 是传给它的初始化值。类似地，`std::make_unique<Dog>()` 会调用 `Dog` 的无参构造函数；`std::make_unique<Dog>(name)` 会把 `name` 传给 `Dog` 的构造函数。优先使用 `make_unique`，可以避免直接书写 `new`，对象也会在智能指针离开作用域时自动释放。
 
 它可以理解成“自动 delete 的指针”，并且独占它管理的对象。
 
