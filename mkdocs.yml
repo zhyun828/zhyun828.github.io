@@ -37,6 +37,14 @@ theme:
 
 extra_css:
   - stylesheets/home.css
+  - stylesheets/page-search.css?v=2
+
+extra_javascript:
+  - javascripts/page-search.js?v=3
+
+plugins:
+  - material/search:
+      pipeline: []
 
 markdown_extensions:
   - admonition
@@ -104,5 +112,6 @@ nav:
           - code: notes/ros/code.md
       - stm32:
           - stm32_knowledge_notes: notes/stm32/stm32_knowledge_notes.md
+          - RTOS / FreeRTOS 知识整理: notes/stm32/rtos_freertos_notes_compact.md
           - 外设: notes/stm32/外设.md
           - 寄存器: notes/stm32/寄存器.md
