@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="500" viewBox="0 0 1120 500" role="img" aria-labelledby="title desc">
+  <title id="title">TCP sliding window and congestion control</title>
+  <desc id="desc">TCP send window parts and relationship between receive window and congestion window.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.acked{fill:#e2e8f0;stroke:#64748b;stroke-width:2}.sent{fill:#dbeafe;stroke:#2563eb;stroke-width:2}.ready{fill:#dcfce7;stroke:#16a34a;stroke-width:2}.blocked{fill:#fee2e2;stroke:#dc2626;stroke-width:2}
+      .text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:18px;fill:#0f172a}.title{font-size:25px;font-weight:700}.small{font-size:15px;fill:#475569}.arrow{stroke:#64748b;stroke-width:3;marker-end:url(#arrow)}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#64748b"/></marker>
+  </defs>
+  <rect class="bg" width="1120" height="500"/>
+  <text class="text title" x="560" y="45" text-anchor="middle">TCP 滑动窗口、流量控制与拥塞控制</text>
+  <rect class="acked" x="90" y="130" width="210" height="78"/><text class="text" x="195" y="163" text-anchor="middle">已确认</text><text class="small" x="195" y="188" text-anchor="middle">窗口左边界右移</text>
+  <rect class="sent" x="300" y="130" width="260" height="78"/><text class="text" x="430" y="163" text-anchor="middle">已发送未确认</text><text class="small" x="430" y="188" text-anchor="middle">等待 ACK</text>
+  <rect class="ready" x="560" y="130" width="260" height="78"/><text class="text" x="690" y="163" text-anchor="middle">允许发送</text><text class="small" x="690" y="188" text-anchor="middle">受窗口限制</text>
+  <rect class="blocked" x="820" y="130" width="210" height="78"/><text class="text" x="925" y="163" text-anchor="middle">暂不可发</text><text class="small" x="925" y="188" text-anchor="middle">超过窗口</text>
+  <line class="arrow" x1="300" y1="245" x2="820" y2="245"/>
+  <text class="text" x="560" y="235" text-anchor="middle">发送窗口</text>
+  <rect class="ready" x="195" y="325" width="310" height="64"/><text class="text" x="350" y="363" text-anchor="middle">接收窗口 rwnd：保护接收方</text>
+  <rect class="sent" x="615" y="325" width="310" height="64"/><text class="text" x="770" y="363" text-anchor="middle">拥塞窗口 cwnd：保护网络</text>
+  <text class="small" x="560" y="440" text-anchor="middle">真正可发送的数据量通常受 min(rwnd, cwnd) 约束。</text>
+</svg>

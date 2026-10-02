@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="430" viewBox="0 0 1000 430" role="img" aria-labelledby="title desc">
+  <title id="title">Modbus data model</title>
+  <desc id="desc">Four Modbus data areas: coils, discrete inputs, input registers and holding registers.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.card{fill:#fff;stroke:#334155;stroke-width:2;rx:12}.bit{fill:#e0f2fe}.reg{fill:#fef3c7}
+      .title{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:24px;font-weight:700;fill:#0f172a}
+      .text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:18px;fill:#334155}.small{font-size:16px;fill:#475569}
+      .rw{fill:#dcfce7;stroke:#16a34a;stroke-width:1}.ro{fill:#fee2e2;stroke:#dc2626;stroke-width:1}
+    </style>
+  </defs>
+  <rect class="bg" width="1000" height="430"/>
+  <rect class="card" x="60" y="55" width="410" height="130"/>
+  <rect class="bit" x="60" y="55" width="410" height="40"/>
+  <text class="title" x="265" y="83" text-anchor="middle">线圈 Coils</text>
+  <text class="text" x="88" y="126">单位：1 bit</text>
+  <text class="text" x="88" y="154">功能码：01 读，05/0F 写</text>
+  <rect class="rw" x="335" y="118" width="95" height="34" rx="17"/><text class="small" x="382" y="141" text-anchor="middle">可读写</text>
+
+  <rect class="card" x="530" y="55" width="410" height="130"/>
+  <rect class="bit" x="530" y="55" width="410" height="40"/>
+  <text class="title" x="735" y="83" text-anchor="middle">离散输入 Discrete Inputs</text>
+  <text class="text" x="558" y="126">单位：1 bit</text>
+  <text class="text" x="558" y="154">功能码：02 读</text>
+  <rect class="ro" x="805" y="118" width="95" height="34" rx="17"/><text class="small" x="852" y="141" text-anchor="middle">只读</text>
+
+  <rect class="card" x="60" y="235" width="410" height="130"/>
+  <rect class="reg" x="60" y="235" width="410" height="40"/>
+  <text class="title" x="265" y="263" text-anchor="middle">输入寄存器 Input Registers</text>
+  <text class="text" x="88" y="306">单位：16 bit</text>
+  <text class="text" x="88" y="334">功能码：04 读</text>
+  <rect class="ro" x="335" y="298" width="95" height="34" rx="17"/><text class="small" x="382" y="321" text-anchor="middle">只读</text>
+
+  <rect class="card" x="530" y="235" width="410" height="130"/>
+  <rect class="reg" x="530" y="235" width="410" height="40"/>
+  <text class="title" x="735" y="263" text-anchor="middle">保持寄存器 Holding Registers</text>
+  <text class="text" x="558" y="306">单位：16 bit</text>
+  <text class="text" x="558" y="334">功能码：03 读，06/10 写</text>
+  <rect class="rw" x="805" y="298" width="95" height="34" rx="17"/><text class="small" x="852" y="321" text-anchor="middle">可读写</text>
+
+  <text class="small" x="500" y="405" text-anchor="middle">常见编号前缀 0xxxx / 1xxxx / 3xxxx / 4xxxx 是文档表示法，报文中发送的是偏移地址。</text>
+</svg>

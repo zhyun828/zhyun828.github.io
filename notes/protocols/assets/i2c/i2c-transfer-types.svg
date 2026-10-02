@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="420" viewBox="0 0 1100 420" role="img" aria-label="I2C write current read and random read sequences">
+  <rect width="1100" height="420" fill="#ffffff"/>
+  <style>
+    text{font-family:Arial,"Microsoft YaHei",sans-serif;fill:#1f2933}
+    .title{font-size:24px;font-weight:700}
+    .row{font-size:20px;font-weight:700}
+    .small{font-size:16px}
+    .cell{fill:#eff6ff;stroke:#2563eb;stroke-width:1.6}
+    .ctrl{fill:#fee2e2;stroke:#ef4444;stroke-width:1.6}
+    .ack{fill:#dcfce7;stroke:#16a34a;stroke-width:1.6}
+    .data{fill:#fef9c3;stroke:#ca8a04;stroke-width:1.6}
+  </style>
+  <text x="40" y="42" class="title">I2C 常见传输序列</text>
+  <g transform="translate(40,80)">
+    <text x="0" y="30" class="row">指定地址写</text>
+    <rect x="170" y="5" width="80" height="40" rx="6" class="ctrl"/><text x="188" y="31" class="small">START</text>
+    <rect x="260" y="5" width="135" height="40" rx="6" class="cell"/><text x="278" y="31" class="small">Slave + W</text>
+    <rect x="405" y="5" width="62" height="40" rx="6" class="ack"/><text x="421" y="31" class="small">ACK</text>
+    <rect x="477" y="5" width="140" height="40" rx="6" class="cell"/><text x="494" y="31" class="small">Reg Address</text>
+    <rect x="627" y="5" width="62" height="40" rx="6" class="ack"/><text x="643" y="31" class="small">ACK</text>
+    <rect x="699" y="5" width="110" height="40" rx="6" class="data"/><text x="735" y="31" class="small">Data</text>
+    <rect x="819" y="5" width="62" height="40" rx="6" class="ack"/><text x="835" y="31" class="small">ACK</text>
+    <rect x="891" y="5" width="75" height="40" rx="6" class="ctrl"/><text x="908" y="31" class="small">STOP</text>
+  </g>
+  <g transform="translate(40,180)">
+    <text x="0" y="30" class="row">当前地址读</text>
+    <rect x="170" y="5" width="80" height="40" rx="6" class="ctrl"/><text x="188" y="31" class="small">START</text>
+    <rect x="260" y="5" width="135" height="40" rx="6" class="cell"/><text x="278" y="31" class="small">Slave + R</text>
+    <rect x="405" y="5" width="62" height="40" rx="6" class="ack"/><text x="421" y="31" class="small">ACK</text>
+    <rect x="477" y="5" width="110" height="40" rx="6" class="data"/><text x="513" y="31" class="small">Data</text>
+    <rect x="597" y="5" width="70" height="40" rx="6" class="ack"/><text x="613" y="31" class="small">NACK</text>
+    <rect x="677" y="5" width="75" height="40" rx="6" class="ctrl"/><text x="694" y="31" class="small">STOP</text>
+  </g>
+  <g transform="translate(40,280)">
+    <text x="0" y="30" class="row">指定地址读</text>
+    <rect x="170" y="5" width="80" height="40" rx="6" class="ctrl"/><text x="188" y="31" class="small">START</text>
+    <rect x="260" y="5" width="135" height="40" rx="6" class="cell"/><text x="278" y="31" class="small">Slave + W</text>
+    <rect x="405" y="5" width="62" height="40" rx="6" class="ack"/><text x="421" y="31" class="small">ACK</text>
+    <rect x="477" y="5" width="140" height="40" rx="6" class="cell"/><text x="494" y="31" class="small">Reg Address</text>
+    <rect x="627" y="5" width="62" height="40" rx="6" class="ack"/><text x="643" y="31" class="small">ACK</text>
+    <rect x="699" y="5" width="95" height="40" rx="6" class="ctrl"/><text x="710" y="31" class="small">ReSTART</text>
+    <rect x="804" y="5" width="135" height="40" rx="6" class="cell"/><text x="822" y="31" class="small">Slave + R</text>
+    <rect x="949" y="5" width="62" height="40" rx="6" class="ack"/><text x="965" y="31" class="small">ACK</text>
+    <rect x="1021" y="5" width="55" height="40" rx="6" class="data"/><text x="1033" y="31" class="small">Data</text>
+  </g>
+</svg>

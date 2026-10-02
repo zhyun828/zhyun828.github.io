@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="520" viewBox="0 0 1120 520" role="img" aria-labelledby="title desc">
+  <title id="title">IP TCP UDP packet structures</title>
+  <desc id="desc">Simplified structures of IPv4 datagram, TCP segment and UDP datagram.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.ip{fill:#fef3c7;stroke:#d97706;stroke-width:2}.tcp{fill:#dbeafe;stroke:#2563eb;stroke-width:2}.udp{fill:#dcfce7;stroke:#16a34a;stroke-width:2}.data{fill:#fff;stroke:#334155;stroke-width:2}
+      .text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:18px;fill:#0f172a}.title{font-size:26px;font-weight:700}.small{font-size:15px;fill:#475569}
+    </style>
+  </defs>
+  <rect class="bg" width="1120" height="520"/>
+  <text class="text title" x="560" y="48" text-anchor="middle">IP / TCP / UDP 报文结构简图</text>
+
+  <text class="text" x="75" y="105">IPv4 数据报</text>
+  <rect class="ip" x="230" y="78" width="170" height="58"/><text class="text" x="315" y="112" text-anchor="middle">IP Header</text>
+  <rect class="data" x="400" y="78" width="610" height="58"/><text class="text" x="705" y="112" text-anchor="middle">Payload：TCP 段或 UDP 数据报</text>
+  <text class="small" x="620" y="158" text-anchor="middle">源 IP、目的 IP、TTL、Protocol、长度等</text>
+
+  <text class="text" x="75" y="235">TCP 报文段</text>
+  <rect class="tcp" x="230" y="205" width="150" height="58"/><text class="text" x="305" y="239" text-anchor="middle">端口</text>
+  <rect class="tcp" x="380" y="205" width="170" height="58"/><text class="text" x="465" y="239" text-anchor="middle">Seq / Ack</text>
+  <rect class="tcp" x="550" y="205" width="160" height="58"/><text class="text" x="630" y="239" text-anchor="middle">Flags</text>
+  <rect class="tcp" x="710" y="205" width="150" height="58"/><text class="text" x="785" y="239" text-anchor="middle">Window</text>
+  <rect class="data" x="860" y="205" width="150" height="58"/><text class="text" x="935" y="239" text-anchor="middle">Data</text>
+  <text class="small" x="620" y="285" text-anchor="middle">源/目的端口、序号、确认号、SYN/ACK/FIN/RST、窗口、校验和、选项</text>
+
+  <text class="text" x="75" y="365">UDP 数据报</text>
+  <rect class="udp" x="230" y="335" width="180" height="58"/><text class="text" x="320" y="369" text-anchor="middle">源/目的端口</text>
+  <rect class="udp" x="410" y="335" width="150" height="58"/><text class="text" x="485" y="369" text-anchor="middle">长度</text>
+  <rect class="udp" x="560" y="335" width="150" height="58"/><text class="text" x="635" y="369" text-anchor="middle">Checksum</text>
+  <rect class="data" x="710" y="335" width="300" height="58"/><text class="text" x="860" y="369" text-anchor="middle">Data</text>
+  <text class="small" x="620" y="420" text-anchor="middle">UDP 头部固定 8 字节，简单但不提供 TCP 那样的可靠机制。</text>
+</svg>
