@@ -22,7 +22,7 @@
 | `<cstdlib>`       | C标准库    | `rand` `abs`                                 | 随机数   |
 | `<cstring>`       | C字符串/内存 | `memset` `memcpy` `strlen`                   | 嵌入式常用 |
 | `<cstdint>`       | 固定宽度整数  | `uint32_t` `int64_t`                         | 嵌入式   |
-| `<utility>`       | 二元组     | `pair` `make_pair`                           | 返回两个值 |
+| `<utility>`       | 工具函数    | `pair` `make_pair` `move` `forward`          | 对组、移动语义 |
 | `<tuple>`         | 多元组     | `tuple`                                      | 多返回值  |
 | `<bitset>`        | 位集合     | `bitset<32>`                                 | 位运算题  |
 | `<memory>`        | 智能指针    | `shared_ptr` `unique_ptr`                    | 现代C++ |
@@ -338,6 +338,8 @@ int x = 1, y = 2;
 maxValue(x, y) = 10; // y 被修改为 10
 ```
 
+返回的非 `const` 引用是一个左值（lvalue），因此可以放在赋值号左边，直接修改它所引用的原对象；如果返回类型是 `const T&`，则不能通过该引用赋值。
+
 返回引用时，不能返回局部变量的引用，因为局部变量在函数结束后已经销毁，会产生悬空引用：
 
 ```cpp
@@ -358,6 +360,18 @@ int& wrong() {
 | 是否支持算术运算 | 不支持 | 支持指针运算 |
 
 引用适合表示“必定存在的对象别名”；需要表示空值、改变指向或进行指针运算时，应使用指针。
+
+### 左值、右值与两类引用
+
+左值（lvalue）通常表示有身份、可通过名字或地址再次找到的对象；右值（rvalue）通常是临时值或即将被销毁、资源可以被转移的对象。
+
+```cpp
+int value = 10;
+int& leftRef = value;       // T&：左值引用，只能绑定到左值
+int&& rightRef = 20;        // T&&：右值引用，可以绑定到临时右值
+```
+
+`T&` 常用于修改已有对象，`T&&` 是移动语义和完美转发的基础。需要注意：变量一旦有名字，表达式本身就是左值，所以 `rightRef` 虽然类型是 `int&&`，直接使用 `rightRef` 时仍是左值；若要再次把它当作可移动的右值，需要使用 `std::move(rightRef)`。
 
 ## Makefile
 普通编译
@@ -443,6 +457,33 @@ bool stackArray::isEmpty() const {
 ```
 
 这里的 `const` 保证函数不修改 `head` 的数值。
+
+## Attributes、annotations 与编译器扩展
+
+C++ 标准属性使用 `[[attr]]` 语法，为编译器提供额外信息，但不改变普通类型语法。属性可以带参数，也可以放在函数、类型或变量等特定位置：
+
+```cpp
+[[deprecated("请改用 newApi")]]
+void oldApi();
+
+[[noreturn]]
+void fatalError(); // 承诺函数不会正常返回
+```
+
+- `[[deprecated]]` 表示实体仍可使用，但编译器通常会给出弃用警告。
+- `[[noreturn]]` 表示函数不会返回调用者；若它实际正常返回，程序行为未定义。
+- `[[carries_dependency]]` 曾用于描述底层原子操作的依赖链，实际支持和标准状态取决于语言版本与编译器；新代码通常不应依赖它。
+
+下面几种写法也能向编译器提供额外指令，但可移植性不同：
+
+| 写法 | 来源 | 示例 |
+| --- | --- | --- |
+| `[[attr]]` | C++ 标准属性语法 | `[[deprecated]]` |
+| `#pragma` | 编译器指令，不同实现支持项不同 | `#pragma once` |
+| `__attribute__((...))` | GCC / Clang 扩展 | `__attribute__((unused))` |
+| `__declspec(...)` | MSVC 扩展 | `__declspec(dllexport)` |
+
+优先使用标准 `[[...]]` 属性；必须使用平台扩展时，通常用条件编译或宏封装，避免把编译器专用语法散布到整个项目。
 
 ## 判断
 
@@ -699,6 +740,30 @@ std::cout << a.getValue(); // 10，说明 a 和 b 拥有独立的数据
 
 `if (this != &other)` 比较当前对象和源对象的地址，避免 `a = a;` 这种 self-assignment（自赋值）破坏自己的资源。这个例子用于说明资源复制的原理，实际项目通常优先使用标准容器和智能指针。
 
+### 移动语义、移动构造与 `std::move`
+
+拷贝构造函数（copy constructor）会复制资源；移动构造函数（move constructor）则接收 `T&&`，尽量把资源所有权转移给新对象，避免昂贵的深拷贝：
+
+```cpp
+class Buffer {
+    std::vector<int> data;
+
+public:
+    Buffer(std::size_t size) : data(size) {}
+    Buffer(const Buffer& other) : data(other.data) {}              // 拷贝
+    Buffer(Buffer&& other) noexcept : data(std::move(other.data)) {} // 移动
+
+    Buffer& operator=(const Buffer&) = default; // copy assignment
+    Buffer& operator=(Buffer&&) noexcept = default; // move assignment
+};
+
+Buffer source(1000);
+Buffer copied = source;              // source 是左值，调用拷贝构造
+Buffer moved = std::move(source);    // 转为右值，调用移动构造
+```
+
+移动语义（move semantics）的核心是转移资源而不是逐项复制。`std::move()` 本身不搬运任何数据，它只是把表达式转换为右值，是否真正移动取决于类型是否提供移动构造或移动赋值。被移动对象仍可析构或重新赋值，但不要依赖它原来的内容。
+
 ### RVO 与 NRVO
 
 RVO（返回值优化）会省略返回临时对象时的拷贝/移动；NRVO（命名返回值优化）针对返回函数内的具名局部对象。对象会直接在调用方的存储位置构造：
@@ -727,7 +792,8 @@ Record y = makeNrvo();
 要点：
 
 - C++17 起，`return T{...};` 这类同类型纯右值会直接构造结果对象，即使拷贝/移动构造函数被删除也可以成立。
-- NRVO 仍是可选优化；若没有发生，编译器通常先尝试移动，不能移动时再拷贝，因此相应构造函数必须可用。
+- 返回局部对象时的一般优先关系是 **RVO/NRVO → move → copy**：先尝试省略构造；不能省略时，通常优先移动；不能移动时才复制。
+- NRVO 仍是可选优化，因此被返回类型仍应提供可用的移动或拷贝构造函数。
 - 不要写 `return std::move(result);` 来“帮助”优化：它会把表达式变成右值，通常反而阻止 NRVO。
 - 不应依赖拷贝/移动构造函数中的副作用，因为是否省略可能改变它们的调用次数。
 
@@ -755,6 +821,17 @@ public:
     delete p;
 }
 ```
+
+`new[]` 创建的动态数组必须使用 `delete[]` 释放；若错误地使用单对象的 `delete`，行为未定义：
+
+```cpp
+Image* image = new Image[10];
+// 使用 image[0] 到 image[9]
+delete[] image;
+image = nullptr;
+```
+
+`new` 对应 `delete`，`new[]` 对应 `delete[]`，两组不能混用。现代 C++ 通常优先使用 `std::vector<Image>` 或 `std::make_unique<Image[]>(10)` 自动管理数组生命周期。
 
 ## 成员函数和友元函数
 成员函数就是“属于这个类的函数”；友元函数不是这个类的成员，但被这个类授权，可以访问它的 private / protected。
@@ -1114,6 +1191,28 @@ pow(2, 31);   // 需要 <cmath>
 const T operator+(const T& a, const T& b);
 ```
 
+### Functor / function object 与 `operator()`
+
+重载函数调用运算符 `operator()` 的类对象称为函数对象（Functor / function object）。它可以像普通函数一样调用，同时在成员变量中保存上下文或状态：
+
+```cpp
+class Adder {
+    int base;
+
+public:
+    explicit Adder(int value) : base(value) {}
+
+    int operator()(int value) const {
+        return base + value;
+    }
+};
+
+Adder add10(10);         // base 是函数对象保存的状态
+int result = add10(5);   // 普通调用语法，等价于 add10.operator()(5)
+```
+
+普通函数本身不能保存每个实例独有的状态，而不同的函数对象可以各自保存不同的 `base`。带捕获的 Lambda 本质上也会生成一个保存捕获状态、并提供 `operator()` 的闭包对象。
+
 ## 迭代器
 
 迭代器可以先理解成“位置”。
@@ -1139,6 +1238,20 @@ for (int i = 0; i < s.size(); i++) {
 
 ## `auto`
 
+`auto` 根据初始化表达式推断类型，因此声明变量时必须能得到初始值：
+
+```cpp
+const int value = 10;
+const int& ref = value;
+
+auto a = ref;        // int：按值推断会去掉顶层 const 和引用
+auto& b = ref;       // const int&：auto& 保留引用和 const
+auto* p = &value;    // const int*：保留指向对象的 const
+const auto c = value; // const int：显式加回顶层 const
+```
+
+简单理解：`auto` 默认得到一个新的值，`auto&` 则绑定原对象；修改 `b` 是否允许，取决于原对象是否为 `const`。
+
 什么时候该用 `auto`（推荐）：
 
 1. 迭代器，是最常见也最推荐的场景
@@ -1159,6 +1272,53 @@ for (int i = 0; i < s.size(); i++) {
    // 等价于
    unordered_map<int, string>::iterator it = mp.find(key);
    ```
+
+### 尾置返回类型与 C++14 返回类型推断
+
+尾置返回类型（trailing return type）把返回类型写在参数列表后面，适合返回类型依赖参数的模板或较复杂类型：
+
+```cpp
+auto add(int a, int b) -> int {
+    return a + b;
+}
+```
+
+C++14 起，普通函数可以直接用 `auto` 从 `return` 表达式推断返回类型；多个 `return` 必须能推断为同一类型：
+
+```cpp
+auto multiply(int a, int b) {
+    return a * b; // 推断为 int
+}
+```
+
+### `decltype` 与 `decltype(auto)`
+
+`decltype` 在编译期取得表达式的类型，不会实际执行表达式。对未加括号的变量名，`decltype(x)` 得到变量声明时的类型；对一般表达式，结果还会反映值类别：
+
+```cpp
+int x = 10;
+int& ref = x;
+
+decltype(x) a = 1;       // int
+decltype(ref) b = x;     // int&
+decltype((x)) c = x;     // int&：额外括号使 (x) 按左值表达式处理
+decltype(x + 1) d = 20;  // int：x + 1 是右值
+```
+
+`decltype(auto)` 使用 `decltype` 的规则推断完整类型，能保留引用；返回时括号会影响结果：
+
+```cpp
+int value = 10;
+
+decltype(auto) getValue() { return value; }      // int
+decltype(auto) getReference() { return (value); } // int&
+```
+
+| 写法 | 主要用途 | 是否保留引用和顶层 `const` |
+| --- | --- | --- |
+| `auto` | 简化变量或返回类型 | 默认不保留 |
+| `decltype(expr)` | 查询表达式的精确类型 | 保留 |
+| `decltype(auto)` | 按 `decltype` 规则自动推断 | 保留，括号会影响结果 |
 
 ## 容器选择
 
@@ -2162,13 +2322,15 @@ f();
 
 ## lambda 中 [](){} 分别是什么意思
 
-lambda 基本格式是：
+Lambda 的完整常用语法是：
 
 ```cpp
-[捕获列表](参数列表) {
-    函数体
-};
+[capture-list](params) mutable -> return_type {
+    body
+}
 ```
+
+其中参数列表、`mutable` 和尾置返回类型都可以按需省略。没有显式写 `-> return_type` 时，编译器会根据 `return` 表达式推断返回类型；多个返回分支必须能推断成兼容的类型。
 
 `[]` 是捕获列表，用来捕获外部变量。
 
@@ -2204,6 +2366,56 @@ f();
 ```
 
 这里 `[x]` 表示把外部变量 `x` 捕获进 lambda。
+
+常见捕获方式：
+
+| 写法 | 含义 |
+| --- | --- |
+| `[]` | 不捕获外部变量 |
+| `[&]` | 默认按引用捕获使用到的外部变量 |
+| `[=]` | 默认按值捕获使用到的外部变量 |
+| `[a]` | 只按值捕获 `a` |
+| `[&a]` | 只按引用捕获 `a` |
+| `[=, &a]` | 其他变量按值捕获，`a` 按引用捕获 |
+| `[this]` | 捕获当前对象的 `this` 指针，以访问成员 |
+
+按值捕获会把创建 Lambda 时的值保存到闭包对象中，默认不能修改这份副本；按引用捕获直接访问原变量，可以修改原变量，但 Lambda 的使用时间不能超过被引用变量的生命周期。
+
+`mutable` 允许修改按值捕获的副本，不会修改外部原变量：
+
+```cpp
+int count = 0;
+auto next = [count]() mutable {
+    return ++count;
+};
+
+next(); // 返回 1
+next(); // 返回 2，Lambda 自己保存了状态
+// 外部 count 仍然是 0
+```
+
+Lambda 定义后紧跟 `()` 就会立即调用；返回类型既可以推断，也可以显式写成尾置返回类型：
+
+```cpp
+int square = [](int x) { return x * x; }(5); // 立即调用，结果为 25
+
+auto divide = [](double a, double b) -> double {
+    return a / b;
+};
+```
+
+嵌套 Lambda 只能使用它自己捕获的变量；需要使用外层作用域的变量时，外层 Lambda 必须先捕获，内层再从外层环境捕获：
+
+```cpp
+int value = 10;
+auto outer = [value]() mutable {
+    auto inner = [&value]() { ++value; };
+    inner();
+    return value;
+};
+
+outer(); // 返回 11；外部原始 value 仍为 10
+```
 
 ## callback 为什么没有单独定义也能调用
 
