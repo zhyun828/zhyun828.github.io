@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 380" width="1120" height="380" role="img">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="560" y="31" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="22" font-weight="700" fill="#203044">DVB-S2 数据星座：几何结构示意</text>
+<rect x="18" y="54" width="244" height="270" rx="10" fill="#f9fbfd" stroke="#d9e3eb"/>
+<text x="140" y="84" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="19" font-weight="700" fill="#203044">QPSK</text>
+<line x1="38" y1="196" x2="242" y2="196" stroke="#c4d0da"/>
+<line x1="140" y1="95" x2="140" y2="297" stroke="#c4d0da"/>
+<text x="248" y="201" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="13" font-weight="normal" fill="#617183">I</text>
+<circle cx="140" cy="196" r="68" fill="none" stroke="#dbe5ec" stroke-dasharray="3 4"/>
+<circle cx="188.08" cy="147.92" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="91.92" cy="147.92" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="91.92" cy="244.08" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="188.08" cy="244.08" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<text x="140" y="309" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="14" font-weight="normal" fill="#526273">4 个点</text>
+<rect x="298" y="54" width="244" height="270" rx="10" fill="#f9fbfd" stroke="#d9e3eb"/>
+<text x="420" y="84" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="19" font-weight="700" fill="#203044">8PSK</text>
+<line x1="318" y1="196" x2="522" y2="196" stroke="#c4d0da"/>
+<line x1="420" y1="95" x2="420" y2="297" stroke="#c4d0da"/>
+<text x="528" y="201" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="13" font-weight="normal" fill="#617183">I</text>
+<circle cx="420" cy="196" r="68" fill="none" stroke="#dbe5ec" stroke-dasharray="3 4"/>
+<circle cx="468.08" cy="147.92" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="420.00" cy="128.00" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="371.92" cy="147.92" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="352.00" cy="196.00" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="371.92" cy="244.08" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="420.00" cy="264.00" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="468.08" cy="244.08" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="488.00" cy="196.00" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<text x="420" y="309" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="14" font-weight="normal" fill="#526273">8 个点</text>
+<rect x="578" y="54" width="244" height="270" rx="10" fill="#f9fbfd" stroke="#d9e3eb"/>
+<text x="700" y="84" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="19" font-weight="700" fill="#203044">16APSK</text>
+<line x1="598" y1="196" x2="802" y2="196" stroke="#c4d0da"/>
+<line x1="700" y1="95" x2="700" y2="297" stroke="#c4d0da"/>
+<text x="808" y="201" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="13" font-weight="normal" fill="#617183">I</text>
+<circle cx="700" cy="196" r="31" fill="none" stroke="#dbe5ec" stroke-dasharray="3 4"/>
+<circle cx="721.92" cy="174.08" r="5.3" fill="#2c9a68" stroke="#ffffff" stroke-width="1"/>
+<circle cx="678.08" cy="174.08" r="5.3" fill="#2c9a68" stroke="#ffffff" stroke-width="1"/>
+<circle cx="678.08" cy="217.92" r="5.3" fill="#2c9a68" stroke="#ffffff" stroke-width="1"/>
+<circle cx="721.92" cy="217.92" r="5.3" fill="#2c9a68" stroke="#ffffff" stroke-width="1"/>
+<circle cx="700" cy="196" r="81" fill="none" stroke="#dbe5ec" stroke-dasharray="3 4"/>
+<circle cx="778.24" cy="175.04" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="757.28" cy="138.72" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="720.96" cy="117.76" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="679.04" cy="117.76" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="642.72" cy="138.72" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="621.76" cy="175.04" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="621.76" cy="216.96" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="642.72" cy="253.28" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="679.04" cy="274.24" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="720.96" cy="274.24" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="757.28" cy="253.28" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="778.24" cy="216.96" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<text x="700" y="309" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="14" font-weight="normal" fill="#526273">4 + 12 个点</text>
+<rect x="858" y="54" width="244" height="270" rx="10" fill="#f9fbfd" stroke="#d9e3eb"/>
+<text x="980" y="84" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="19" font-weight="700" fill="#203044">32APSK</text>
+<line x1="878" y1="196" x2="1082" y2="196" stroke="#c4d0da"/>
+<line x1="980" y1="95" x2="980" y2="297" stroke="#c4d0da"/>
+<text x="1088" y="201" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="13" font-weight="normal" fill="#617183">I</text>
+<circle cx="980" cy="196" r="25" fill="none" stroke="#dbe5ec" stroke-dasharray="3 4"/>
+<circle cx="997.68" cy="178.32" r="5.3" fill="#2c9a68" stroke="#ffffff" stroke-width="1"/>
+<circle cx="962.32" cy="178.32" r="5.3" fill="#2c9a68" stroke="#ffffff" stroke-width="1"/>
+<circle cx="962.32" cy="213.68" r="5.3" fill="#2c9a68" stroke="#ffffff" stroke-width="1"/>
+<circle cx="997.68" cy="213.68" r="5.3" fill="#2c9a68" stroke="#ffffff" stroke-width="1"/>
+<circle cx="980" cy="196" r="56" fill="none" stroke="#dbe5ec" stroke-dasharray="3 4"/>
+<circle cx="1034.09" cy="181.51" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="1019.60" cy="156.40" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="994.49" cy="141.91" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="965.51" cy="141.91" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="940.40" cy="156.40" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="925.91" cy="181.51" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="925.91" cy="210.49" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="940.40" cy="235.60" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="965.51" cy="250.09" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="994.49" cy="250.09" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="1019.60" cy="235.60" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="1034.09" cy="210.49" r="5.3" fill="#2674a6" stroke="#ffffff" stroke-width="1"/>
+<circle cx="980" cy="196" r="86" fill="none" stroke="#dbe5ec" stroke-dasharray="3 4"/>
+<circle cx="1059.45" cy="163.09" r="5.3" fill="#d17830" stroke="#ffffff" stroke-width="1"/>
+<circle cx="1040.81" cy="135.19" r="5.3" fill="#d17830" stroke="#ffffff" stroke-width="1"/>
+<circle cx="1012.91" cy="116.55" r="5.3" fill="#d17830" stroke="#ffffff" stroke-width="1"/>
+<circle cx="980.00" cy="110.00" r="5.3" fill="#d17830" stroke="#ffffff" stroke-width="1"/>
+<circle cx="947.09" cy="116.55" r="5.3" fill="#d17830" stroke="#ffffff" stroke-width="1"/>
+<circle cx="919.19" cy="135.19" r="5.3" fill="#d17830" stroke="#ffffff" stroke-width="1"/>
+<circle cx="900.55" cy="163.09" r="5.3" fill="#d17830" stroke="#ffffff" stroke-width="1"/>
+<circle cx="894.00" cy="196.00" r="5.3" fill="#d17830" stroke="#ffffff" stroke-width="1"/>
+<circle cx="900.55" cy="228.91" r="5.3" fill="#d17830" stroke="#ffffff" stroke-width="1"/>
+<circle cx="919.19" cy="256.81" r="5.3" fill="#d17830" stroke="#ffffff" stroke-width="1"/>
+<circle cx="947.09" cy="275.45" r="5.3" fill="#d17830" stroke="#ffffff" stroke-width="1"/>
+<circle cx="980.00" cy="282.00" r="5.3" fill="#d17830" stroke="#ffffff" stroke-width="1"/>
+<circle cx="1012.91" cy="275.45" r="5.3" fill="#d17830" stroke="#ffffff" stroke-width="1"/>
+<circle cx="1040.81" cy="256.81" r="5.3" fill="#d17830" stroke="#ffffff" stroke-width="1"/>
+<circle cx="1059.45" cy="228.91" r="5.3" fill="#d17830" stroke="#ffffff" stroke-width="1"/>
+<circle cx="1066.00" cy="196.00" r="5.3" fill="#d17830" stroke="#ffffff" stroke-width="1"/>
+<text x="980" y="309" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="14" font-weight="normal" fill="#526273">4 + 12 + 16 个点</text>
+<text x="560" y="355" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="14" font-weight="normal" fill="#526273">环半径仅用于示意；实际半径比、星座标签及可用 MODCOD 以 ETSI EN 302 307-1 为准。</text>
+</svg>

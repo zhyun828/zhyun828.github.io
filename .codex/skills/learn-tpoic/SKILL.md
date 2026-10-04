@@ -1,105 +1,778 @@
 ---
 name: learn-topic
-description: Create or systematically expand a structured learning note for a topic that the user wants to learn from zero. The skill writes directly to the specified file and is intended for comprehensive foundational learning rather than fragmented knowledge additions.
+description: Create or systematically expand a textbook-style learning document for a topic the user wants to learn from zero. Combine beginner-friendly explanations, intuition, worked examples, formal definitions, formulas, derivations, underlying principles, implementation details, exercises, and authoritative references. Write directly to the specified file and prioritize both clarity and technical depth.
 ---
 
 # Learn Topic
 
-Use this skill when the user wants to learn a topic from zero and wants a systematic learning document generated directly in the repository.
+Use this skill when the user wants to learn a subject systematically from zero and wants a comprehensive learning document written directly into the repository.
 
 This skill is file-oriented rather than conversation-oriented.
 
-The goal is to create a coherent learning document that allows a beginner to build a solid foundation in the requested topic and progressively understand its important concepts, relationships, mechanisms, and applications.
+The goal is to create a document that has the depth of a good technical textbook while retaining the clarity of a patient teacher.
+
+The document should not force a choice between:
+
+`easy to understand`
+
+and:
+
+`technically deep`
+
+It should provide both.
+
+A beginner should be able to start reading from the beginning, while a more advanced reader should still find rigorous explanations, formulas, mechanisms, derivations, implementation details, and important edge cases later in the document.
+
+The final result should be suitable for:
+
+- first-time learning
+- systematic study
+- later review
+- solving technical questions
+- understanding formal documentation
+- preparing for implementation
+- preparing for exams, interviews, projects, or deeper study
 
 ## Input format
 
 Primary format:
 
-`$learn-topic notes <file> <topic>`
-
-Example:
-
-`$learn-topic notes docs/notes/procom/dvb-s2/DVB-S2.md DVB-S2`
-
-Meaning:
-
-- `notes`: generate or maintain a learning note
-- `docs/notes/procom/dvb-s2/DVB-S2.md`: target file
-- `DVB-S2`: topic to learn systematically
-
-The topic may contain multiple words.
+`$learn-topic notes <file> <topic1> <topic2> ... [--requirements <additional demands>]`
 
 Examples:
 
-`$learn-topic notes docs/notes/Cpp/templates.md C++ Templates`
+`$learn-topic notes docs/notes/procom/dvb-s2/DVB-S2.md DVB-S2`
 
-`$learn-topic notes docs/notes/FPGA/versal-aie.md Versal AI Engine`
+`$learn-topic notes docs/notes/procom/dvb-s2/DVB-S2.md DVB-S2 Interleaver LLR`
 
-`$learn-topic notes docs/notes/math/linear-algebra.md Linear Algebra`
+`$learn-topic notes docs/notes/procom/dvb-s2/DVB-S2.md DVB-S2 --requirements include derivations, worked examples, diagrams, exercises, and sufficient mathematical depth`
 
-## Core purpose
+`$learn-topic notes docs/notes/procom/versal/Versal-AIE.md Versal AI Engine --requirements start from zero and include architecture, memory, streams, kernels, SIMD, and practical examples`
 
-`learn-topic` is designed for:
+Multiple topics are allowed.
 
-- learning a new subject from zero
-- building a solid foundation
-- creating systematic study material
-- understanding the structure of a field
-- learning prerequisite concepts in the correct order
-- connecting related concepts into a coherent mental model
+When several topics are provided:
 
-It should produce a document that can be read independently as study material.
+- determine their conceptual relationships
+- identify prerequisite dependencies
+- organize them into a coherent learning order
+- do not simply create one independent section per keyword
+- merge closely related topics naturally
+- explain prerequisite topics before topics that depend on them
 
-It should not merely collect definitions or append isolated facts.
+The optional `--requirements` section contains additional instructions about:
 
-## Difference from add-knowledge
+- desired depth
+- language
+- examples
+- formulas
+- derivations
+- exercises
+- diagrams
+- implementation detail
+- source requirements
+- emphasis or exclusions
+
+Text after `--requirements` must not be interpreted as additional learning topics.
+
+If `--requirements` is omitted, infer obvious additional demands from natural language when possible.
+
+# Core objective
+
+The default learning target is:
+
+`zero or weak foundation → strong and systematic understanding`
+
+Do not interpret "beginner-friendly" as "shallow."
+
+Do not remove mathematics, theory, derivations, implementation details, or advanced explanations merely to make the document easier to read.
+
+Instead:
+
+- explain the intuition first
+- then introduce formalism
+- then go deeper
+
+The learner should be able to understand both:
+
+`what happens`
+
+and:
+
+`why it happens`
+
+and, when appropriate:
+
+`how it is formally derived or implemented`
+
+# Difference from add-knowledge
 
 The distinction between `learn-topic` and `add-knowledge` is fundamental.
 
-### learn-topic
+## learn-topic
 
-Use when the user has little or no prior knowledge of the topic.
+Use when the user wants to learn a topic systematically, especially from little or no prior knowledge.
 
-The document should be systematic and foundation-oriented.
+It should:
 
-Typical goal:
+- establish prerequisites
+- build a complete learning structure
+- explain the motivation behind concepts
+- develop intuition
+- introduce formal definitions
+- include formulas and derivations when relevant
+- provide worked examples
+- connect related concepts
+- explain implementation or practical behavior when relevant
+- cover common misunderstandings
+- prepare the learner for more advanced material
 
-`I want to learn DVB-S2 from zero.`
+Typical request:
 
-Expected behavior:
+`$learn-topic notes docs/notes/procom/dvb-s2/DVB-S2.md DVB-S2`
 
-- determine the important prerequisite concepts
-- establish a logical learning order
-- explain the topic progressively
-- connect concepts together
-- include examples where useful
-- build a coherent learning document
+## add-knowledge
 
-### add-knowledge
+Use when the user already has an existing knowledge base and wants to add or complete one or more specific knowledge points.
 
-Use when the user already has an existing knowledge base and wants to add, supplement, or complete one or more specific knowledge points.
+It should:
 
-Typical goal:
-
-`Add LLR, Min-Sum decoding, and puncturing to my DVB-S2 notes.`
-
-Expected behavior:
-
-- inspect the existing document
+- inspect existing coverage
 - avoid duplication
-- add only missing knowledge
-- make minimal edits
-- preserve the existing structure
+- add only missing material
+- use minimal edits
+- preserve the document's existing organization
+
+Typical request:
+
+`$add-knowledge docs/notes/procom/dvb-s2/DVB-S2.md Min-Sum algorithm`
 
 In short:
 
-`learn-topic = systematic learning from zero`
+`learn-topic = build the subject systematically`
 
-`add-knowledge = fragmented or targeted knowledge maintenance`
+`add-knowledge = maintain individual knowledge points inside an existing subject`
 
-## 1. Resolve the target path
+# Textbook-style teaching requirements
 
-Before creating or editing the learning document, inspect the requested path.
+This section is mandatory.
+
+The generated document should resemble a well-written technical textbook or university course written by a teacher who cares about whether the learner actually understands the material.
+
+## 1. Combine accessibility and depth
+
+Every major concept should normally contain several layers.
+
+A useful progression is:
+
+1. motivation
+2. intuitive mental model
+3. simple example
+4. precise terminology
+5. formal definition
+6. underlying mechanism
+7. equations or formal representation
+8. derivation when useful
+9. worked example
+10. realistic application
+11. connections to related concepts
+12. important limitations or edge cases
+
+Not every small concept needs every layer.
+
+Use judgment based on importance and complexity.
+
+Do not stop after the intuitive explanation if deeper knowledge is useful.
+
+Do not begin directly with dense formalism when intuition can make the formalism easier to understand.
+
+## 2. Explain why before how
+
+Before introducing a mechanism, establish the problem it solves.
+
+For example:
+
+Do not begin Forward Error Correction with generator matrices.
+
+First establish:
+
+```text
+Data crosses a noisy channel
+        ↓
+Some transmitted information may be corrupted
+        ↓
+The receiver needs a way to detect or correct errors
+        ↓
+Redundancy can provide additional constraints
+        ↓
+This motivates Forward Error Correction
+```
+
+Then progressively move toward:
+
+- coding structures
+- code rate
+- parity
+- block codes
+- BCH
+- LDPC
+- mathematical representations
+
+The learner should know why the formal machinery exists.
+
+## 3. Build concepts in dependency order
+
+Determine the conceptual prerequisites before writing the document.
+
+Do not simply follow:
+
+- alphabetical order
+- the order of a specification
+- the order of API documentation
+- the order in which keywords were given by the user
+
+Use the order that best supports understanding.
+
+For example, a DVB-S2 learning path may naturally require:
+
+```text
+digital information
+↓
+bit
+↓
+symbol
+↓
+modulation
+↓
+constellation
+↓
+Mapper
+↓
+channel and noise
+↓
+Demapper
+↓
+hard and soft decisions
+↓
+LLR
+↓
+FEC
+↓
+BCH / LDPC
+↓
+Interleaver / Deinterleaver
+↓
+DVB-S2 framing and detailed standard behavior
+```
+
+Reorder official material when necessary for teaching, while keeping the technical facts correct.
+
+## 4. Frequently reconnect to the big picture
+
+Detailed explanations can cause beginners to lose track of the overall system.
+
+After several detailed sections, reconnect the material to the larger structure.
+
+For example:
+
+```text
+We now understand:
+
+bits
+↓
+Mapper
+↓
+modulated symbols
+↓
+channel
+↓
+Demapper
+↓
+LLR
+
+The next question is:
+
+How must these soft values be reordered before the LDPC decoder can use them?
+
+This leads to the Deinterleaver.
+```
+
+The learner should always understand where the current topic fits.
+
+## 5. Use intuitive explanations without sacrificing correctness
+
+Use analogies, visual explanations, and informal language when they genuinely help.
+
+However:
+
+- do not replace the real mechanism with the analogy
+- explain the limits of important analogies
+- refine simplified models later
+- never let a convenient explanation become technically false
+
+Useful phrasing includes:
+
+`For now, you can think of it as...`
+
+followed later by:
+
+`More precisely...`
+
+This two-stage explanation is encouraged.
+
+## 6. Use small examples before real-scale examples
+
+For complicated mechanisms, begin with a reduced example that preserves the real principle.
+
+Examples:
+
+- 12 values before a 64800-bit interleaver
+- a 3-variable parity equation before a real LDPC parity-check matrix
+- 4 constellation points before high-order modulation
+- a 4-element vector before AIE SIMD vectors
+- a small pipeline before a complete hardware processing chain
+
+After the toy example is understood, explicitly map it to the real system.
+
+Do not leave the learner with only the toy model.
+
+## 7. Include real worked examples
+
+Do not only describe mechanisms verbally.
+
+When appropriate, work through actual values step by step.
+
+For example:
+
+```text
+Input:
+0 1 2 3 4 5 6 7 8 9 10 11
+
+Written column-wise:
+
+0   4   8
+1   5   9
+2   6  10
+3   7  11
+
+Read row-wise:
+
+0 4 8 1 5 9 2 6 10 3 7 11
+```
+
+For mathematics, substitute actual values.
+
+For code, trace actual variables.
+
+For algorithms, show important intermediate states.
+
+A learner should be able to follow the mechanism manually.
+
+## 8. Include formulas when they are part of real understanding
+
+Do not remove formulas merely because the learner is a beginner.
+
+If a formula is important:
+
+1. establish the intuition
+2. show the formula
+3. define every symbol
+4. explain what the formula means
+5. explain why it has that form
+6. derive it when the derivation materially improves understanding
+7. work through an example
+
+For example, when introducing:
+
+\[
+LLR(b)=\ln\frac{P(b=0|y)}{P(b=1|y)}
+\]
+
+explain:
+
+- what `b` means
+- what `y` means
+- why probabilities are compared
+- why a ratio is used
+- why a logarithm is useful
+- how sign and magnitude should be interpreted
+- that sign conventions may differ between implementations
+
+Do not present formulas as decoration.
+
+## 9. Include derivations when useful
+
+For central formulas, algorithms, or architectural rules, explain where they come from when the derivation is useful for understanding.
+
+A derivation does not always need to be fully rigorous.
+
+Choose an appropriate level:
+
+- intuitive derivation
+- algebraic derivation
+- geometric derivation
+- probability derivation
+- algorithmic derivation
+
+State clearly when steps rely on assumptions.
+
+Do not skip key reasoning steps merely to shorten the document.
+
+## 10. Explain underlying principles
+
+Do not only teach procedures.
+
+Explain why the procedure works.
+
+For example, when teaching an Interleaver, do not stop at:
+
+`write columns, read rows`
+
+Also explain:
+
+- what permutation is being applied
+- why positions rather than values change
+- how the inverse permutation restores order
+- how modulation bit positions relate to the structure
+- why the downstream decoder requires the restored ordering
+
+Likewise, when teaching software or hardware, explain the underlying execution, memory, or data-flow model.
+
+## 11. Explain terminology carefully
+
+When an important term first appears, use:
+
+`Chinese name（English Name, abbreviation）`
+
+when Chinese is the primary document language.
+
+Example:
+
+`对数似然比（Log-Likelihood Ratio, LLR）`
+
+Then explain the meaning immediately.
+
+Do not introduce many unexplained acronyms in the same sentence.
+
+After the initial explanation, the abbreviation may be used normally.
+
+## 12. Explicitly compare easily confused concepts
+
+Use direct comparisons for concepts that beginners commonly confuse.
+
+Examples:
+
+| Concept | Meaning |
+|---|---|
+| bit | information value, normally 0 or 1 |
+| symbol | one modulation state that may encode multiple bits |
+
+Or:
+
+```text
+Mapper:
+bits → modulation symbol
+
+Demapper:
+received noisy symbol → bit likelihood information
+```
+
+Or:
+
+```text
+Interleaver:
+applies a permutation
+
+Deinterleaver:
+applies the inverse permutation
+```
+
+Explain not only that they differ, but why the difference matters.
+
+## 13. Use diagrams and visual structures
+
+Use text diagrams, tables, matrices, state diagrams, data-flow diagrams, timelines, or memory layouts whenever they improve understanding.
+
+For example:
+
+```text
+BCH Encoder
+     ↓
+LDPC Encoder
+     ↓
+Interleaver
+     ↓
+Mapper
+     ↓
+Channel
+     ↓
+Demapper
+     ↓
+Deinterleaver
+     ↓
+LDPC Decoder
+     ↓
+BCH Decoder
+```
+
+Visual structure should clarify the explanation, not merely decorate it.
+
+## 14. Explain implementation after the principle
+
+When code or implementation matters, use:
+
+```text
+problem
+↓
+concept
+↓
+algorithm
+↓
+pseudocode
+↓
+small implementation
+↓
+real implementation
+↓
+optimization
+```
+
+Do not jump directly from a definition to production code.
+
+For code examples, explain:
+
+- input
+- output
+- data structures
+- indexing
+- control flow
+- important memory behavior
+- important language syntax
+- complexity or performance when relevant
+
+## 15. Include mathematical and computational complexity where relevant
+
+When appropriate, discuss:
+
+- time complexity
+- memory complexity
+- computational cost
+- latency
+- throughput
+- memory bandwidth
+- data movement
+- parallelism
+- numerical precision
+
+Do not add these mechanically to every topic.
+
+Include them when they materially improve understanding.
+
+## 16. Explain assumptions
+
+If a result depends on assumptions, state them.
+
+Examples:
+
+- AWGN channel assumption
+- independent bit assumptions
+- fixed-point representation
+- a specific modulation order
+- a specific code rate
+- a specific software version
+- a specific hardware architecture
+
+Do not present context-dependent behavior as universal truth.
+
+## 17. Include edge cases and limitations
+
+Once the core mechanism is understood, explain important situations where:
+
+- the simple mental model stops being sufficient
+- conventions differ
+- implementations behave differently
+- numerical problems occur
+- performance assumptions break down
+- a standard contains special cases
+
+Do not overload the beginner section with edge cases.
+
+Introduce them after the main model is stable.
+
+## 18. Explain common misconceptions
+
+For important topics, include likely misunderstandings.
+
+For example:
+
+`LLR is not itself a probability.`
+
+`An FPGA does not simply execute software instructions in parallel like a CPU.`
+
+`An Interleaver does not change the bit values; it changes their positions.`
+
+Explain why the misconception is tempting and what the correct model is.
+
+## 19. Use progressive depth
+
+A major topic may be structured internally as:
+
+### First intuition
+
+What should a beginner understand first?
+
+### More precise explanation
+
+What is really happening?
+
+### Formal model
+
+What equations, definitions, or structures describe it?
+
+### Worked example
+
+How does it behave with actual values?
+
+### Real system
+
+How is it used in practice?
+
+### Deeper understanding
+
+What additional details become important later?
+
+This layered structure is encouraged.
+
+It allows accessibility and depth to coexist.
+
+# Textbook structure
+
+## 20. Organize large topics like chapters
+
+For broad subjects, create a coherent textbook-like hierarchy.
+
+A useful pattern is:
+
+```text
+# Topic
+
+## 1. Introduction and motivation
+
+## 2. Required foundations
+
+## 3. Core concept A
+
+### 3.1 Intuition
+### 3.2 Formal definition
+### 3.3 Formula or mechanism
+### 3.4 Worked example
+### 3.5 Common misunderstandings
+
+## 4. Core concept B
+
+...
+
+## N. Putting everything together
+
+## Summary
+
+## Exercises
+
+## Further reading
+```
+
+This is a guideline, not a mandatory template.
+
+Adapt the structure to the subject.
+
+Do not mechanically create empty subsections.
+
+## 21. Allow substantial length
+
+Do not artificially compress the document.
+
+If a topic requires substantial explanation to build a good foundation, write the necessary material.
+
+The user prefers completeness over brevity for systematic learning material.
+
+However, length must come from useful teaching content rather than repetition.
+
+Avoid:
+
+- repeating the same explanation in different words
+- unnecessary history
+- filler
+- excessive generic introductions
+- copying specification prose
+
+A long document should be long because it teaches deeply.
+
+## 22. Include chapter summaries
+
+At the end of substantial chapters, include a concise summary of the most important ideas.
+
+For example:
+
+```text
+Key points:
+
+- A bit represents binary information.
+- A modulation symbol can encode multiple bits.
+- 8PSK carries 3 bits per symbol.
+- A Demapper can produce soft information rather than hard 0/1 decisions.
+- LLR expresses both a preferred bit hypothesis and confidence.
+```
+
+Do not simply repeat the entire chapter.
+
+## 23. Include exercises
+
+For substantial learning documents, include exercises where appropriate.
+
+Prefer a progression such as:
+
+### Concept checks
+
+Short reasoning questions.
+
+### Worked-style exercises
+
+Small calculations or traces.
+
+### Application exercises
+
+Apply the concept to a realistic situation.
+
+### Advanced questions
+
+Optional deeper problems.
+
+Exercises should test understanding rather than memorization.
+
+Do not provide solutions immediately unless useful.
+
+When useful, place answers or solution outlines in a separate section after the exercises.
+
+## 24. Include self-check questions
+
+Important sections may include a few questions such as:
+
+- Why is this mechanism needed?
+- What would fail if it were removed?
+- What is the input and output?
+- What is preserved?
+- What changes?
+- How does it connect to the previous stage?
+
+These should help the learner test their mental model.
+
+Do not overuse them.
+
+# Path and file handling
+
+## 25. Resolve the requested path
+
+Before editing, inspect the requested target path.
 
 Example:
 
@@ -107,47 +780,40 @@ Example:
 
 ### Existing file
 
-If the file already exists:
+If the file exists:
 
-- read it first
-- understand its current structure and style
-- determine whether it already contains part of the requested learning topic
-- preserve useful existing content
-- systematically complete or reorganize only when necessary
+- read it before modifying it
+- understand its current organization
+- preserve useful material
+- identify gaps
+- avoid duplicate explanations
+- expand it systematically
 
-Do not blindly overwrite an existing learning document.
+Do not blindly overwrite it.
 
 ### Clearly new file
 
-If the target file does not exist but the path is reasonable and no similar conflicting path exists:
+If the file does not exist and the path appears intentional:
 
-- create the required parent directories automatically
-- create the target file
-- do not ask for confirmation merely because the file or directory does not yet exist
+- create missing parent directories
+- create the file automatically
+- do not ask for confirmation merely because the path is new
 
-For example, if neither of these exists:
+### Suspected typo or missing directory
 
-`docs/notes/procom/dvb-s2/`
+If the requested path does not exist and nearby repository structure strongly suggests a typo or omitted directory level:
 
-`docs/notes/procom/dvb-s2/DVB-S2.md`
+- inspect similar directories and filenames
+- identify the likely intended path
+- ask for confirmation before creating anything
 
-but the surrounding repository structure makes the path reasonable, create them automatically.
+Examples include:
 
-### Suspected path mistake
-
-If the requested path does not exist and there is strong evidence that the user may have made a typo or omitted an existing directory level, do not silently create a duplicate or incorrect directory tree.
-
-Search nearby repository paths for likely intended locations.
-
-Common suspicious cases include:
-
-- one or two misspelled letters
-- singular/plural mismatch
-- capitalization mismatch when meaningful
+- one or two incorrect letters
 - omitted directory level
 - duplicated directory level
-- a very similar existing directory
-- a very similar existing filename
+- nearly identical directory name
+- nearly identical filename
 
 Example:
 
@@ -159,317 +825,230 @@ Existing:
 
 `docs/notes/procom/dvb-s2/`
 
-In this case, infer that `procm` is probably a typo for `procom` and ask the user to confirm the corrected path before editing.
+Ask whether `procom` was intended.
 
-Another example:
+Do not ask when there is no meaningful ambiguity.
 
-Requested:
+## 26. Inspect surrounding documents
 
-`docs/notes/dvb-s2/DVB-S2.md`
+When possible, inspect nearby notes to understand repository conventions:
 
-Existing repository structure:
-
-`docs/notes/procom/dvb-s2/`
-
-If the surrounding structure strongly suggests that `procom` was accidentally omitted, ask for confirmation before proceeding.
-
-Do not ask for confirmation when there is no meaningful ambiguity.
-
-## 2. Inspect the surrounding note structure
-
-Before writing a new file, inspect nearby notes and directories when available.
-
-Use them to understand conventions such as:
-
-- heading style
-- filename conventions
 - language
+- heading style
+- terminology
+- code-block conventions
 - Markdown formatting
-- amount of detail
-- code-block style
-- use of tables
-- terminology conventions
+- formula style
+- filename conventions
 
-Match the repository's existing documentation style when practical.
+Preserve useful repository conventions.
 
-Do not force an unrelated template onto the project.
+However, the textbook-style learning quality required by this skill takes priority over matching an overly terse surrounding document.
 
-## 3. Determine the learning scope
+# Sources and research
 
-Treat the requested topic as a subject to be learned systematically.
+## 27. Research before writing when needed
 
-Before writing, determine:
+For technical topics requiring factual precision, use reliable external sources before or during writing.
 
-- what a beginner must understand first
-- which prerequisites are necessary
-- which concepts form the core of the subject
-- which concepts depend on earlier concepts
-- which advanced details can be postponed
-- what level of depth is appropriate for a strong foundation
+Do not rely entirely on memory for:
 
-The default goal is:
+- standards
+- changing hardware platforms
+- software tools
+- APIs
+- current libraries
+- protocol specifications
+- version-dependent behavior
 
-`beginner → solid foundational understanding`
-
-Do not assume that "beginner" means superficial.
-
-The resulting note should establish correct mental models and enough depth for the learner to continue into more advanced material later.
-
-## 4. Build a coherent knowledge structure
-
-Organize the material according to the internal logic of the subject.
-
-A common structure may be:
-
-`motivation`
-→ `basic concepts`
-→ `terminology`
-→ `core mechanisms`
-→ `relationships between concepts`
-→ `worked examples`
-→ `applications`
-→ `more advanced concepts`
-
-This is only a guideline.
-
-Do not force every subject into exactly the same outline.
-
-For a large topic, create a sensible hierarchy of sections and subsections.
-
-The reader should be able to understand:
-
-- where they are in the subject
-- why the current concept matters
-- what previous concepts it depends on
-- what concept logically comes next
-
-## 5. Explain prerequisites when necessary
-
-If the requested topic depends on concepts that a true beginner may not know, include the necessary prerequisites in the document.
-
-Do not assume unexplained prerequisite knowledge.
-
-However, avoid expanding prerequisites into unrelated full courses.
-
-Only explain them to the depth needed to understand the main topic.
-
-For example, a beginner DVB-S2 note may need to introduce:
-
-- bits and symbols
-- digital modulation
-- channel noise
-- forward error correction
-
-before explaining concepts such as:
-
-- Demapper
-- LLR
-- Interleaver
-- LDPC
-
-But it does not necessarily need a complete communications engineering curriculum.
-
-## 6. Prefer understanding over definition collection
-
-Do not create a glossary-like document consisting mainly of isolated definitions.
-
-For important concepts, explain when useful:
-
-- what it is
-- why it exists
-- what problem it solves
-- how it works
-- what goes in
-- what comes out
-- how it relates to surrounding concepts
-- what common misunderstanding should be avoided
-
-The note should teach relationships, not merely terminology.
-
-## 7. Use intuitive explanation before unnecessary formalism
-
-For difficult new concepts, prefer:
-
-1. motivation
-2. intuitive mental model
-3. small example
-4. precise terminology
-5. formal rule or equation
-6. realistic use
-
-when this order is appropriate.
-
-Do not begin with dense mathematics merely for rigor.
-
-At the same time, do not avoid formulas when they are necessary for correct understanding.
-
-When using an important formula:
-
-- explain every important variable
-- explain what the formula means
-- explain why it is used
-- provide an example when useful
-
-## 8. Use examples strategically
-
-Use small examples to make abstract mechanisms concrete.
-
-For example, before showing a real interleaver operating on tens of thousands of values, it may be better to explain the same mechanism using 12 values.
-
-Small examples should simplify scale without changing the actual principle.
-
-Avoid excessive examples that make the document unnecessarily long.
-
-## 9. Connect concepts
-
-Explicitly explain important relationships such as:
-
-- input/output relationships
-- cause and effect
-- prerequisite relationships
-- inverse operations
-- similarities and differences
-- abstraction levels
-- trade-offs
-- how one stage feeds another
-
-A systematic learning note should make these connections visible.
-
-## 10. Distinguish core and advanced material
-
-Prioritize foundational knowledge.
-
-Advanced details may be included when they help complete the conceptual structure, but clearly separate them from material that a beginner must understand first.
-
-Do not let advanced details obscure the main learning path.
-
-If a topic can safely be postponed, state that briefly rather than fully expanding it.
-
-## 11. Use authoritative sources when needed
-
-For technical topics, verify information using reliable sources when appropriate.
+## 28. Source priority
 
 Prefer:
 
 1. official standards
 2. official documentation
-3. textbooks and university material
-4. academic publications
-5. high-quality technical tutorials
-6. community material only as supplementary explanation
+3. university courses and textbooks
+4. academic papers
+5. reputable technical tutorials
+6. community articles and videos as supplementary explanation
 
-For technologies, APIs, standards, libraries, or hardware platforms that may change over time, use current sources.
+Community material can be valuable for intuition but should not override authoritative technical sources.
 
-When a specific standard defines behavior, prefer the standard over blogs.
+## 29. Use sources as references, not writing style
 
-Do not fill the document with a long bibliography unless useful.
+Official standards and vendor manuals are often difficult for beginners.
 
-References should support correctness and further study.
+Use them to verify facts.
 
-## 12. Language
+Do not imitate their compressed style.
 
-Follow the language implied by the user and surrounding notes.
+Rewrite the verified material into clear educational explanations.
 
-If the user is Chinese and no conflicting document convention exists, prefer clear Chinese explanations while retaining important English technical terminology.
+## 30. Point to specific references
 
-A useful format is:
+When useful, include a Further Reading or References section.
 
-`对数似然比（Log-Likelihood Ratio, LLR）`
+For large documents, prefer specific guidance such as:
 
-Use the full form when introducing an important abbreviation for the first time.
+`ETSI EN 302 307-1, Section 5.3.3: Bit Interleaver`
 
-Do not repeatedly expand the same abbreviation unnecessarily.
+rather than merely listing:
 
-## 13. Existing file behavior
+`DVB-S2 standard`
 
-If the learning file already exists, treat it as an evolving systematic learning document.
+If official documentation is large, identify the sections most relevant to the learner.
 
-Before editing:
+# Existing document maintenance
 
-- read the whole document or enough of it to understand its structure
-- search for existing coverage
-- identify gaps
-- avoid duplicate sections
+## 31. Improve incorrect or weak existing explanations
 
-If the file already has a reasonable structure, extend it rather than replacing it.
+If an existing learning document contains material that is:
 
-If the structure is clearly incomplete for systematic learning, make only the structural changes necessary to turn it into a coherent learning document.
+- incorrect
+- misleading
+- too shallow for the requested systematic learning goal
+- badly ordered
+- contradictory
 
-Do not rewrite unrelated high-quality content merely to match a preferred style.
+improve it when directly relevant.
 
-## 14. Correct existing misconceptions
+Preserve good existing material.
 
-If an existing learning file contains an explanation that is clearly incorrect or misleading and directly affects the topic being developed:
+Do not rewrite unrelated sections merely for stylistic uniformity.
 
-- correct it
-- preserve useful surrounding content
-- avoid leaving contradictory explanations in different parts of the file
+## 32. Avoid duplicate knowledge
 
-The final document should represent the best current understanding of the topic.
+Before adding a major explanation:
 
-## 15. File content should be study material, not process logs
+- search the existing document
+- identify related sections
+- integrate with them
+- move or extend content when necessary
 
-Do not write:
+Do not create parallel explanations of the same concept in unrelated locations.
 
-- the user's raw questions
-- conversation history
-- planning commentary
-- internal reasoning
-- "today we learned..."
-- temporary uncertainty
-- unresolved guesses
+# Writing quality
 
-Write only the resulting organized knowledge.
+## 33. Use natural explanatory language
 
-The file should read as if it were intentionally written as a study chapter or set of structured notes.
+Write like a technically strong teacher.
 
-## 16. Scope control
+Prefer:
 
-Do not make the note unnecessarily encyclopedic.
+`为什么需要这个步骤？`
 
-The target is a strong foundation, not exhaustive coverage of everything ever written about the subject.
+`这里会出现一个新的问题。`
 
-Include enough depth that the learner:
+`先不要急着看公式。`
 
-- understands the core concepts
-- understands how they connect
-- can read more advanced material afterward
-- has a useful reference document
+`现在把前面的两个概念连起来。`
 
-Avoid excessive historical detail, obscure edge cases, and advanced research material unless directly useful.
+`这个例子只是缩小规模，真实系统使用的是相同原理。`
 
-## 17. Verify after writing
+Natural language is encouraged when it improves readability.
 
-After creating or modifying the file:
+However, maintain professional technical accuracy.
 
-- inspect the resulting structure
-- inspect the relevant content
-- check Markdown syntax
-- check heading hierarchy
-- check code fences
-- check formulas when present
-- check for duplicate explanations
-- check that concepts appear in a logical learning order
-- check that prerequisite concepts appear before concepts that depend on them
-- inspect the diff when modifying an existing file
-- ensure unrelated files were not changed
+Do not use excessive conversational filler.
 
-## 18. Do not commit or push automatically
+## 34. Avoid AI-report style
 
-Creating or modifying the learning file does not imply Git commit or push.
+Avoid repeated patterns such as:
 
-Do not commit, push, or otherwise publish changes unless the user explicitly requests it.
+`Definition:`
+`Purpose:`
+`Advantages:`
+`Applications:`
 
-## Final response
+for every section unless the structure genuinely helps.
+
+Avoid mechanically producing five bullets for every concept.
+
+The document should read like coherent teaching, not templated content generation.
+
+## 35. Preserve depth even when using simple language
+
+Simple language does not mean omitting technical content.
+
+Prefer:
+
+`simple explanation + precise explanation`
+
+instead of choosing only one.
+
+For example:
+
+First:
+
+`You can think of the LLR magnitude as confidence.`
+
+Then:
+
+`More precisely, the LLR is the logarithm of a likelihood ratio...`
+
+This pattern is encouraged throughout the document.
+
+# Verification
+
+## 36. Verify both clarity and depth
+
+After writing, review the document from two perspectives.
+
+### Beginner review
+
+Check:
+
+- Are prerequisites introduced before use?
+- Are important terms explained?
+- Are reasoning steps visible?
+- Are examples sufficient?
+- Are difficult transitions too abrupt?
+- Can a beginner understand why each major concept exists?
+
+### Technical review
+
+Check:
+
+- Are definitions accurate?
+- Are equations correct?
+- Are variables defined?
+- Are derivations valid?
+- Are standard-specific facts verified?
+- Are simplifications clearly identified?
+- Are important limitations included?
+- Is the depth sufficient for the stated learning goal?
+
+The document fails if it is easy to read but technically shallow.
+
+The document also fails if it is technically complete but unnecessarily difficult to understand.
+
+Both requirements must be satisfied.
+
+## 37. Verify file integrity
+
+Also check:
+
+- Markdown heading hierarchy
+- code fences
+- formulas
+- tables
+- diagrams
+- duplicate sections
+- broken links when detectable
+- logical ordering
+- unrelated file changes
+
+Inspect the diff when modifying an existing document.
+
+# Final response
 
 After successfully creating or updating the learning file, respond briefly.
 
 State:
 
 - which file was created or modified
-- that the topic was organized for systematic learning from zero
-- optionally mention the major sections created
+- that the topic was developed as a systematic textbook-style learning document
 
-Do not reproduce the entire note in the response.
+Do not reproduce the entire document in the response.
 
-If path ambiguity was detected, ask only for confirmation of the likely corrected path before making changes.
+Do not commit or push unless explicitly requested by the user.
