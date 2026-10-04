@@ -70,6 +70,8 @@ nav:
           - Ethernet: notes/protocols/ethernet.md
           - LIN: notes/protocols/lin.md
           - HTTP / HTTPS: notes/protocols/http-https.md
+      - 专业通信:
+          - DVB-S2: notes/pro-com/dvb-s2/DVB-S2.md
       - 面试:
           - 快速检索表: notes/面试/快速检索表.md
           - 嵌入式面试汇总表: notes/面试/嵌入式面试汇总表.md
