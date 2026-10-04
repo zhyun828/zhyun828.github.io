@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://zhyun828.github.io/notes/ros/gazebo/basic/">
+        <link rel="canonical" href="https://zhyun828.github.io/notes/pro-com/dvb-s2/DVB-S2/">
       
       
-        <link rel="prev" href="../../../FPGA/zynq-hardware-acceleration-intro/">
+        <link rel="prev" href="../../../protocols/http-https/">
       
       
-        <link rel="next" href="../../../linux/basic/">
+        <link rel="next" href="../../../%E9%9D%A2%E8%AF%95/%E5%BF%AB%E9%80%9F%E6%A3%80%E7%B4%A2%E8%A1%A8/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>basic - ZY Engineering Notes</title>
+        <title>DVB-S2 - ZY Engineering Notes</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#gazebo" class="md-skip">
+        <a href="#dvb-s2" class="md-skip">
           跳转至
         </a>
       
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              basic
+              DVB-S2
             
           </span>
         </div>
@@ -758,8 +758,10 @@
                 
   
   
+    
   
   
+  
     
     
       
@@ -777,13 +779,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
         
           
           <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
@@ -804,7 +804,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -819,10 +819,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../pro-com/dvb-s2/DVB-S2/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DVB-S2
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -838,6 +865,281 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 先看完整链路
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-bitsymbol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. bit、symbol 与传输速率
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. bit、symbol 与传输速率">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 一个符号可以承载多个比特
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 为什么更高阶调制需要更好的信道
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 信道、纠错与软信息
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 信道、纠错与软信息">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 噪声为什么导致比特错误
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-fecbch-ldpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 FEC、码率、BCH 与 LDPC
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-mapperdemapper-llr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Mapper、Demapper 和 LLR
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Mapper、Demapper 和 LLR">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-mapper" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Mapper 做什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-demapper" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Demapper 输出什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-ldpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 为什么要在 LDPC 前反交织
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 用 12 位理解交织和反交织
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-dvb-s2-bit-interleaver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. DVB-S2 的真实 Bit Interleaver
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. DVB-S2 的真实 Bit Interleaver">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 位置、适用范围与尺寸
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 普通情况的精确索引
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-8psk-35" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 8PSK、码率 3/5 的例外
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-deinterleaver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 接收端 Deinterleaver 的索引
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 一次串起完整实例
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 容易混淆的边界
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 自检题
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        参考资料
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1810,8 +2112,6 @@
                 
   
   
-    
-  
   
   
     
@@ -1831,11 +2131,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_9" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_9" >
         
           
           <label class="md-nav__link" for="__nav_2_9" id="__nav_2_9_label" tabindex="">
@@ -1856,7 +2158,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_9_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_9_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_9">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1871,37 +2173,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    basic
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../ros/gazebo/basic/" class="md-nav__link">
         
   
   
@@ -1917,48 +2192,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="目录">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      目录
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#gazebo_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Gazebo 的两个核心进程
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#gazebo_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        启动 Gazebo
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2482,7 +2715,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../basic/" class="md-nav__link">
+      <a href="../../../ros/basic/" class="md-nav__link">
         
   
   
@@ -2510,7 +2743,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../code/" class="md-nav__link">
+      <a href="../../../ros/code/" class="md-nav__link">
         
   
   
@@ -2760,10 +2993,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#gazebo_1" class="md-nav__link">
+  <a href="#1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Gazebo 的两个核心进程
+        1. 先看完整链路
       
     </span>
   </a>
@@ -2771,10 +3004,243 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#gazebo_2" class="md-nav__link">
+  <a href="#2-bitsymbol" class="md-nav__link">
     <span class="md-ellipsis">
       
-        启动 Gazebo
+        2. bit、symbol 与传输速率
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. bit、symbol 与传输速率">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 一个符号可以承载多个比特
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 为什么更高阶调制需要更好的信道
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 信道、纠错与软信息
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 信道、纠错与软信息">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 噪声为什么导致比特错误
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-fecbch-ldpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 FEC、码率、BCH 与 LDPC
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-mapperdemapper-llr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Mapper、Demapper 和 LLR
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Mapper、Demapper 和 LLR">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-mapper" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Mapper 做什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-demapper" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Demapper 输出什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-ldpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 为什么要在 LDPC 前反交织
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 用 12 位理解交织和反交织
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-dvb-s2-bit-interleaver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. DVB-S2 的真实 Bit Interleaver
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. DVB-S2 的真实 Bit Interleaver">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 位置、适用范围与尺寸
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 普通情况的精确索引
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-8psk-35" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 8PSK、码率 3/5 的例外
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-deinterleaver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 接收端 Deinterleaver 的索引
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 一次串起完整实例
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 容易混淆的边界
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 自检题
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        参考资料
       
     </span>
   </a>
@@ -2845,7 +3311,7 @@
         <a href="./" class="md-path__link">
           
   <span class="md-ellipsis">
-    gazebo
+    专业通信
   </span>
 
         </a>
@@ -2864,22 +3330,240 @@
 
 
 
-<h1 id="gazebo">Gazebo 基础<a class="headerlink" href="#gazebo" title="Permanent link">&para;</a></h1>
-<h2 id="gazebo_1">Gazebo 的两个核心进程<a class="headerlink" href="#gazebo_1" title="Permanent link">&para;</a></h2>
-<ol>
-<li><code>gzserver</code>
-   负责物理引擎、碰撞检测和传感器数据生成。</li>
-<li><code>gzclient</code>
-   负责图形界面和用户交互。</li>
-</ol>
-<p>可以简单理解为：</p>
-<ul>
-<li><code>gzserver</code> = 后端计算</li>
-<li><code>gzclient</code> = 前端显示</li>
-</ul>
-<h2 id="gazebo_2">启动 Gazebo<a class="headerlink" href="#gazebo_2" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>rosrun<span class="w"> </span>gazebo_ros<span class="w"> </span>gazebo
+<h1 id="dvb-s2">DVB-S2：从数字通信基础到真实的比特交织器<a class="headerlink" href="#dvb-s2" title="Permanent link">&para;</a></h1>
+<p>DVB-S2（Digital Video Broadcasting — Satellite, Second Generation）规定了卫星链路中的基带成帧、前向纠错、调制和物理层成帧。学习它时，最重要的是分清三个对象：<strong>信息比特</strong>是要传的内容，<strong>编码比特</strong>是加冗余后的 0/1 序列，<strong>调制符号</strong>是无线信道中实际发送的复数信号点。交织器只改变编码比特的<strong>次序</strong>，既不产生纠错冗余，也不直接改变星座点的位置。</p>
+<p>本文以经典 DVB-S2，即 <a href="https://www.etsi.org/deliver/etsi_en/302300_302399/30230701/01.04.01_60/en_30230701v010401p.pdf">ETSI EN 302 307-1 V1.4.1</a> 为准。DVB-S2X 在此基础上增加了更多调制编码方式和交织图样，阅读时不要把两者的交织规则混用。</p>
+<h2 id="1">1. 先看完整链路<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<p>发送端的一条主线是：</p>
+<div class="highlight"><pre><span></span><code>输入数据 → BBFRAME → BCH 外码 → LDPC 内码 → 比特交织（仅部分调制）
+         → 星座映射 → 物理层成帧/导频/扰码 → 成形与卫星信道
 </code></pre></div>
+<p>接收端沿相反方向处理：同步与信道估计 → 得到接收符号 → Demapper 输出每个编码比特的软信息 → Deinterleaver 恢复 LDPC 码字顺序 → LDPC 译码 → BCH 译码 → 恢复 BBFRAME。这里的“软信息”通常是 LLR，不是已经判定好的 0/1。</p>
+<p>先抓住两种“逆”：星座 Demapper 对应发送端 Mapper；比特 Deinterleaver 对应发送端 Interleaver。<strong>BCH/LDPC 译码则利用冗余纠错，不是简单地把编码步骤倒放。</strong></p>
+<h2 id="2-bitsymbol">2. bit、symbol 与传输速率<a class="headerlink" href="#2-bitsymbol" title="Permanent link">&para;</a></h2>
+<h3 id="21">2.1 一个符号可以承载多个比特<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
+<p>bit 是二进制位。symbol（调制符号）是一次发送所选的星座点，通常写成复数 <span class="arithmatex">\(s=I+jQ\)</span>：<span class="arithmatex">\(I\)</span> 是同相分量，<span class="arithmatex">\(Q\)</span> 是正交分量。若星座有 <span class="arithmatex">\(M\)</span> 个可区分的点，每个符号携带 <span class="arithmatex">\(m=\log_2 M\)</span> 个<strong>编码比特</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>DVB-S2 数据调制</th>
+<th style="text-align: right;">星座点数 <span class="arithmatex">\(M\)</span></th>
+<th style="text-align: right;">每符号编码比特数 <span class="arithmatex">\(m\)</span></th>
+<th>直观理解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>QPSK</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+<td>四个相位</td>
+</tr>
+<tr>
+<td>8PSK</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">3</td>
+<td>八个相位</td>
+</tr>
+<tr>
+<td>16APSK</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">4</td>
+<td>不同半径和相位构成的 16 点</td>
+</tr>
+<tr>
+<td>32APSK</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">5</td>
+<td>不同半径和相位构成的 32 点</td>
+</tr>
+</tbody>
+</table>
+<p>例如，按 8PSK 将编码序列 <code>0 1 1  1 0 0</code> 分成两组，<code>011</code> 和 <code>100</code> 各选一个星座点，所以 6 个编码比特变成 2 个符号。<strong>1 symbol = 3 coded bits</strong> 不代表 1 symbol = 3 个有效信息比特；FEC 冗余、帧头与导频都要占资源。</p>
+<p>如果符号率为 <span class="arithmatex">\(R_s\)</span> symbol/s，数据星座每符号承载 <span class="arithmatex">\(m\)</span> 个编码比特，码率近似为 <span class="arithmatex">\(R_c\)</span>，则净信息速率的粗略估算是 <span class="arithmatex">\(R_s m R_c\)</span> bit/s。它尚未扣除 BCH、BB/PL 帧开销和导频，不能直接当成 DVB-S2 的精确吞吐量。</p>
+<h3 id="22">2.2 为什么更高阶调制需要更好的信道<a class="headerlink" href="#22" title="Permanent link">&para;</a></h3>
+<p>固定平均发送能量时，增加星座点通常使相邻点更难区分。噪声、相位误差、非线性都会让接收点偏离原位置。QPSK 的点间距比较宽，通常更稳健；8PSK、16APSK、32APSK 提高每符号承载量，但一般需要更高的信噪比或更严格的链路条件。APSK 的点分布在多个同心环上；经典 DVB-S2 的 16APSK 为内外环 <code>4+12</code> 点，32APSK 为 <code>4+12+16</code> 点。标准给出的具体标号、半径比和可用码率需要按 MODCOD 查表，不能只凭星座点数推断。</p>
+<h2 id="3">3. 信道、纠错与软信息<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<h3 id="31">3.1 噪声为什么导致比特错误<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
+<p>接收机观察到的 <span class="arithmatex">\(y\)</span> 并非发送点 <span class="arithmatex">\(s\)</span> 的精确副本。一个基础模型是 <span class="arithmatex">\(y=s+n\)</span>，其中 <span class="arithmatex">\(n\)</span> 表示噪声；真实卫星链路还可能有衰落、相位偏差和功放非线性。接收点若落到错误星座点的判决区域，就会产生比特错误。</p>
+<p>“硬判决”只输出 <code>0</code> 或 <code>1</code>。但接收点在判决边界附近时，判断很不确定；靠近某个星座点时，判断更可靠。LDPC 译码需要尽可能保留这种可靠度，因而使用软判决。</p>
+<h3 id="32-fecbch-ldpc">3.2 FEC、码率、BCH 与 LDPC<a class="headerlink" href="#32-fecbch-ldpc" title="Permanent link">&para;</a></h3>
+<p>前向纠错（Forward Error Correction, FEC）在发送端加入冗余，使接收端不必请求重传也能尝试纠错。一个 <span class="arithmatex">\((n,k)\)</span> 码把 <span class="arithmatex">\(k\)</span> 个输入比特变成 <span class="arithmatex">\(n\)</span> 个编码比特，码率约为 <span class="arithmatex">\(R_c=k/n\)</span>。码率越低，冗余比例越高，但具体纠错能力不能仅由码率判断。</p>
+<p>DVB-S2 使用串接码：</p>
+<ol>
+<li><strong>外码 BCH</strong>：接收 <span class="arithmatex">\(K_{bch}\)</span> 位 BBFRAME，追加 BCH 校验位，得到 <span class="arithmatex">\(N_{bch}\)</span> 位。</li>
+<li><strong>内码 LDPC</strong>：以 BCH 输出作为 <span class="arithmatex">\(k_{ldpc}=N_{bch}\)</span> 位输入，再追加 LDPC 校验位，得到 <span class="arithmatex">\(n_{ldpc}\)</span> 位 FECFRAME。</li>
+<li><strong>比特交织</strong>：对 8PSK、16APSK、32APSK 的 LDPC 输出做固定排列；QPSK 没有本节讨论的比特交织器。</li>
+</ol>
+<p>LDPC（Low-Density Parity-Check，低密度奇偶校验）码可以用稀疏校验矩阵 <span class="arithmatex">\(H\)</span> 理解：合法码字 <span class="arithmatex">\(c\)</span> 满足 <span class="arithmatex">\(Hc^T=0\)</span>（运算在二元域上）。译码器结合收到的 LLR，在这些校验约束间迭代交换信息，寻找可信的合法码字。BCH 在外层进一步处理残余错误。实际译码算法如 Sum-Product 或 Min-Sum 可以后续再学；理解交织器不必先掌握它们的硬件实现。</p>
+<p>标准中正常 FECFRAME 的 <span class="arithmatex">\(n_{ldpc}=64\,800\)</span> 位，短 FECFRAME 的 <span class="arithmatex">\(n_{ldpc}=16\,200\)</span> 位。<strong>这两个长度是编码后、交织前的 LDPC 码字长度</strong>，不是原始有效载荷长度。以正常帧、标称码率 3/5 为例，标准表 5a 给出 <span class="arithmatex">\(K_{bch}=38\,688\)</span>、<span class="arithmatex">\(N_{bch}=k_{ldpc}=38\,880\)</span>、<span class="arithmatex">\(n_{ldpc}=64\,800\)</span>：BCH 追加 192 位，LDPC 再追加 25,920 位。这里的“3/5”对应 <span class="arithmatex">\(38\,880/64\,800\)</span>；若按 BBFRAME 计算，有效比例还会更低。</p>
+<h2 id="4-mapperdemapper-llr">4. Mapper、Demapper 和 LLR<a class="headerlink" href="#4-mapperdemapper-llr" title="Permanent link">&para;</a></h2>
+<h3 id="41-mapper">4.1 Mapper 做什么<a class="headerlink" href="#41-mapper" title="Permanent link">&para;</a></h3>
+<p>Mapper 把每 <span class="arithmatex">\(m\)</span> 个<strong>有序</strong>的编码比特映射到一个星座点。比特组合与复数点之间的具体对应关系叫星座标号。Gray 标号让相邻点的标签尽量只差一位，但不同调制方式的标签要以标准图 9～12 为准。若改变同组内的比特顺序，即使 0/1 的集合没变，也可能选中另一个星座点。</p>
+<h3 id="42-demapper">4.2 Demapper 输出什么<a class="headerlink" href="#42-demapper" title="Permanent link">&para;</a></h3>
+<p>Demapper 使用接收点 <span class="arithmatex">\(y\)</span>、星座图及噪声估计，分别评价一个符号里的每个比特为 0 或 1 的可能性。定义本文采用的 LLR 符号约定：</p>
+<div class="arithmatex">\[
+L_i=\log\frac{P(b_i=0\mid y)}{P(b_i=1\mid y)}.
+\]</div>
+<p><span class="arithmatex">\(L_i&gt;0\)</span> 偏向 0，<span class="arithmatex">\(L_i&lt;0\)</span> 偏向 1，绝对值越大表示越有把握；<span class="arithmatex">\(L_i\approx0\)</span> 表示两者难分。有些实现采用相反符号约定，接口对接时必须确认。LLR 是对<strong>每个比特</strong>分别计算的软值：一个 8PSK 接收符号会输出 3 个 LLR，而不是一个“8PSK 的 LLR”。</p>
+<p>对等先验、复高斯白噪声模型，令 <span class="arithmatex">\(\mathcal S_{i,0}\)</span> 和 <span class="arithmatex">\(\mathcal S_{i,1}\)</span> 分别为第 <span class="arithmatex">\(i\)</span> 位标号等于 0、1 的星座点集合，<span class="arithmatex">\(N_0\)</span> 为该噪声模型中的参数，则</p>
+<div class="arithmatex">\[
+L_i=\log\frac{\sum_{s\in\mathcal S_{i,0}}\exp(-|y-s|^2/N_0)}{\sum_{s\in\mathcal S_{i,1}}\exp(-|y-s|^2/N_0)}.
+\]</div>
+<p>这说明 LLR 比较的是<strong>两组候选星座点</strong>，不只是先选最近点再把它转成 0/1。常见的 Max-Log 近似把每组求和简化为寻找最近点。实际链路若有非均匀先验或残余信道失真，LLR 计算还需相应调整。</p>
+<h3 id="43-ldpc">4.3 为什么要在 LDPC 前反交织<a class="headerlink" href="#43-ldpc" title="Permanent link">&para;</a></h3>
+<p>Demapper 的 LLR 顺序对应<strong>发送时进入 Mapper 的交织后比特顺序</strong>。而 LDPC 校验矩阵的第 <span class="arithmatex">\(j\)</span> 列对应<strong>交织前码字的第 <span class="arithmatex">\(j\)</span> 位</strong>。若不反交织，可靠度就会送到错误的变量节点上，即使数值本身完全正确，LDPC 校验关系也被破坏。因此接收端先做 Deinterleaver，再做 LDPC 译码；反交织应排列软值，不应先把它们硬判成 0/1。</p>
+<h2 id="5-12">5. 用 12 位理解交织和反交织<a class="headerlink" href="#5-12" title="Permanent link">&para;</a></h2>
+<p>设一个示意码字为 <code>a0, a1, ..., a11</code>，假设每符号 3 位。建立 4 行、3 列的矩阵，<strong>按列写入</strong>：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">行</th>
+<th>列 0</th>
+<th>列 1</th>
+<th>列 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0</td>
+<td>a0</td>
+<td>a4</td>
+<td>a8</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td>a1</td>
+<td>a5</td>
+<td>a9</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>a2</td>
+<td>a6</td>
+<td>a10</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>a3</td>
+<td>a7</td>
+<td>a11</td>
+</tr>
+</tbody>
+</table>
+<p>再<strong>按行读出</strong>：<code>a0,a4,a8, a1,a5,a9, a2,a6,a10, a3,a7,a11</code>。每三个连续输出位恰好构成一个待映射符号。可见交织并不是“每隔若干位随便取一位”，而是一个确定的置换。12 个输入位和 12 个输出位完全相同，只是次序不同。</p>
+<p>接收端如果拿到按该顺序排列的 12 个 LLR，就每 3 个填入一行，再按列读回，即 <code>a0,a1,...,a11</code> 各自对应的 LLR。这里“填入一行、读出一列”是逻辑上的逆置换，实现时可以直接按索引访存，不一定要真的建立二维矩阵。</p>
+<h2 id="6-dvb-s2-bit-interleaver">6. DVB-S2 的真实 Bit Interleaver<a class="headerlink" href="#6-dvb-s2-bit-interleaver" title="Permanent link">&para;</a></h2>
+<h3 id="61">6.1 位置、适用范围与尺寸<a class="headerlink" href="#61" title="Permanent link">&para;</a></h3>
+<p>标准 <a href="https://www.etsi.org/deliver/etsi_en/302300_302399/30230701/01.04.01_60/en_30230701v010401p.pdf">第 5.3.3 节及表 8</a> 规定：LDPC 编码完成后，8PSK、16APSK、32APSK 的 <span class="arithmatex">\(n_{ldpc}\)</span> 位输出按列写入块交织器，再按行读出。QPSK 的 FECFRAME 比特直接按相邻两位映射符号，不经过此比特交织器。行数和列数如下：</p>
+<table>
+<thead>
+<tr>
+<th>调制</th>
+<th style="text-align: right;">列数 <span class="arithmatex">\(C\)</span></th>
+<th style="text-align: right;">正常帧行数 <span class="arithmatex">\(R\)</span>（64,800 位）</th>
+<th style="text-align: right;">短帧行数 <span class="arithmatex">\(R\)</span>（16,200 位）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8PSK</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">21,600</td>
+<td style="text-align: right;">5,400</td>
+</tr>
+<tr>
+<td>16APSK</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">16,200</td>
+<td style="text-align: right;">4,050</td>
+</tr>
+<tr>
+<td>32APSK</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">12,960</td>
+<td style="text-align: right;">3,240</td>
+</tr>
+</tbody>
+</table>
+<p>始终有 <span class="arithmatex">\(R=n_{ldpc}/C\)</span>，且 <span class="arithmatex">\(C\)</span> 正好是每个数据符号的编码比特数。<strong>码率不决定矩阵的行列数</strong>；给定帧长与调制方式，矩阵尺寸已经确定。码率会影响 LDPC/BCH 参数和合法 MODCOD 组合；8PSK 的 3/5 还影响行内读出方向。</p>
+<h3 id="62">6.2 普通情况的精确索引<a class="headerlink" href="#62" title="Permanent link">&para;</a></h3>
+<p>以 0 为起始下标。令交织前 LDPC 输出为 <span class="arithmatex">\(x[0],\ldots,x[n_{ldpc}-1]\)</span>，矩阵为 <span class="arithmatex">\(A[r,c]\)</span>，其中 <span class="arithmatex">\(0\le r&lt;R\)</span>、<span class="arithmatex">\(0\le c&lt;C\)</span>。</p>
+<div class="arithmatex">\[
+A[r,c]=x[cR+r],\qquad y[rC+c]=A[r,c]=x[cR+r].
+\]</div>
+<p><span class="arithmatex">\(y\)</span> 是交织后、送入 Mapper 的位流。第 <span class="arithmatex">\(r\)</span> 个调制符号使用 <span class="arithmatex">\(y[rC],\ldots,y[rC+C-1]\)</span>。因此普通情况下，一个符号的各个比特来自 LDPC 码字中相距 <span class="arithmatex">\(R\)</span> 位的不同位置。例如正常帧 8PSK 首符号用 <span class="arithmatex">\(x[0],x[21\,600],x[43\,200]\)</span>；第二个符号用 <span class="arithmatex">\(x[1],x[21\,601],x[43\,201]\)</span>。这比“交织器打散比特”更精确，也能直接用于软件或 RTL 地址生成。</p>
+<h3 id="63-8psk-35">6.3 8PSK、码率 3/5 的例外<a class="headerlink" href="#63-8psk-35" title="Permanent link">&para;</a></h3>
+<p>标准图 8 指定 8PSK <strong>3/5</strong> 的每行反向读出：写入仍按列，但行内按<strong>列 2 → 列 1 → 列 0</strong>（以 0 起始编号）读出。因此第一位 BBHEADER（经扰码与 FEC 后在码字首位的位置）会在首个 8PSK 符号的<strong>第三个</strong>比特位置输出，而不是第一个。正常帧的公式是</p>
+<div class="arithmatex">\[
+y[3r+j]=x[(2-j)R+r],\qquad j=0,1,2,\quad R=21\,600.
+\]</div>
+<p>例如首符号变为 <span class="arithmatex">\(x[43\,200],x[21\,600],x[0]\)</span>。按标准表中的经典 DVB-S2 8PSK 3/5 MODCOD 理解这个例外；图 8 画的是正常 FECFRAME。它不是把整个 64,800 位码字倒序，也不是把三列的写入顺序倒过来。<strong>交织后每个符号内部的标签位位置变了，故 Demapper/Deinterleaver 必须使用一致的规则。</strong></p>
+<h3 id="64-deinterleaver">6.4 接收端 Deinterleaver 的索引<a class="headerlink" href="#64-deinterleaver" title="Permanent link">&para;</a></h3>
+<p>令 <span class="arithmatex">\(\lambda_y[k]\)</span> 为 Demapper 按符号顺序输出的第 <span class="arithmatex">\(k\)</span> 个 LLR，<span class="arithmatex">\(\lambda_x[t]\)</span> 为送入 LDPC 译码器、对应原码字位 <span class="arithmatex">\(x[t]\)</span> 的 LLR。普通情况：</p>
+<div class="arithmatex">\[
+\lambda_x[cR+r]=\lambda_y[rC+c].
+\]</div>
+<p>8PSK 3/5 则为</p>
+<div class="arithmatex">\[
+\lambda_x[cR+r]=\lambda_y[3r+(2-c)].
+\]</div>
+<p>这两个式子是发送端置换的<strong>精确逆操作</strong>。LLR 的正负与幅度都原样搬运；若实现中同时做量化、裁剪或符号翻转，那是另一个模块的约定，不能混进交织索引的定义。</p>
+<h2 id="7">7. 一次串起完整实例<a class="headerlink" href="#7" title="Permanent link">&para;</a></h2>
+<p>选择经典 DVB-S2 的正常帧 8PSK 3/5。标准表 5a 给出 BBFRAME 长 38,688 位；BCH 编成 38,880 位；LDPC 编成 64,800 位。交织器是 <strong>21,600 行 × 3 列</strong>，首行按第 2、1、0 列读出，之后逐行同样处理。每 3 个输出比特映射成一个 8PSK 数据符号，因此该 FECFRAME 映射得到 <span class="arithmatex">\(64\,800/3=21\,600\)</span> 个数据符号。物理层随后再添加 PLHEADER，并可能插入导频；因此 21,600 不是整个 PLFRAME 的总符号数。</p>
+<p>接收时，21,600 个数据符号各产生 3 个比特 LLR，共 64,800 个；反交织器按 8PSK 3/5 的逆索引恢复 LDPC 码字位序；LDPC 译码后得到 38,880 位 BCH 码字，再由 BCH 译码恢复 38,688 位 BBFRAME。整个过程里，交织和反交织<strong>都不改变比特或 LLR 的总数</strong>。</p>
+<h2 id="8">8. 容易混淆的边界<a class="headerlink" href="#8" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>说法</th>
+<th>正确理解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“一个 8PSK 符号是 3 bit 数据”</td>
+<td>它承载 3 个<strong>编码比特</strong>；有效数据占比还受 FEC 与成帧开销影响。</td>
+</tr>
+<tr>
+<td>“交织能够纠错”</td>
+<td>交织是置换，本身没有冗余；它改变编码位与星座标签位的对应关系，纠错由 FEC 译码完成。</td>
+</tr>
+<tr>
+<td>“DVB-S2 所有调制都有同一个交织器”</td>
+<td>经典 DVB-S2 的 QPSK 不做这里的比特交织；另外三种调制列数不同。</td>
+</tr>
+<tr>
+<td>“Deinterleaver 处理译码后的比特”</td>
+<td>它通常排列 Demapper 的软 LLR，位于 LDPC 译码之前。</td>
+</tr>
+<tr>
+<td>“帧长 64,800 是信息位数”</td>
+<td>它是正常 FECFRAME 的 LDPC 编码位数。</td>
+</tr>
+<tr>
+<td>“8PSK 3/5 把整帧倒序”</td>
+<td>只把交织矩阵的<strong>每一行</strong>按相反列顺序读出。</td>
+</tr>
+<tr>
+<td>“有了矩阵尺寸就有完整实现”</td>
+<td>还必须确认写入方向、读出方向、0/1 起始编号、比特标号顺序和 3/5 例外。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="9">9. 自检题<a class="headerlink" href="#9" title="Permanent link">&para;</a></h2>
+<ol>
+<li>正常帧 16APSK 的矩阵尺寸是多少？首个符号的四个编码位来自原 LDPC 码字哪些下标？</li>
+<li>普通短帧 32APSK 的每个符号有几个 LLR？第 1 行（<span class="arithmatex">\(r=1\)</span>）读出哪些原码字下标？</li>
+<li>8PSK 3/5 的首个符号三个比特按原码字下标如何排列？为什么 <code>x[0]</code> 排在第三位？</li>
+<li>如果 Demapper LLR 数值正确但未反交织就送入 LDPC，会发生什么？</li>
+</ol>
+<p>答案：① <span class="arithmatex">\(16\,200\times4\)</span>，<span class="arithmatex">\(0,16\,200,32\,400,48\,600\)</span>；② 5 个，<span class="arithmatex">\(1,3\,241,6\,481,9\,721,12\,961\)</span>；③ <span class="arithmatex">\(43\,200,21\,600,0\)</span>，因为该 MODCOD 的行内读出方向相反；④ LLR 与校验矩阵的码字位置错配，译码无法按预期工作。</p>
+<h2 id="_1">参考资料<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://www.etsi.org/deliver/etsi_en/302300_302399/30230701/01.04.01_60/en_30230701v010401p.pdf">ETSI EN 302 307-1 V1.4.1，经典 DVB-S2 标准</a>：第 5.3 节 FEC、图 6、表 5a/5b、5.3.3 节及图 7/8 和表 8、第 5.4 节星座映射。</li>
+<li><a href="https://dvb.org/wp-content/uploads/2021/07/A083-2r3_DVB-S2X_Draft-EN-302-307-2-v141_Feb_2022.pdf">DVB BlueBook A083-2，DVB-S2X</a>：后续扩展阅读；其新增交织图样不应回套到经典 DVB-S2。</li>
+</ul>
 
 
 
@@ -2915,7 +3599,7 @@
       <nav class="md-footer__inner md-grid" aria-label="页脚" >
         
           
-          <a href="../../../FPGA/zynq-hardware-acceleration-intro/" class="md-footer__link md-footer__link--prev" aria-label="上一页: Zynq 硬件乘法加速器">
+          <a href="../../../protocols/http-https/" class="md-footer__link md-footer__link--prev" aria-label="上一页: HTTP / HTTPS">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2925,20 +3609,20 @@
                 上一页
               </span>
               <div class="md-ellipsis">
-                Zynq 硬件乘法加速器
+                HTTP / HTTPS
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../../linux/basic/" class="md-footer__link md-footer__link--next" aria-label="下一页: basic">
+          <a href="../../../%E9%9D%A2%E8%AF%95/%E5%BF%AB%E9%80%9F%E6%A3%80%E7%B4%A2%E8%A1%A8/" class="md-footer__link md-footer__link--next" aria-label="下一页: 快速检索表">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 下一页
               </span>
               <div class="md-ellipsis">
-                basic
+                快速检索表
               </div>
             </div>
             <div class="md-footer__button md-icon">
