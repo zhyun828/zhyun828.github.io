@@ -1,6 +1,6 @@
 ---
 name: learn-topic
-description: Create or systematically expand a textbook-style learning document for a topic the user wants to learn from zero. Combine beginner-friendly explanations, intuition, worked examples, formal definitions, formulas, derivations, underlying principles, implementation details, exercises, and authoritative references. Write directly to the specified file and prioritize both clarity and technical depth.
+description: Create or systematically expand a textbook-style learning document for a topic the user wants to learn from zero. Combine beginner-friendly explanations, intuition, worked examples, formal definitions, formulas, derivations, underlying principles, implementation details, and authoritative references. Integrate learning points into the relevant explanations rather than assigning exercises. Write directly to the specified file and prioritize both clarity and technical depth.
 ---
 
 # Learn Topic
@@ -45,7 +45,7 @@ Examples:
 
 `$learn-topic notes docs/notes/procom/dvb-s2/DVB-S2.md DVB-S2 Interleaver LLR`
 
-`$learn-topic notes docs/notes/procom/dvb-s2/DVB-S2.md DVB-S2 --requirements include derivations, worked examples, diagrams, exercises, and sufficient mathematical depth`
+`$learn-topic notes docs/notes/procom/dvb-s2/DVB-S2.md DVB-S2 --requirements include derivations, worked examples, diagrams, and sufficient mathematical depth`
 
 `$learn-topic notes docs/notes/procom/versal/Versal-AIE.md Versal AI Engine --requirements start from zero and include architecture, memory, streams, kernels, SIMD, and practical examples`
 
@@ -67,7 +67,7 @@ The optional `--requirements` section contains additional instructions about:
 - examples
 - formulas
 - derivations
-- exercises
+- worked calculations and reasoning walkthroughs
 - diagrams
 - implementation detail
 - source requirements
@@ -224,6 +224,39 @@ The learner should know why the formal machinery exists.
 
 Determine the conceptual prerequisites before writing the document.
 
+### Zero-background prerequisite closure
+
+When teaching from zero, do not assume prior mastery of the mathematics, probability, signal processing, computer architecture, programming, or other foundations on which the subject depends. Use a background the user explicitly establishes when available; otherwise establish the foundations needed for the requested learning path.
+
+Before introducing a concept, formula, derivation, algorithm, or code example, inspect the prerequisites it actually uses. If any have not yet been explained, build the necessary understanding before using them. A name, translation, glossary entry, or link alone does not establish that understanding.
+
+The learning chain should be:
+
+```text
+A is understood
+↓
+use A to explain B
+↓
+B is understood
+↓
+use A and B to explain C
+```
+
+Do not use several unexplained foundations together to derive a new result. This applies within paragraphs and individual derivation steps, not only to chapter ordering. Avoid circular explanations in which two unfamiliar concepts are used to define each other.
+
+Close prerequisite gaps only to the depth needed for the next explanation. Establish a usable meaning, a small example when helpful, and the specific property that will be used; then return to the main subject. Reuse earlier explanations with a brief reminder or precise section reference instead of teaching them again.
+
+### Prerequisite bridges
+
+When a transition introduces unfamiliar foundations, place a short bridge immediately before their first substantive use, or extend an appropriate earlier section. For example:
+
+- `### 在继续之前：什么是概率密度？`
+- `### 在继续之前：为什么会出现 exp？`
+- `### 在继续之前：复数的模平方是什么？`
+- `### 在继续之前：指针与对象生命周期有什么关系？`
+
+Explain why the bridge is needed and reconnect it to the next step. These are optional teaching shapes, not required headings for every concept or separate full courses.
+
 Do not simply follow:
 
 - alphabetical order
@@ -318,7 +351,13 @@ followed later by:
 
 `More precisely...`
 
-This two-stage explanation is encouraged.
+When formal mathematics is involved, continue through three layers:
+
+`intuitive understanding → more accurate meaning → formal mathematical expression`
+
+For example, "closer to a candidate constellation point means more plausible" is an intuition. More precisely, under the stated AWGN model, the conditional density of the received value given that candidate decreases exponentially with squared distance. Establish the density and exponential concepts before expressing this mathematically. Inferring which candidate was sent also requires stating the applicable prior assumptions; a likelihood is not automatically a posterior probability.
+
+Carry the assumptions and limits of the intuitive example into the formal model explicitly. Do not leave the learner at an analogy or silently change the meaning of a quantity.
 
 ## 6. Use small examples before real-scale examples
 
@@ -372,15 +411,37 @@ A learner should be able to follow the mechanism manually.
 
 Do not remove formulas merely because the learner is a beginner.
 
-If a formula is important:
+### No unexplained mathematical objects
 
-1. establish the intuition
-2. show the formula
-3. define every symbol
-4. explain what the formula means
-5. explain why it has that form
-6. derive it when the derivation materially improves understanding
-7. work through an example
+Before first substantive use, explain any important mathematical object, symbol, or operation that a true beginner may not know. Do not classify it as common knowledge merely because it is basic to the author.
+
+Examples include probability, probability density, conditional probability, likelihood, random variables, expectation, variance, Gaussian distributions, logarithms, exponential functions, complex numbers, magnitudes or norms, Euclidean distance, proportionality (`∝`), summation, and vector or matrix notation.
+
+Give the meaning and the behavior needed for the current explanation, rather than only naming a symbol. For instance, define `exp(x)` as the exponential function `e^x` and establish its relevant growth or decay behavior before using it; explain what a squared magnitude measures before manipulating it.
+
+### Formula introduction protocol
+
+For an important formula, develop the explanation in this order where applicable:
+
+1. establish the problem and why a mathematical description is needed
+2. identify and explain the prerequisites used by the formula
+3. describe the relationship in ordinary language
+4. build intuition with a diagram, numerical comparison, or small one-dimensional example when helpful
+5. define the mathematical objects and notation, including the type of quantity the left side represents
+6. present the formula and explain each term and operation
+7. explain its origin and derive the key steps from already-understood concepts
+8. substitute concrete numbers and show the calculation
+9. interpret the result physically or algorithmically and connect it back to the real system
+
+This is a teaching progression, not a requirement to create nine labeled subsections. Adapt it to the subject without dropping the conceptual bridges. Do not use "formula first, variable list afterward" as a substitute for building understanding.
+
+### Explain what kind of quantity the formula represents
+
+At first introduction, state what the formula computes: for example, a probability, a probability density, a log ratio, energy, power, variance, or throughput. Explain its interpretation, relevant units or normalization, and how to read the result. A symbol definition alone is insufficient.
+
+For `p(y|s)`, establish whether the received variable is discrete or continuous and what conditioning on `s` means. For a continuous observation in the usual Gaussian model, this notation represents a conditional probability density, not the probability of one exact received value. Explain that interval or region probabilities come from accumulating density over that interval or region; an exact point has zero probability in this model, and a density value can exceed one. Introduce integration before actually using it in a derivation, rather than requiring a full calculus course to establish the density intuition.
+
+When calling a received value "likely" informally, connect that language to its precise density interpretation. Explain that likelihood treats the observation as fixed and compares candidate model parameters or symbols; it is not by itself the probability that a candidate was transmitted.
 
 For example, when introducing:
 
@@ -390,6 +451,7 @@ LLR(b)=\ln\frac{P(b=0|y)}{P(b=1|y)}
 
 explain:
 
+- the probability, conditioning, ratio, and logarithm concepts before using this expression in the learning document
 - what `b` means
 - what `y` means
 - why probabilities are compared
@@ -397,6 +459,8 @@ explain:
 - why a logarithm is useful
 - how sign and magnitude should be interpreted
 - that sign conventions may differ between implementations
+
+State whether the expression uses posterior bit probabilities or conditional-observation likelihoods, and explain their relationship and prior assumptions before switching between them. The LLR itself is a dimensionless log ratio, not a probability.
 
 Do not present formulas as decoration.
 
@@ -417,6 +481,40 @@ Choose an appropriate level:
 State clearly when steps rely on assumptions.
 
 Do not skip key reasoning steps merely to shorten the document.
+
+Build central formulas from concepts established earlier. "According to the Gaussian distribution" is not an explanation if that distribution and its relevant density have not been introduced. Likewise, "obviously" or "it follows easily" must not hide a prerequisite or a meaningful intermediate step.
+
+When a full rigorous derivation exceeds the learning goal, provide an intuitive derivation and the key mathematical steps. Identify the omitted proof or approximation and explain its role; do not omit the reasoning needed to understand where the result comes from.
+
+For example, a complex AWGN likelihood needs a visible chain such as:
+
+```text
+one-dimensional noise and a random variable
+↓
+Gaussian density, its shape, and variance as noise spread
+↓
+why Gaussian noise is a useful model here, and its assumptions and limits
+↓
+complex numbers and I/Q components
+↓
+two independent zero-mean real Gaussian components, each with variance σ²
+↓
+independence makes their joint density the product of their densities
+↓
+y = s + n, so n = y - s for a fixed transmitted symbol s
+↓
+nI² + nQ² = |y-s|²: squared Euclidean distance in the I/Q plane
+↓
+under the stated convention, N₀ = E[|n|²] = 2σ²
+↓
+p(y|s) = 1/(πN₀) · exp(-|y-s|²/N₀)
+```
+
+Explain expectation before using `E`, and explain each density, operation, and independence assumption before its step. Explain why aggregating many small noise contributions can motivate a Gaussian approximation; if invoking a theorem to justify it, establish the part of that theorem needed here rather than merely naming it.
+
+State the noise normalization and the convention relating the sample variance to the noise spectral-density parameter; `N₀ = 2σ²` is not a universal equality for every real/complex model, filtering choice, or sample scaling. When replacing the equality by `∝`, explain that only a factor independent of the candidates being compared is omitted under the fixed-noise model, and why this preserves that comparison. Work through a small numerical example after establishing this chain.
+
+This is an example of prerequisite closure, not a mandatory communication chapter for other subjects. Apply the same reasoning to mathematical proofs, C++ semantics, FPGA data paths, operating-system mechanisms, and other learning topics.
 
 ## 10. Explain underlying principles
 
@@ -645,6 +743,10 @@ This layered structure is encouraged.
 
 It allows accessibility and depth to coexist.
 
+Expand mathematical foundations on demand. If density intuition and a basic definition suffice now, stop there; introduce integration, Bayes' theorem, logarithm properties, or other machinery before a later step actually depends on them. Avoid both a large unrelated foundation course at the beginning and a formula that requires foundations promised only for later.
+
+Preserve the full learning destination: formal definitions, formulas, derivations, underlying principles, complete examples, real system parameters, implementation details, misconceptions, and edge cases remain required where relevant. Integrate knowledge that would otherwise be taught through exercises into the relevant explanations and worked examples. Add the missing steps on the way to that depth instead of removing the depth itself.
+
 # Textbook structure
 
 ## 20. Organize large topics like chapters
@@ -675,8 +777,6 @@ A useful pattern is:
 ## N. Putting everything together
 
 ## Summary
-
-## Exercises
 
 ## Further reading
 ```
@@ -725,48 +825,32 @@ Key points:
 
 Do not simply repeat the entire chapter.
 
-## 23. Include exercises
+## 23. Integrate exercise knowledge into the explanation
 
-For substantial learning documents, include exercises where appropriate.
+Do not assign exercises, quizzes, homework, or problems for the learner to solve. Do not create exercise sections or separate answer keys.
 
-Prefer a progression such as:
+Teach the knowledge that an exercise would have tested directly at its natural place in the learning sequence:
 
-### Concept checks
+- explain conceptual distinctions alongside the relevant definitions
+- show calculations and variable traces as fully worked examples after the relevant formula or mechanism
+- explain realistic applications where the concept connects to the real system
+- integrate deeper reasoning and boundary cases into the appropriate advanced discussion
 
-Short reasoning questions.
+Include the reasoning, intermediate steps, result, and interpretation rather than leaving them for the learner to discover. Preserve the useful knowledge and technical depth without turning the document into a question bank or collecting that knowledge at the end.
 
-### Worked-style exercises
+When expanding an existing document, integrate relevant exercise-only knowledge into the corresponding sections, avoiding duplication, and remove the exercise framing for that material. Keep unrelated content outside the requested scope unchanged.
 
-Small calculations or traces.
+## 24. Explain conceptual checks directly
 
-### Application exercises
+Explain the points that self-check questions would otherwise test:
 
-Apply the concept to a realistic situation.
+- why the mechanism is needed
+- what would fail if it were removed
+- its input and output
+- what is preserved and what changes
+- how it connects to the previous stage
 
-### Advanced questions
-
-Optional deeper problems.
-
-Exercises should test understanding rather than memorization.
-
-Do not provide solutions immediately unless useful.
-
-When useful, place answers or solution outlines in a separate section after the exercises.
-
-## 24. Include self-check questions
-
-Important sections may include a few questions such as:
-
-- Why is this mechanism needed?
-- What would fail if it were removed?
-- What is the input and output?
-- What is preserved?
-- What changes?
-- How does it connect to the previous stage?
-
-These should help the learner test their mental model.
-
-Do not overuse them.
+Use these explanations where they support understanding rather than repeating a checklist in every section. A rhetorical question may introduce an explanation if it is answered immediately; do not leave unanswered self-check prompts or ask the learner to complete a derivation or calculation.
 
 # Path and file handling
 
@@ -907,6 +991,7 @@ If an existing learning document contains material that is:
 - incorrect
 - misleading
 - too shallow for the requested systematic learning goal
+- dependent on unexplained prerequisites or missing intermediate reasoning
 - badly ordered
 - contradictory
 
@@ -996,14 +1081,32 @@ After writing, review the document from two perspectives.
 
 ### Beginner review
 
+Read paragraph by paragraph from the perspective of a learner with genuinely zero background, rather than only checking whether the wording sounds simple.
+
 Check:
 
-- Are prerequisites introduced before use?
-- Are important terms explained?
+- Are prerequisites established before use, including foundations outside the main subject?
+- Are important terms, symbols, operations, and mathematical objects explained before their first substantive use?
 - Are reasoning steps visible?
 - Are examples sufficient?
 - Are difficult transitions too abrupt?
 - Can a beginner understand why each major concept exists?
+- Is exercise-related knowledge explained in the appropriate sections, with no assigned exercises, unanswered self-check prompts, or separate answer keys?
+
+### Hidden prerequisite jump review
+
+Trace each central formula, derivation, algorithm, and transition back to the concepts already established. Look specifically for:
+
+- a formula using unexplained mathematics, notation, or distributions
+- "obviously," "easily obtained," or "according to ..." concealing non-obvious steps
+- probability and probability density being conflated
+- one advanced concept explained through another when neither has been established
+- an abrupt jump from a small intuitive example to the formal or real-system model
+- a worked calculation that teaches how to compute but not why that computation is appropriate
+- a result whose origin remains unexplained even though all variables are listed
+- a forward reference or external link standing in for a foundation needed immediately
+
+Repair these gaps before completing the document: insert a concise prerequisite bridge, extend an earlier explanation, show the missing steps, or reorder dependent content. Recheck the affected learning chain after the repair. Do not wait for the learner to discover the gap and ask a follow-up question.
 
 ### Technical review
 
