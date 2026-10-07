@@ -194,6 +194,22 @@ Do not add unrelated advanced material merely to make the section look comprehen
 
 Do not duplicate explanations already present elsewhere in the same document. If another existing section already explains a prerequisite, refer to the concept naturally instead of rewriting it.
 
+### Images and local storage
+
+When an image helps explain the requested knowledge, create it yourself or download a suitable image from the web. Save every new image in the `assert` folder directly beside the target note, using this exact folder name. Create the folder automatically when needed; do not create an empty folder when no image is needed.
+
+For example, images for `docs/notes/Cpp/basics.md` belong in `docs/notes/Cpp/assert/` and are embedded with relative Markdown paths such as `![对象生命周期示意图](assert/object-lifetime.svg)`. Use descriptive filenames, avoid overwriting unrelated images, and include useful alt text and a caption when needed. Do not hotlink remote images or embed temporary or absolute local paths.
+
+For downloaded images, use official or authoritative original sources and identify the source near the figure with a qualifying link as described below. Inspect created or downloaded images for readability and technical correctness before using them.
+
+### Sources and reference links
+
+When research or external links are needed, use only official standards, official documentation, or other authoritative original materials. These include standards bodies, vendor or project documentation, original academic papers, and university or publisher-hosted original teaching materials.
+
+Do not cite or link to CSDN, Zhihu, personal blogs, community posts, unofficial tutorials, reposts, or other non-authoritative secondary pages. This applies to inline references, further reading, and image-source links. A well-known website alone does not make its content an authoritative original source.
+
+Verify the source and link directly to the relevant original document, section, or paper rather than a search-results page or unofficial mirror. If a suitable original link cannot be found, do not invent a link or substitute a prohibited source. Explain any material verification gap briefly. Relative links to local images and internal note sections remain allowed.
+
 ### 6. Preserve the rest of the document
 
 Do not rewrite, reformat, reorder, or "improve" unrelated sections.
@@ -212,6 +228,8 @@ After editing:
 - ensure Markdown syntax and code fences remain valid
 - ensure the new content does not duplicate existing material
 - ensure every applicable additional requirement is satisfied
+- ensure new images are saved in the target note's adjacent `assert` folder, their relative paths resolve, and they are readable and technically correct
+- ensure all added external reference and image-source links point to official or authoritative original materials
 
 If the edit created unnecessary duplication, fix it before finishing.
 

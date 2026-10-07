@@ -615,6 +615,14 @@ BCH Decoder
 
 Visual structure should clarify the explanation, not merely decorate it.
 
+### Images and local storage
+
+When an image improves understanding, create it yourself or download a suitable image from the web. Save every new image in the `assert` folder directly beside the target note, using this exact folder name. Create the folder automatically when needed; do not create an empty folder when no image is needed.
+
+For example, images for `docs/notes/pro-com/dvb-s2/dvb-s2.md` belong in `docs/notes/pro-com/dvb-s2/assert/` and are embedded with relative Markdown paths such as `![I/Q 星座图](assert/iq-constellation.svg)`. Use descriptive filenames, avoid overwriting unrelated images, and include useful alt text and a caption when needed. Do not hotlink remote images or embed temporary or absolute local paths.
+
+For downloaded images, use official or authoritative original sources and identify the source near the figure with a qualifying link under the Sources and research rules. Inspect created or downloaded images for readability and technical correctness before using them. Explain the relevant axes, symbols, and relationships in the surrounding text rather than relying on the figure alone.
+
 ## 14. Explain implementation after the principle
 
 When code or implementation matters, use:
@@ -945,18 +953,18 @@ Do not rely entirely on memory for:
 - protocol specifications
 - version-dependent behavior
 
-## 28. Source priority
+## 28. Authoritative original sources only
 
-Prefer:
+Use and link only to official standards, official documentation, or other authoritative original materials. Prefer:
 
 1. official standards
-2. official documentation
-3. university courses and textbooks
-4. academic papers
-5. reputable technical tutorials
-6. community articles and videos as supplementary explanation
+2. official vendor or project documentation
+3. university or publisher-hosted original courses and textbooks
+4. original academic papers from publishers, authors, or institutional repositories
 
-Community material can be valuable for intuition but should not override authoritative technical sources.
+Do not cite or link to CSDN, Zhihu, personal blogs, community posts, unofficial tutorials, reposts, or other non-authoritative secondary pages, including as supplementary reading. This restriction applies to inline references, Further Reading, References, and image-source links. A well-known website alone does not make its content an authoritative original source.
+
+Verify the source's provenance and that it supports the associated claim. If no suitable original link can be found, do not invent a link or substitute a prohibited source; explain any material verification gap briefly. Relative links to local images and internal note sections remain allowed.
 
 ## 29. Use sources as references, not writing style
 
@@ -981,6 +989,8 @@ rather than merely listing:
 `DVB-S2 standard`
 
 If official documentation is large, identify the sections most relevant to the learner.
+
+Link directly to the relevant original document, section, or paper rather than a search-results page or unofficial mirror. All external reference links must satisfy the authoritative-original-source restriction above.
 
 # Existing document maintenance
 
@@ -1138,6 +1148,8 @@ Also check:
 - diagrams
 - duplicate sections
 - broken links when detectable
+- new images stored in the target note's adjacent `assert` folder, with working relative paths, readable labels, and technically correct content
+- external reference and image-source links restricted to official or authoritative original materials
 - logical ordering
 - unrelated file changes
 
