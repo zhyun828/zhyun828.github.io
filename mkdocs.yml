@@ -75,7 +75,15 @@ nav:
           - LIN: notes/protocols/lin.md
           - HTTP / HTTPS: notes/protocols/http-https.md
       - 专业通信:
-          - DVB-S2: notes/pro-com/dvb-s2/dvb-s2.md
+          - DVB-S2:
+              - 通信系统: notes/pro-com/dvb-s2/Communication-System.md
+              - 解映射与交织: notes/pro-com/dvb-s2/Demapper-and-Interleaver.md
+          - 前向纠错:
+              - FEC 基础: notes/pro-com/fec/Forward-Error-Correction.md
+              - BCH: notes/pro-com/fec/BCH.md
+              - LDPC: notes/pro-com/fec/LDPC.md
+          - Versal AI Engine: notes/pro-com/versal/Versal-AIE.md
+          - 高吞吐架构: notes/pro-com/acceleration/High-Throughput-Architecture.md
       - 面试:
           - 快速检索表: notes/面试/快速检索表.md
           - 嵌入式面试汇总表: notes/面试/嵌入式面试汇总表.md
