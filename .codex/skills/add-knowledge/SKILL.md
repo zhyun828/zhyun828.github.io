@@ -13,9 +13,9 @@ The goal is not merely to append text. The goal is to maintain the document as i
 
 Typical requests:
 
-`$add-knowledge <topic>`
+`$add-knowledge <topic> [--requirement <additional instructions>]`
 
-`$add-knowledge <document> <topic>`
+`$add-knowledge <document> <topic> [--requirement <additional instructions>]`
 
 Examples:
 
@@ -31,6 +31,24 @@ If the target document is already clear from the current task or conversation, u
 
 If several documents are plausible and the target cannot be determined reliably, ask the user which document should be modified.
 
+### Additional requirements
+
+Use the optional `--requirement` marker after the document and knowledge points. Treat all text after the marker as additional instructions, not as more knowledge points or a document path. The text may be quoted or unquoted and may contain multiple sentences.
+
+Examples:
+
+`$add-knowledge docs/notes/Cpp/basics.md explicit --requirement 用中文解释，并补充一个隐式转换的反例`
+
+`$add-knowledge basics.md 构造函数 析构函数 --requirement 对比调用时机，各给一个简短代码示例`
+
+Requirements may specify depth, language, examples, comparisons, formulas, emphasis, exclusions, or placement. Apply them to all requested knowledge points unless the user limits a requirement to a specific point.
+
+- Evaluate existing coverage against both the requested knowledge points and the additional requirements. A topic already present may still need an edit to satisfy a requested example or explanation.
+- Explicit requirements take precedence over this skill's default choices about depth, style, and placement. Keep the changes focused on the requested knowledge and preserve unrelated content.
+- Make the smallest edit that satisfies the requirements; do not omit requested detail merely because the surrounding note is concise.
+- If `--requirement` is absent, retain the normal workflow and honor any clear requirements expressed in natural language.
+- If the marker has no following text, ask what requirement the user intended rather than inventing one. If requirements conflict and the intended result cannot be inferred, clarify the conflict before making dependent edits.
+
 ### Multiple knowledge points
 
 A request may contain one or multiple knowledge points.
@@ -39,7 +57,7 @@ When multiple knowledge points are requested:
 
 - treat each knowledge point independently
 - search the target document for each knowledge point separately
-- evaluate whether each knowledge point is already sufficiently covered
+- evaluate whether each knowledge point is already sufficiently covered, including any applicable additional requirements
 - some knowledge points may require no edit while others may require an edit
 - place each addition at its own most appropriate location
 - do not force unrelated knowledge points into the same section
@@ -83,7 +101,7 @@ Classify the topic into one of three cases.
 
 #### Case A: Already sufficiently covered
 
-If the document already explains the requested knowledge sufficiently for the document's existing level of detail:
+If the document already explains the requested knowledge sufficiently for the document's existing level of detail and satisfies any applicable additional requirements:
 
 - do not modify the file
 - tell the user that the knowledge point already exists
@@ -92,9 +110,9 @@ If the document already explains the requested knowledge sufficiently for the do
 
 Do not add duplicate wording merely because the user requested the topic again.
 
-Judge whether a topic is sufficiently covered relative to the document's existing level of detail, not relative to everything that could possibly be said about the topic.
+Judge whether a topic is sufficiently covered relative to the document's existing level of detail and the user's explicit requirements, not relative to everything that could possibly be said about the topic.
 
-A concise beginner-oriented note should not be expanded with advanced details unless those details are necessary to match the surrounding document.
+A concise beginner-oriented note should not be expanded with advanced details unless those details are necessary to match the surrounding document or meet the user's explicit requirements.
 #### Case B: Present but incomplete
 
 If the topic already exists but important information is missing:
@@ -118,7 +136,7 @@ For example, a topic about copy constructors should normally be placed near cons
 
 ### Minimal-edit principle
 
-Always make the smallest edit necessary to cover the requested knowledge.
+Always make the smallest edit necessary to cover the requested knowledge and satisfy any applicable additional requirements.
 
 A requested knowledge point does not require creating a new section.
 
@@ -137,7 +155,7 @@ Do not expand a concise document unnecessarily.
 
 ### 4. Match the document's style
 
-The added content must match the surrounding document.
+The added content must match the surrounding document unless the user's explicit requirements call for a different style or depth in the requested content.
 
 Match, where applicable:
 
@@ -157,7 +175,7 @@ If surrounding sections are concise, stay concise.
 
 If surrounding sections explain concepts for beginners, explain the new concept at the same level.
 
-Do not suddenly turn a concise note into a textbook chapter.
+Do not turn a concise note into a textbook chapter unless the user explicitly requests that depth for the requested knowledge.
 
 ### 5. Content quality
 
@@ -193,6 +211,7 @@ After editing:
 - ensure no unrelated content changed
 - ensure Markdown syntax and code fences remain valid
 - ensure the new content does not duplicate existing material
+- ensure every applicable additional requirement is satisfied
 
 If the edit created unnecessary duplication, fix it before finishing.
 
