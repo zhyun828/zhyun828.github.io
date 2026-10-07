@@ -16,6 +16,8 @@
                                       └─ tile：scalar + vector + 本地存储/流接口
 ```
 
+![Versal 中 DDR、NoC、PL、PS 和 AIE tile 的概念数据通路](../assert/versal-dataflow.svg)
+
 **异构计算**就是不同执行模型协作；划分依据不是“某模块名字听起来像 AI”，而是运算形态、状态大小、数据访问、实时性及接口成本。DVB-S2 中星座距离/LLR 很适合批量数值计算；位交织以置换和访存为主；LDPC 同时含大量并行 CN/VN 运算与困难的边消息搬运；BCH 外码可能更适合较小的专用 PL 或 PS 处理，最终需测量。
 
 ## 2. AIE tile 内究竟有什么
