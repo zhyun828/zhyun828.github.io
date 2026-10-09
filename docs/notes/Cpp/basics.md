@@ -363,11 +363,11 @@ int& wrong() {
 
 ### 左值、右值与两类引用
 
-左值（lvalue）通常表示有身份、可通过名字或地址再次找到的对象；右值（rvalue）通常是临时值或即将被销毁、资源可以被转移的对象。
+值类别描述的是**表达式如何表示对象或值**，不是另一套数据类型。左值（lvalue）表示有身份的对象或函数；右值（rvalue）包括纯右值（prvalue，如整数值 `3`）和将亡值（xvalue，如 `std::move(value)`）。将亡值仍表示有身份的对象，只是允许它作为移动来源，并不意味着对象马上被销毁。
 
 ```cpp
 int value = 10;
-int& leftRef = value;       // T&：左值引用，只能绑定到左值
+int& leftRef = value;       // int&：非常量左值引用，只能绑定到左值
 int&& rightRef = 20;        // T&&：右值引用，可以绑定到临时右值
 ```
 
@@ -1252,6 +1252,30 @@ const auto c = value; // const int：显式加回顶层 const
 
 简单理解：`auto` 默认得到一个新的值，`auto&` 则绑定原对象；修改 `b` 是否允许，取决于原对象是否为 `const`。
 
+这里的“去掉 `const`”只针对**顶层 `const`**，即变量自身不可修改；不会去掉指向对象的 `const`：
+
+```cpp
+int number = 10;
+int* const fixed = &number; // 指针自身是 const，所指 int 不是 const
+auto pointer = fixed;      // int*：去掉指针自身的顶层 const
+
+const int* source = &number;
+auto readonly = source;    // const int*：保留所指对象的 const
+```
+
+更准确地说，普通 `auto` 使用类似函数模板参数的推导规则，声明中的 `&`、`&&`、`const` 也参与决定最终类型。`auto&&` 在常见的表达式初始化中是**转发引用**，并不保证得到右值引用：
+
+```cpp
+int number = 10;
+const int constant = 20;
+
+auto&& a = number;   // int&：绑定左值，引用折叠后仍是左值引用
+auto&& b = constant; // const int&：保留被引用对象的 const
+auto&& c = 30;       // int&&：绑定纯右值
+```
+
+因此，“`auto` 默认去掉引用和顶层 `const`”说的是 `auto name = expr` 这种按值声明，不能直接套到 `auto&` 或 `auto&&`。按值推导还会让数组、函数退化为相应指针；引用形式则可以保留它们的类型。
+
 什么时候该用 `auto`（推荐）：
 
 1. 迭代器，是最常见也最推荐的场景
@@ -1293,16 +1317,71 @@ auto multiply(int a, int b) {
 
 ### `decltype` 与 `decltype(auto)`
 
-`decltype` 在编译期取得表达式的类型，不会实际执行表达式。对未加括号的变量名，`decltype(x)` 得到变量声明时的类型；对一般表达式，结果还会反映值类别：
+**`auto` 和 `decltype` 使用不同的类型推导规则。** 可以这样记：普通 `auto` 更关心“我要用这个初始值声明一个什么类型的新变量”；`decltype` 更关心“这个实体的声明类型，或这个表达式的类型与值类别是什么”。`decltype` 在编译期查询类型，不会实际执行括号中的表达式。
+
+对于这里讨论的普通变量和成员，判断 `decltype(expr)` 分两步：
+
+1. **未额外加括号的变量名或成员访问**，例如 `x`、`object.member`：直接取所命名实体的声明类型，可以包括 `const`、`&`、`&&`。
+2. **其他表达式**：设表达式的类型为 `T`，再按值类别决定结果：
+
+   | 表达式值类别 | `decltype(expr)` 的结果 | 例子（`x` 是 `int` 变量） |
+   | --- | --- | --- |
+   | 左值（lvalue）：表示一个可定位的对象 | `T&` | `decltype((x))` 是 `int&` |
+   | 将亡值（xvalue）：有身份、可作为移动来源的表达式 | `T&&` | `decltype(std::move(x))` 是 `int&&` |
+   | 纯右值（prvalue）：用于计算值或初始化对象的表达式 | `T` | `decltype(x + 1)` 是 `int` |
+
+将亡值与纯右值合称右值，但在 `decltype` 中，两者的结果并不相同。
+
+为什么一般表达式的左值对应 `T&`，而不是仅仅得到 `T`？因为只给出 `T` 就无法区分“计算一个值”和“访问一个已有对象”。`decltype` 用引用类型把值类别的信息编码到结果类型中：`T&` 表达左值访问，`T&&` 表达可作为移动来源的访问，`T` 则对应纯右值。
+
+以同一个 `int` 对象为例，可以观察这三种结果在声明变量时的区别：
 
 ```cpp
+#include <utility>
+
+int x = 3;
+decltype((x)) alias = x;                // int&：绑定已有对象 x
+decltype(3) copy = x;                   // int：用当前值初始化独立对象
+decltype(std::move(x)) movable = std::move(x); // int&&：仍然绑定 x
+
+alias = 10;              // 修改 x；copy 仍为 3
+movable = 20;            // 修改的仍是 x，不是新建的 int
+// &alias == &x，&movable == &x；copy 则是另一个对象
+```
+
+这里 `x`、`(x)` 和 `std::move(x)` 的表达式类型都是 `int`，区别在值类别；`decltype` 的结果才分别按规则表现为 `int`、`int&`、`int&&`。`std::move(x)` 本身只改变表达式的值类别，不复制对象，也不执行资源转移；是否发生移动取决于后续操作是否调用移动构造或移动赋值。
+
+还要区分**类型信息**和**具体对象身份**：`int&` 说明可以绑定一个 `int` 左值，却不记录“它一定是 x”；是初始化中的 `= x` 让 `alias` 绑定到 x。`decltype((x))` 本身不会创建引用变量，也不会修改 x。它让后续声明能表达对已有对象的访问，而不必退化为按值复制。
+
+```cpp
+#include <utility> // std::move
+
 int x = 10;
 int& ref = x;
+const int& cref = x;
+int&& rref = 20;
 
 decltype(x) a = 1;       // int
 decltype(ref) b = x;     // int&
 decltype((x)) c = x;     // int&：额外括号使 (x) 按左值表达式处理
-decltype(x + 1) d = 20;  // int：x + 1 是右值
+decltype(x + 1) d = 20;  // int：x + 1 是纯右值
+decltype(cref) e = x;    // const int&：保留声明类型
+decltype(rref) f = 30;   // int&&：变量名走第一条规则
+decltype((rref)) g = x;  // int&：有名字的右值引用变量，表达式仍是左值
+decltype(std::move(x)) h = std::move(x); // int&&：表达式是将亡值
+```
+
+**括号不改变 `x` 的值类别，却会改变 `decltype` 采用哪条规则。** `decltype(x)` 查询声明类型，而 `decltype((x))` 按左值表达式计算；同样，若 `const` 对象的成员声明为 `int`，`decltype(object.member)` 是 `int`，`decltype((object.member))` 则是 `const int&`（普通非 `mutable` 成员）。所以不能把 `decltype` 简化成“总是照搬表达式的一切限定”。
+
+用同一个初始值对比，差异最明显：
+
+```cpp
+const int value = 10;
+const int& ref = value;
+
+auto copy = ref;             // int：独立的新值，可以修改 copy
+decltype(ref) alias = ref;   // const int&：绑定原对象，不能通过 alias 修改它
+decltype(value) same = 20;   // const int：新对象保留声明类型的 const
 ```
 
 `decltype(auto)` 使用 `decltype` 的规则推断完整类型，能保留引用；返回时括号会影响结果：
@@ -1314,11 +1393,16 @@ decltype(auto) getValue() { return value; }      // int
 decltype(auto) getReference() { return (value); } // int&
 ```
 
+变量初始化也适用相同规则：`decltype(auto) a = value;` 得到 `int`，`decltype(auto) b = (value);` 得到 `int&`；若初始值是前例的 `const int& ref`，则 `decltype(auto) c = ref;` 得到 `const int&`。它不是“更聪明的 `auto`”，而是选择了另一套规则；不能写 `decltype(auto)&`，返回引用时也必须确保被引用对象仍然存活，不能返回局部对象的悬空引用。
+
 | 写法 | 主要用途 | 是否保留引用和顶层 `const` |
 | --- | --- | --- |
-| `auto` | 简化变量或返回类型 | 默认不保留 |
-| `decltype(expr)` | 查询表达式的精确类型 | 保留 |
-| `decltype(auto)` | 按 `decltype` 规则自动推断 | 保留，括号会影响结果 |
+| 普通按值 `auto` | 从初始值推导新变量或函数返回值 | 默认去掉；可显式使用 `const auto` 等形式 |
+| `auto&` / `auto&&` | 绑定对象或转发 | 根据声明形式、初始化表达式与引用折叠决定 |
+| `decltype(expr)` | 查询实体声明类型或表达式类型与值类别 | 按上述两步规则决定，不能笼统说“始终保留” |
+| `decltype(auto)` | 在变量或返回类型处使用 `decltype` 规则推导 | 与 `decltype(expr)` 一致，额外括号会影响结果 |
+
+规则依据：C++ 标准工作草案的 [占位类型推导](https://eel.is/c++draft/dcl.type.auto.deduct)、[`decltype` 说明符](https://eel.is/c++draft/dcl.type.decltype)、[值类别](https://eel.is/c++draft/basic.lval)与[转发及移动辅助函数](https://eel.is/c++draft/forward)。以上示例使用 C++17 已有规则，不涉及较新标准新增的语法。
 
 ## 容器选择
 
