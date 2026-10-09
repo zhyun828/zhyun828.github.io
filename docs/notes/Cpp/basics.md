@@ -1404,19 +1404,1046 @@ decltype(auto) getReference() { return (value); } // int&
 
 规则依据：C++ 标准工作草案的 [占位类型推导](https://eel.is/c++draft/dcl.type.auto.deduct)、[`decltype` 说明符](https://eel.is/c++draft/dcl.type.decltype)、[值类别](https://eel.is/c++draft/basic.lval)与[转发及移动辅助函数](https://eel.is/c++draft/forward)。以上示例使用 C++17 已有规则，不涉及较新标准新增的语法。
 
+## 模板（`template`） {#templates}
+
+模板让一份代码描述一族函数、类或变量，由编译器根据**类型参数或编译期值**生成需要的具体版本。它是 C++ 泛型编程的基础：先表达算法需要哪些操作，再让满足要求的类型参与，而不是为每一种类型复制代码。
+
+本节以 C++17 为主要编译标准；Concepts、`requires` 等 C++20 内容单独标注。前面的 `auto`、`decltype` 和值类别讲解在这里会继续用到。
+
+本章依次按函数模板、类模板、模板约束、模板的其他功能组织。各分类内先讲基础规则，再说明与其直接相关的扩展；已有的现代 C++ 内容保留在相应分类中。
+
+### Template Functions（函数模板） {#template-functions}
+
+#### Template 基本概念
+
+不使用模板时，同一个取较大值算法可能分别写成 `int larger(int, int)`、`double larger(double, double)`。两者只有类型不同，重复实现却要分别维护。模板把类型变化提取为参数，让算法主体只写一次。
+
+模板不是运行时传入一个“类型对象”，也不是动态类型：`larger<int>` 与 `larger<double>` 是编译期确定的不同函数版本。它们生成后仍可像普通函数一样在运行时调用。
+
+#### 函数模板语法
+
+假设要对整数、浮点数做同样的“取较大值”操作。分别写多个函数会重复算法；模板把变化部分抽成类型参数 `T`：
+
+```cpp
+template<typename T>
+T larger(T a, T b) {
+    return a < b ? b : a;
+}
+
+int integer = larger(3, 7);          // 推导 T = int，结果为 7
+double real = larger(2.5, 1.0);      // 推导 T = double，结果为 2.5
+double mixed = larger<double>(3, 4.5); // 显式指定 T，再按 double 参数接收
+// larger(3, 4.5);                   // 推导冲突：T 同时需要是 int 和 double
+```
+
+`template<typename T>` 是模板参数列表；`T a, T b` 是普通函数参数列表。类型参数在编译时确定，`a`、`b` 的值可以在运行时才得到。这里要求 `T` 支持 `<`，并能按值传递和返回；模板不意味着“任何类型都能用”。指针使用 `<` 也不会自动变成字符串内容比较，通用接口仍需明确语义。
+
+声明类型参数时，`typename T` 与 `class T` 等价；`class T` 不要求实参一定是类，`int` 也可以。模板通常声明在命名空间或类作用域，不能直接在普通函数体中声明一个类模板或函数模板。
+
+#### 模板实例化（Instantiation） {#template-function-instantiation}
+
+定义模板是在描述生成规则；当使用需要某个具体版本时，编译器按模板实参进行实例化。例如调用 `larger(3, 7)` 推导出 `T = int`，再使用对应的 `larger<int>`；调用 `larger(2.5, 1.0)` 使用 `larger<double>`。
+
+```cpp
+template<class T>
+T twiceValue(T value) { return value + value; }
+
+int integer = twiceValue(3);       // 隐式实例化需要的 int 版本
+double real = twiceValue(1.5);     // 隐式实例化需要的 double 版本
+template long twiceValue<long>(long); // 显式实例化定义
+```
+
+实例化不是“在运行时生成函数”，也不保证每个版本必然保留一份独立机器代码，优化器可能内联或合并代码。显式实例化使用既有规则生成版本；显式特化则另写一套实现。头文件可见性与集中实例化见后面的[编译与链接](#template-instantiation)。
+
+#### 模板类型推导（Type Deduction） {#template-deduction}
+
+函数模板从函数实参与形参结构推导类型。前面普通 `auto`、`auto&`、`auto&&` 的推导与这个机制紧密相关。
+
+| 形参形式 | 主要效果 |
+| --- | --- |
+| `T value` | 按值推导，忽略实参的引用和顶层 `const`；数组/函数通常退化为指针 |
+| `T& value` | 绑定左值，保留被引用对象的限定；能保留数组长度 |
+| `const T& value` | 以只读引用接收；可绑定左值或临时对象，`const` 由形参提供 |
+| 可推导的 `T&& value` | 转发引用；根据实参值类别推导并发生引用折叠 |
+
+例如 `const int n = 3` 传给 `T` 时推导 `T = int`，传给 `T&` 时推导 `T = const int`，传给 `const T&` 时推导 `T = int`，最终形参仍为 `const int&`。
+
+推导并不先尝试所有普通隐式转换来让模板匹配；前面 `larger(3, 4.5)` 不能自动“统一成 double”。推导完成后，对最终选定函数的调用仍可能进行允许的参数转换。返回类型也不会反向指导普通调用：
+
+```cpp
+template<class T>
+T makeDefault() { return T{}; }
+
+// int n = makeDefault();   // 无函数实参可用来推导 T；左侧 int 不会补上 T
+int n = makeDefault<int>();
+```
+
+有些位置属于**非推导上下文**，例如 `typename T::value_type` 中的 `T`：仅凭某个成员类型，无法唯一反推出它属于哪个容器。C++20 的 `std::type_identity_t<T>` 可有意让某个参数不参与推导，让 `T` 由其他参数先确定；在 C++17 中可以用一个带 `using type = T` 的类模板表达相同思路。
+
+#### 显式指定模板实参
+
+推导不能统一两种实参类型时，可以明确指定类型，让对应形参按照这个类型接收实参：
+
+```cpp
+template<class T>
+T minimum(T a, T b) { return b < a ? b : a; }
+
+double result = minimum<double>(10.4, 23); // 23 转成 double，再比较
+// minimum(10.4, 23);                     // 推导要求同一个 T，发生冲突
+```
+
+`minimum<double>` 中的参数是编译期模板实参，圆括号内才是函数实参。显式指定也不能使不存在或不允许的转换变得合法，转换还可能改变精度。显式实参按声明顺序从左到右填写；剩余参数若允许，仍可推导或采用默认值。
+
+#### 多个模板类型参数
+
+两个输入不必同类型时，应把它们建模为两个独立参数，而不是强迫调用者指定共同类型：
+
+```cpp
+#include <type_traits>
+
+template<class T1, class T2>
+std::common_type_t<T1, T2> addMixed(T1 a, T2 b) {
+    using Result = std::common_type_t<T1, T2>;
+    return static_cast<Result>(a) + static_cast<Result>(b);
+}
+
+auto result = addMixed(2, 3.5);
+static_assert(std::is_same_v<decltype(result), double>);
+```
+
+这里分别推导 `T1 = int`、`T2 = double`，`common_type_t` 确定共同结果类型。并非任意类型组合都有共同类型，也不保证结果不会溢出。可以显式写 `addMixed<int>(2, 3.5)` 只指定第一个参数，第二个继续推导；是否需要共同类型取决于算法，表达式的结果类型也可用后面的尾置返回类型描述。
+
+#### 函数模板重载（Overloading）
+
+普通函数与函数模板可以共存。先比较候选的可行性与转换质量；在其他条件相当时，非模板函数通常优先，多个函数模板则通过偏序等规则挑选更特定的版本。
+
+```cpp
+int choose(int) { return 1; }
+
+template<class T>
+int choose(T) { return 2; }
+
+template<class T>
+int choose(T*) { return 3; }
+
+int value = 0;
+int a = choose(1);       // 1：相同匹配质量下选普通函数
+int b = choose(1.5);     // 2：模板精确匹配 double，优于转换成 int
+int c = choose(&value);  // 3：T* 模板比通用 T 模板更特定
+int d = choose<>(1);     // 2：显式模板调用，不选普通 choose(int)
+```
+
+#### 显式特化（Explicit Specialization）
+
+显式特化为一组确定的模板参数提供不同实现。下面通用版本比较值，`const char*` 版本比较字符串内容，避免把字符指针的比较误当作文本比较：
+
+```cpp
+#include <cstring>
+
+template<class T>
+bool lessValue(T a, T b) { return a < b; }
+
+template<>
+bool lessValue<const char*>(const char* a, const char* b) {
+    return std::strcmp(a, b) < 0;
+}
+
+bool ordered = lessValue("alpha", "beta"); // 使用 const char* 特化
+```
+
+本例要求两个指针指向有效、以空字符结尾的字符串。`template<>` 表示模板参数已完全确定；相同签名但没有 `template<>` 的函数通常是普通重载，不是特化。特化声明应在触发相关隐式实例化的首次使用前可见。
+
+函数模板**不能偏特化**。想处理“所有指针”应写 `template<class T> ... (T*)` 重载；类模板的偏特化在后文单独说明。函数全特化定义放在头文件时还须处理 ODR，通常显式写 `inline` 或集中在一个 `.cpp` 中。
+
+#### 重载与特化的优先关系
+
+不要记成“普通函数永远优先”。函数模板全特化也不作为独立重载候选参加同样的选择流程；通常先确定主模板，再确定它的特化。想给函数增加某一类参数的实现，重载往往比函数全特化更直观。
+
+不能简单给“普通函数、特化、主模板”排出一条固定优先级。先进行重载决议，比较参数转换、模板偏序等；选定主模板后，才使用属于该主模板的显式特化。
+
+下面三个命名空间是三个独立对照，不必猜测声明究竟特化了哪个主模板：
+
+```cpp
+namespace GenericSpecialized {
+    template<class T> int pick(T) { return 1; }
+    template<> int pick<int*>(int*) { return 2; } // 特化通用 T 主模板
+    template<class T> int pick(T*) { return 3; }
+}
+namespace PointerSpecialized {
+    template<class T> int pick(T) { return 1; }
+    template<class T> int pick(T*) { return 3; }
+    template<> int pick<int>(int*) { return 4; } // 特化 T* 主模板
+}
+namespace OrdinaryOverload {
+    template<class T> int pick(T) { return 1; }
+    template<class T> int pick(T*) { return 3; }
+    int pick(int*) { return 5; }
+}
+int object = 0;
+int first = GenericSpecialized::pick(&object); // 3：选中 T* 主模板
+int second = PointerSpecialized::pick(&object); // 4：选中 T* 后使用它的特化
+int third = OrdinaryOverload::pick(&object); // 5：同等匹配质量下选普通函数
+```
+
+第一组的 `pick<int*>` 属于通用 `T` 主模板；虽然参数也是 `int*`，它不会自动成为 `T*` 主模板的特化。第二组特化的是指针主模板本身，所以能被使用。第三组是普通重载参与决议。
+
+#### 非类型模板参数 {#template-parameters}
+
+在 C++17/20 的常用语法中，模板参数分为类型参数、非类型参数和模板模板参数。较新的标准草案也将非类型参数称为 constant template parameter。
+
+| 参数类别 | 传入的是什么 | 例子 |
+| --- | --- | --- |
+| 类型参数 | 一个类型 | `template<class T>`，传入 `int` |
+| 非类型参数（NTTP） | 编译期值 | `template<std::size_t N>`，传入 `32` |
+| 模板模板参数 | 一个符合参数形状的类模板或别名模板 | `template<template<class...> class C>`，传入 `std::vector` |
+
+非类型模板参数也能用于函数模板。固定维数在编译时传入，而数组里的数据仍可在运行时变化：
+
+```cpp
+#include <array>
+#include <cstddef>
+
+template<class T, std::size_t N = 2>
+T firstCoordinate(const std::array<T, N>& values) {
+    static_assert(N > 0, "coordinates must not be empty");
+    return values[0];
+}
+
+std::array<double, 3> position{1.0, 2.0, 3.0};
+double first = firstCoordinate(position); // T = double，N = 3
+```
+
+`N` 可以推导，也可以显式指定；默认值只在没有其他实参或推导结果时使用。普通运行时变量不能直接作为这种模板实参。C++17 常见非类型参数包括整数、枚举、指针和引用等；C++20 扩展到浮点数及满足结构化类型要求的类。`std::string` 不能直接作为类类型的非类型模板参数，字符串字面量也不能直接充当指针模板实参。
+
+```cpp
+template<auto Value> // C++17：从编译期值推导参数类型
+struct Constant { static constexpr auto value = Value; };
+static_assert(Constant<42>::value == 42);
+```
+
+#### 成员函数模板
+
+普通类也可以定义成员函数模板；类本身不必是模板：
+
+```cpp
+#include <iostream>
+
+class Printer {
+public:
+    template<class T>
+    void print(const T& value) const { std::cout << value << '\n'; }
+};
+Printer printer;
+void printExamples() {
+    printer.print(42);
+    printer.print("ready");
+}
+```
+
+类模板的成员模板还可有自己的类型参数：
+
+```cpp
+template<class T>
+class Converter {
+public:
+    template<class U>
+    T convert(const U& value) const;
+};
+
+template<class T>       // 外层类模板的参数
+template<class U>       // 内层成员函数模板的参数
+T Converter<T>::convert(const U& value) const {
+    return static_cast<T>(value);
+}
+
+Converter<double> converter;
+double result = converter.convert(3); // 外层 T = double，成员 U = int
+```
+
+类外定义这里需要**两层 `template` 声明**，顺序先外层 `T`、再内层 `U`；`Converter<T>::` 指明成员属于哪个类模板实例。外层参数确定之后，每次调用仍可独立推导 `U`。只有一层 `template<class T>` 时，无法表达这个成员函数自身也是模板。
+
+成员函数模板不能是 `virtual`，但类模板可以包含签名固定的普通虚成员函数。成员模板也必须在调用所需的实例化位置具备可用定义。
+
+### Template Classes（类模板） {#template-classes}
+
+#### 类模板基本语法
+
+类模板描述一族类型，`Box<int>`、`Box<std::string>` 才是具体类型；`Box` 本身不能在普通类型位置直接代替它们。
+
+```cpp
+#include <string>
+#include <utility>
+
+template<class T>
+class Box {
+    T value_;
+public:
+    explicit Box(T value) : value_(std::move(value)) {}
+    const T& get() const { return value_; }
+};
+
+Box<int> numberBox(42);
+Box<std::string> textBox(std::string("ready"));
+```
+
+这两个实例化产生不同类型，不能默认互相赋值。成员中的 `T` 也会分别成为 `int`、`std::string`。这里返回 `const T&` 避免读取时复制，但引用不能超过 `Box` 对象的生命周期；模板不会自动解决所有权问题。
+
+类外定义成员函数时，要同时写模板参数和具体所属类型：
+
+```cpp
+template<class T>
+class Holder {
+    T value_{};
+public:
+    const T& get() const;
+};
+
+template<class T>
+const T& Holder<T>::get() const {
+    return value_;
+}
+```
+
+这里的 `get()` 是**类模板的普通成员函数**：它使用外层参数 `T`，自己没有新增模板参数，因此类外定义只写一层 `template<class T>`。相比之下，前面 `Converter<T>::convert<U>()` 还有内层参数 `U`，类外定义要写两层。成员位于类模板中，并不意味着该成员本身也是成员函数模板。
+
+#### 类型与非类型参数组合
+
+固定维数坐标既需要元素类型，也需要维数；两者共同决定对象类型：
+
+```cpp
+#include <array>
+#include <cstddef>
+
+template<class T, std::size_t N>
+class Point {
+    std::array<T, N> coordinates_{};
+public:
+    T& at(std::size_t index) { return coordinates_.at(index); }
+    const T& at(std::size_t index) const { return coordinates_.at(index); }
+};
+Point<double, 3> spatialPoint;
+Point<int, 2> pixelPoint;
+```
+
+`Point<double, 3>` 与 `Point<double, 2>` 是不同类型，不能默认互相赋值。类型参数决定数据表示，非类型参数决定编译期维数；运行时可变长度应考虑 `std::vector`。每种不同组合都可能产生新的实例化并增加编译成本。
+
+#### 默认模板参数
+
+默认模板参数为常见配置提供省略写法；即使全部采用默认值，通常仍要写 `<>`：
+
+```cpp
+#include <array>
+#include <cstddef>
+
+template<class T = int, std::size_t N = 8>
+struct Buffer {
+    std::array<T, N> data{};
+};
+
+Buffer<> defaults;             // Buffer<int, 8>
+Buffer<double, 16> samples;    // 容量进入类型
+// int size = readSize();
+// Buffer<int, size> invalid;  // 普通运行时变量不能作为 N
+```
+
+类模板普通参数的默认值通常安排在尾部；之后仍可有参数包。函数模板后续参数若能从函数实参推导，默认参数的排列限制有所不同。调用时显式模板实参从左到右指定，不能像命名参数那样随意跳过中间位置。
+
+#### 类模板构造函数
+
+构造函数负责创建某个已经确定的类模板对象；它与模板实例化不是同一过程。同类型复制可用普通拷贝构造函数，跨类型转换则常用构造函数模板：
+
+```cpp
+#include <type_traits>
+
+template<class T>
+class Coordinate {
+    T value_{};
+public:
+    Coordinate() = default;
+    explicit Coordinate(T value) : value_(value) {}
+    Coordinate(const Coordinate&) = default;
+    Coordinate(Coordinate&&) = default;
+    Coordinate& operator=(const Coordinate&) = default;
+    Coordinate& operator=(Coordinate&&) = default;
+
+    template<class U,
+             std::enable_if_t<std::is_convertible_v<const U&, T> &&
+                              !std::is_same_v<U, T>, int> = 0>
+    explicit Coordinate(const Coordinate<U>& other) : value_(other.get()) {}
+
+    const T& get() const { return value_; }
+};
+Coordinate<int> origin;
+Coordinate<int> integer(3);
+Coordinate<int> copied(integer);       // 普通拷贝构造
+Coordinate<double> real(integer);     // 构造函数模板，U = int
+```
+
+`Coordinate(const Coordinate&)` 中的类名在类内代表当前 `Coordinate<T>`。构造函数模板不等于拷贝构造函数，也不会替代所有特殊成员函数规则；本例显式保留同类型复制与移动。跨类型构造是 `explicit`，避免无意的隐式转换。`is_convertible` 只检查转换是否合法，不能保证所有数值转换无精度损失。
+
+不同的 `Coordinate<U>` 与 `Coordinate<T>` 是不同类的特化，不能当然访问彼此的私有数据；本例通过公开 `get()` 获取值。若设计确实需要，可显式声明模板友元。过于宽泛的 `U&&` 转发构造函数可能抢走原本预期的复制调用，应对适用类型进行约束。
+
+#### 类模板的文件组织
+
+模板定义是生成具体实体的规则；实例化则把指定参数代入这些规则。隐式实例化由需要具体实体的使用触发，并不是定义模板时就为所有可能类型生成代码。类模板实例化也不等于立即实例化每个成员函数体：未使用的成员可以尚未被要求实例化。
+
+**为什么模板实现通常放在头文件？** 使用方一般需要看到定义才能隐式实例化。只有声明可见、实现藏在某个 `.cpp` 中时，使用方可能成功编译却在链接时找不到需要的具体版本。常见做法是把定义写在 `.hpp`，或放入 `.tpp` 再由头文件包含；`.tpp` 只是文件组织惯例，没有特殊语言含义。
+
+类模板的成员函数若在类外定义，同样应把定义保存在调用方可见的头文件或被其包含的 `.tpp` 中。不要把 `.tpp` 当作普通 `.cpp` 单独编译后就期待任意类型都能链接。
+
+#### 编译与链接 {#template-instantiation}
+
+常见构建过程是源文件 `.cpp` 经预处理和编译生成目标文件，再由链接器组合成可执行文件。目标文件扩展名依工具链不同可为 `.o` 或 `.obj`。每个包含头文件的源文件形成独立翻译单元。
+
+只有模板声明时，某些调用能通过编译；如果链接阶段找不到所需实例化的定义，仍会失败。模板并没有绕过普通的编译、符号定义与链接流程。
+
+显式实例化可以集中生成有限几种版本，减少重复编译。下面是**两个文件**的布局示意：
+
+```text
+// numeric.hpp
+template<class T>
+T square(T value);                 // 对使用方只公开声明
+extern template int square<int>(int); // 显式实例化声明
+
+// numeric.cpp
+#include "numeric.hpp"
+template<class T>
+T square(T value) { return value * value; }
+template int square<int>(int);     // 显式实例化定义：此处生成 int 版本
+```
+
+其他文件包含头文件即可调用 `square(3)`；若要使用 double，而程序未提供其定义或实例化，可能出现链接失败。`extern template` 用来抑制相应的隐式实例化，不是把普通声明变成可支持任意类型的外部函数。显式实例化也不是特化：它使用模板既有规则生成代码；特化则给特定参数另写规则。
+
+ODR（One Definition Rule，单一定义规则）允许满足条件的模板定义出现在多个翻译单元，但要求定义等保持一致，不应靠宏让同一个模板在不同文件中变成不同实现。**模板定义放头文件不等于所有相关定义都自动免疫重复定义错误**：例如函数模板的全特化定义放头文件时，通常要显式加 `inline`，或把定义集中放到一个 `.cpp` 中；`inline` 在这里处理多重定义，并不保证机器代码一定内联。
+
+模板中的函数局部静态变量通常按具体实例化分别存在，例如 `counter<int>()` 与 `counter<double>()` 的静态计数器不同；同一实例化不会仅因为被多个文件包含就理应变成每个文件一份。若声明为内部链接实体，则还要考虑链接范围。C++17 的 `inline static` 数据成员可以简化类模板静态成员的头文件定义。
+
+#### 全特化与偏特化 {#template-specialization}
+
+**主模板**给出通用规则；**全特化**为一组完全指定的参数提供实现；**偏特化**为一类参数形状提供实现，例如所有指针。
+
+```cpp
+template<class T>
+struct TypeKind {
+    static constexpr int value = 0; // 主模板
+};
+
+template<>
+struct TypeKind<bool> {
+    static constexpr int value = 1; // 全特化
+};
+
+template<class T>
+struct TypeKind<T*> {
+    static constexpr int value = 2; // 偏特化：所有指针类型
+};
+
+static_assert(TypeKind<int>::value == 0);
+static_assert(TypeKind<bool>::value == 1);
+static_assert(TypeKind<double*>::value == 2);
+```
+
+特化不是继承：特化类不会自动获得主模板的全部成员，需要自己提供接口。多个偏特化同时匹配时要能选出更特定的版本，否则会产生歧义，例如“第一参数是 int”和“第二参数是 double”对 `<int, double>` 可能都匹配。
+
+| 模板类别 | 全特化 | 偏特化 | 常见替代方式 |
+| --- | --- | --- | --- |
+| 类模板 | 支持 | 支持 | 策略参数、约束 |
+| 函数模板 | 支持 | **不支持** | 函数重载、`if constexpr`、Concepts |
+| 变量模板 | 支持 | 支持 | 类型萃取 |
+| 别名模板 | **不能直接特化** | **不能直接特化** | 特化底层类模板，再取其成员类型 |
+| Concept（C++20） | 不支持 | 不支持 | 定义或组合新的 Concept |
+
+显式特化必须在会触发相关隐式实例化的首次使用之前可见，并遵守相应作用域规则；不能先使用通用实现，再在同一程序里悄悄换成特化。也不能随意特化标准库模板：只有标准明确允许的情况才能在 `std` 中提供特化。
+
+#### CTAD：类模板实参推导（C++17） {#template-ctad}
+
+函数模板能从调用参数推导；C++17 起，某些创建类模板对象的声明也能从初始化参数推导模板实参，称为 CTAD（Class Template Argument Deduction）。编译器从构造函数等生成推导候选，也可使用显式推导指南。
+
+```cpp
+#include <type_traits>
+#include <utility>
+#include <vector>
+
+std::pair pair(1, 2.5); // std::pair<int, double>
+std::vector values{1, 2, 3}; // std::vector<int>
+
+template<class T>
+struct Wrap {
+    T value;
+    explicit Wrap(T input) : value(std::move(input)) {}
+};
+
+template<class T>
+Wrap(T) -> Wrap<T>; // 用户定义推导指南；本例构造函数也能提供隐式指南
+
+Wrap wrapped(42);
+static_assert(std::is_same_v<decltype(wrapped), Wrap<int>>);
+```
+
+推导指南没有函数体，不负责构造对象；它只决定得到哪个模板类型，接着仍需用真正的构造函数初始化。一般也不能只显式写一部分类模板实参，再期望 CTAD 自动补上剩余部分。C++20 扩展了聚合类型与别名模板等相关推导能力。
+
+注意初始化形式会影响结果：`std::vector values{3, 7}` 是两个元素 3、7，而 `std::vector<int> values(3, 7)` 是三个值为 7 的元素。`std::vector values;` 没有足够信息推导元素类型，仍然不合法；类模板名称也不能因此在所有类型位置省略实参。
+
+#### 依赖名称：`typename`、`template` 与 `this->` {#template-dependent-names}
+
+模板中的某些名称依赖参数，定义模板时还无法知道它代表类型、变量还是成员模板。C++ 因而采用两阶段名称查找的规则：非依赖名称一般在定义处解析，依赖名称在实例化时结合具体参数解析；实例化时的查找也受可见性与 ADL 等规则限制，不是任意“再扫一遍所有代码”。
+
+```cpp
+#include <vector>
+
+template<class Container>
+typename Container::value_type firstValue(const Container& c) {
+    // typename 告诉解析器：这个依赖的限定名是类型
+    return c.at(0);
+}
+
+template<class Converter>
+int asInteger(const Converter& converter) {
+    return converter.template convert<int>(3.5);
+    // template 告诉解析器：convert<int> 是成员模板调用
+}
+
+int first = firstValue(std::vector<int>{7, 8});
+```
+
+`typename` 在这里与声明模板参数时的用途不同；不是每个依赖名称前都能加 `typename`，已经确定为类型或不是类型的位置有不同规则。C++20 在部分上下文放宽了省略要求，学习 C++17 时保留上述明确写法更易理解。
+
+当类模板继承一个依赖的基类时，裸写成员名通常不会在定义阶段搜索该基类：
+
+```cpp
+template<class T>
+struct Base {
+    void reset() {}
+};
+
+template<class T>
+struct Derived : Base<T> {
+    void clear() {
+        this->reset(); // 也可用 using Base<T>::reset 再调用
+    }
+};
+```
+
+也能写 `Base<T>::reset()`，但显式限定调用对于虚函数会绕过虚分派；`this->reset()` 保留通常的虚调用语义。模板与用户类型的非成员操作常利用 ADL，例如先 `using std::swap;` 再调用 `swap(a, b)`，让用户类型提供的同命名空间重载有机会被找到。
+
+### Introducing Constraints（模板约束） {#template-constraints}
+
+#### SFINAE 与检测惯用法 {#template-sfinae}
+
+SFINAE 是 **Substitution Failure Is Not An Error**：函数模板参与候选选择等规定场景时，如果将实参代入后的直接上下文无效，可以排除这个候选，而不是立即让整个编译失败。这是一条模板选择规则，不是运行时异常处理。
+
+```cpp
+#include <type_traits>
+
+template<class T, std::enable_if_t<std::is_integral_v<T>, int> = 0>
+T integerTwice(T value) {
+    return value + value;
+}
+
+int doubled = integerTwice(3); // 候选有效，结果 6
+// integerTwice(2.5);         // 候选被排除；没有其他重载则调用仍然报错
+```
+
+`enable_if_t<true, int>` 是 `int`，条件为 false 时没有可用类型。这里把它放在模板参数列表，使条件影响候选选择；若只是函数体里写一个不合法类型，通常就是实例化错误，并不会得到同样的 SFINAE 效果。由实例化其他类等副作用引起的错误也未必属于可安全忽略的直接上下文。
+
+检测一个类型是否有 `.size()`，可用 C++17 的 `void_t`：
+
+```cpp
+#include <string>
+#include <type_traits>
+#include <utility>
+
+template<class T, class = void>
+struct HasSize : std::false_type {};
+
+template<class T>
+struct HasSize<T, std::void_t<decltype(std::declval<const T&>().size())>>
+    : std::true_type {};
+
+static_assert(HasSize<std::string>::value);
+static_assert(!HasSize<int>::value);
+```
+
+`declval<T>()` 让未求值上下文能假想一个指定类型的表达式，不需要真正构造对象，也不能在运行时调用它。`.size()` 合法时，`void_t<...>` 变成 `void`，偏特化匹配；不合法时这条偏特化被排除，回到主模板。这里只检查表达式可用性，不验证 `.size()` 的复杂度或语义；C++20 可用 `requires` 更直接表达这种检测。
+
+除数字分类外，也可用 `is_base_of_v` 检查继承关系，并让 `enable_if_t` 约束模板候选：
+
+```cpp
+#include <type_traits>
+
+struct Serializable { virtual ~Serializable() = default; };
+struct Record : Serializable {};
+
+template<class T,
+         std::enable_if_t<std::is_base_of_v<Serializable, T> &&
+                          std::is_convertible_v<const T*, const Serializable*>, int> = 0>
+const Serializable& asSerializable(const T& object) { return object; }
+
+Record record;
+const Serializable& view = asSerializable(record);
+```
+
+`is_base_of_v` 对私有继承、歧义继承也可能为 true，不能单独证明外部可做基类转换；本例再检查指针可转换性。返回的是原对象的引用，不能超过其生命周期。SFINAE 约束描述的是候选能否成立，不会自动解决继承设计或对象所有权。
+
+#### Concepts、约束与 `requires`（C++20） {#template-concepts}
+
+Concept 是命名的编译期约束，描述一个类型应满足哪些条件。它比在函数体深处报出模板错误更早地表达接口要求，也可以参与重载选择；它不创建接口对象，不要求继承。
+
+```cpp
+#include <concepts>
+
+template<class T>
+requires std::integral<T>
+constexpr T twice(T value) {
+    return value + value;
+}
+
+// 等价的简写：template<std::integral T>
+static_assert(twice(3) == 6);
+// twice(1.5); // double 不满足 integral，候选不可用
+
+template<class T>
+concept Addable = requires(const T& a, const T& b) {
+    { a + b } -> std::convertible_to<T>;
+};
+
+template<Addable T>
+T add(const T& a, const T& b) {
+    return a + b;
+}
+
+static_assert(Addable<int>);
+```
+
+`requires` 有两种要区分的用途：**requires 子句**给声明附加约束，例如 `requires Addable<T>`；**requires 表达式**用来检查一组类型/表达式要求，例如上面 Concept 右侧的 `requires(...) { ... }`，结果是编译期布尔值。
+
+| requires 表达式中的要求 | 示例 | 检查内容 |
+| --- | --- | --- |
+| 简单要求 | `a.size();` | 表达式是否有效，不执行它 |
+| 类型要求 | `typename T::value_type;` | 所命名的类型是否存在 |
+| 复合要求 | `{ a.size() } noexcept -> std::same_as<std::size_t>;` | 表达式、异常说明、结果类型约束 |
+| 嵌套要求 | `requires std::integral<typename T::value_type>;` | 另一个约束是否满足 |
+
+需要多个条件时可以用 `&&`、`||` 组合。约束依赖模板参数时，requires 表达式里的某些无效要求会使结果为 false；它不是在任意非模板上下文中屏蔽编译错误的万能方法。
+
+`std::integral` 包括 `bool`；若业务只允许非 bool 整数，应显式排除它。`Addable` 只检查表达式及转换条件，仍不能自动保证加法的数学性质；数值溢出、分配失败等运行时问题也不会因此消失。
+
+约束更强的重载有时可优先选择，但编译器使用**约束归一化、原子约束同一性与包含关系**等规则，不是一般数学定理证明器。把公共条件定义成同一个 Concept 再组合，通常比在多个重载里重复写相似表达式更易得到预期的约束偏序。别把重载条件、`static_assert` 与 `if constexpr` 混成同一个机制。
+
+Hashable 可以检查类型是否支持需要的哈希操作；下面是补充的 C++20 示例：
+
+```cpp
+#include <concepts>
+#include <cstddef>
+#include <functional>
+#include <string>
+
+template<class T>
+concept Hashable = requires(const T& value) {
+    { std::hash<T>{}(value) } -> std::convertible_to<std::size_t>;
+};
+
+template<Hashable T>
+std::size_t hashValue(const T& value) { return std::hash<T>{}(value); }
+
+static_assert(Hashable<int>);
+static_assert(Hashable<std::string>);
+struct Unhashed {};
+static_assert(!Hashable<Unhashed>);
+```
+
+此 Concept 检查 `std::hash<T>` 是否能用于该表达式；它不检验“相等对象必须得到相同哈希”等语义要求，也不足以单独保证一个类型可作为无序容器的键。键还需要合适的相等比较；无序容器也可采用自定义哈希器，未满足这里的 `Hashable` 不代表所有配置都不可用。
+
+#### `if constexpr` 与标签分派 {#template-if-constexpr}
+
+SFINAE/约束控制“哪些函数可被选中”；`if constexpr`（C++17）控制“已选中的模板实现使用哪条分支”。普通 `if` 两边都必须满足编译要求，条件即使是常量也不能替代这种模板机制。
+
+```cpp
+#include <type_traits>
+
+template<class T>
+auto readValue(T value) {
+    if constexpr (std::is_pointer_v<T>) {
+        return *value;
+    } else {
+        return value;
+    }
+}
+
+int number = 7;
+int a = readValue(number);  // int 版本不实例化解引用分支
+int b = readValue(&number); // 指针版本取出所指值，要求指针有效
+```
+
+在模板实例化中，条件已确定时，被丢弃的分支不会按该实例继续实例化，但仍需能被解析；非依赖名称等错误不应指望被隐藏。在非模板代码里写 `if constexpr(false)` 也不能把任意不合法代码变成合法代码。
+
+这段代码的普通 `auto` 返回值按值推导；若目标是保留引用，需重新设计返回表达式和 `decltype(auto)`，同时确保对象仍存活。选择一个分支，不等于该分支的运行时前提已经满足，例如空指针仍需处理。
+
+在 C++17 之前，可用**标签分派**：让一个统一入口根据 `std::true_type` / `std::false_type` 等标签调用两个不同重载。它把不同实现拆成函数；`if constexpr` 则常把它们集中在一个模板里。类型标签还可以表达优先级和类别，不限于布尔判断。
+
+#### 类型萃取与编译期计算 {#template-traits}
+
+类型萃取（type traits）把类型性质表示成编译期值或另一个类型；标准库 `<type_traits>` 提供大量现成工具。`_v` 通常是布尔/数值变量模板简写（C++17），`_t` 通常是成员类型别名简写（多见于 C++14）。
+
+```cpp
+#include <type_traits>
+
+static_assert(std::is_integral_v<int>);
+static_assert(!std::is_integral_v<double>);
+static_assert(std::is_same_v<std::remove_const_t<const int>, int>);
+
+using Raw = std::remove_cv_t<std::remove_reference_t<const int&>>;
+static_assert(std::is_same_v<Raw, int>);
+
+template<class T>
+struct IsPointer : std::false_type {};
+
+template<class T>
+struct IsPointer<T*> : std::true_type {};
+
+static_assert(IsPointer<int*>::value);
+```
+
+上例主模板与偏特化构成一个简单类型判断器；生产代码可直接使用 `std::is_pointer`。常用工具还包括 `is_same`、`is_constructible`、`is_invocable`（C++17）、`conditional_t`、`common_type_t`、`remove_reference_t` 与 `decay_t`。
+
+`decay_t` 不只是去掉引用/限定，还把数组与函数变成指针；C++20 的 `remove_cvref_t` 则只去掉引用与顶层 cv 限定。选择错误的变换可能丢掉数组长度或接口需要的引用性质。`static_assert` 用于编译时验证，而 `constexpr` 函数是否在编译期执行还取决于调用上下文；“模板参数编译时确定”不代表模板函数体一定在编译期运行。
+
+### Interesting Features（模板的其他功能） {#template-features}
+
+#### 参数包与折叠表达式 {#template-packs}
+
+参数包（parameter pack）表示零个或多个模板参数；函数参数包则表示零个或多个函数参数。`...` 的展开把某个模式应用到包内每一个元素，`sizeof...(Ts)` 得到参数个数。
+
+```cpp
+#include <iostream>
+
+template<class... Ts>
+void printAll(const Ts&... args) {
+    ((std::cout << args << ' '), ...); // C++17：对逗号运算符进行折叠
+    std::cout << '\n';
+}
+
+template<class... Ts>
+auto sum(Ts... args) {
+    return (0 + ... + args); // 有初始值的左折叠：((0 + a) + b) + c
+}
+```
+
+`printAll(1, "ready", 2.5)` 可接收不同类型，只要求各参数支持输出。这里使用逗号折叠，输出按从左到右的顺序进行；不能据此推断所有包展开都具有同样的求值顺序。
+
+| 折叠形式 | 三个参数时的括号结构 |
+| --- | --- |
+| `(... op pack)` | `(a op b) op c` |
+| `(pack op ...)` | `a op (b op c)` |
+| `(init op ... op pack)` | `((init op a) op b) op c` |
+| `(pack op ... op init)` | `a op (b op (c op init))` |
+
+折叠方向对减法等非结合运算很重要。没有初始值的一元折叠，仅 `&&`、`||`、逗号允许空包，结果分别为 `true`、`false`、`void()`；加法等空包需自行提供初始值。`sum()` 的结果为 `0`，但初始值 `0` 也会影响类型和重载，不能直接用于所有可相加的对象。
+
+在 C++11/14 中，参数包也能配合递归重载展开；C++17 折叠表达式简化了很多这种写法。使用 `std::index_sequence` / `std::make_index_sequence`（C++14）还能生成编译期索引包，用于按下标展开 tuple 等固定结构；C++17 的 `std::apply` 则直接把 tuple 中的元素作为函数参数展开。
+
+#### 其他模板特性
+
+##### tuple、get 与 make_tuple
+
+`std::tuple` 用可变参数类模板保存不同类型的元素；`std::get<I>` 通过编译期索引访问，`std::make_tuple` 便于推导元素类型：
+
+```cpp
+#include <functional>
+#include <string>
+#include <tuple>
+#include <type_traits>
+
+int count = 3;
+auto record = std::make_tuple(count, std::string("ready"));
+static_assert(std::is_same_v<decltype(record), std::tuple<int, std::string>>);
+std::get<0>(record) = 10; // 修改 tuple 内的副本，原 count 仍为 3
+
+auto references = std::make_tuple(std::ref(count));
+std::get<0>(references) = 12; // std::ref 被展开为引用，修改原 count
+```
+
+普通 `make_tuple` 对实参做类似 `decay` 的类型处理并保存值；`std::ref` / `std::cref` 是明确保存引用的例外。`std::tie` 也可形成左值引用 tuple；这些引用仍不能超过原对象的生命周期。按类型写 `std::get<T>`（C++14）要求该类型在 tuple 中恰好出现一次；运行时变化的整数不能直接作为 `get<I>` 的模板实参。
+
+C++17 可用结构化绑定拆开 tuple；`std::apply` 将 tuple 的元素展开给可调用对象，与前面的参数包机制对应。
+
+##### 别名模板与变量模板
+
+别名模板给复杂类型起名字，不创建一个具有新身份的类型：
+
+```cpp
+#include <cstddef>
+#include <vector>
+
+template<class T>
+using Vec = std::vector<T>; // C++11
+
+template<class T>
+inline constexpr std::size_t objectBytes = sizeof(T); // 变量模板 C++14；inline C++17
+
+Vec<int> values;
+static_assert(objectBytes<int> == sizeof(int));
+```
+
+`Vec<int>` 就是 `std::vector<int>`。变量模板则定义一族变量，例如 `objectBytes<int>`、`objectBytes<double>`；可用 `constexpr` 保存编译期计算结果。C++17 的 `inline` 变量便于把同一个定义放在被多个翻译单元包含的头文件中。
+
+##### 模板模板参数
+
+模板模板参数表示“传入一种容器模板”，再由内部补上元素类型：
+
+```cpp
+#include <deque>
+#include <vector>
+
+template<class T, template<class...> class Container = std::vector>
+struct Collection {
+    Container<T> values;
+};
+
+Collection<int> vectorCollection;
+Collection<int, std::deque> dequeCollection;
+```
+
+这里要求传入模板能用 `Container<T>` 构造有效类型；`std::array` 还需要容量参数，不能按这个接口直接替换。参数形状兼容与操作语义兼容是两件事：如果算法使用下标操作，所选容器还必须提供相应操作。
+
+##### extern template
+
+`extern template` 是显式实例化声明，用来抑制相应的隐式实例化；程序仍应在其他翻译单元提供需要的显式实例化定义。它通常用于集中生成有限类型的版本，不是让任意模板实现都能隐藏在 `.cpp` 中的通用开关。完整的多文件布局见[编译与链接](#template-instantiation)。
+
+##### 转发引用、引用折叠与完美转发 {#template-forwarding}
+
+包装函数需要把参数交给另一个函数。如果把所有参数按值接收，会丢掉引用并可能复制；如果一律 `std::move`，又会把调用者的左值当成可移动来源。完美转发的目标是保持调用者传入时的值类别与相关限定。
+
+```cpp
+#include <utility>
+
+template<class F, class... Args>
+decltype(auto) relay(F&& function, Args&&... args) {
+    return std::forward<F>(function)(std::forward<Args>(args)...);
+}
+```
+
+这里 `F`、`Args` 从实参推导，所以 `F&&`、`Args&&` 是转发引用。传入 `int` 左值时，`Args` 可推导为 `int&`，`Args&&` 经折叠得到 `int&`；传入右值时，`Args` 推导为 `int`，形参为 `int&&`。
+
+| 组合 | 折叠结果 |
+| --- | --- |
+| `T& &`、`T& &&`、`T&& &` | `T&` |
+| `T&& &&` | `T&&` |
+
+引用折叠通过模板替换或类型别名产生，不能直接在普通声明中把两个 `&` 类型拼写出来。形参有名字后，它在函数体里的表达式是左值；`std::forward<T>` 根据推导出的 `T` 恢复应有的转发形式。`std::move` 则无条件把通常的对象表达式转换为将亡值，两者不能互换。
+
+`const T&&` 不是上述转发引用。`class Box<T>` 的普通成员参数 `T&&` 若 `T` 已由类的实参固定，也不是转发引用；需要成员自身的 `template<class U> ... (U&&)` 才能进行这一推导。
+
+此处 `decltype(auto)` 保留被调用函数的引用返回值；若包装器改成普通 `auto`，可能复制结果。这个最小包装器支持普通可调用对象；成员函数指针等形式可改用 `std::invoke`（C++17）。还要考虑返回引用的生命周期、`noexcept` 传播，且不要多次转发同一个可移动对象后继续假定它保留原资源。花括号列表没有普通表达式类型，裸 `{1, 2}` 也不能直接供这种 `Args&&` 推导。
+
+##### 泛型 Lambda 与缩写函数模板
+
+C++14 泛型 Lambda 可用 `auto` 形参，它的调用运算符本质上是成员函数模板：
+
+```cpp
+auto multiply = [](auto a, auto b) { return a * b; };
+int integer = multiply(2, 3);
+double real = multiply(2.5, 4.0);
+```
+
+两个独立的 `auto` 对应两个独立类型参数，不要求 `a`、`b` 同类型。想让参数共享一个 `T`，C++20 可以显式声明 Lambda 模板参数：
+
+```cpp
+auto sameTypeAdd = []<class T>(T a, T b) { return a + b; }; // C++20
+int total = sameTypeAdd(2, 3);
+// sameTypeAdd(2, 3.5); // 同一个 T 推导冲突
+
+auto addAny(auto a, auto b) { return a + b; } // C++20：缩写函数模板
+```
+
+普通 `auto` 返回类型推导从 C++14 就存在，而在普通函数参数列表里用 `auto` 是 C++20 的缩写函数模板语法，两者不是同一版本的功能。Lambda 的 `auto&&` 形参也可用于转发，仍要在函数体里配合正确的 `std::forward`；不要仅因出现 `&&` 就认定已经完成完美转发。
+
+##### 模板元编程、策略类与 CRTP
+
+模板元编程用模板选择与编译期计算产生类型或值。类型萃取、参数包与条件类型都属于常见工具；能用清晰的 `constexpr` 函数计算一个数值时，通常不用为了数值运算建立很深的递归类模板。
+
+**策略类（policy）**把某种可替换行为作为模板参数：例如日志器的输出后端、容器的分配器、排序算法的比较器。选择在编译时完成，常可内联，但每种策略组合会产生新的类型；若必须在运行时切换，应考虑虚接口、函数对象或其他组合方案。
+
+CRTP（Curiously Recurring Template Pattern）让派生类把自己作为基类模板的参数，从而获得静态分派：
+
+```cpp
+template<class Derived>
+class Runnable {
+public:
+    void run() {
+        static_cast<Derived&>(*this).runImpl();
+    }
+};
+
+class Job : public Runnable<Job> {
+public:
+    void runImpl() { /* 执行具体任务 */ }
+};
+```
+
+`Runnable<Job>` 在编译时知道 `Job`，不需要借助虚函数来决定 `runImpl`。代价是不同派生类对应不同基类实例化，不天然形成同一种可在运行时异构存储的基类接口。这个转换要求实际派生对象与参数吻合；不要独立构造一个 `Runnable<Job>` 后调用 `run()`。基类构造/析构阶段也不能借此安全访问尚未构造或已销毁的派生状态。
+
+在 C++20 中，Concepts 可约束策略接口；在 C++23 中，显式对象参数（常称 deducing this）还能简化部分依赖 CRTP 的成员实现，但需要相应语言与编译器支持。这些技术是实现选择，不是每个类都需要采用的结构。
+
+#### 返回类型推导 {#template-return-deduction}
+
+函数模板的结果类型不一定与某个输入类型相同。可以使用 `auto`、`decltype`、`decltype(auto)` 或尾置返回类型描述，选择取决于是否需要保留引用。
+
+```cpp
+#include <type_traits>
+
+template<class X, class Y>
+auto addTrailing(X x, Y y) -> decltype(x + y) { // 尾置返回类型，C++11
+    return x + y;
+}
+
+template<class X, class Y>
+auto addInferred(X x, Y y) { return x + y; } // 从函数体推导，C++14
+
+template<class T>
+auto readCopy(T& value) { return value; } // 普通 auto，按值返回
+
+template<class T>
+decltype(auto) readReference(T& value) { return (value); } // C++14，保留引用
+
+int value = 3;
+static_assert(std::is_same_v<decltype(addTrailing(1, 2.5)), double>);
+static_assert(std::is_same_v<decltype(readCopy(value)), int>);
+static_assert(std::is_same_v<decltype(readReference(value)), int&>);
+```
+
+尾置返回类型在参数列表之后，因而能引用参数名 `x`、`y`；`decltype(x + y)` 根据表达式确定类型，表达式本身不在此执行。普通 `auto` 返回推导通常去掉顶层限定与引用；`decltype(auto)` 按 `decltype` 规则确定结果，括号以及表达式值类别因此会影响结果。
+
+本例 `value` 是声明为 `T&` 的参数，所以 `decltype(value)` 本身也是 `T&`；括号的差异在按值形参上更明显：
+
+```cpp
+template<class T>
+decltype(auto) copyValue(T value) { return value; } // decltype(value) = T，按值返回
+// 若写 return (value)，会得到 T&，引用却指向即将销毁的局部形参。
+```
+
+不要为保留引用而引用局部变量、按值形参或已销毁的临时对象。`auto` 推导返回类型的定义一般需要在使用前可见；尾置返回类型中的替换可用于候选判断，而仅在函数体里失败的返回推导通常不能当作安全的 SFINAE 手段。前面的类型推导章节给出了完整的 `decltype` 与 `auto` 规则。
+
+#### 性能、错误定位与常见陷阱
+
+模板能把类型选择提前，减少某些运行时间接调用，并给优化器更多信息；但不是“用了模板就一定更快”。代价包括编译时间增加、错误信息变长，以及许多实例化带来的代码体积增长。链接器可能合并部分机器代码，但不能依赖它消除所有膨胀。
+
+遇到错误时，从报错中最接近自己调用位置的实例化链入手：确认具体模板实参、哪个候选被排除、哪种操作不合法；必要时在局部使用 `static_assert` 验证推导结果，再检查根因，而不是先改标准库里的报错行。
+
+| 容易误解的说法 | 更准确的规则 |
+| --- | --- |
+| 模板可以接收任何类型 | 实例化所需操作、约束和运行时前提都必须满足 |
+| 模板函数在编译期运行 | 模板参数选择发生在编译时，函数仍可在运行时执行 |
+| `T&&` 总是右值引用 | 可推导、无 cv 限定的函数模板类型参数可能构成转发引用 |
+| 任何替换错误都是 SFINAE | 适用场景与直接上下文有范围，函数体等错误通常仍会失败 |
+| `if constexpr` 隐藏任何错误 | 丢弃实例化分支不等于不解析、不检查所有非依赖问题 |
+| 函数模板能偏特化 | 应使用重载或其他选择机制 |
+| 加上 Concept 就证明语义正确 | 编译器可检查语法/类型条件，许多语义要求仍靠设计保证 |
+| 全特化自动继承通用实现 | 特化是另一个实现，要自己保持所需接口 |
+| 模板自动避免悬空引用 | 所有权、对象生命周期和返回值类别仍需明确 |
+| 模板必须全部写在头文件 | 通用隐式实例化通常如此，有限版本可集中显式实例化 |
+
+#### 如何选择模板形式 {#template-selection}
+
+先判断变化发生在整个类型，还是某个函数的输入；两者也可以同时存在。
+
+| 需要变化的部分 | 常见选择 | 判断依据 |
+| --- | --- | --- |
+| 一个独立算法的输入类型 | 函数模板 | 算法可复用，但不需要为它创建一族对象类型 |
+| 类的存储类型或接口类型随参数变化 | 类模板 | 例如 `Box<int>` 与 `Box<std::string>` 的成员类型不同；不要求所有成员都随参数变化 |
+| 类的存储类型固定，只有某个函数需要接收不同类型 | 普通类中的成员函数模板 | 例如同一个 `Printer` 对象可以输出整数与字符串，无须创建 `Printer<int>` |
+| 类的存储类型需要变化，构造时还要接收另一种类型 | 类模板与构造函数模板组合 | 外层 `T` 决定保存的类型，内层 `U` 决定这次构造接收的类型；如 `Coordinate<double>` 从 `Coordinate<int>` 构造 |
+
+这是一种选型思路，不是硬性规定：已知只有少量输入类型时，普通重载可能更直接；需要运行时切换不同实现时，还应考虑虚接口或类型擦除。构造函数模板只负责允许的构造方式，不会自动提供跨类型赋值，也不会替代同类型拷贝构造函数。
+
+#### 综合示例：固定容量缓冲区（C++17） {#template-example}
+
+这个可独立编译的程序把类型参数、非类型参数、成员模板、完美转发、折叠表达式和编译时约束放在同一个小场景中。容量是编译期配置；添加几条记录和容量检查仍在运行时发生。
+
+```cpp
+#include <array>
+#include <cstddef>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+#include <type_traits>
+#include <utility>
+
+template<class T, std::size_t Capacity>
+class FixedBuffer {
+    static_assert(Capacity > 0, "capacity must be positive");
+    static_assert(std::is_default_constructible_v<T>, "slots require default construction");
+    std::array<T, Capacity> slots_{};
+    std::size_t size_ = 0;
+public:
+    template<class U,
+             std::enable_if_t<std::is_assignable_v<T&, U&&>, int> = 0>
+    void push(U&& value) {
+        if (size_ == Capacity) throw std::length_error("buffer full");
+        slots_[size_] = std::forward<U>(value);
+        ++size_; // 只有赋值成功后才增加逻辑大小
+    }
+
+    template<class... Us>
+    void pushAll(Us&&... values) {
+        (push(std::forward<Us>(values)), ...);
+    }
+
+    std::size_t size() const { return size_; }
+    static constexpr std::size_t capacity() { return Capacity; }
+
+    const T& at(std::size_t index) const {
+        if (index >= size_) throw std::out_of_range("invalid index");
+        return slots_[index];
+    }
+};
+
+int main() {
+    FixedBuffer<std::string, 3> buffer;
+    std::string first = "alpha";
+    buffer.pushAll(first, std::string("beta"), "gamma");
+    static_assert(decltype(buffer)::capacity() == 3);
+    for (std::size_t i = 0; i < buffer.size(); ++i)
+        std::cout << buffer.at(i) << '\n';
+}
+```
+
+输出为三行 `alpha`、`beta`、`gamma`。`T` 是元素类型，`Capacity` 是进入类型的容量值；`U` 在每次 push 调用中分别推导，左值字符串复制、右值字符串可移动，字面量则按字符串赋值接口处理。引用折叠与转发保持参数类别，但字符串对象真正做什么仍由它的赋值运算符决定。
+
+这不是 `std::vector` 的替代实现：所有槽位预先默认构造，所以限制了可用类型；`pushAll` 逐项执行，若中途失败，前面成功添加的项目仍保留，不能宣称整个批次有强异常保证。若需要支持不能默认构造的类型、严格事务式批次或可变容量，应进一步设计存储与异常策略。
+
+#### 版本速查与原始参考
+
+| 标准 | 本节相关能力 |
+| --- | --- |
+| C++98/03 | 函数/类模板、特化、模板模板参数、显式实例化 |
+| C++11 | 参数包、别名模板、转发引用、`std::forward`、基础 type traits |
+| C++14 | 变量模板、泛型 Lambda、许多 `_t` 简写、`index_sequence` |
+| C++17 | 折叠表达式、`if constexpr`、CTAD、`template<auto>`、inline 变量、`void_t`、许多 `_v` 简写 |
+| C++20 | Concepts、`requires`、缩写函数模板、显式 Lambda 模板参数、扩展非类型参数与部分 CTAD 能力 |
+| C++23 | 显式对象参数，可简化部分静态多态与转发成员设计 |
+
+以下链接指向 WG21 官方发布的工作草案，可在 PDF 中搜索方括号内的稳定条款标识；草案不是付费正式标准，阅读时也要注意版本及后续缺陷修正。
+
+- [C++17 工作草案 N4659](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4659.pdf)：模板参数 `[temp.param]`、调用推导 `[temp.deduct.call]`、推导指南 `[temp.deduct.guide]`、偏特化 `[temp.class.spec]`、显式特化 `[temp.expl.spec]` 与显式实例化 `[temp.explicit]`。
+- 同一份 C++17 草案还包括依赖名称 `[temp.dep]`、参数包 `[temp.variadic]`、折叠表达式 `[expr.prim.fold]`、转发辅助函数 `[forward]`、模板推导与替换 `[temp.deduct]` 和 `if constexpr` `[stmt.if]`。
+- [C++20 工作草案 N4861](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/n4861.pdf)：Concept 定义 `[temp.concept]`、约束 `[temp.constr]`、requires 表达式 `[expr.prim.req]`，以及模板参数和推导规则的扩展。
+- [C++23 工作草案 N4950](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/n4950.pdf)：函数声明 `[dcl.fct]` 中的显式对象参数；本节仅介绍其用途，不将其混入 C++17 示例。
+
+
 ## 容器选择
 
 先记两件事：
 
-- `vector<int> nums;` 是对的；`vector nums;` 是错的，因为没写元素类型
+- `vector<int> nums;` 明确写出元素类型；`vector nums;` 无法推导类型，仍然不合法，但 C++17 起 `vector nums{1, 2, 3};` 可通过 CTAD 推导为 `vector<int>`
 - `unordered_map` / `unordered_set` 虽然“无序”，但并不代表不能遍历
 
 补充理解：
 
 - `vector` 是模板类：`template <typename T> class vector { ... };`
-- `unordered_map` 是双模板参数，本质是“键 -> 值”
+- `unordered_map` 的前两个模板参数是键类型和映射值类型，后面还可配置哈希器、相等比较器与分配器，本质是“键 -> 值”
 - `unordered_set` 是单模板参数，本质是“元素是否存在”
-- `unordered_map<int, vector<int>>` 这类写法默认不行，因为 `vector<int>` 没有现成哈希函数
+- `unordered_map<int, vector<int>>` 是合法的：被哈希的是键 `int`，值 `vector<int>` 不需要可哈希；若把 `vector<int>` 用作键，默认哈希器才通常不满足要求，需要自行设计哈希与相等语义
 
 ```cpp
 #include <unordered_set>
