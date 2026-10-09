@@ -1,0 +1,18 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+class Account {
+ - balanceCents : Integer = 0
+ + balance() : Integer {query}
+ + withdraw(in amount : Integer) : Boolean
+ # validate() : Boolean
+ {static} + count : Integer
+}
+interface IWithdraw {
+ + withdraw(in amount : Integer) : Boolean
+}
+Account ..|> IWithdraw
+@enduml

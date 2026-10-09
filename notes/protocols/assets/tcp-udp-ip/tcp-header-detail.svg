@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="520" viewBox="0 0 1120 520" role="img" aria-labelledby="title desc">
+  <title id="title">TCP header detail fields</title>
+  <desc id="desc">TCP header key fields including ports, sequence number, acknowledgment number, flags, window and checksum.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.p{fill:#dbeafe;stroke:#2563eb;stroke-width:2}.s{fill:#dcfce7;stroke:#16a34a;stroke-width:2}.f{fill:#fef3c7;stroke:#d97706;stroke-width:2}.w{fill:#fee2e2;stroke:#dc2626;stroke-width:2}.o{fill:#ede9fe;stroke:#7c3aed;stroke-width:2}
+      .text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:17px;fill:#0f172a}.title{font-size:25px;font-weight:700}.small{font-size:14px;fill:#475569}
+    </style>
+  </defs>
+  <rect class="bg" width="1120" height="520"/>
+  <text class="text title" x="560" y="45" text-anchor="middle">TCP 报头关键字段</text>
+  <rect class="p" x="80" y="90" width="220" height="54"/><text class="text" x="190" y="123" text-anchor="middle">源端口 16 bit</text>
+  <rect class="p" x="300" y="90" width="220" height="54"/><text class="text" x="410" y="123" text-anchor="middle">目的端口 16 bit</text>
+  <rect class="s" x="80" y="154" width="440" height="54"/><text class="text" x="300" y="187" text-anchor="middle">Sequence Number 32 bit</text>
+  <rect class="s" x="80" y="218" width="440" height="54"/><text class="text" x="300" y="251" text-anchor="middle">Acknowledgment Number 32 bit</text>
+  <rect class="f" x="80" y="282" width="120" height="54"/><text class="text" x="140" y="315" text-anchor="middle">头长</text>
+  <rect class="f" x="200" y="282" width="210" height="54"/><text class="text" x="305" y="315" text-anchor="middle">Flags</text>
+  <rect class="w" x="410" y="282" width="110" height="54"/><text class="text" x="465" y="315" text-anchor="middle">Window</text>
+  <rect class="w" x="80" y="346" width="220" height="54"/><text class="text" x="190" y="379" text-anchor="middle">Checksum</text>
+  <rect class="w" x="300" y="346" width="220" height="54"/><text class="text" x="410" y="379" text-anchor="middle">Urgent Pointer</text>
+  <rect class="o" x="80" y="410" width="440" height="54"/><text class="text" x="300" y="443" text-anchor="middle">Options + Padding</text>
+
+  <rect class="p" x="620" y="90" width="420" height="74"/><text class="text" x="830" y="120" text-anchor="middle">端口</text><text class="small" x="830" y="146" text-anchor="middle">定位两端进程，形成四元组的一部分</text>
+  <rect class="s" x="620" y="185" width="420" height="74"/><text class="text" x="830" y="215" text-anchor="middle">序号与确认号</text><text class="small" x="830" y="241" text-anchor="middle">保证字节流按序确认和重组</text>
+  <rect class="f" x="620" y="280" width="420" height="74"/><text class="text" x="830" y="310" text-anchor="middle">SYN / ACK / FIN / RST</text><text class="small" x="830" y="336" text-anchor="middle">表达连接建立、确认、释放和异常复位</text>
+  <rect class="w" x="620" y="375" width="420" height="74"/><text class="text" x="830" y="405" text-anchor="middle">窗口与校验</text><text class="small" x="830" y="431" text-anchor="middle">窗口用于流量控制，校验和发现传输错误</text>
+</svg>

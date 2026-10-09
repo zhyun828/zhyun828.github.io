@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="360" viewBox="0 0 1080 360" role="img" aria-labelledby="title desc">
+  <title id="title">Modbus RTU timing</title>
+  <desc id="desc">Modbus RTU frame boundaries use t3.5 silent interval and t1.5 character gap rule.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.line{stroke:#334155;stroke-width:3}.idle{stroke:#94a3b8;stroke-width:3;stroke-dasharray:8 8}
+      .byte{fill:#dbeafe;stroke:#2563eb;stroke-width:2;rx:7}.gap{fill:#fee2e2;stroke:#dc2626;stroke-width:2;rx:7}
+      .ok{fill:#dcfce7;stroke:#16a34a;stroke-width:2;rx:7}.text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:18px;fill:#0f172a}
+      .title{font-size:24px;font-weight:700}.small{font-size:16px;fill:#475569}.arrow{stroke:#64748b;stroke-width:2;marker-end:url(#arrow)}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1080" height="360"/>
+  <text class="text title" x="540" y="44" text-anchor="middle">Modbus RTU 帧间隔</text>
+  <line class="idle" x1="70" y1="130" x2="180" y2="130"/>
+  <rect class="ok" x="70" y="90" width="110" height="80"/>
+  <text class="text" x="125" y="124" text-anchor="middle">空闲</text>
+  <text class="small" x="125" y="150" text-anchor="middle">≥ t3.5</text>
+
+  <rect class="byte" x="220" y="95" width="90" height="70"/><text class="text" x="265" y="136" text-anchor="middle">Addr</text>
+  <rect class="byte" x="325" y="95" width="90" height="70"/><text class="text" x="370" y="136" text-anchor="middle">Func</text>
+  <rect class="byte" x="430" y="95" width="90" height="70"/><text class="text" x="475" y="136" text-anchor="middle">Data</text>
+  <rect class="byte" x="535" y="95" width="90" height="70"/><text class="text" x="580" y="136" text-anchor="middle">Data</text>
+  <rect class="byte" x="640" y="95" width="90" height="70"/><text class="text" x="685" y="136" text-anchor="middle">CRC L</text>
+  <rect class="byte" x="745" y="95" width="90" height="70"/><text class="text" x="790" y="136" text-anchor="middle">CRC H</text>
+
+  <rect class="ok" x="880" y="90" width="130" height="80"/>
+  <text class="text" x="945" y="124" text-anchor="middle">下一帧前</text>
+  <text class="small" x="945" y="150" text-anchor="middle">≥ t3.5</text>
+
+  <line class="arrow" x1="310" y1="210" x2="325" y2="210"/><text class="small" x="318" y="235" text-anchor="middle">&lt; t1.5</text>
+  <line class="arrow" x1="415" y1="210" x2="430" y2="210"/><text class="small" x="423" y="235" text-anchor="middle">&lt; t1.5</text>
+  <line class="arrow" x1="520" y1="210" x2="535" y2="210"/><text class="small" x="528" y="235" text-anchor="middle">&lt; t1.5</text>
+  <line class="arrow" x1="625" y1="210" x2="640" y2="210"/><text class="small" x="633" y="235" text-anchor="middle">&lt; t1.5</text>
+  <line class="arrow" x1="730" y1="210" x2="745" y2="210"/><text class="small" x="738" y="235" text-anchor="middle">&lt; t1.5</text>
+
+  <rect class="gap" x="402" y="275" width="275" height="42"/>
+  <text class="small" x="540" y="302" text-anchor="middle">帧内间隔超过 t1.5：通常判为无效帧</text>
+</svg>

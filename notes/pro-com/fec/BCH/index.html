@@ -1,0 +1,4465 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Notes on embedded systems, robotics, C++, FPGA, and interview preparation.">
+      
+      
+      
+        <link rel="canonical" href="https://zhyun828.github.io/notes/pro-com/fec/BCH/">
+      
+      
+        <link rel="prev" href="../Forward-Error-Correction/">
+      
+      
+        <link rel="next" href="../LDPC/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>BCH - ZY Engineering Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/home.css">
+    
+      <link rel="stylesheet" href="../../../../stylesheets/page-search.css?v=2">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#bch" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../../.." title="ZY Engineering Notes" class="md-header__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ZY Engineering Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              BCH
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal"  aria-label="深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="cyan"  aria-label="浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m3.55 19.09 1.41 1.41 1.8-1.79-1.42-1.42M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6c0-3.32-2.69-6-6-6m8 7h3v-2h-3m-2.76 7.71 1.8 1.79 1.41-1.41-1.79-1.8M20.45 5l-1.41-1.4-1.8 1.79 1.42 1.42M13 1h-2v3h2M6.76 5.39 4.96 3.6 3.55 5l1.79 1.81zM1 13h3v-2H1m12 9h-2v3h2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="ZY Engineering Notes" class="md-nav__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ZY Engineering Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../protocols/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通信协议
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    通信协议
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/usart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    USART
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/i2c/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I2C
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/spi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SPI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/can/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/tcp-udp-ip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TCP / UDP / IP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/modbus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modbus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/ethernet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ethernet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/lin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LIN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/http-https/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP / HTTPS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    专业通信
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    专业通信
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_1" id="__nav_2_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DVB-S2
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    DVB-S2
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dvb-s2/Communication-System/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通信系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dvb-s2/Demapper-and-Interleaver/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    解映射与交织
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_2" id="__nav_2_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    前向纠错
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    前向纠错
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Forward-Error-Correction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FEC 基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BCH
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BCH
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-xor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 先从一个比特翻转与 XOR 开始
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 比特串为什么能写成多项式
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 循环码：把移位变成代数操作
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-gf2-gf2m" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 从 GF(2) 建造 GF(\(2^m\))
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 从 GF(2) 建造 GF(\(2^m\))">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 为什么需要新的元素
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-gf16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 一张够用的 GF(16) 幂表
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 最小多项式：从有限域的根回到二进制系数
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-bch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. BCH 生成多项式为什么能保证纠错
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. BCH 生成多项式为什么能保证纠错">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 在连续幂处制造零值
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 从连续根到最小距离：不只凭直觉
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 系统编码：用求余制造 8 个校验位
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-syndrome" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 接收端第一步：syndrome 怎样反映错误
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. 接收端第一步：syndrome 怎样反映错误">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 定义、单位与性质
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-syndrome" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 syndrome 如何编码位置
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 错误定位多项式：把未知位置变成根
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. 错误定位多项式：把未知位置变成根">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-syndrome" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 syndrome 递推从哪里来
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-berlekampmassey" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Berlekamp–Massey 逐轮手算
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Berlekamp–Massey 逐轮手算">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 先解释算法中的状态
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-syndrome" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 把四个 syndrome 真正代进去
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-chien" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Chien 搜索与最终纠错
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-cc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. 对照 C/C++ 源码：逐层检查什么
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-dvb-s2-bch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. 与 DVB-S2 BCH 外码的关系
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. 常见误区与知识地图
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        权威原始资料
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LDPC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LDPC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../versal/Versal-AIE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versal AI Engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../acceleration/High-Throughput-Architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高吞吐架构
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面试
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    面试
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%9D%A2%E8%AF%95/%E5%BF%AB%E9%80%9F%E6%A3%80%E7%B4%A2%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速检索表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%9D%A2%E8%AF%95/%E5%B5%8C%E5%85%A5%E5%BC%8F%E9%9D%A2%E8%AF%95%E6%B1%87%E6%80%BB%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    嵌入式面试汇总表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%9D%A2%E8%AF%95/%E9%AB%98%E9%A2%91%E9%A2%98%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高频题深度解析
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%9D%A2%E8%AF%95/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E9%97%AE%E7%AD%94%E9%9D%A2%E8%AF%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目经历问答面试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arduino
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Arduino
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/basics.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5_2" id="__nav_2_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    projet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/projet/projet.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/projet/pre.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    pre
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/projet/code.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/projet/thoughts.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thoughts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cpp
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cpp
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Cpp/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Cpp/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Cpp/cmake%E6%95%99%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CMake 与 CMakeLists.txt
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_4" id="__nav_2_6_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UML
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    UML
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Cpp/UML/UML/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    系统学习教材
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Cpp/UML/UML-Cheatsheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    分类与图解速查
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Cpp/design_pattern/Design-Patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    设计模式详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Cpp/design_pattern/Design-Patterns-Cheatsheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    设计模式速查
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    embedded_system
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    embedded_system
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../embedded_system/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_7_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../embedded_system/TP/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TP
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    TP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_8" id="__nav_2_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FPGA
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    FPGA
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../FPGA/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../FPGA/zynq-hardware-acceleration-intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zynq 硬件乘法加速器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_9" id="__nav_2_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gazebo
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    gazebo
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ros/gazebo/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_10" id="__nav_2_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_10_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_10_2" id="__nav_2_10_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux驱动
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_10_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    linux驱动
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/00_%E4%B8%8B%E8%BD%BD%E8%B5%84%E6%96%99/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    下载资料
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/01_%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    搭建开发环境
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/02_%E9%80%9A%E7%94%A8%E7%9A%84%E9%A9%B1%E5%8A%A8%E6%A1%86%E6%9E%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用的驱动框架
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/03_%E4%BD%BF%E7%94%A8%E6%A8%A1%E6%9D%BF%E6%93%8D%E4%BD%9C%E7%A1%AC%E4%BB%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    使用模板操作硬件
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/04_%E5%B9%B3%E5%8F%B0%E6%80%BB%E7%BA%BF%E8%AE%BE%E5%A4%87%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AE%BE%E5%A4%87%E6%A0%91/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    平台总线设备模型和设备树
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/05_I2C%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F%E6%A8%A1%E6%9D%BF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I2C驱动程序模板
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVGL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LVGL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LVGL/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_12" id="__nav_2_12_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ros
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ros
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ros/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ros/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_13" id="__nav_2_13_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    stm32
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../stm32/stm32_knowledge_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32_knowledge_notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../stm32/rtos_freertos_notes_compact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RTOS / FreeRTOS 知识整理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../stm32/%E5%A4%96%E8%AE%BE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    外设
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../stm32/%E5%AF%84%E5%AD%98%E5%99%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    寄存器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-xor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 先从一个比特翻转与 XOR 开始
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 比特串为什么能写成多项式
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 循环码：把移位变成代数操作
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-gf2-gf2m" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 从 GF(2) 建造 GF(\(2^m\))
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 从 GF(2) 建造 GF(\(2^m\))">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 为什么需要新的元素
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-gf16" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 一张够用的 GF(16) 幂表
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 最小多项式：从有限域的根回到二进制系数
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-bch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. BCH 生成多项式为什么能保证纠错
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. BCH 生成多项式为什么能保证纠错">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 在连续幂处制造零值
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 从连续根到最小距离：不只凭直觉
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 系统编码：用求余制造 8 个校验位
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-syndrome" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 接收端第一步：syndrome 怎样反映错误
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. 接收端第一步：syndrome 怎样反映错误">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 定义、单位与性质
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-syndrome" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 syndrome 如何编码位置
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 错误定位多项式：把未知位置变成根
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. 错误定位多项式：把未知位置变成根">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-syndrome" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 syndrome 递推从哪里来
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-berlekampmassey" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Berlekamp–Massey 逐轮手算
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Berlekamp–Massey 逐轮手算">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 先解释算法中的状态
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-syndrome" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 把四个 syndrome 真正代进去
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-chien" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Chien 搜索与最终纠错
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-cc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. 对照 C/C++ 源码：逐层检查什么
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-dvb-s2-bch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. 与 DVB-S2 BCH 外码的关系
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. 常见误区与知识地图
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        权威原始资料
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="导航栏" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Notes
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../dvb-s2/Communication-System/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    专业通信
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../Forward-Error-Correction/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    前向纠错
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="bch">从零理解 BCH 码：有限域、编码与完整译码<a class="headerlink" href="#bch" title="Permanent link">&para;</a></h1>
+<p>BCH（Bose–Chaudhuri–Hocquenghem）码回答的问题是：发送端能否按<strong>可计算的代数规则</strong>加入冗余，让接收端即使不知道原信息，也能定位并纠正一定数量的比特翻转？答案是可以。它的基本路线是让每个合法码字对应的多项式在一组指定的有限域元素处等于零；错误会破坏这些零值，破坏的结果（syndrome）又包含错误位置的信息。</p>
+<p>本章不要求预先掌握有限域、多项式或循环码。我们先把每一步真正需要的运算建起来，再用一个<strong>非 DVB-S2 的教学码</strong>完成从编码到两位纠错的全部手算。最后把相同思想对应到 DVB-S2 的 BCH 外码，并说明阅读 C/C++ 编码器、解码器时应核对什么。</p>
+<div class="highlight"><pre><span></span><code>信息比特 → 二进制多项式 u(x) → 乘 x^校验位数并求余 → BCH 码字 c(x)
+             ↓ 通过可能翻转比特的信道
+接收多项式 r(x) → 求 syndrome → Berlekamp–Massey 求错误定位多项式
+             → Chien search 扫描错误位置 → 翻转这些位 → 验证 → 信息比特
+</code></pre></div>
+<p><img alt="BCH 译码从 syndrome 到错误位置的流程" src="../../assert/bch-decoding-flow.svg" /></p>
+<h2 id="1-xor">1. 先从一个比特翻转与 XOR 开始<a class="headerlink" href="#1-xor" title="Permanent link">&para;</a></h2>
+<p>信息位是想传送的 <code>0/1</code>；校验位是发送端根据规则添加的冗余；完整输出叫码字。若接收端某一位读错，就称该位发生<strong>比特翻转</strong>。同样的翻转做两次会回到原值：<code>0 → 1 → 0</code>。所以编码理论常用异或（XOR，记 <span class="arithmatex">\(\oplus\)</span>）表示“加法”：<span class="arithmatex">\(0\oplus0=0\)</span>、<span class="arithmatex">\(0\oplus1=1\)</span>、<span class="arithmatex">\(1\oplus0=1\)</span>、<span class="arithmatex">\(1\oplus1=0\)</span>。它也等于普通整数相加后只保留除以 2 的余数，即<strong>模 2 加法</strong>。二进制乘法则只有 <span class="arithmatex">\(1\cdot1=1\)</span>，其余都为 0。</p>
+<p>这两个运算构成 <strong>GF(2)</strong>，即只有 <code>0</code>、<code>1</code> 两个元素的有限域。此处“域”的关键意义是：可以一致地进行加、减、乘，以及除以非零元素；在 GF(2) 中唯一非零元素是 <code>1</code>，故除法很简单。由于 <span class="arithmatex">\(a\oplus a=0\)</span>，加法和减法相同。普通十进制的 <code>1+1=2</code> <strong>不能</strong>直接搬进后面的多项式或有限域计算。</p>
+<p>在一组合法码字中，任意两个不同码字逐位比较，不同位置的个数叫<strong>汉明距离</strong> <span class="arithmatex">\(d_H\)</span>。最小的码字间距离叫 <span class="arithmatex">\(d_{\min}\)</span>。若 <span class="arithmatex">\(d_{\min}\ge 2t+1\)</span>，最近码字原则可保证纠正至多 <span class="arithmatex">\(t\)</span> 位翻转：两个码字各自“半径 <span class="arithmatex">\(t\)</span>”的接收区域不会重叠。BCH 的构造会保证一个<strong>设计距离</strong>下界；实际最小距离有时更大，但不能只看冗余位数就断定能纠几位。</p>
+<h2 id="2">2. 比特串为什么能写成多项式<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<p>把第 <span class="arithmatex">\(i\)</span> 位记为系数 <span class="arithmatex">\(a_i\in\{0,1\}\)</span>，对应 <span class="arithmatex">\(a_ix^i\)</span>；符号 <span class="arithmatex">\(x\)</span> 此时只是一个<strong>形式变量</strong>，不是一个具体数字。比如按“低次项对应低索引位”的约定，位序列 <span class="arithmatex">\(a_0,a_1,a_2,a_3=(1,1,0,1)\)</span> 可写为</p>
+<div class="arithmatex">\[a(x)=1+x+x^3.\]</div>
+<p><span class="arithmatex">\(x^i\)</span> 的意思是 <span class="arithmatex">\(i\)</span> 个 <span class="arithmatex">\(x\)</span> 相乘；<span class="arithmatex">\(x^0=1\)</span>。省略的 <span class="arithmatex">\(x^2\)</span> 项系数是 0。<strong>多项式的次数</strong>是最高非零项的指数，此例为 3；全零多项式没有通常意义下的有限次数。源码可能把 <code>a0</code> 放最低位，也可能反向存储；两者并不矛盾，但编码器与解码器必须采用同一约定。</p>
+<p>在 GF(2) 上，系数逐位 XOR。例如</p>
+<div class="arithmatex">\[ (1+x+x^3)+(1+x^2)=x+x^2+x^3,\]</div>
+<p>因为两个常数项 <span class="arithmatex">\(1\oplus1=0\)</span>。多项式乘法先按普通代数展开，再把同次项的系数 XOR：</p>
+<div class="arithmatex">\[ (x+1)(x^2+1)=x^3+x^2+x+1.\]</div>
+<p><strong>多项式长除法</strong>与整数长除法相似：用被除式当前最高项除以除式最高项，得到商的一项，再用 XOR 消去最高项，重复直到余式次数小于除式次数。例：</p>
+<div class="highlight"><pre><span></span><code>             x
+x² + x + 1 ) x³ + x² + 0x + 1
+             x³ + x² + x       （先乘 x，再 XOR）
+             ----------------
+                       x + 1   （余式，次数 1 &lt; 2）
+</code></pre></div>
+<p>商为 <span class="arithmatex">\(x\)</span>，余式为 <span class="arithmatex">\(x+1\)</span>，即 <span class="arithmatex">\((x^3+x^2+1)=x(x^2+x+1)+(x+1)\)</span>。<strong>求余</strong>记为 <span class="arithmatex">\(A(x)\bmod B(x)\)</span>，结果是这一长除法的余式。后续系统编码就是“移位后求余”，不是神秘的专用操作。</p>
+<blockquote>
+<p>术语提醒：这里的多项式余式仍是一个 GF(2) 多项式；把它当作普通整数余数，会把 XOR 误写成带进位加减。</p>
+</blockquote>
+<h2 id="3">3. 循环码：把移位变成代数操作<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<p>长度为 <span class="arithmatex">\(n\)</span> 的码字用次数小于 <span class="arithmatex">\(n\)</span> 的多项式表示。<strong>循环移位</strong>把末端的一位绕回开头；在多项式表示中，它等于先乘 <span class="arithmatex">\(x\)</span>，再按 <span class="arithmatex">\(x^n-1\)</span> 求余。因为 <span class="arithmatex">\(x^n\)</span> 回绕成 <span class="arithmatex">\(1\)</span>。在 GF(2) 中减与加相同，所以这里 <span class="arithmatex">\(x^n-1=x^n+1\)</span>。</p>
+<p>例如长度 4 的 <code>1001</code> 若写为 <span class="arithmatex">\(1+x^3\)</span>，乘 <span class="arithmatex">\(x\)</span> 得 <span class="arithmatex">\(x+x^4\)</span>；按 <span class="arithmatex">\(x^4-1\)</span> 求余后 <span class="arithmatex">\(x^4\)</span> 等同于 1，于是变成 <span class="arithmatex">\(1+x\)</span>。位索引方向决定你把这叫左移还是右移，因此源码审查应以<strong>指数与实际传输顺序</strong>为准，而不是只看“左移”这个词。</p>
+<p>若一个码在循环移位后仍是同一个码中的合法码字，就叫<strong>循环码（cyclic code）</strong>。一个常见构造是选定多项式 <span class="arithmatex">\(g(x)\)</span>，把它的所有适当长度的倍数作为合法码字；<span class="arithmatex">\(g(x)\)</span> 称为<strong>生成多项式（generator polynomial）</strong>。若 <span class="arithmatex">\(g(x)\)</span> 能整除 <span class="arithmatex">\(x^n-1\)</span>，则合法码字的循环移位仍是 <span class="arithmatex">\(g(x)\)</span> 的倍数：乘 <span class="arithmatex">\(x\)</span> 后除掉的若干个 <span class="arithmatex">\(x^n-1\)</span> 也都是 <span class="arithmatex">\(g\)</span> 的倍数。这里“整除”表示求余为零。这正是循环性与多项式结构的连接。</p>
+<p>但怎样挑 <span class="arithmatex">\(g\)</span>，才能保证码字相隔足够远？BCH 的办法是规定若干“必须为零的取值点”。这些点不够放在只有 <code>0/1</code> 的 GF(2) 中，所以先要建立更大的有限域。</p>
+<h2 id="4-gf2-gf2m">4. 从 GF(2) 建造 GF(<span class="arithmatex">\(2^m\)</span>)<a class="headerlink" href="#4-gf2-gf2m" title="Permanent link">&para;</a></h2>
+<h3 id="41">4.1 为什么需要新的元素<a class="headerlink" href="#41" title="Permanent link">&para;</a></h3>
+<p>假设希望长度 <span class="arithmatex">\(n=15\)</span>，并在某个元素 <span class="arithmatex">\(\alpha\)</span> 的多个不同幂次处检查码字。GF(2) 只有 <code>0</code>、<code>1</code>；非零元素只剩 1，重复取幂永远得到 1，无法区分 15 个位置。我们需要有 16 个元素的 <strong>GF(<span class="arithmatex">\(2^4\)</span>)</strong>，其中 15 个非零元素可以排成一个循环。</p>
+<p>先把元素表示为次数低于 4 的二进制多项式：</p>
+<div class="arithmatex">\[a_0+a_1\alpha+a_2\alpha^2+a_3\alpha^3,\qquad a_i\in\{0,1\}.\]</div>
+<p>四个系数各有两种取值，所以恰好有 <span class="arithmatex">\(2^4=16\)</span> 个表达式。<span class="arithmatex">\(\alpha\)</span> 是我们即将按规则构造的特殊元素，不是实数；“<span class="arithmatex">\(\alpha^i\)</span>”表示在这套运算中的连乘。加法按各系数 XOR，例如 <span class="arithmatex">\((\alpha+1)+(\alpha^2+1)=\alpha^2+\alpha\)</span>。</p>
+<p>乘法会产生 <span class="arithmatex">\(\alpha^4\)</span> 等高次项，必须规定一种一致的“折回”规则。选择四次多项式</p>
+<div class="arithmatex">\[p(z)=z^4+z+1\]</div>
+<p>作为<strong>域的模多项式</strong>，规定 <span class="arithmatex">\(p(\alpha)=0\)</span>。由于减法等于加法，这给出</p>
+<div class="arithmatex">\[\alpha^4=\alpha+1.\]</div>
+<p>以后每遇到 <span class="arithmatex">\(\alpha^4\)</span> 就用 <span class="arithmatex">\(\alpha+1\)</span> 代换，再按 XOR 合并。例如 <span class="arithmatex">\(\alpha^5=\alpha(\alpha+1)=\alpha^2+\alpha\)</span>，以及</p>
+<div class="arithmatex">\[(\alpha^3+1)\alpha=\alpha^4+\alpha=(\alpha+1)+\alpha=1.\]</div>
+<p>上例说明 <span class="arithmatex">\(\alpha^3+1\)</span> 是 <span class="arithmatex">\(\alpha\)</span> 的乘法逆元。能对每个非零元素做这种除法，需要 <span class="arithmatex">\(p\)</span> <strong>不可约</strong>：它不能在 GF(2) 上分解成两个次数更低的非平凡多项式。仅说“用任意四次多项式取余”并不能保证得到域；若模多项式可约，某些非零元素乘起来可能为零，除法会失效。本例 <span class="arithmatex">\(z^4+z+1\)</span> 是不可约且<strong>本原（primitive）</strong>的；“本原”比不可约更强，表示 <span class="arithmatex">\(\alpha\)</span> 的连续幂能遍历所有 15 个非零元素。</p>
+<h3 id="42-gf16">4.2 一张够用的 GF(16) 幂表<a class="headerlink" href="#42-gf16" title="Permanent link">&para;</a></h3>
+<p>反复用 <span class="arithmatex">\(\alpha^4=\alpha+1\)</span>，可得到下表。右列也可写成四位二进制，依次代表 <span class="arithmatex">\(\alpha^3,\alpha^2,\alpha,1\)</span> 的系数；例如 <span class="arithmatex">\(\alpha^4=\alpha+1\)</span> 对应 <code>0011</code>。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">幂</th>
+<th>多项式形式</th>
+<th style="text-align: center;">四位表示</th>
+<th style="text-align: right;">幂</th>
+<th>多项式形式</th>
+<th style="text-align: center;">四位表示</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;"><span class="arithmatex">\(\alpha^0\)</span></td>
+<td><span class="arithmatex">\(1\)</span></td>
+<td style="text-align: center;"><code>0001</code></td>
+<td style="text-align: right;"><span class="arithmatex">\(\alpha^8\)</span></td>
+<td><span class="arithmatex">\(\alpha^2+1\)</span></td>
+<td style="text-align: center;"><code>0101</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><span class="arithmatex">\(\alpha^1\)</span></td>
+<td><span class="arithmatex">\(\alpha\)</span></td>
+<td style="text-align: center;"><code>0010</code></td>
+<td style="text-align: right;"><span class="arithmatex">\(\alpha^9\)</span></td>
+<td><span class="arithmatex">\(\alpha^3+\alpha\)</span></td>
+<td style="text-align: center;"><code>1010</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><span class="arithmatex">\(\alpha^2\)</span></td>
+<td><span class="arithmatex">\(\alpha^2\)</span></td>
+<td style="text-align: center;"><code>0100</code></td>
+<td style="text-align: right;"><span class="arithmatex">\(\alpha^{10}\)</span></td>
+<td><span class="arithmatex">\(\alpha^2+\alpha+1\)</span></td>
+<td style="text-align: center;"><code>0111</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><span class="arithmatex">\(\alpha^3\)</span></td>
+<td><span class="arithmatex">\(\alpha^3\)</span></td>
+<td style="text-align: center;"><code>1000</code></td>
+<td style="text-align: right;"><span class="arithmatex">\(\alpha^{11}\)</span></td>
+<td><span class="arithmatex">\(\alpha^3+\alpha^2+\alpha\)</span></td>
+<td style="text-align: center;"><code>1110</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><span class="arithmatex">\(\alpha^4\)</span></td>
+<td><span class="arithmatex">\(\alpha+1\)</span></td>
+<td style="text-align: center;"><code>0011</code></td>
+<td style="text-align: right;"><span class="arithmatex">\(\alpha^{12}\)</span></td>
+<td><span class="arithmatex">\(\alpha^3+\alpha^2+\alpha+1\)</span></td>
+<td style="text-align: center;"><code>1111</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><span class="arithmatex">\(\alpha^5\)</span></td>
+<td><span class="arithmatex">\(\alpha^2+\alpha\)</span></td>
+<td style="text-align: center;"><code>0110</code></td>
+<td style="text-align: right;"><span class="arithmatex">\(\alpha^{13}\)</span></td>
+<td><span class="arithmatex">\(\alpha^3+\alpha^2+1\)</span></td>
+<td style="text-align: center;"><code>1101</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><span class="arithmatex">\(\alpha^6\)</span></td>
+<td><span class="arithmatex">\(\alpha^3+\alpha^2\)</span></td>
+<td style="text-align: center;"><code>1100</code></td>
+<td style="text-align: right;"><span class="arithmatex">\(\alpha^{14}\)</span></td>
+<td><span class="arithmatex">\(\alpha^3+1\)</span></td>
+<td style="text-align: center;"><code>1001</code></td>
+</tr>
+<tr>
+<td style="text-align: right;"><span class="arithmatex">\(\alpha^7\)</span></td>
+<td><span class="arithmatex">\(\alpha^3+\alpha+1\)</span></td>
+<td style="text-align: center;"><code>1011</code></td>
+<td style="text-align: right;"><span class="arithmatex">\(\alpha^{15}\)</span></td>
+<td><span class="arithmatex">\(1\)</span></td>
+<td style="text-align: center;"><code>0001</code></td>
+</tr>
+</tbody>
+</table>
+<p>注意 0 也是域元素，但没有写成 <span class="arithmatex">\(\alpha\)</span> 的某个幂。表显示前 15 个幂互不相同，<span class="arithmatex">\(\alpha^{15}=1\)</span>，所以 <span class="arithmatex">\(\alpha\)</span> 的<strong>乘法阶</strong>为 15；“乘法阶”就是从 1 起连乘多少次才第一次回到 1。非零元素相乘可把幂指数相加并对 15 取余，例如 <span class="arithmatex">\(\alpha^4\alpha^8=\alpha^{12}\)</span>；除法是指数相减再对 15 取余，例如 <span class="arithmatex">\(\alpha^5/\alpha^4=\alpha\)</span>。<strong>加法绝不能把指数直接相加</strong>：<span class="arithmatex">\(\alpha^4+\alpha^8=(\alpha+1)+(\alpha^2+1)=\alpha^2+\alpha=\alpha^5\)</span>，须使用多项式形式或四位 XOR。</p>
+<p>写 C/C++ 时常用两个表：<code>exp[i]</code> 存 <span class="arithmatex">\(\alpha^i\)</span> 的四位表示；<code>log[value]</code> 对非零元素反查指数。这样非零乘除可转成指数加减。零没有对数，必须单独分支；把 <code>log[0]</code> 当作有效指数是常见严重错误。</p>
+<p>不使用表也能直接乘。把四位值当成系数位图，先“移位并在乘数当前最低位为 1 时 XOR 到结果”，每次左移后的第五位表示出现了 <span class="arithmatex">\(\alpha^4\)</span>，要按 <span class="arithmatex">\(\alpha^4=\alpha+1\)</span> 约减。<code>0b10011</code> 正是 <span class="arithmatex">\(z^4+z+1\)</span> 的系数位图，<code>0b10000</code> 用来检查第五位：</p>
+<div class="highlight"><pre><span></span><code>gf16_mul(a, b):                  # a、b 为 0..15 的四位域元素
+    result = 0
+    while b != 0:
+        if (b &amp; 1) != 0:
+            result = result XOR a
+        b = b &gt;&gt; 1
+        a = a &lt;&lt; 1
+        if (a &amp; 0b10000) != 0:  # 出现 alpha^4
+            a = a XOR 0b10011  # 用 alpha^4 = alpha + 1 约减
+    return result &amp; 0b1111
+</code></pre></div>
+<p>例如 <code>0b1000</code> 表示 <span class="arithmatex">\(\alpha^3\)</span>，<code>0b0010</code> 表示 <span class="arithmatex">\(\alpha\)</span>；乘法中前者左移出现第五位，约减后为 <code>0b0011</code>，即 <span class="arithmatex">\(\alpha^4=\alpha+1\)</span>。这里的 <code>XOR</code> 是按位异或；<code>&gt;&gt;</code>、<code>&lt;&lt;</code> 分别右移、左移。源码若用整数表、SIMD 或硬件加速，结果仍必须与这套域运算一致。</p>
+<h2 id="5">5. 最小多项式：从有限域的根回到二进制系数<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<p>刚才的 <span class="arithmatex">\(p(z)\)</span> 是<strong>构造 GF(16) 的模多项式</strong>。现在我们还需要一种不同但有关的概念：给定某个域元素 <span class="arithmatex">\(\beta\)</span>，在所有<strong>系数只取 0/1</strong>且以 <span class="arithmatex">\(\beta\)</span> 为根的非零多项式中，取次数最低、最高项系数为 1 的那个，称为 <span class="arithmatex">\(\beta\)</span> 在 GF(2) 上的<strong>最小多项式</strong> <span class="arithmatex">\(M_\beta(x)\)</span>。这里 <span class="arithmatex">\(x\)</span> 又是码字/生成多项式的形式变量；计算 <span class="arithmatex">\(M_\beta(\beta)\)</span> 时才把 <span class="arithmatex">\(x\)</span> 代入 <span class="arithmatex">\(\beta\)</span>。同一个字符 <code>x</code> 在不同多项式里是占位符，不代表它已经等于 <span class="arithmatex">\(\alpha\)</span>。</p>
+<p>为什么不能直接把 <span class="arithmatex">\((x+\alpha)\)</span> 当生成因子？它的系数 <span class="arithmatex">\(\alpha\)</span> 一般不是比特 <code>0/1</code>，而最终要编码<strong>二元</strong>比特串。最小多项式把扩域中的根及其相关根一起“打包”为 GF(2) 系数的因子。</p>
+<p>在特征为 2 的域中，平方会使交叉项抵消：<span class="arithmatex">\((a+b)^2=a^2+b^2\)</span>。如果一个二元系数多项式 <span class="arithmatex">\(f(x)\)</span> 满足 <span class="arithmatex">\(f(\beta)=0\)</span>，两边平方后也有 <span class="arithmatex">\(f(\beta^2)=0\)</span>；继续平方，<span class="arithmatex">\(\beta^4,\beta^8,\ldots\)</span> 也是根。这些叫<strong>共轭根</strong>，其指数不断乘 2、对 15 取余形成一个循环陪集：</p>
+<div class="highlight"><pre><span></span><code>从 1 出发：1 → 2 → 4 → 8 → 1
+从 3 出发：3 → 6 → 12 → 9 → 3
+</code></pre></div>
+<p>因此 <span class="arithmatex">\(\alpha,\alpha^2,\alpha^4,\alpha^8\)</span> 共用一个最小多项式；<span class="arithmatex">\(\alpha^3,\alpha^6,\alpha^{12},\alpha^9\)</span> 共用另一个。前者就是域的模多项式（把 <span class="arithmatex">\(z\)</span> 改名为 <span class="arithmatex">\(x\)</span>）：</p>
+<div class="arithmatex">\[M_1(x)=x^4+x+1.\]</div>
+<p>后者可以把四个一次因子在 GF(16) 中相乘，再把系数化简，得到<strong>二元</strong>多项式</p>
+<div class="arithmatex">\[M_3(x)=\prod_{j\in\{3,6,12,9\}}(x+\alpha^j)=x^4+x^3+x^2+x+1.\]</div>
+<p><span class="arithmatex">\(\prod\)</span> 表示把括号逐个相乘。这里加号也是减号；下标 <code>1</code>、<code>3</code> 指“以 <span class="arithmatex">\(\alpha^1\)</span>、<span class="arithmatex">\(\alpha^3\)</span> 为代表的陪集”，不是多项式次数。例如把 <span class="arithmatex">\(x=\alpha^3\)</span> 代入 <span class="arithmatex">\(M_3\)</span>，得到 <span class="arithmatex">\(\alpha^{12}+\alpha^9+\alpha^6+\alpha^3+1\)</span>；从幂表换成四位值是 <code>1111 XOR 1010 XOR 1100 XOR 1000 XOR 0001 = 0000</code>，确为根。相应的其他三根由平方性质得到。</p>
+<p><strong>本节要点：</strong>域的模多项式规定“怎样算”；最小多项式规定“怎样用二元系数同时包含一组扩域根”。两者可能碰巧相同（本例 <span class="arithmatex">\(M_1\)</span>），但角色不同。</p>
+<h2 id="6-bch">6. BCH 生成多项式为什么能保证纠错<a class="headerlink" href="#6-bch" title="Permanent link">&para;</a></h2>
+<h3 id="61">6.1 在连续幂处制造零值<a class="headerlink" href="#61" title="Permanent link">&para;</a></h3>
+<p>现在固定域 GF(16)、本原元 <span class="arithmatex">\(\alpha\)</span>、码长 <span class="arithmatex">\(n=15\)</span>。我们希望每个合法码字多项式 <span class="arithmatex">\(c(x)\)</span> 在 <span class="arithmatex">\(\alpha^1,\alpha^2,\alpha^3,\alpha^4\)</span> 处都取值为 0，即</p>
+<div class="arithmatex">\[c(\alpha)=c(\alpha^2)=c(\alpha^3)=c(\alpha^4)=0.\]</div>
+<p>这种从 <span class="arithmatex">\(\alpha^1\)</span> 开始连续取根的构造叫<strong>本原窄义二元 BCH 码</strong>的一个实例。“窄义”指从 <span class="arithmatex">\(\alpha^1\)</span> 开始；“本原”指长度采用 <span class="arithmatex">\(2^4-1=15\)</span>。不同 BCH 码可以使用其他起点、其他长度或缩短版本，不能把本例参数当成通用定义。</p>
+<p>连续 4 个根对应<strong>设计距离</strong> <span class="arithmatex">\(\delta=5\)</span>，预计保证纠正 <span class="arithmatex">\(t=2\)</span> 位，因为 <span class="arithmatex">\(2t+1=5\)</span>。但 <span class="arithmatex">\(c(x)\)</span> 系数必须仍是二进制，因此要把这些根所属的 GF(2) 最小多项式都纳入生成多项式。<span class="arithmatex">\(\alpha,\alpha^2,\alpha^4\)</span> 已在 <span class="arithmatex">\(M_1\)</span> 的同一组共轭根里，<span class="arithmatex">\(\alpha^3\)</span> 在 <span class="arithmatex">\(M_3\)</span> 里；不需要把 <span class="arithmatex">\(M_1\)</span> 重复乘三遍。两个因子没有共同根，其<strong>最小公倍式</strong>就是它们的乘积：</p>
+<div class="arithmatex">\[
+\begin{aligned}
+g(x)&amp;=\operatorname{lcm}(M_1(x),M_3(x))\\
+&amp;=(x^4+x+1)(x^4+x^3+x^2+x+1)\\
+&amp;=x^8+x^7+x^6+x^4+1.
+\end{aligned}
+\]</div>
+<p><span class="arithmatex">\(\operatorname{lcm}\)</span> 表示同时包含两个多项式因子的最低次数首一多项式；<strong>首一</strong>意为最高次项系数为 1。乘积展开时同次项按 XOR 抵消，例如两个 <span class="arithmatex">\(x^5\)</span> 项相消。这个 <span class="arithmatex">\(g\)</span> 的次数为 8，所以每 15 位码字可以有 <span class="arithmatex">\(k=15-8=7\)</span> 个独立信息位，另 8 位体现为校验冗余，码率为 <span class="arithmatex">\(7/15\)</span>。更准确地说，允许的码字是次数小于 15 的 <span class="arithmatex">\(g(x)\)</span> 倍数；选次数低于 7 的乘子，刚好有 <span class="arithmatex">\(2^7\)</span> 个不同码字。</p>
+<p>为什么这是循环码？上述根都是 15 次单位根，因为 <span class="arithmatex">\(\alpha^{15}=1\)</span>。二元多项式 <span class="arithmatex">\(x^{15}-1\)</span> 在这些根处为 0，而 <span class="arithmatex">\(g\)</span> 包含其相应不可约因子，故 <span class="arithmatex">\(g\)</span> 整除 <span class="arithmatex">\(x^{15}-1\)</span>；于是上一节的循环移位论证适用。<strong>生成多项式</strong>不是“只含校验位的多项式”，而是整个合法码字集合的共同因子。</p>
+<h3 id="62">6.2 从连续根到最小距离：不只凭直觉<a class="headerlink" href="#62" title="Permanent link">&para;</a></h3>
+<p>这里给出 BCH 距离界限的关键理由。若某个非零码字只有 <span class="arithmatex">\(w\le4\)</span> 个 <code>1</code>，它可写为 <span class="arithmatex">\(c(x)=x^{i_1}+\cdots+x^{i_w}\)</span>，其中 <span class="arithmatex">\(i_j\)</span> 是不同的位置。令 <span class="arithmatex">\(X_j=\alpha^{i_j}\)</span>；由于 <span class="arithmatex">\(0\le i_j&lt;15\)</span> 且 <span class="arithmatex">\(\alpha\)</span> 的阶为 15，各 <span class="arithmatex">\(X_j\)</span> 非零且互不相同。把 <span class="arithmatex">\(x=\alpha,\alpha^2,\ldots,\alpha^w\)</span> 逐一代入“必须为零”的条件，得到</p>
+<div class="arithmatex">\[X_1^\ell+X_2^\ell+\cdots+X_w^\ell=0,\qquad \ell=1,2,\ldots,w.\]</div>
+<p>这是一组 <span class="arithmatex">\(w\)</span> 个线性方程：每个假定存在的 <code>1</code> 的系数都为 1。其系数表由 <span class="arithmatex">\(X_j^\ell\)</span> 组成，称为 Vandermonde 型矩阵。对互不相同且非零的 <span class="arithmatex">\(X_j\)</span>，它是<strong>可逆</strong>的，意思是方程右端全为零时，唯一解是“所有系数均为零”；可逆性的代数证据是行列式等于非零因子的乘积 <span class="arithmatex">\(\left(\prod_jX_j\right)\left(\prod_{j&lt;k}(X_k-X_j)\right)\)</span>。<strong>行列式</strong>在这里只需作为方阵能否唯一求解的检验量：非零便可逆；每个因子非零，因为 <span class="arithmatex">\(X_j\ne0\)</span> 且彼此不同。这样就与“存在 <span class="arithmatex">\(w\)</span> 个系数为 1”的假设矛盾。</p>
+<p>所以任何非零码字至少有 5 个 <code>1</code>，即 <span class="arithmatex">\(d_{\min}\ge5\)</span>。本例的 <span class="arithmatex">\(g(x)\)</span> 自身是合法码字，恰有 5 个非零项，故实际上 <span class="arithmatex">\(d_{\min}=5\)</span>。它保证纠正不超过 2 位翻转；“设计距离 5”在别的 BCH 实例里可能只是下界，不总等于实际最小距离。这也回答了<strong>BCH 为什么能纠错</strong>：不是因为多项式名字特殊，而是连续根约束排除了彼此太近的合法码字。</p>
+<h2 id="7-8">7. 系统编码：用求余制造 8 个校验位<a class="headerlink" href="#7-8" title="Permanent link">&para;</a></h2>
+<p>现在给 7 位信息选择一个能看清全过程的例子。沿用“<span class="arithmatex">\(x^i\)</span> 对应索引 <span class="arithmatex">\(i\)</span>”的约定，取信息多项式 <span class="arithmatex">\(u(x)=x+1\)</span>，即 <span class="arithmatex">\(u_0=u_1=1\)</span>，其余五位为 0。所谓<strong>系统编码</strong>，是要让原信息直接留在码字的高 7 个系数位置，低 8 个系数用于校验。</p>
+<p>先把信息整体乘 <span class="arithmatex">\(x^8\)</span>，相当于给低位空出 8 个位置：</p>
+<div class="arithmatex">\[x^8u(x)=x^9+x^8.\]</div>
+<p>这个移位结果一般还不是 <span class="arithmatex">\(g\)</span> 的倍数。对它除以 <span class="arithmatex">\(g\)</span>，商为 <span class="arithmatex">\(x\)</span>，余式为 <span class="arithmatex">\(q(x)=x^7+x^5+x\)</span>，因为</p>
+<div class="arithmatex">\[x^9+x^8=x\,g(x)+\underbrace{(x^7+x^5+x)}_{q(x)}.\]</div>
+<p>可以手查：<span class="arithmatex">\(xg=x^9+x^8+x^7+x^5+x\)</span>；把后面三个低次项 XOR 回去，只剩 <span class="arithmatex">\(x^9+x^8\)</span>。现在把<strong>余式</strong>加到空出的低 8 位上：</p>
+<div class="arithmatex">\[
+\begin{aligned}
+c(x)&amp;=x^8u(x)+q(x)\\
+&amp;=x^9+x^8+x^7+x^5+x\\
+&amp;=xg(x).
+\end{aligned}
+\]</div>
+<p>因此 <span class="arithmatex">\(c\)</span> 可被 <span class="arithmatex">\(g\)</span> 整除，确实是合法 BCH 码字；高 7 位仍是原信息。这里的 <code>+</code> 与减相同，所以“加余式”正好抵消原除法式中的余式。按<strong>从 <span class="arithmatex">\(x^{14}\)</span> 到 <span class="arithmatex">\(x^0\)</span> 的显示顺序</strong>，15 位码字是 <code>000001110100010</code>；按<strong>低位先行的系数顺序</strong>，非零位置为 <span class="arithmatex">\(1,5,7,8,9\)</span>。两个显示方向不能混着用。</p>
+<p>一般的系统编码伪代码如下。<code>xor_polynomial</code> 是按系数 XOR；<code>mod_polynomial</code> 是前面讲过的 GF(2) 长除法余式：</p>
+<div class="highlight"><pre><span></span><code>encode(u, g, parity_count):
+    shifted = u(x) * x^parity_count
+    parity  = shifted mod g(x)
+    c       = shifted XOR parity
+    return c
+</code></pre></div>
+<p>若 <span class="arithmatex">\(\deg g=n-k\)</span>，则余式次数小于 <span class="arithmatex">\(n-k\)</span>，不会覆盖信息所在的高位。实际编码器可用移位寄存器与 XOR 反馈流式求余，而不必真的分配大多项式；寄存器反馈抽头由 <span class="arithmatex">\(g\)</span> 的非零系数决定。无论采用位数组、整数掩码还是 LFSR，最终都必须满足 <strong><code>c mod g == 0</code>、信息位置不变</strong> 这两项基本检查。ETSI 的 DVB-S2 编码步骤也是“移位、除以生成多项式、把余式放回码字”这一结构。<a href="https://www.etsi.org/deliver/etsi_en/302300_302399/30230701/01.04.01_60/en_30230701v010401p.pdf#page=23">标准第 5.3.1 节</a>给出规范次序。</p>
+<h2 id="8-syndrome">8. 接收端第一步：syndrome 怎样反映错误<a class="headerlink" href="#8-syndrome" title="Permanent link">&para;</a></h2>
+<h3 id="81">8.1 定义、单位与性质<a class="headerlink" href="#81" title="Permanent link">&para;</a></h3>
+<p>设接收的 15 位二进制序列对应多项式 <span class="arithmatex">\(r(x)\)</span>，真实码字为 <span class="arithmatex">\(c(x)\)</span>，错误模式为 <span class="arithmatex">\(e(x)\)</span>：出错的位位置系数为 1，未出错为 0。逐位翻转由 XOR 表示，所以 <span class="arithmatex">\(r(x)=c(x)+e(x)\)</span>。<strong>syndrome（综合、伴随式）</strong>在本例是一组 GF(16) 元素，而不只是单个 <code>0/1</code>。取指定的四个根处的接收值：</p>
+<div class="arithmatex">\[S_\ell=r(\alpha^\ell),\qquad \ell=1,2,3,4.\]</div>
+<p><span class="arithmatex">\(S_\ell\)</span> 是一个 4 位表示的域元素。因为合法码字在这些点上为零，</p>
+<div class="arithmatex">\[S_\ell=c(\alpha^\ell)+e(\alpha^\ell)=e(\alpha^\ell).\]</div>
+<p>这一步极重要：<strong>syndrome 只携带错误模式的信息，码字内容已消去</strong>。若全部为零，可能确实无错，也可能超过纠错能力的错误恰好伪装成另一个码字；若非零，就知道接收序列违反了 BCH 的根约束。</p>
+<p>本例发出 <span class="arithmatex">\(c=x^9+x^8+x^7+x^5+x\)</span>，假设<strong>索引 0 和 1</strong> 两位翻转，则 <span class="arithmatex">\(e(x)=1+x\)</span>，收到</p>
+<div class="arithmatex">\[r(x)=c(x)+e(x)=x^9+x^8+x^7+x^5+1.\]</div>
+<p>高次到低次显示为 <code>000001110100001</code>。直接代入错误多项式比代入整个接收多项式更省手算，因 <span class="arithmatex">\(c\)</span> 在指定根处本来就是零：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">序号</th>
+<th><span class="arithmatex">\(S_\ell=1+\alpha^\ell\)</span></th>
+<th>用幂表化简</th>
+<th style="text-align: center;">四位表示</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td><span class="arithmatex">\(1+\alpha\)</span></td>
+<td><span class="arithmatex">\(\alpha^4\)</span></td>
+<td style="text-align: center;"><code>0011</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td><span class="arithmatex">\(1+\alpha^2\)</span></td>
+<td><span class="arithmatex">\(\alpha^8\)</span></td>
+<td style="text-align: center;"><code>0101</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td><span class="arithmatex">\(1+\alpha^3\)</span></td>
+<td><span class="arithmatex">\(\alpha^{14}\)</span></td>
+<td style="text-align: center;"><code>1001</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td><span class="arithmatex">\(1+\alpha^4\)</span></td>
+<td><span class="arithmatex">\(\alpha\)</span></td>
+<td style="text-align: center;"><code>0010</code></td>
+</tr>
+</tbody>
+</table>
+<p>例如第四行用 <span class="arithmatex">\(\alpha^4=\alpha+1\)</span>，所以 <span class="arithmatex">\(1+\alpha^4=\alpha\)</span>。这四个 syndrome 为后面的 BM 算法提供输入，不是四个错误位置，也不是四个校验位。由于二进制系数平方仍是自己，可额外验证 <span class="arithmatex">\(S_2=S_1^2\)</span>、<span class="arithmatex">\(S_4=S_2^2\)</span>；这个关系有助于实现时减少部分计算，但不能把需要的 syndrome 索引顺序打乱。</p>
+<h3 id="82-syndrome">8.2 syndrome 如何编码位置<a class="headerlink" href="#82-syndrome" title="Permanent link">&para;</a></h3>
+<p>若错误在位置 <span class="arithmatex">\(j_1,\ldots,j_v\)</span>，错误多项式为 <span class="arithmatex">\(e(x)=x^{j_1}+\cdots+x^{j_v}\)</span>。记 <span class="arithmatex">\(X_h=\alpha^{j_h}\)</span> 为每个错误位置对应的<strong>位置值</strong>，则代入得到</p>
+<div class="arithmatex">\[S_\ell=X_1^\ell+\cdots+X_v^\ell.\]</div>
+<p>这就是 syndrome 与错误位置的数学桥梁：接收端知道左侧的数，想反求右侧未知的 <span class="arithmatex">\(X_h\)</span>。若只有一个错误，<span class="arithmatex">\(S_1=\alpha^j\)</span>，查幂表即可得 <span class="arithmatex">\(j\)</span>。两个错误时，<span class="arithmatex">\(S_1=X_1+X_2\)</span>，一个和还不足以唯一指出两个未知数；需利用更多连续 syndrome，并把未知位置浓缩成一个多项式。下一节完成这一转换。</p>
+<h2 id="9">9. 错误定位多项式：把未知位置变成根<a class="headerlink" href="#9" title="Permanent link">&para;</a></h2>
+<p>设实际错误数为 <span class="arithmatex">\(v\le t\)</span>，位置值仍为 <span class="arithmatex">\(X_h=\alpha^{j_h}\)</span>。定义<strong>错误定位多项式（error locator polynomial）</strong>：</p>
+<div class="arithmatex">\[\Lambda(z)=\prod_{h=1}^{v}(1+X_hz)=1+\lambda_1z+\cdots+\lambda_vz^v.\]</div>
+<p>这里 <span class="arithmatex">\(z\)</span> 是新引入的形式变量；<span class="arithmatex">\(\lambda_i\)</span> 是 GF(16) 中的系数，<span class="arithmatex">\(\Lambda\)</span> 的次数是错误数 <span class="arithmatex">\(v\)</span>（位置值非零时）。若把 <span class="arithmatex">\(z=X_h^{-1}\)</span> 代入，括号 <span class="arithmatex">\(1+X_hX_h^{-1}=1+1=0\)</span>，所以它的<strong>根是错误位置值的倒数</strong>。<span class="arithmatex">\(X_h^{-1}\)</span> 指乘上 <span class="arithmatex">\(X_h\)</span> 后等于 1 的域元素，不是普通实数倒数。这一“倒数”是 Chien 搜索采用 <span class="arithmatex">\(\alpha^{-j}\)</span> 而非 <span class="arithmatex">\(\alpha^j\)</span> 的根源。</p>
+<p>对本例的索引 0、1，有 <span class="arithmatex">\(X_1=\alpha^0=1\)</span>、<span class="arithmatex">\(X_2=\alpha\)</span>，因此真实定位多项式应是</p>
+<div class="arithmatex">\[\Lambda(z)=(1+z)(1+\alpha z)=1+(1+\alpha)z+\alpha z^2
+=1+\alpha^4z+\alpha z^2.\]</div>
+<p>但接收机事先<strong>不知道</strong> <span class="arithmatex">\(X_1,X_2\)</span>；上式只是我们用已知的教学答案检验后续算法。接收机必须从 syndrome 中求出系数 <span class="arithmatex">\(\lambda_i\)</span>。</p>
+<h3 id="91-syndrome">9.1 syndrome 递推从哪里来<a class="headerlink" href="#91-syndrome" title="Permanent link">&para;</a></h3>
+<p>两错误时，<span class="arithmatex">\(\lambda_1=X_1+X_2\)</span>、<span class="arithmatex">\(\lambda_2=X_1X_2\)</span>。因 <span class="arithmatex">\(X_1,X_2\)</span> 是 <span class="arithmatex">\(T^2+\lambda_1T+\lambda_2\)</span> 的两个根，每个 <span class="arithmatex">\(X_h\)</span> 都满足 <span class="arithmatex">\(X_h^2+\lambda_1X_h+\lambda_2=0\)</span>。把等式乘 <span class="arithmatex">\(X_h^{\ell-2}\)</span>，再对所有错误位置 <span class="arithmatex">\(h\)</span> 相加，就有</p>
+<div class="arithmatex">\[S_\ell+\lambda_1S_{\ell-1}+\lambda_2S_{\ell-2}=0,\qquad \ell\ge3.\]</div>
+<p>这是一条<strong>递推约束</strong>：一个正确的 <span class="arithmatex">\(\Lambda\)</span> 必须使后续 syndrome 的某些组合为零。一般 <span class="arithmatex">\(v\)</span> 错误时，同理得到 <span class="arithmatex">\(S_\ell+\lambda_1S_{\ell-1}+\cdots+\lambda_vS_{\ell-v}=0\)</span>（索引需在已有 syndrome 范围内）。Berlekamp–Massey（BM）算法的任务，就是从已知的 syndrome 序列中找到<strong>次数尽可能低</strong>、能解释它的递推关系的多项式；在不超过 <span class="arithmatex">\(t\)</span> 个错误的条件下，这个多项式就是错误定位多项式。</p>
+<p>“尽可能低”重要：若明明只有一个错误，却硬塞一个高次数多项式，根可能引入假位置。<span class="arithmatex">\(2t\)</span> 个连续 syndrome 足以支持最多 <span class="arithmatex">\(t\)</span> 个错误的定位；超过设计能力时，算法仍会输出某个形式上的多项式，但不能保证它对应真实错误。</p>
+<h2 id="10-berlekampmassey">10. Berlekamp–Massey 逐轮手算<a class="headerlink" href="#10-berlekampmassey" title="Permanent link">&para;</a></h2>
+<h3 id="101">10.1 先解释算法中的状态<a class="headerlink" href="#101" title="Permanent link">&para;</a></h3>
+<p>采用与本例相配的<strong>从 <span class="arithmatex">\(S_1\)</span> 开始的索引约定</strong>，处理第 <span class="arithmatex">\(n\)</span> 轮时使用 <span class="arithmatex">\(S_{n+1}\)</span>，<span class="arithmatex">\(n=0,1,2,3\)</span>。<code>C(z)</code> 是当前候选定位多项式，<code>L</code> 是当前估计的最小阶数；<code>B(z)</code> 保存一次关键旧版本；<code>b</code> 保存那次的非零偏差；<code>shift</code> 记录旧版本需要平移几个次数。</p>
+<p>每轮先问：“当前的 <span class="arithmatex">\(C\)</span> 是否已经能预测这个新 syndrome？”计算<strong>偏差（discrepancy）</strong>：</p>
+<div class="arithmatex">\[d=S_{n+1}+\sum_{i=1}^{L}C_iS_{n+1-i},\]</div>
+<p>其中 <span class="arithmatex">\(C_i\)</span> 是 <span class="arithmatex">\(C(z)\)</span> 中 <span class="arithmatex">\(z^i\)</span> 的系数，<span class="arithmatex">\(\sum\)</span> 表示把各项用 GF(16) 加法逐项 XOR。如果 <span class="arithmatex">\(d=0\)</span>，当前递推通过本轮；若 <span class="arithmatex">\(d\ne0\)</span>，就把一份合适倍数、合适次数平移的旧多项式加回 <span class="arithmatex">\(C\)</span>，使这一轮的偏差抵消。平移 <span class="arithmatex">\(z^{\text{shift}}\)</span> 的效果是把旧系数向高次移动。</p>
+<p>修正形式为 <span class="arithmatex">\(C\leftarrow C+(d/b)z^{\text{shift}}B\)</span>。这里 <span class="arithmatex">\(b\ne0\)</span>，因此可以做 GF(16) 除法；选择系数 <span class="arithmatex">\(d/b\)</span> 正是为了在相应位置产生与当前偏差相同的量，由于加法是 XOR，它与原偏差相加为 0。若新信息显示现有阶数还不够（条件 <span class="arithmatex">\(2L\le n\)</span>），才把 <span class="arithmatex">\(L\)</span> 提高并保存旧状态。具体更新如下，<code>oldC</code> 必须在覆盖 <code>C</code> 前保存：</p>
+<div class="highlight"><pre><span></span><code>C(z) = 1; B(z) = 1; L = 0; b = 1; shift = 1
+for n = 0 .. 2*t-1:
+    d = S[n+1]
+    for i = 1 .. L:
+        d = d + C[i] * S[n+1-i]        # GF(2^m) 加法/乘法
+
+    if d == 0:
+        shift = shift + 1
+        continue
+
+    oldC = C
+    C = C + (d / b) * z^shift * B
+    if 2*L &lt;= n:
+        L = n + 1 - L
+        B = oldC
+        b = d
+        shift = 1
+    else:
+        shift = shift + 1
+return C, L
+</code></pre></div>
+<p>这个伪代码说明<strong>状态如何更新</strong>，不是对所有 BCH 变体、syndrome 起点、擦除信息和加速实现都可直接粘贴的生产代码。另一些资料把 <code>S[0]</code> 作为第一项；若索引整体改了，偏差公式也必须同步改。</p>
+<h3 id="102-syndrome">10.2 把四个 syndrome 真正代进去<a class="headerlink" href="#102-syndrome" title="Permanent link">&para;</a></h3>
+<p>已知 <span class="arithmatex">\(S_1=\alpha^4\)</span>、<span class="arithmatex">\(S_2=\alpha^8\)</span>、<span class="arithmatex">\(S_3=\alpha^{14}\)</span>、<span class="arithmatex">\(S_4=\alpha\)</span>。每轮的中间量如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">轮次 <span class="arithmatex">\(n\)</span></th>
+<th>新读入</th>
+<th>偏差 <span class="arithmatex">\(d\)</span></th>
+<th>轮后 <span class="arithmatex">\(C(z)\)</span></th>
+<th style="text-align: right;">轮后 <span class="arithmatex">\(L\)</span></th>
+<th>关键动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0</td>
+<td><span class="arithmatex">\(S_1\)</span></td>
+<td><span class="arithmatex">\(\alpha^4\)</span></td>
+<td><span class="arithmatex">\(1+\alpha^4z\)</span></td>
+<td style="text-align: right;">1</td>
+<td>保存旧 <span class="arithmatex">\(B=1,b=\alpha^4\)</span></td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td><span class="arithmatex">\(S_2\)</span></td>
+<td><span class="arithmatex">\(\alpha^8+\alpha^4\alpha^4=0\)</span></td>
+<td>不变</td>
+<td style="text-align: right;">1</td>
+<td><code>shift</code> 从 1 变 2</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td><span class="arithmatex">\(S_3\)</span></td>
+<td><span class="arithmatex">\(\alpha^{14}+\alpha^4\alpha^8=\alpha^5\)</span></td>
+<td><span class="arithmatex">\(1+\alpha^4z+\alpha z^2\)</span></td>
+<td style="text-align: right;">2</td>
+<td>加 <span class="arithmatex">\((\alpha^5/\alpha^4)z^2B=\alpha z^2\)</span></td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td><span class="arithmatex">\(S_4\)</span></td>
+<td><span class="arithmatex">\(\alpha+\alpha^4\alpha^{14}+\alpha\alpha^8=0\)</span></td>
+<td>不变</td>
+<td style="text-align: right;">2</td>
+<td>递推已通过</td>
+</tr>
+</tbody>
+</table>
+<p>详细核对几个容易算错的位置：第 1 轮 <span class="arithmatex">\(\alpha^4\alpha^4=\alpha^8\)</span>，与 <span class="arithmatex">\(S_2\)</span> XOR 为 0。第 2 轮 <span class="arithmatex">\(\alpha^4\alpha^8=\alpha^{12}\)</span>；用幂表，<span class="arithmatex">\(\alpha^{14}+\alpha^{12}=(\alpha^3+1)+(\alpha^3+\alpha^2+\alpha+1)=\alpha^2+\alpha=\alpha^5\)</span>。所以修正系数 <span class="arithmatex">\(d/b=\alpha^5/\alpha^4=\alpha\)</span>。第 3 轮，<span class="arithmatex">\(\alpha^4\alpha^{14}=\alpha^{18}=\alpha^3\)</span>，<span class="arithmatex">\(\alpha\alpha^8=\alpha^9=\alpha^3+\alpha\)</span>，三项 XOR 得 <span class="arithmatex">\(\alpha+\alpha^3+(\alpha^3+\alpha)=0\)</span>。</p>
+<p>最终 <span class="arithmatex">\(C(z)=1+\alpha^4z+\alpha z^2\)</span>，恰与上一节用真实位置写出的 <span class="arithmatex">\(\Lambda(z)\)</span> 一致。注意 BM 输出的是<strong>域元素系数</strong>，不是“第 0、1 位错误”的直接列表；还差找根与位置映射。</p>
+<h2 id="11-chien">11. Chien 搜索与最终纠错<a class="headerlink" href="#11-chien" title="Permanent link">&para;</a></h2>
+<p><strong>Chien search</strong> 是用固定顺序枚举可能的错误位置。对位置 <span class="arithmatex">\(j=0,1,\ldots,14\)</span>，计算 <span class="arithmatex">\(\Lambda(\alpha^{-j})\)</span>；若结果为 0，就判定第 <span class="arithmatex">\(j\)</span> 位有错误。指数 <span class="arithmatex">\(-j\)</span> 在 15 个非零元素的循环中理解，例如 <span class="arithmatex">\(\alpha^{-1}=\alpha^{14}\)</span>。对本例：</p>
+<div class="arithmatex">\[\Lambda(\alpha^0)=1+\alpha^4+\alpha=1+(1+\alpha)+\alpha=0,\]</div>
+<div class="arithmatex">\[\Lambda(\alpha^{-1})=1+\alpha^4\alpha^{-1}+\alpha(\alpha^{-1})^2
+=1+(1+\alpha^{-1})+\alpha^{-1}=0.\]</div>
+<p>所以找到位置 0 和 1。二次多项式在域中最多只有两个不同根，因而不会再有第三个根；实际程序仍应按约定扫描允许的位置并计数。把接收的 <code>000001110100001</code> 的<strong>低索引第 0、1 位</strong>翻转，恢复 <code>000001110100010</code>，对应 <span class="arithmatex">\(c(x)=x^9+x^8+x^7+x^5+x\)</span>。重新计算四个 syndrome 都为零，且 <span class="arithmatex">\(c(x)\bmod g(x)=0\)</span>；读取高 7 位，恢复 <span class="arithmatex">\(u(x)=x+1\)</span>。</p>
+<p>为什么 Chien 搜索要一个位置一个位置试，却不先求一条通用方程的闭式解？因为每个候选值都是已知的 <span class="arithmatex">\(\alpha^{-j}\)</span>，域有限；按幂顺序迭代求值可重复利用上一步的乘积，适合软件查表或硬件流水。若 <span class="arithmatex">\(\Lambda(z)=\sum_i\lambda_iz^i\)</span>，从位置 <span class="arithmatex">\(j\)</span> 移到 <span class="arithmatex">\(j+1\)</span> 时，每项 <span class="arithmatex">\(\lambda_i\alpha^{-ij}\)</span> 只需再乘固定因子 <span class="arithmatex">\(\alpha^{-i}\)</span>，无需从头做指数运算。</p>
+<p>搜索若找到的根数不等于 BM 给出的次数 <span class="arithmatex">\(L\)</span>，应报告解码失败，而不是猜一个错误位置。修正后重新计算 syndrome，也应作为一致性检查。但要牢记：<strong>超过 <span class="arithmatex">\(t\)</span> 个错误时，即使这些检查碰巧通过，也不保证恢复了原始码字</strong>；代数解码的纠错保证只覆盖指定错误范围。</p>
+<div class="highlight"><pre><span></span><code>decode(r, t, alpha, allowed_positions):
+    for ell = 1 .. 2*t:
+        S[ell] = evaluate_in_field(r, alpha^ell)
+    if all S[ell] == 0:
+        return r, "checks passed; not proof of no channel error"
+
+    Lambda, L = berlekamp_massey(S)
+    if L &gt; t:
+        return failure
+
+    error_positions = []
+    for j in allowed_positions:
+        if evaluate_in_field(Lambda, alpha^(-j)) == 0:
+            error_positions.push(j)
+    if len(error_positions) != L:
+        return failure
+
+    corrected = r
+    for j in error_positions:
+        corrected[j] = corrected[j] XOR 1
+    if any evaluate_in_field(corrected, alpha^ell) != 0 for ell=1..2*t:
+        return failure
+    return corrected, "valid BCH word under decoder's checks"
+</code></pre></div>
+<p>这个流程针对<strong>二元错误</strong>：找到位置后翻转即可，因为非零错误幅度只能是 1。Reed–Solomon 等非二元码还需计算错误的数值大小，不能只翻转一个比特。</p>
+<h2 id="12-cc">12. 对照 C/C++ 源码：逐层检查什么<a class="headerlink" href="#12-cc" title="Permanent link">&para;</a></h2>
+<p>源码往往优化得比上述伪代码复杂，但可以沿同一数据流逐层核对：</p>
+<ol>
+<li><strong>位与多项式的对应</strong>：确认 <code>bit[0]</code> 是 <span class="arithmatex">\(x^0\)</span> 还是最高次项；输入字节内部是高位先传还是低位先传。画出一个只有两个 <code>1</code> 的短输入，核对移位、余式和输出排列。</li>
+<li><strong>域表示</strong>：确认本原多项式、元素位宽与 <code>exp/log</code> 表。GF(16) 示例使用 <span class="arithmatex">\(x^4+x+1\)</span>；真实 DVB-S2 不是这个表。<code>log[0]</code> 必须被保护，指数需要按非零乘法群的周期取模。</li>
+<li><strong>GF 运算</strong>：域加法是 XOR；非零乘法可用 <code>exp[(log[a]+log[b]) % period]</code>；除法可用指数相减并处理负数取模。也可不用查表，采用移位/XOR 约减；结果必须一致。</li>
+<li><strong>生成多项式与系统编码</strong>：检查生成因子、实际校验位数、反馈抽头、余式放置方向，以及 <code>encoded % g == 0</code>。若采用缩短码，别误以为名义母码长度就是每帧实际输出长度。</li>
+<li><strong>syndrome</strong>：确认用的是 <span class="arithmatex">\(S_1\)</span> 到 <span class="arithmatex">\(S_{2t}\)</span> 还是其他起点；Horner 求值（从高次到低次依次“当前值乘代入点，再 XOR 新系数”）与直接求值应一致。</li>
+<li><strong>BM 状态</strong>：检查偏差 <code>d</code>、旧候选 <code>B</code>、旧偏差 <code>b</code>、阶数 <code>L</code>、平移量的更新时机。将 <code>oldC</code> 保存得太晚会破坏后续轮次；零偏差轮次仍要增加平移量。</li>
+<li><strong>Chien 位置映射</strong>：确认试根是 <span class="arithmatex">\(\alpha^{-j}\)</span> 还是因不同定义而改成 <span class="arithmatex">\(\alpha^j\)</span>，以及扫描位置是否包含只在未缩短母码中存在的位。根数与阶数不匹配必须处理。</li>
+<li><strong>失败状态与边界</strong>：零 syndrome、单错、恰好 <span class="arithmatex">\(t\)</span> 错、超过 <span class="arithmatex">\(t\)</span> 错、两根重合/无效、缓冲区长度和最后一个字节不足 8 位，都需要明确行为。不要仅以“输出可被 <span class="arithmatex">\(g\)</span> 整除”宣告发送信息一定正确。</li>
+</ol>
+<p>更有效的测试方式是为一个小码枚举所有码字，并对每个码字注入 0、1、2 位错误：在本例这些错误都必须还原；再注入 3 位错误，记录可能检出、失败或误纠，但不要把“全都还原”当作设计要求。大码无法穷举，仍可使用编码不变量、指定错误位置注入、与独立参考实现对拍、随机测试及边界测试。</p>
+<h2 id="13-dvb-s2-bch">13. 与 DVB-S2 BCH 外码的关系<a class="headerlink" href="#13-dvb-s2-bch" title="Permanent link">&para;</a></h2>
+<p>DVB-S2 不是使用本章的 <span class="arithmatex">\((15,7)\)</span> 玩具码。<a href="https://www.etsi.org/deliver/etsi_en/302300_302399/30230701/01.04.01_60/en_30230701v010401p.pdf#page=22">ETSI EN 302 307-1 第 5.3 节</a>规定：每个 BBFRAME 先进入<strong>系统 BCH 外码</strong>，输出再作为<strong>LDPC 内码</strong>的输入；LDPC 输出才是 FECFRAME。接收端逆序，通常先做 LDPC 解码，再处理剩余错误的 BCH 译码。BCH 的作用不是替代 LDPC，而是给串联纠错链增加另一层约束。</p>
+<p>标准表 5a/5b 为每个模式列出 <span class="arithmatex">\(K_{\rm bch},N_{\rm bch},t\)</span> 等参数，表 6a/6b 列出生成多项式所用因子。例如<strong>正常 FECFRAME 的 3/5 模式</strong>：<span class="arithmatex">\(K_{\rm bch}=38688\)</span>、<span class="arithmatex">\(N_{\rm bch}=38880\)</span>、BCH 标称 <span class="arithmatex">\(t=12\)</span>，故校验位数是 <span class="arithmatex">\(38880-38688=192\)</span>。该模式按标准将表 6a 的前 12 个规定多项式相乘构造 BCH 生成多项式；它们在该表中各为 16 次，故总次数为 192。这与“移位 192 位、对 <span class="arithmatex">\(g\)</span> 求余，再追加余式”的系统编码机制一致。<a href="https://www.etsi.org/deliver/etsi_en/302300_302399/30230701/01.04.01_60/en_30230701v010401p.pdf#page=23">标准第 5.3.1 节和表 6a</a>才是实现该模式时的准绳，不能把本章的 <span class="arithmatex">\(x^8+x^7+x^6+x^4+1\)</span> 用进真实 DVB-S2。</p>
+<p>在较短的实际帧中采用<strong>缩短（shortening）</strong>的思想：从更长的母码固定某些信息位并不传送它们，从而保留相关纠错结构，同时改变实际码长。因而源码里可能同时出现“有限域非零元素周期”“母码位置”和“本帧真正传送的位置”三个范围；这三个数字不应简单互换。短 FECFRAME 的表 6b 采用不同的生成因子和参数，不能沿用正常帧的表。</p>
+<p>上例 LDPC 内码接收 <span class="arithmatex">\(38880\)</span> 位，输出 <span class="arithmatex">\(64800\)</span> 位；<code>3/5</code> 是 <span class="arithmatex">\(38880/64800\)</span> 的 LDPC 内码率，不是 BCH 的码率。BCH 自己的码率是 <span class="arithmatex">\(38688/38880\)</span>。回到最初的数据流：</p>
+<div class="highlight"><pre><span></span><code>发送：BBFRAME 38688 位 → BCH +192 位 → 38880 位 → LDPC → FECFRAME 64800 位
+接收：FECFRAME 软解码 → 38880 位 → BCH 纠正残余位错 → BBFRAME 38688 位
+</code></pre></div>
+<p>标准定义了发送端编码、帧结构和参数；具体接收机可选不同实现方式。这里讲的 BM+Chien 是理解<strong>代数 BCH 译码</strong>的一条典型路径，不应误说成标准强制接收机只能用这一种 C/C++ 算法。</p>
+<h2 id="14">14. 常见误区与知识地图<a class="headerlink" href="#14" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>容易误解的说法</th>
+<th>更准确的理解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“GF(<span class="arithmatex">\(2^4\)</span>) 就是 0 到 15 的普通整数运算。”</td>
+<td>可用四位数存储元素，但加法是 XOR，乘法须按不可约多项式约减。</td>
+</tr>
+<tr>
+<td>“不可约多项式一定是本原多项式。”</td>
+<td>不可约保证能构造域；本原还要求选出的元素遍历所有非零元素。</td>
+</tr>
+<tr>
+<td>“域的模多项式就是 BCH 生成多项式。”</td>
+<td>前者定义 GF(<span class="arithmatex">\(2^m\)</span>) 运算；后者规定哪些二元码字合法，角色不同。</td>
+</tr>
+<tr>
+<td>“<span class="arithmatex">\(\alpha^i+\alpha^j=\alpha^{i+j}\)</span>。”</td>
+<td>指数相加用于<strong>乘法</strong>；加法应把多项式系数 XOR。</td>
+</tr>
+<tr>
+<td>“生成多项式就是校验位本身。”</td>
+<td>它是所有合法码字的共同因子；余式才构成具体输入的系统校验位。</td>
+</tr>
+<tr>
+<td>“syndrome 的每个元素对应一个错误位。”</td>
+<td>syndrome 是多个根处的域取值；BM 根据整个序列求定位多项式。</td>
+</tr>
+<tr>
+<td>“Chien 搜索应检查 <span class="arithmatex">\(\Lambda(\alpha^j)\)</span>。”</td>
+<td>在本章定位多项式定义下，错误位置 <span class="arithmatex">\(j\)</span> 对应根 <span class="arithmatex">\(\alpha^{-j}\)</span>；其他文献定义不同须连公式一起改。</td>
+</tr>
+<tr>
+<td>“syndrome 全零必定无错。”</td>
+<td>超过纠错范围的错误可能把一个合法码字变成另一个，检验仍通过。</td>
+</tr>
+<tr>
+<td>“标准规定 BCH，就规定必须用 BM。”</td>
+<td>标准规定外码和参数；BM+Chien 是典型的接收端实现思路。</td>
+</tr>
+</tbody>
+</table>
+<p>把概念关系压缩成一条链：<strong>GF(2) 让比特可代数运算 → GF(<span class="arithmatex">\(2^m\)</span>) 提供足够多的非零取值点 → 最小多项式把这些扩域根变成二元因子 → 生成多项式规定合法码字 → 连续根保证最小距离 → syndrome 提取错误位置的幂和 → BM 求定位多项式 → Chien 找根并翻转错误位</strong>。读代码时只要不断核对“当前变量处于链上的哪一步、使用什么域、位位置按什么顺序解释”，大多数看似神秘的表驱动和移位/XOR 实现就能还原为这条清晰的逻辑。</p>
+<h2 id="_1">权威原始资料<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://ocw.mit.edu/courses/6-451-principles-of-digital-communication-ii-spring-2005/01060b08ba74792ee8d85eb82b9efdb4_chap8.pdf">MIT OpenCourseWare，Principles of Digital Communication II，Chapter 8</a>：有限域上的线性码与二元 BCH 码的进一步理论。</li>
+<li><a href="https://www.etsi.org/deliver/etsi_en/302300_302399/30230701/01.04.01_60/en_30230701v010401p.pdf#page=22">ETSI EN 302 307-1 V1.4.1，第 5.3 节</a>：DVB-S2 BCH/LDPC 级联、帧长、纠错参数与生成多项式因子。</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../Forward-Error-Correction/" class="md-footer__link md-footer__link--prev" aria-label="上一页: FEC 基础">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                FEC 基础
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../LDPC/" class="md-footer__link md-footer__link--next" aria-label="下一页: LDPC">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                LDPC
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.tabs", "navigation.indexes", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../../javascripts/page-search.js?v=3"></script>
+      
+        <script src="../../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

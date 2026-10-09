@@ -1,0 +1,18 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+class Polygon
+class Point {
+- x : Real
+- y : Real
+}
+Polygon "1" *-- "3..*" Point : vertices {ordered}
+note bottom of Polygon
+假设顶点值属于单个多边形
+不同多边形可复制相同坐标值
+
+end note
+@enduml

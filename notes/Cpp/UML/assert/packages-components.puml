@@ -1,0 +1,24 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+package InterfaceLayer {
+ class StaffUI
+}
+package ApplicationLayer {
+ class PASS
+}
+package Domain {
+ class StudentId
+}
+package StorageContract {
+ interface MarksQuery
+}
+StaffUI ..> PASS
+PASS ..> StudentId
+PASS ..> MarksQuery
+class MarksStorage <<component>>
+MarksStorage - MarksQuery : 提供
+@enduml

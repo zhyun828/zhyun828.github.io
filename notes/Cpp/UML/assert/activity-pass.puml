@@ -1,0 +1,17 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+start
+:接收姓名、课程;
+:目录查找 ID;
+if (恰好一个匹配?) then (是)
+ :以 ID 和课程查询成绩;
+ :返回成绩列表;
+else (否)
+ :返回未找到或重名错误;
+endif
+stop
+@enduml

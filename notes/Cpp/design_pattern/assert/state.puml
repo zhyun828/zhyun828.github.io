@@ -1,0 +1,29 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam ArrowColor #334155
+skinparam classBorderColor #334155
+skinparam classBackgroundColor #DCFCE7
+skinparam packageBackgroundColor #F8FAFC
+skinparam packageBorderColor #94A3B8
+skinparam nodesep 55
+skinparam ranksep 55
+hide empty members
+title State
+class Context {
+ +request()
+}
+interface State {
+ +handle(): State
+}
+class ConcreteState1
+class ConcreteState2
+State <|.. ConcreteState1
+State <|.. ConcreteState2
+Context *-- "1" State : current
+ConcreteState1 ..> ConcreteState2 : transition
+ConcreteState2 ..> ConcreteState1 : transition
+@enduml

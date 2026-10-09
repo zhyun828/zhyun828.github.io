@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="470" viewBox="0 0 1080 470" role="img" aria-labelledby="title desc">
+  <title id="title">TCP byte stream and application framing</title>
+  <desc id="desc">TCP is byte stream and application protocol must define message framing.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.send{fill:#dbeafe;stroke:#2563eb;stroke-width:2;rx:10}.recv{fill:#fee2e2;stroke:#dc2626;stroke-width:2;rx:10}.ok{fill:#dcfce7;stroke:#16a34a;stroke-width:2;rx:10}
+      .text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:18px;fill:#0f172a}.title{font-size:25px;font-weight:700}.small{font-size:15px;fill:#475569}.arrow{stroke:#64748b;stroke-width:3;marker-end:url(#arrow)}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#64748b"/></marker>
+  </defs>
+  <rect class="bg" width="1080" height="470"/>
+  <text class="text title" x="540" y="45" text-anchor="middle">TCP 是字节流，应用层要自己分帧</text>
+  <rect class="send" x="95" y="105" width="180" height="62"/><text class="text" x="185" y="142" text-anchor="middle">send HELLO</text>
+  <rect class="send" x="95" y="190" width="180" height="62"/><text class="text" x="185" y="227" text-anchor="middle">send WORLD</text>
+  <line class="arrow" x1="275" y1="136" x2="395" y2="180"/><line class="arrow" x1="275" y1="221" x2="395" y2="205"/>
+  <rect class="recv" x="395" y="155" width="290" height="90"/><text class="text" x="540" y="190" text-anchor="middle">TCP 字节流</text><text class="small" x="540" y="218" text-anchor="middle">HELLOWORLD，没有消息边界</text>
+  <line class="arrow" x1="685" y1="200" x2="805" y2="200"/>
+  <rect class="ok" x="805" y="120" width="210" height="62"/><text class="text" x="910" y="157" text-anchor="middle">长度字段 + Body</text>
+  <rect class="ok" x="805" y="210" width="210" height="62"/><text class="text" x="910" y="247" text-anchor="middle">分隔符 / TLV</text>
+  <rect class="ok" x="805" y="300" width="210" height="62"/><text class="text" x="910" y="337" text-anchor="middle">HTTP / MQTT 等</text>
+  <text class="small" x="540" y="420" text-anchor="middle">一次 recv 可能读到半条、多条或任意长度片段，不能直接当作完整业务消息。</text>
+</svg>

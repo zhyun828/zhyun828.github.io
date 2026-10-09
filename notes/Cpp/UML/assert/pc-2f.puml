@@ -1,0 +1,30 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+skinparam nodesep 110
+skinparam ranksep 140
+class Gallery
+class Work
+class Artist
+class Theme
+class Client
+class Purchase {
+- date : Date
+- price : Money
+}
+Gallery "0..*" -- "0..*" Work : exhibits
+Artist "1..*" -- "0..*" Work : creates
+Work "0..*" -- "1..*" Theme : represents
+Gallery "0..*" -- "0..*" Client : welcomes
+Client "1" -- "0..*" Purchase
+Work "1" -- "0..*" Purchase
+Gallery "1" -- "0..*" Purchase : sells
+note bottom of Purchase
+假设保留交易历史
+每笔购买发生于一画廊，作品可转售
+
+end note
+@enduml

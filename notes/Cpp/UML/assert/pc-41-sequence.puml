@@ -1,0 +1,57 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+actor User
+participant CardReader as R
+participant ATMController as A
+participant Screen as S
+participant CashDispenser as D
+participant RouterGateway as G
+participant "对应银行 SIC" as B
+participant ReceiptPrinter as P
+User -> R : insertCard()
+R -> A : cardRead(cardData)
+A -> S : requestCredentialsAndAmount()
+S --> A : credentials, amount
+A -> D : canDispense(amount)
+D --> A : possible
+alt 库存/面额不允许
+ A -> S : displayFailure()
+else 本机可出钞
+ A -> G : authorize(credentials, accountId, amount, txId)
+ G -> B : routeAuthorization(credentials, accountId, amount, txId)
+ B --> G : authorizationResult
+ G --> A : authorizationResult
+ alt 认证或资金授权失败
+  A -> S : displayFailure()
+ else 授权成功
+  A -> D : dispense(amount)
+  D --> A : dispenseResult
+  alt 出钞成功
+   A -> G : confirm(txId)
+   G -> B : confirm(txId)
+   B --> G : committed
+   G --> A : committed
+   A -> P : printReceipt(txId, amount)
+   P --> A : printedOrFailed
+   A -> S : showSuccessAndReceiptStatus()
+  else 出钞失败
+   A -> G : cancel(txId)
+   G -> B : cancel(txId)
+   B --> G : reversed
+   G --> A : reversed
+   A -> S : displayFailure()
+  end
+ end
+end
+A -> R : ejectCard()
+R --> User : cardReturned
+note over A,B
+txId 用于幂等处理；超时进入待核对状态
+这些一致性措施是补充设计
+
+end note
+@enduml

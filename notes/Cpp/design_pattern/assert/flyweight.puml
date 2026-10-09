@@ -1,0 +1,34 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam ArrowColor #334155
+skinparam classBorderColor #334155
+skinparam classBackgroundColor #FFEDD5
+skinparam packageBackgroundColor #F8FAFC
+skinparam packageBorderColor #94A3B8
+skinparam nodesep 55
+skinparam ranksep 55
+hide empty members
+title Flyweight
+interface Flyweight {
+ +operation(extrinsicState)
+}
+class ConcreteFlyweight {
+ -intrinsicState
+}
+class UnsharedConcreteFlyweight {
+ -allState
+}
+class FlyweightFactory {
+ +getFlyweight(key): Flyweight
+}
+class Client
+Flyweight <|.. ConcreteFlyweight
+Flyweight <|.. UnsharedConcreteFlyweight
+FlyweightFactory *-- "0..*" Flyweight : pool
+Client --> FlyweightFactory
+Client --> Flyweight
+@enduml

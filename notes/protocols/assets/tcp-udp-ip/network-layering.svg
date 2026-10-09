@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="540" viewBox="0 0 1040 540" role="img" aria-labelledby="title desc">
+  <title id="title">TCP UDP IP network layering</title>
+  <desc id="desc">Application layer over TCP or UDP, over IP, over link and physical layer.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.layer{fill:#fff;stroke:#334155;stroke-width:2;rx:12}.app{fill:#dbeafe}.trans{fill:#dcfce7}.ip{fill:#fef3c7}.link{fill:#fee2e2}
+      .text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:21px;fill:#0f172a}.title{font-size:26px;font-weight:700}.small{font-size:16px;fill:#475569}
+      .arrow{stroke:#64748b;stroke-width:3;marker-end:url(#arrow)}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#64748b"/></marker>
+  </defs>
+  <rect class="bg" width="1040" height="540"/>
+  <text class="text title" x="520" y="48" text-anchor="middle">TCP / UDP / IP 网络分层</text>
+
+  <rect class="layer app" x="180" y="85" width="680" height="72"/>
+  <text class="text" x="520" y="116" text-anchor="middle">应用层</text>
+  <text class="small" x="520" y="142" text-anchor="middle">HTTP、DNS、MQTT、Modbus TCP、自定义协议</text>
+
+  <rect class="layer trans" x="180" y="185" width="320" height="72"/>
+  <text class="text" x="340" y="216" text-anchor="middle">TCP</text>
+  <text class="small" x="340" y="242" text-anchor="middle">可靠、有序、字节流</text>
+  <rect class="layer trans" x="540" y="185" width="320" height="72"/>
+  <text class="text" x="700" y="216" text-anchor="middle">UDP</text>
+  <text class="small" x="700" y="242" text-anchor="middle">无连接、数据报、低开销</text>
+
+  <rect class="layer ip" x="180" y="285" width="680" height="72"/>
+  <text class="text" x="520" y="316" text-anchor="middle">网络层：IP</text>
+  <text class="small" x="520" y="342" text-anchor="middle">IP 地址、路由、转发、TTL / Hop Limit</text>
+
+  <rect class="layer link" x="180" y="385" width="680" height="72"/>
+  <text class="text" x="520" y="416" text-anchor="middle">链路层 / 物理层</text>
+  <text class="small" x="520" y="442" text-anchor="middle">Ethernet、Wi-Fi、MAC、网线、光纤、无线</text>
+
+  <line class="arrow" x1="520" y1="158" x2="520" y2="181"/>
+  <line class="arrow" x1="340" y1="258" x2="455" y2="282"/>
+  <line class="arrow" x1="700" y1="258" x2="585" y2="282"/>
+  <line class="arrow" x1="520" y1="358" x2="520" y2="381"/>
+  <text class="small" x="520" y="505" text-anchor="middle">IP 定位主机，TCP/UDP 用端口定位应用进程。</text>
+</svg>

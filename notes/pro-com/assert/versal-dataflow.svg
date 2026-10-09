@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 370" role="img" aria-labelledby="title desc">
+  <title id="title">Versal 中 PS、PL、AIE 与 DDR 的教学数据通路</title>
+  <desc id="desc">PS 负责控制，DDR 经 NoC 与 DMA 传输帧数据，PL 进行流接口和重排，AIE tile 使用本地缓冲与向量核心计算。</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#59758a"/></marker></defs>
+  <rect width="1000" height="370" rx="16" fill="#f7fafc"/>
+  <text x="500" y="41" text-anchor="middle" font-family="sans-serif" font-size="24" font-weight="700" fill="#18384a">控制、搬运与计算是三件不同的事</text>
+  <g font-family="sans-serif" text-anchor="middle" fill="#18384a">
+    <rect x="45" y="103" width="175" height="92" rx="13" fill="#dceaf2" stroke="#7896a7" stroke-width="2"/>
+    <text x="132" y="142" font-size="21" font-weight="700">DDR</text><text x="132" y="172" font-size="15">完整帧 / 大缓冲</text>
+    <rect x="285" y="103" width="150" height="92" rx="13" fill="#dceaf2" stroke="#7896a7" stroke-width="2"/>
+    <text x="360" y="142" font-size="21" font-weight="700">NoC / DMA</text><text x="360" y="172" font-size="15">跨层搬运</text>
+    <rect x="500" y="103" width="175" height="92" rx="13" fill="#e8f3e9" stroke="#7aa18c" stroke-width="2"/>
+    <text x="588" y="142" font-size="21" font-weight="700">PL</text><text x="588" y="172" font-size="15">接口 / 位重排</text>
+    <rect x="740" y="103" width="215" height="92" rx="13" fill="#fff0da" stroke="#bb9760" stroke-width="2"/>
+    <text x="848" y="142" font-size="21" font-weight="700">AIE tile</text><text x="848" y="172" font-size="15">向量 kernel</text>
+    <rect x="500" y="255" width="175" height="69" rx="13" fill="#e8f3e9" stroke="#7aa18c" stroke-width="2"/>
+    <text x="588" y="284" font-size="20" font-weight="700">PS</text><text x="588" y="308" font-size="15">配置与调度</text>
+    <rect x="742" y="255" width="211" height="69" rx="13" fill="#fff0da" stroke="#bb9760" stroke-width="2"/>
+    <text x="848" y="284" font-size="18" font-weight="700">local memory</text><text x="848" y="308" font-size="15">bank / 当前数据块</text>
+  </g>
+  <g stroke="#59758a" stroke-width="3" fill="none" marker-end="url(#arrow)">
+    <path d="M222 150H280"/><path d="M437 150H495"/><path d="M677 150H735"/>
+    <path d="M588 252V201"/><path d="M848 252V201"/>
+  </g>
+  <text x="500" y="351" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#476274">概念示意，实际互连和可用资源取决于 Versal 器件与工具版本</text>
+</svg>

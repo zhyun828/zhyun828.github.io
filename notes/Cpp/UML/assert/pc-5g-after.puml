@@ -1,0 +1,24 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+class Person {
+- name : String
+- firstname : String
+- email : EmailAddress
++ changeEmail(value : EmailAddress)
+}
+class EmailAddress {
+- value : String
++ parse(text : String) : EmailAddress
++ text() : String {query}
+}
+Person "1" *-- "1" EmailAddress
+note bottom of EmailAddress
+{实例始终符合指定邮箱语法规则}
+值对象；不声称语法检查证明可投递
+
+end note
+@enduml

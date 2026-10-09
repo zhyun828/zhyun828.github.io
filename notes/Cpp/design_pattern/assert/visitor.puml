@@ -1,0 +1,36 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam ArrowColor #334155
+skinparam classBorderColor #334155
+skinparam classBackgroundColor #DCFCE7
+skinparam packageBackgroundColor #F8FAFC
+skinparam packageBorderColor #94A3B8
+skinparam nodesep 55
+skinparam ranksep 55
+hide empty members
+title Visitor
+interface Visitor {
+ +visitElementA(a)
+ +visitElementB(b)
+}
+class ConcreteVisitor
+interface Element {
+ +accept(v)
+}
+class ConcreteElementA
+class ConcreteElementB
+class Client
+Visitor <|.. ConcreteVisitor
+Element <|.. ConcreteElementA
+Element <|.. ConcreteElementB
+ConcreteElementA ..> Visitor : dispatch
+ConcreteElementB ..> Visitor : dispatch
+Visitor ..> ConcreteElementA
+Visitor ..> ConcreteElementB
+Client --> Visitor
+Client --> Element
+@enduml

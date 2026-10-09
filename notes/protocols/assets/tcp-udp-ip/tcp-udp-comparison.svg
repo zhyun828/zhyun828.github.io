@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="500" viewBox="0 0 1040 500" role="img" aria-labelledby="title desc">
+  <title id="title">TCP UDP comparison</title>
+  <desc id="desc">TCP is connection oriented reliable byte stream while UDP is connectionless datagram service.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.tcp{fill:#dbeafe;stroke:#1d4ed8;stroke-width:2;rx:14}.udp{fill:#dcfce7;stroke:#15803d;stroke-width:2;rx:14}
+      .text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:20px;fill:#0f172a}.title{font-size:26px;font-weight:700}.head{font-size:24px;font-weight:700}.small{font-size:17px;fill:#334155}
+      .line{stroke:#64748b;stroke-width:2}
+    </style>
+  </defs>
+  <rect class="bg" width="1040" height="500"/>
+  <text class="text title" x="520" y="48" text-anchor="middle">TCP 与 UDP 对比</text>
+  <rect class="tcp" x="90" y="85" width="400" height="350"/>
+  <rect class="udp" x="550" y="85" width="400" height="350"/>
+  <text class="text head" x="290" y="128" text-anchor="middle">TCP</text>
+  <text class="text head" x="750" y="128" text-anchor="middle">UDP</text>
+
+  <text class="small" x="130" y="180">- 需要建立连接</text>
+  <text class="small" x="130" y="220">- ACK、重传、排序</text>
+  <text class="small" x="130" y="260">- 面向字节流</text>
+  <text class="small" x="130" y="300">- 有流量控制和拥塞控制</text>
+  <text class="small" x="130" y="340">- 适合可靠传输</text>
+  <text class="small" x="130" y="380">- 代价：状态和延迟更高</text>
+
+  <text class="small" x="590" y="180">- 无连接，直接发送</text>
+  <text class="small" x="590" y="220">- 不保证送达和顺序</text>
+  <text class="small" x="590" y="260">- 面向数据报</text>
+  <text class="small" x="590" y="300">- 头部小，机制少</text>
+  <text class="small" x="590" y="340">- 适合实时和发现类通信</text>
+  <text class="small" x="590" y="380">- 代价：可靠性由应用承担</text>
+
+  <line class="line" x1="520" y1="105" x2="520" y2="420"/>
+</svg>

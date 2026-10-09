@@ -1,0 +1,22 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+title ATM 状态变化（横轴：秒，教学假设）
+robust "atm:ATM" as A
+@0
+A is Waiting
+@5
+A is Authenticating
+@8
+A is Dispensing
+@12
+A is Completed
+@15
+note top of A
+横轴单位：秒（教学假设）
+
+end note
+@enduml

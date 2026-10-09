@@ -1,0 +1,4446 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Notes on embedded systems, robotics, C++, FPGA, and interview preparation.">
+      
+      
+      
+        <link rel="canonical" href="https://zhyun828.github.io/notes/Cpp/design_pattern/Design-Patterns-Cheatsheet/">
+      
+      
+        <link rel="prev" href="../Design-Patterns/">
+      
+      
+        <link rel="next" href="../../../embedded_system/basic/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>设计模式速查 - ZY Engineering Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/home.css">
+    
+      <link rel="stylesheet" href="../../../../stylesheets/page-search.css?v=2">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#design-patterns-cheatsheet" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../../.." title="ZY Engineering Notes" class="md-header__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ZY Engineering Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              设计模式速查
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal"  aria-label="深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="cyan"  aria-label="浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m3.55 19.09 1.41 1.41 1.8-1.79-1.42-1.42M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6c0-3.32-2.69-6-6-6m8 7h3v-2h-3m-2.76 7.71 1.8 1.79 1.41-1.41-1.79-1.8M20.45 5l-1.41-1.4-1.8 1.79 1.42 1.42M13 1h-2v3h2M6.76 5.39 4.96 3.6 3.55 5l1.79 1.81zM1 13h3v-2H1m12 9h-2v3h2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="ZY Engineering Notes" class="md-nav__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ZY Engineering Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../protocols/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通信协议
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    通信协议
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/usart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    USART
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/i2c/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I2C
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/spi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SPI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/can/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/tcp-udp-ip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TCP / UDP / IP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/modbus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modbus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/ethernet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ethernet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/lin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LIN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/http-https/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP / HTTPS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    专业通信
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    专业通信
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_1" id="__nav_2_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DVB-S2
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    DVB-S2
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pro-com/dvb-s2/Communication-System/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通信系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pro-com/dvb-s2/Demapper-and-Interleaver/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    解映射与交织
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_2" id="__nav_2_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    前向纠错
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    前向纠错
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pro-com/fec/Forward-Error-Correction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FEC 基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pro-com/fec/BCH/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BCH
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pro-com/fec/LDPC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LDPC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pro-com/versal/Versal-AIE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versal AI Engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pro-com/acceleration/High-Throughput-Architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高吞吐架构
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面试
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    面试
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%9D%A2%E8%AF%95/%E5%BF%AB%E9%80%9F%E6%A3%80%E7%B4%A2%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速检索表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%9D%A2%E8%AF%95/%E5%B5%8C%E5%85%A5%E5%BC%8F%E9%9D%A2%E8%AF%95%E6%B1%87%E6%80%BB%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    嵌入式面试汇总表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%9D%A2%E8%AF%95/%E9%AB%98%E9%A2%91%E9%A2%98%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高频题深度解析
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%9D%A2%E8%AF%95/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E9%97%AE%E7%AD%94%E9%9D%A2%E8%AF%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目经历问答面试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arduino
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Arduino
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/basics.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5_2" id="__nav_2_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    projet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/projet/projet.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/projet/pre.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    pre
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/projet/code.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/projet/thoughts.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thoughts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cpp
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cpp
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cmake%E6%95%99%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CMake 与 CMakeLists.txt
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_4" id="__nav_2_6_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UML
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    UML
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../UML/UML/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    系统学习教材
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../UML/UML-Cheatsheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    分类与图解速查
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Design-Patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    设计模式详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    设计模式速查
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    设计模式速查
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        总览与统一顺序
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#behavioral" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behavioral / 行为型模式
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Behavioral / 行为型模式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#chain-of-responsibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        01. Chain of Responsibility / 责任链模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        02. Command / 命令模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interpreter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        03. Interpreter / 解释器模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iterator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        04. Iterator / 迭代器模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mediator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        05. Mediator / 中介者模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        06. Memento / 备忘录模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        07. Observer / 观察者模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        08. State / 状态模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        09. Strategy / 策略模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#template-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Template Method / 模板方法模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visitor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Visitor / 访问者模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structural" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structural / 结构型模式
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Structural / 结构型模式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Adapter / 适配器模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bridge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Bridge / 桥接模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#composite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Composite / 组合模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decorator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Decorator / 装饰器模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#facade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Facade / 外观模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flyweight" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Flyweight / 享元模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Proxy / 代理模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creational" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creational / 创建型模式
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creational / 创建型模式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#abstract-factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. Abstract Factory / 抽象工厂模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#builder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20. Builder / 建造者模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#factory-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21. Factory Method / 工厂方法模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prototype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22. Prototype / 原型模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#singleton" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23. Singleton / 单例模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常见选择的快速对照
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    embedded_system
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    embedded_system
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../embedded_system/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_7_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../embedded_system/TP/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TP
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    TP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_8" id="__nav_2_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FPGA
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    FPGA
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../FPGA/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../FPGA/zynq-hardware-acceleration-intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zynq 硬件乘法加速器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_9" id="__nav_2_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gazebo
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    gazebo
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ros/gazebo/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_10" id="__nav_2_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_10_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_10_2" id="__nav_2_10_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux驱动
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_10_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    linux驱动
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/00_%E4%B8%8B%E8%BD%BD%E8%B5%84%E6%96%99/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    下载资料
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/01_%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    搭建开发环境
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/02_%E9%80%9A%E7%94%A8%E7%9A%84%E9%A9%B1%E5%8A%A8%E6%A1%86%E6%9E%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用的驱动框架
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/03_%E4%BD%BF%E7%94%A8%E6%A8%A1%E6%9D%BF%E6%93%8D%E4%BD%9C%E7%A1%AC%E4%BB%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    使用模板操作硬件
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/04_%E5%B9%B3%E5%8F%B0%E6%80%BB%E7%BA%BF%E8%AE%BE%E5%A4%87%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AE%BE%E5%A4%87%E6%A0%91/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    平台总线设备模型和设备树
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/05_I2C%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F%E6%A8%A1%E6%9D%BF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I2C驱动程序模板
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVGL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LVGL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LVGL/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_12" id="__nav_2_12_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ros
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ros
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ros/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ros/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_13" id="__nav_2_13_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    stm32
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../stm32/stm32_knowledge_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32_knowledge_notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../stm32/rtos_freertos_notes_compact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RTOS / FreeRTOS 知识整理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../stm32/%E5%A4%96%E8%AE%BE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    外设
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../stm32/%E5%AF%84%E5%AD%98%E5%99%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    寄存器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        总览与统一顺序
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#behavioral" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Behavioral / 行为型模式
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Behavioral / 行为型模式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#chain-of-responsibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        01. Chain of Responsibility / 责任链模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        02. Command / 命令模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interpreter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        03. Interpreter / 解释器模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iterator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        04. Iterator / 迭代器模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mediator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        05. Mediator / 中介者模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        06. Memento / 备忘录模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        07. Observer / 观察者模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        08. State / 状态模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        09. Strategy / 策略模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#template-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Template Method / 模板方法模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visitor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Visitor / 访问者模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structural" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structural / 结构型模式
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Structural / 结构型模式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Adapter / 适配器模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bridge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Bridge / 桥接模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#composite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Composite / 组合模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decorator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Decorator / 装饰器模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#facade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Facade / 外观模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flyweight" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Flyweight / 享元模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. Proxy / 代理模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creational" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creational / 创建型模式
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creational / 创建型模式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#abstract-factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. Abstract Factory / 抽象工厂模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#builder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20. Builder / 建造者模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#factory-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21. Factory Method / 工厂方法模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prototype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22. Prototype / 原型模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#singleton" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        23. Singleton / 单例模式
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常见选择的快速对照
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="导航栏" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Notes
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../basics/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Cpp
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="design-patterns-cheatsheet">Design Patterns Cheatsheet / 设计模式速查手册<a class="headerlink" href="#design-patterns-cheatsheet" title="Permanent link">&para;</a></h1>
+<p><a href="../Design-Patterns/">打开详细教材</a></p>
+<h2 id="_1">总览与统一顺序<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>主要参考：用户提供的 <code>00designpatternscard.pdf</code>，Jason S. McDonald，2007，两页 GoF 图解卡。</p>
+<p><strong>阅读顺序约定</strong>：PDF 是两栏排版，本文按“每栏从上到下，先左栏再右栏”阅读图解，跳过第一页左上角的字母索引。第一页先读左栏 Chain of Responsibility 至 Mediator，再读右栏 Memento 至 Visitor。第二页先读 Structural 左栏 Adapter 至 Flyweight，再接右上角 Proxy；随后读右栏 Creational 的 Abstract Factory 至 Singleton。这里没有采用 PDF 左上角索引的字母排序。</p>
+<p>两份文档共享下表的 23 项顺序与英文锚点。模式名、分类和基础角色来自 PDF；案例、C++17 实现、工程边界、对比及原稿纠错属于额外补充。图形重绘保留 PDF 的角色结构；对原图不准确的签名和关系作明确修正，而不照搬错误。</p>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>关注问题</th>
+<th style="text-align: right;">数量</th>
+<th>范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Behavioral / 行为型</td>
+<td>职责与协作如何分配</td>
+<td style="text-align: right;">11</td>
+<td>01–11</td>
+</tr>
+<tr>
+<td>Structural / 结构型</td>
+<td>对象与类如何组织</td>
+<td style="text-align: right;">7</td>
+<td>12–18</td>
+</tr>
+<tr>
+<td>Creational / 创建型</td>
+<td>对象如何创建</td>
+<td style="text-align: right;">5</td>
+<td>19–23</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">序号</th>
+<th>分类</th>
+<th>标准英文名称 / 中文名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">01</td>
+<td>Behavioral</td>
+<td><a href="#chain-of-responsibility">Chain of Responsibility / 责任链模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">02</td>
+<td>Behavioral</td>
+<td><a href="#command">Command / 命令模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">03</td>
+<td>Behavioral</td>
+<td><a href="#interpreter">Interpreter / 解释器模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">04</td>
+<td>Behavioral</td>
+<td><a href="#iterator">Iterator / 迭代器模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">05</td>
+<td>Behavioral</td>
+<td><a href="#mediator">Mediator / 中介者模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">06</td>
+<td>Behavioral</td>
+<td><a href="#memento">Memento / 备忘录模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">07</td>
+<td>Behavioral</td>
+<td><a href="#observer">Observer / 观察者模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">08</td>
+<td>Behavioral</td>
+<td><a href="#state">State / 状态模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">09</td>
+<td>Behavioral</td>
+<td><a href="#strategy">Strategy / 策略模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">10</td>
+<td>Behavioral</td>
+<td><a href="#template-method">Template Method / 模板方法模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">11</td>
+<td>Behavioral</td>
+<td><a href="#visitor">Visitor / 访问者模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">12</td>
+<td>Structural</td>
+<td><a href="#adapter">Adapter / 适配器模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">13</td>
+<td>Structural</td>
+<td><a href="#bridge">Bridge / 桥接模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">14</td>
+<td>Structural</td>
+<td><a href="#composite">Composite / 组合模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">15</td>
+<td>Structural</td>
+<td><a href="#decorator">Decorator / 装饰器模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">16</td>
+<td>Structural</td>
+<td><a href="#facade">Facade / 外观模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">17</td>
+<td>Structural</td>
+<td><a href="#flyweight">Flyweight / 享元模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">18</td>
+<td>Structural</td>
+<td><a href="#proxy">Proxy / 代理模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">19</td>
+<td>Creational</td>
+<td><a href="#abstract-factory">Abstract Factory / 抽象工厂模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">20</td>
+<td>Creational</td>
+<td><a href="#builder">Builder / 建造者模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">21</td>
+<td>Creational</td>
+<td><a href="#factory-method">Factory Method / 工厂方法模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">22</td>
+<td>Creational</td>
+<td><a href="#prototype">Prototype / 原型模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">23</td>
+<td>Creational</td>
+<td><a href="#singleton">Singleton / 单例模式</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">## 看图约定</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>空心三角指向父类/接口；虚线三角为接口实现，实线三角为继承。实心菱形在拥有方；实线箭头是关联，虚线箭头是依赖。所有权关系随具体实现调整，不能仅凭 shared_ptr 画组合。完整解释见<a href="../Design-Patterns/#uml-reading">UML 阅读与 C++ 所有权</a>。</p>
+<h2 id="behavioral">Behavioral / 行为型模式<a class="headerlink" href="#behavioral" title="Permanent link">&para;</a></h2>
+<h3 id="chain-of-responsibility">01. Chain of Responsibility / 责任链模式<a class="headerlink" href="#chain-of-responsibility" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Behavioral</strong> · <a href="../Design-Patterns/#chain-of-responsibility">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 让多个处理者依次获得处理请求的机会，使发送者不必指定最终接收者。</p>
+<p><strong>场景：</strong> 桌面工程工具按“本地缓存 → 远端仓库”查找构建产物。</p>
+<p><img alt="Chain of Responsibility 标准角色 UML" src="../assert/chain-of-responsibility.svg" /></p>
+<p><strong>参与者：</strong> Client 发起请求；Handler 定义处理入口并引用 successor；ConcreteHandler1/2 决定处理还是转发。successor 是同一种抽象角色，因此链长可变。</p>
+<p><strong>辨析：</strong> Command 封装“要做什么”，责任链决定“谁来处理”。HTTP 中间件常让多个节点都执行，是责任链的工程变体；GoF 经典示例是找到处理者后停止。</p>
+<h3 id="command">02. Command / 命令模式<a class="headerlink" href="#command" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Behavioral</strong> · <a href="../Design-Patterns/#command">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 把一次请求封装为对象，使请求可作为参数保存、排队、记录或撤销。</p>
+<p><strong>场景：</strong> C++ 文本编辑器把插入操作放入历史记录，支持撤销。</p>
+<p><img alt="Command 标准角色 UML" src="../assert/command.svg" /></p>
+<p><strong>参与者：</strong> Command 定义 execute；ConcreteCommand 保存接收者和请求参数；Receiver 执行业务；Invoker 持有并触发命令；Client 创建和配置命令。</p>
+<p><strong>辨析：</strong> Strategy 描述可替换的算法，Command 描述一次具体请求；Memento 保存状态快照，可以辅助 Command 撤销，但不负责触发请求。</p>
+<h3 id="interpreter">03. Interpreter / 解释器模式<a class="headerlink" href="#interpreter" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Behavioral</strong> · <a href="../Design-Patterns/#interpreter">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 用对象表示小型语言的语法规则，并递归解释由这些规则组成的句子。</p>
+<p><strong>场景：</strong> 构建工具解释“变量 + 常量”组成的配置表达式。</p>
+<p><img alt="Interpreter 标准角色 UML" src="../assert/interpreter.svg" /></p>
+<p><strong>参与者：</strong> AbstractExpression 定义 interpret；TerminalExpression 解释叶子；NonterminalExpression 组合子表达式；Context 提供外部环境；Client 创建并求值表达式树。</p>
+<p><strong>辨析：</strong> Composite 解释树的结构，Interpreter 为这棵树赋予文法与求值语义。Visitor 可以把求值、打印等操作从 AST 节点中分离。解析文本和解释 AST 是不同阶段。</p>
+<h3 id="iterator">04. Iterator / 迭代器模式<a class="headerlink" href="#iterator" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Behavioral</strong> · <a href="../Design-Patterns/#iterator">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 在不暴露聚合对象内部表示的前提下，提供顺序访问元素的方法。</p>
+<p><strong>场景：</strong> 遥测样本仓库对客户端提供只读遍历，而隐藏存储容器。</p>
+<p><img alt="Iterator 标准角色 UML" src="../assert/iterator.svg" /></p>
+<p><strong>参与者：</strong> Aggregate 创建 Iterator；ConcreteAggregate 提供具体元素；Iterator 定义遍历协议；ConcreteIterator 保存位置和聚合对象引用；Client 驱动遍历。</p>
+<p><strong>辨析：</strong> Visitor 关注对不同类型元素执行操作，Iterator 关注取出元素；两者可以一起使用。范围 for 是语法，容器满足迭代器协议才是其背后的设计。</p>
+<h3 id="mediator">05. Mediator / 中介者模式<a class="headerlink" href="#mediator" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Behavioral</strong> · <a href="../Design-Patterns/#mediator">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 把多个对象的交互规则集中到中介对象，使同事对象不必彼此直接引用。</p>
+<p><strong>场景：</strong> 配置对话框中，复选框控制应用按钮是否可用。</p>
+<p><img alt="Mediator 标准角色 UML" src="../assert/mediator.svg" /></p>
+<p><strong>参与者：</strong> Mediator 定义通知入口；ConcreteMediator 集中协调规则；Colleague 引用中介者；ConcreteColleague 报告事件并接受更新。</p>
+<p><strong>辨析：</strong> Observer 传播状态变化，Mediator 决定对象之间如何协作。Facade 通常向外提供子系统入口，而同事主动向中介者报告事件。</p>
+<h3 id="memento">06. Memento / 备忘录模式<a class="headerlink" href="#memento" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Behavioral</strong> · <a href="../Design-Patterns/#memento">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 在保持封装的前提下保存对象的内部状态，使它以后可以恢复到该状态。</p>
+<p><strong>场景：</strong> 编辑器保存一次文本状态，并在修改后恢复。</p>
+<p><img alt="Memento 标准角色 UML" src="../assert/memento.svg" /></p>
+<p><strong>参与者：</strong> Originator 知道状态语义、创建和恢复快照；Memento 封装状态；Caretaker 管快照的保存期限与历史顺序，不修改快照内容。</p>
+<p><strong>辨析：</strong> Prototype 创建一个新对象，Memento 恢复已有对象。Command 记录行为，Memento 记录状态；状态快照不等于数据库持久化或事务回滚。</p>
+<h3 id="observer">07. Observer / 观察者模式<a class="headerlink" href="#observer" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Behavioral</strong> · <a href="../Design-Patterns/#observer">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 建立一对多依赖，使主题变化时通知所有已订阅的观察者。</p>
+<p><strong>场景：</strong> 传感器数据模型把新温度推送给显示面板。</p>
+<p><img alt="Observer 标准角色 UML" src="../assert/observer.svg" /></p>
+<p><strong>参与者：</strong> Subject 管理订阅并通知；ConcreteSubject 保存业务状态；Observer 定义 update；ConcreteObserver 更新自己的呈现状态，可按需引用主题查询数据。</p>
+<p><strong>辨析：</strong> Mediator 编排协作，Observer 广播变化。发布订阅消息总线常有第三方 broker；GoF Observer 通常由主题直接维护订阅者，不能把两者所有语义画等号。</p>
+<h3 id="state">08. State / 状态模式<a class="headerlink" href="#state" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Behavioral</strong> · <a href="../Design-Patterns/#state">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 把状态相关行为封装到状态对象中，使上下文随内部状态改变而改变行为。</p>
+<p><strong>场景：</strong> 播放器在停止和播放状态下对同一个 toggle 请求作不同响应。</p>
+<p><img alt="State 标准角色 UML" src="../assert/state.svg" /></p>
+<p><strong>参与者：</strong> Context 保存当前 State 并接收请求；State 定义 handle；ConcreteState1/2 实现对应状态的行为，转换可由状态或上下文决定。</p>
+<p><strong>辨析：</strong> Strategy 的替换围绕算法选择，State 的替换围绕生命周期和合法转换。状态并非必须自动变化，外部事件也能驱动；策略也可由内部策略管理器选择，区别在意图。</p>
+<h3 id="strategy">09. Strategy / 策略模式<a class="headerlink" href="#strategy" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Behavioral</strong> · <a href="../Design-Patterns/#strategy">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 封装一族可替换算法，使算法可以独立于使用它的上下文变化。</p>
+<p><strong>场景：</strong> 遥测模块按部署需求选择 CSV 或 JSON 编码算法。</p>
+<p><img alt="Strategy 标准角色 UML" src="../assert/strategy.svg" /></p>
+<p><strong>参与者：</strong> Strategy 定义算法协议；ConcreteStrategyA/B 实现不同算法；Context 提供业务入口，并把算法步骤委托给策略。</p>
+<p><strong>辨析：</strong> State 根据对象状态表达行为和转换，Strategy 根据任务选择算法；Template Method 用继承替换算法步骤，Strategy 用组合替换整个算法。</p>
+<h3 id="template-method">10. Template Method / 模板方法模式<a class="headerlink" href="#template-method" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Behavioral</strong> · <a href="../Design-Patterns/#template-method">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 在基类中固定算法骨架，把其中可变步骤交给派生类实现。</p>
+<p><strong>场景：</strong> 数据导入流程固定为读取、解析、保存，不同文件实现各自解析。</p>
+<p><img alt="Template Method 标准角色 UML" src="../assert/template-method.svg" /></p>
+<p><strong>参与者：</strong> AbstractClass 定义 templateMethod 和 primitive operations；ConcreteClass 重写可变步骤；钩子可提供默认实现，让派生类可选地扩展。</p>
+<p><strong>辨析：</strong> Strategy 替换算法对象，Template Method 重写骨架里的局部步骤。C++ template 是泛型语法，Template Method 是设计模式，两者名称相近但并非同一概念。</p>
+<h3 id="visitor">11. Visitor / 访问者模式<a class="headerlink" href="#visitor" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Behavioral</strong> · <a href="../Design-Patterns/#visitor">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 把作用于稳定对象结构上的操作移到访问者中，使新增操作无需修改既有元素类。</p>
+<p><strong>场景：</strong> 编译器对整数与加法 AST 节点新增打印操作。</p>
+<p><img alt="Visitor 标准角色 UML" src="../assert/visitor.svg" /></p>
+<p><strong>参与者：</strong> Element 定义 accept；ConcreteElementA/B 把自身交给正确重载；Visitor 声明 visitElementA/B；ConcreteVisitor 实现操作；Client 把元素和访问者配对。</p>
+<p><strong>辨析：</strong> Iterator 解决遍历，Visitor 解决按具体类型操作；Composite 表示 AST 树结构。std::variant + std::visit 是封闭类型集合的现代替代方案，但仍需分析类型与操作哪个更稳定。</p>
+<h2 id="structural">Structural / 结构型模式<a class="headerlink" href="#structural" title="Permanent link">&para;</a></h2>
+<h3 id="adapter">12. Adapter / 适配器模式<a class="headerlink" href="#adapter" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Structural</strong> · <a href="../Design-Patterns/#adapter">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 把已有接口转换成客户端需要的接口，使原本不兼容的组件可以协作。</p>
+<p><strong>场景：</strong> 统一温度传感器接口接入返回华氏温度的旧驱动。</p>
+<p><img alt="Adapter 标准角色 UML" src="../assert/adapter.svg" /></p>
+<p><strong>参与者：</strong> PDF 把目标接口命名为 Adapter，具体包装者命名为 ConcreteAdapter；本文图中保留这一命名并标注 Target。Adaptee 是旧接口，Client 只认识目标协议。</p>
+<p><strong>辨析：</strong> Decorator 保持原接口并增加职责，Adapter 改变客户端看到的接口或语义；Facade 简化一组子系统入口，Adapter 主要解决接口不兼容。Bridge 通常在设计阶段拆出两个变化维度。</p>
+<h3 id="bridge">13. Bridge / 桥接模式<a class="headerlink" href="#bridge" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Structural</strong> · <a href="../Design-Patterns/#bridge">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 把抽象功能与底层实现拆成两条可独立扩展的层次，再通过组合连接。</p>
+<p><strong>场景：</strong> 不同类型的遥控器控制电视或收音机。</p>
+<p><img alt="Bridge 标准角色 UML" src="../assert/bridge.svg" /></p>
+<p><strong>参与者：</strong> Abstraction 定义高层操作并持有 Implementor；ConcreteImplementorA/B 实现底层协议；RefinedAbstraction 是额外补充角色，用来展示抽象层也可以扩展。</p>
+<p><strong>辨析：</strong> Adapter 接合既有不兼容接口，Bridge 主动设计独立变化轴；Strategy 通常替换一个算法，Bridge 强调抽象层次与实现层次的独立扩展。仅有成员指针并不能证明使用了 Bridge。</p>
+<h3 id="composite">14. Composite / 组合模式<a class="headerlink" href="#composite" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Structural</strong> · <a href="../Design-Patterns/#composite">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 用树表示部分与整体，使客户端能通过统一接口处理叶子和组合节点。</p>
+<p><strong>场景：</strong> 工程工作区把文件和目录统一为可计算大小的节点。</p>
+<p><img alt="Composite 标准角色 UML" src="../assert/composite.svg" /></p>
+<p><strong>参与者：</strong> Component 是公共接口；Leaf 无子节点；Composite 管 children 并汇总操作。PDF add(in c: Composite) 过度限制孩子类型，本文修正为 Component，以允许叶子成为孩子。</p>
+<p><strong>辨析：</strong> Decorator 一般包装一个 Component 并附加行为，Composite 聚合多个 Component 表示整体；Interpreter 为特定树节点赋予语言规则。</p>
+<h3 id="decorator">15. Decorator / 装饰器模式<a class="headerlink" href="#decorator" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Structural</strong> · <a href="../Design-Patterns/#decorator">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 通过包装同一接口的对象，在运行时叠加额外职责。</p>
+<p><strong>场景：</strong> 输出通道在基础控制台写入之外增加前缀和审计。</p>
+<p><img alt="Decorator 标准角色 UML" src="../assert/decorator.svg" /></p>
+<p><strong>参与者：</strong> Component 定义共同协议；ConcreteComponent 执行基本职责；Decorator 保存 component 并转发；ConcreteDecorator 保存 addedState 或执行 addedBehavior。</p>
+<p><strong>辨析：</strong> Adapter 改接口，Decorator 保持接口加职责；Proxy 的主要意图是控制访问；Composite 管多个子对象。相同的包装形状可以服务不同意图，必须结合调用行为判断。</p>
+<h3 id="facade">16. Facade / 外观模式<a class="headerlink" href="#facade" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Structural</strong> · <a href="../Design-Patterns/#facade">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 给一组子系统接口提供更易使用的高层入口。</p>
+<p><strong>场景：</strong> 编译服务统一词法扫描、解析、生成代码的调用流程。</p>
+<p><img alt="Facade 标准角色 UML" src="../assert/facade.svg" /></p>
+<p><strong>参与者：</strong> Facade 提供高层方法；SubsystemA/B 等提供底层服务；Client 调用外观。PDF 以 Complex system 矩形示意子系统群，而非一个统一父类。</p>
+<p><strong>辨析：</strong> Adapter 转换不兼容协议，Facade 聚合并简化多种接口；Mediator 处理同事间交互，Facade 通常从客户端单向调度子系统。</p>
+<h3 id="flyweight">17. Flyweight / 享元模式<a class="headerlink" href="#flyweight" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Structural</strong> · <a href="../Design-Patterns/#flyweight">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 共享可复用的内部状态，把每次使用的外部状态留在上下文中，以减少大量细粒度对象的存储。</p>
+<p><strong>场景：</strong> 文本渲染器共享同一字体与字符的字形数据，坐标每次传入。</p>
+<p><img alt="Flyweight 标准角色 UML" src="../assert/flyweight.svg" /></p>
+<p><strong>参与者：</strong> Flyweight 定义接收外部状态的操作；ConcreteFlyweight 保存可共享内部状态；FlyweightFactory 管共享对象；UnsharedConcreteFlyweight 表示不共享的变体；Client 管上下文。</p>
+<p><strong>辨析：</strong> Singleton 约束唯一实例，Flyweight 按键共享多种实例；缓存不限于状态分离，而享元的关键是 intrinsic/extrinsic 的明确划分。Prototype 通过复制创建独立对象，享元通常返回共享只读对象。</p>
+<h3 id="proxy">18. Proxy / 代理模式<a class="headerlink" href="#proxy" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Structural</strong> · <a href="../Design-Patterns/#proxy">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 以替身保持同一服务接口，并控制对真实对象的访问。</p>
+<p><strong>场景：</strong> 图像预览工具只在第一次显示时加载昂贵图像。</p>
+<p><img alt="Proxy 标准角色 UML" src="../assert/proxy.svg" /></p>
+<p><strong>参与者：</strong> Subject 是客户端协议；RealSubject 执行业务；Proxy 保存真实对象引用或延迟创建能力；Client 通常只引用 Subject。</p>
+<p><strong>辨析：</strong> Decorator 增加功能职责，Proxy 管服务访问；Adapter 改变协议。日志包装可以是装饰器也可以是代理的一部分，必须按主要目的和契约判断。</p>
+<h2 id="creational">Creational / 创建型模式<a class="headerlink" href="#creational" title="Permanent link">&para;</a></h2>
+<h3 id="abstract-factory">19. Abstract Factory / 抽象工厂模式<a class="headerlink" href="#abstract-factory" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Creational</strong> · <a href="../Design-Patterns/#abstract-factory">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 为相关产品族提供创建接口，使客户端不依赖具体产品类。</p>
+<p><strong>场景：</strong> 跨平台 UI 一次选择整套 Windows 或 Mac 按钮与文本框。</p>
+<p><img alt="Abstract Factory 标准角色 UML" src="../assert/abstract-factory.svg" /></p>
+<p><strong>参与者：</strong> AbstractFactory 定义 createProductA/B；ConcreteFactory 创建一致产品族；AbstractProduct 是产品协议；ConcreteProduct 提供族内实现；Client 使用工厂与抽象产品。本文把 PDF 合并表示的产品框展开成 A/B 两个产品等级；每个具体工厂代表一个族。</p>
+<p><strong>辨析：</strong> Factory Method 以派生类决定创建类型，Abstract Factory 以一个对象提供整族创建服务；抽象工厂的方法经常由工厂方法实现。区别不是简单计数“一件还是多件”，还要看变化维度与创建协议。</p>
+<h3 id="builder">20. Builder / 建造者模式<a class="headerlink" href="#builder" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Creational</strong> · <a href="../Design-Patterns/#builder">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 把复杂对象的构造过程与表示分离，使同一构造步骤可以产生不同结果。</p>
+<p><strong>场景：</strong> 报告导出按标题与正文两步构建文本或 HTML 表示。</p>
+<p><img alt="Builder 标准角色 UML" src="../assert/builder.svg" /></p>
+<p><strong>参与者：</strong> Director 调度 construct；Builder 定义 buildPart；ConcreteBuilder 保存构造中的状态并提供 getResult；Product 是结果对象，本文补充 PDF 未展开的 Product 角色。</p>
+<p><strong>辨析：</strong> Abstract Factory 直接创建一族产品，Builder 分步骤组装一个复杂结果；Factory Method 决定实例化类型。链式 setter 只是调用风格，只有管理构造过程与结果职责才体现建造者意图。</p>
+<h3 id="factory-method">21. Factory Method / 工厂方法模式<a class="headerlink" href="#factory-method" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Creational</strong> · <a href="../Design-Patterns/#factory-method">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 定义创建产品的接口，并由派生类决定实例化哪一种产品。</p>
+<p><strong>场景：</strong> 日志导出工作流由派生导出器决定创建控制台还是文件目的地。</p>
+<p><img alt="Factory Method 标准角色 UML" src="../assert/factory-method.svg" /></p>
+<p><strong>参与者：</strong> Product 定义产品协议；ConcreteProduct 实现协议；Creator 定义 factoryMethod 和使用产品的操作；ConcreteCreator 决定实际创建类型。</p>
+<p><strong>辨析：</strong> 一个含 switch 的 create(type) 通常是 Simple Factory，不是 GoF Factory Method 的典型派生结构。Abstract Factory 切换产品族；Factory Method 的判据是把创建决定留给派生类，产品数并不是唯一判据。</p>
+<h3 id="prototype">22. Prototype / 原型模式<a class="headerlink" href="#prototype" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Creational</strong> · <a href="../Design-Patterns/#prototype">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 通过多态复制已有实例来创建同种具体类型的新对象。</p>
+<p><strong>场景：</strong> 编辑器复制用户已经配置好的一种绘图图层。</p>
+<p><img alt="Prototype 标准角色 UML" src="../assert/prototype.svg" /></p>
+<p><strong>参与者：</strong> Prototype 定义 clone；ConcretePrototype1/2 实现各自的复制；Client 持有原型并调用 clone。原型注册表是可选的补充，并非模式必需角色。</p>
+<p><strong>辨析：</strong> Builder 按步骤重新构造，Prototype 从已有实例复制；Flyweight 共享已有状态，Prototype 通常建立独立可修改实例；Memento 目标是恢复而非创建。</p>
+<h3 id="singleton">23. Singleton / 单例模式<a class="headerlink" href="#singleton" title="Permanent link">&para;</a></h3>
+<p><strong>类别：Creational</strong> · <a href="../Design-Patterns/#singleton">详细讲解与完整 C++17 示例</a></p>
+<p><strong>核心：</strong> 限制一个类只有一个实例，并提供全局访问入口。</p>
+<p><strong>场景：</strong> 在明确只有一套进程日志配置的程序中提供统一日志入口。</p>
+<p><img alt="Singleton 标准角色 UML" src="../assert/singleton.svg" /></p>
+<p><strong>参与者：</strong> Singleton 保存 uniqueInstance、singletonData，并以静态 instance 提供访问。C++ 局部 static 是静态成员指针结构的现代实现变体，返回引用表达非空借用。</p>
+<p><strong>辨析：</strong> Flyweight 按键共享许多实例，Singleton 只限制一个类的实例数；普通全局对象提供访问但不一定禁止额外构造。依赖注入可保持应用中只有一份服务，同时让类型本身仍可实例化。</p>
+<h2 id="_2">常见选择的快速对照<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>要隔离的变化</th>
+<th>优先查看</th>
+<th>容易混淆的区别</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>派生框架决定产品实现</td>
+<td><a href="#factory-method">Factory Method</a></td>
+<td>不是含 switch 的简单工厂</td>
+</tr>
+<tr>
+<td>一整族兼容产品</td>
+<td><a href="#abstract-factory">Abstract Factory</a></td>
+<td>族与产品种类是两个维度</td>
+</tr>
+<tr>
+<td>按步骤得到不同表示</td>
+<td><a href="#builder">Builder</a></td>
+<td>不是仅仅给 setter 返回引用</td>
+</tr>
+<tr>
+<td>协议/单位不兼容</td>
+<td><a href="#adapter">Adapter</a></td>
+<td>Decorator 保留协议并加职责</td>
+</tr>
+<tr>
+<td>高层功能与后端独立扩展</td>
+<td><a href="#bridge">Bridge</a></td>
+<td>Adapter 主要连接已有接口</td>
+</tr>
+<tr>
+<td>访问政策、延迟创建</td>
+<td><a href="#proxy">Proxy</a></td>
+<td>Decorator 主要叠加额外行为</td>
+</tr>
+<tr>
+<td>替换算法</td>
+<td><a href="#strategy">Strategy</a></td>
+<td>State 围绕对象状态与转换</td>
+</tr>
+<tr>
+<td>保存请求 / 保存状态</td>
+<td><a href="#command">Command</a> / <a href="#memento">Memento</a></td>
+<td>命令并不天然可撤销</td>
+</tr>
+<tr>
+<td>广播变化 / 编排交互</td>
+<td><a href="#observer">Observer</a> / <a href="#mediator">Mediator</a></td>
+<td>通知不等于协调规则</td>
+</tr>
+<tr>
+<td>遍历结构 / 对类型施加操作</td>
+<td><a href="#iterator">Iterator</a> / <a href="#visitor">Visitor</a></td>
+<td>两者可以配合</td>
+</tr>
+</tbody>
+</table>
+<p>图中可选角色和具体代码的差异、PDF 签名修正及完整来源说明见<a href="../Design-Patterns/#audit-record">教材审核记录</a>。所有图片复用教材同一份资源，无重复拷贝。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../Design-Patterns/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 设计模式详解">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                设计模式详解
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../../embedded_system/basic/" class="md-footer__link md-footer__link--next" aria-label="下一页: basic">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                basic
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.tabs", "navigation.indexes", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../../javascripts/page-search.js?v=3"></script>
+      
+        <script src="../../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

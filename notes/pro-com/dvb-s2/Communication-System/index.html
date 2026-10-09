@@ -1,0 +1,4327 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Notes on embedded systems, robotics, C++, FPGA, and interview preparation.">
+      
+      
+      
+        <link rel="canonical" href="https://zhyun828.github.io/notes/pro-com/dvb-s2/Communication-System/">
+      
+      
+        <link rel="prev" href="../../../protocols/http-https/">
+      
+      
+        <link rel="next" href="../Demapper-and-Interleaver/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>通信系统 - ZY Engineering Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/home.css">
+    
+      <link rel="stylesheet" href="../../../../stylesheets/page-search.css?v=2">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#dvb-s2" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../../.." title="ZY Engineering Notes" class="md-header__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ZY Engineering Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              通信系统
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal"  aria-label="深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="cyan"  aria-label="浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m3.55 19.09 1.41 1.41 1.8-1.79-1.42-1.42M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6c0-3.32-2.69-6-6-6m8 7h3v-2h-3m-2.76 7.71 1.8 1.79 1.41-1.41-1.79-1.8M20.45 5l-1.41-1.4-1.8 1.79 1.42 1.42M13 1h-2v3h2M6.76 5.39 4.96 3.6 3.55 5l1.79 1.81zM1 13h3v-2H1m12 9h-2v3h2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="ZY Engineering Notes" class="md-nav__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ZY Engineering Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../protocols/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通信协议
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    通信协议
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/usart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    USART
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/i2c/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I2C
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/spi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SPI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/can/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/tcp-udp-ip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TCP / UDP / IP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/modbus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modbus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/ethernet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ethernet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/lin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LIN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/http-https/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP / HTTPS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    专业通信
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    专业通信
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_1" id="__nav_2_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DVB-S2
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    DVB-S2
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通信系统
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通信系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 先看全链路：比特怎样穿过卫星信道
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 从比特到符号
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 为什么用复数表示无线电信号
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 为什么用复数表示无线电信号">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-iq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 I、Q 是平面坐标，不是两根天线
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 星座图与距离
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-qpsk-gray" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 QPSK 的完整小表与 Gray 相邻关系
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 接收判决前，先补概率论
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 接收判决前，先补概率论">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 事件、条件概率和随机变量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 高斯噪声、均值、方差
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 似然、后验与对数
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-awgn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. AWGN 下，接收机为什么看距离
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. AWGN 下，接收机为什么看距离">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 从两个实高斯噪声到复数似然
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-bpsk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 一个 BPSK 概率小例子
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-mapper-demapper-llr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Mapper 的逆向工作：Demapper 与 LLR
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Mapper 的逆向工作：Demapper 与 LLR">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 硬判决不是软判决
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-qpsk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 完整 QPSK 数值例子
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 为什么纠错编码需要位交织和软信息
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. 为什么纠错编码需要位交织和软信息">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 冗余的直觉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 位交织改变顺序，不增加信息
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-dvb-s2-modcod" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. DVB-S2 的帧、MODCOD 与实际传输
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. DVB-S2 的帧、MODCOD 与实际传输">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 四个容易混淆的名字
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-modcod" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 MODCOD 决定什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 导频、脉冲成形与真实接收机
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-8psk-35" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 把数字算到底：正常帧 8PSK 3/5
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. 常见误区与回看路线
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        规范入口
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Demapper-and-Interleaver/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    解映射与交织
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_2" id="__nav_2_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    前向纠错
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    前向纠错
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fec/Forward-Error-Correction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FEC 基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fec/BCH/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BCH
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../fec/LDPC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LDPC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../versal/Versal-AIE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versal AI Engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../acceleration/High-Throughput-Architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高吞吐架构
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面试
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    面试
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%9D%A2%E8%AF%95/%E5%BF%AB%E9%80%9F%E6%A3%80%E7%B4%A2%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速检索表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%9D%A2%E8%AF%95/%E5%B5%8C%E5%85%A5%E5%BC%8F%E9%9D%A2%E8%AF%95%E6%B1%87%E6%80%BB%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    嵌入式面试汇总表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%9D%A2%E8%AF%95/%E9%AB%98%E9%A2%91%E9%A2%98%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高频题深度解析
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%9D%A2%E8%AF%95/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E9%97%AE%E7%AD%94%E9%9D%A2%E8%AF%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目经历问答面试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arduino
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Arduino
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/basics.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5_2" id="__nav_2_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    projet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/projet/projet.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/projet/pre.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    pre
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/projet/code.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/projet/thoughts.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thoughts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cpp
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cpp
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Cpp/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Cpp/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Cpp/cmake%E6%95%99%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CMake 与 CMakeLists.txt
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_4" id="__nav_2_6_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UML
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    UML
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Cpp/UML/UML/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    系统学习教材
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Cpp/UML/UML-Cheatsheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    分类与图解速查
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Cpp/design_pattern/Design-Patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    设计模式详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Cpp/design_pattern/Design-Patterns-Cheatsheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    设计模式速查
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    embedded_system
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    embedded_system
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../embedded_system/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_7_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../embedded_system/TP/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TP
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    TP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_8" id="__nav_2_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FPGA
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    FPGA
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../FPGA/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../FPGA/zynq-hardware-acceleration-intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zynq 硬件乘法加速器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_9" id="__nav_2_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gazebo
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    gazebo
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ros/gazebo/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_10" id="__nav_2_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_10_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_10_2" id="__nav_2_10_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux驱动
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_10_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    linux驱动
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/00_%E4%B8%8B%E8%BD%BD%E8%B5%84%E6%96%99/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    下载资料
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/01_%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    搭建开发环境
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/02_%E9%80%9A%E7%94%A8%E7%9A%84%E9%A9%B1%E5%8A%A8%E6%A1%86%E6%9E%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用的驱动框架
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/03_%E4%BD%BF%E7%94%A8%E6%A8%A1%E6%9D%BF%E6%93%8D%E4%BD%9C%E7%A1%AC%E4%BB%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    使用模板操作硬件
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/04_%E5%B9%B3%E5%8F%B0%E6%80%BB%E7%BA%BF%E8%AE%BE%E5%A4%87%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AE%BE%E5%A4%87%E6%A0%91/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    平台总线设备模型和设备树
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/05_I2C%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F%E6%A8%A1%E6%9D%BF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I2C驱动程序模板
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVGL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LVGL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LVGL/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_12" id="__nav_2_12_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ros
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ros
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ros/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ros/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_13" id="__nav_2_13_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    stm32
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../stm32/stm32_knowledge_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32_knowledge_notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../stm32/rtos_freertos_notes_compact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RTOS / FreeRTOS 知识整理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../stm32/%E5%A4%96%E8%AE%BE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    外设
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../stm32/%E5%AF%84%E5%AD%98%E5%99%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    寄存器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 先看全链路：比特怎样穿过卫星信道
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 从比特到符号
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 为什么用复数表示无线电信号
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 为什么用复数表示无线电信号">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-iq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 I、Q 是平面坐标，不是两根天线
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 星座图与距离
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-qpsk-gray" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 QPSK 的完整小表与 Gray 相邻关系
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 接收判决前，先补概率论
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 接收判决前，先补概率论">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 事件、条件概率和随机变量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 高斯噪声、均值、方差
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 似然、后验与对数
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-awgn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. AWGN 下，接收机为什么看距离
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. AWGN 下，接收机为什么看距离">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 从两个实高斯噪声到复数似然
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-bpsk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 一个 BPSK 概率小例子
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-mapper-demapper-llr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Mapper 的逆向工作：Demapper 与 LLR
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Mapper 的逆向工作：Demapper 与 LLR">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 硬判决不是软判决
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-qpsk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 完整 QPSK 数值例子
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 为什么纠错编码需要位交织和软信息
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. 为什么纠错编码需要位交织和软信息">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 冗余的直觉
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 位交织改变顺序，不增加信息
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-dvb-s2-modcod" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. DVB-S2 的帧、MODCOD 与实际传输
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. DVB-S2 的帧、MODCOD 与实际传输">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 四个容易混淆的名字
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-modcod" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 MODCOD 决定什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 导频、脉冲成形与真实接收机
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-8psk-35" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 把数字算到底：正常帧 8PSK 3/5
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. 常见误区与回看路线
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        规范入口
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="导航栏" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Notes
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="./" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    专业通信
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="./" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    DVB-S2
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="dvb-s2">从零理解 DVB-S2 数字通信系统<a class="headerlink" href="#dvb-s2" title="Permanent link">&para;</a></h1>
+<p>本文从比特、概率和复数表示讲起，逐步走到星座映射、AWGN 信道、软解映射以及 DVB-S2 帧。读完后，应能沿着一帧数据回答三个问题：<strong>它在发送端变成了什么？接收端实际观测到了什么？接收端凭什么恢复原始比特？</strong></p>
+<p>本文以 <a href="https://www.etsi.org/deliver/etsi_en/302300_302399/30230701/01.04.01_60/en_30230701v010401p.pdf">ETSI EN 302 307-1 V1.4.1（DVB-S2）</a> 为规范依据。为讲清原理而使用的简化数值模型会明确标注；这些模型不等于完整标准实现。</p>
+<h2 id="1">1. 先看全链路：比特怎样穿过卫星信道<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>业务数据（例如 MPEG-TS 包或通用数据流）
+  → 模式适配/流适配 → BBFRAME（基带帧，含 BBHEADER）
+  → BCH 外码 → LDPC 内码 → FECFRAME（纠错码字）
+  → 位交织（部分调制方式）→ 星座 Mapper → XFECFRAME（复数数据符号）
+  → PL 成帧（PLHEADER、可选导频）→ 脉冲成形 → 上变频/卫星信道
+  → 下变频/同步/均衡 → 符号采样 → Demapper（硬判决或软 LLR）
+  → 解交织 → LDPC 解码 → BCH 解码 → 去除基带帧包装 → 业务数据
+</code></pre></div>
+<p><img alt="DVB-S2 发送和接收的主要数据路径" src="../../assert/dvb-s2-chain.svg" /></p>
+<p>这不是一条“发送端直接把 0/1 变成无线电波，接收端再读回 0/1”的管道。纠错编码会添加冗余；Mapper 把若干编码比特变为一个复数符号；信道使符号偏移；Demapper 必须把一个有噪声的坐标转换成对各个比特的判断及其可信程度。<a href="https://www.etsi.org/deliver/etsi_en/302300_302399/30230701/01.04.01_60/en_30230701v010401p.pdf#page=14">标准第 4.2 节的系统框图</a>可与上图对照。</p>
+<p>先固定术语：<strong>调制</strong>决定一个符号可取的理想坐标；<strong>编码</strong>添加用于纠错的结构；<strong>成帧</strong>规定边界、信令和导频；<strong>脉冲成形</strong>决定符号序列如何成为连续时间波形。它们解决不同问题，不要混为一谈。</p>
+<h2 id="2">2. 从比特到符号<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<p>一个<strong>比特</strong>只有 <code>0</code> 或 <code>1</code>。一个<strong>符号</strong>是在一个符号时刻发送的某种可区分状态。假设有 <span class="arithmatex">\(M\)</span> 个状态，而且每个状态对应一个长度相同的二进制标签，那么需要 <span class="arithmatex">\(m\)</span> 个比特选出一个状态。因为一个比特有 2 种取值，<span class="arithmatex">\(m\)</span> 个比特有 <span class="arithmatex">\(2^m\)</span> 种组合，所以</p>
+<div class="arithmatex">\[M=2^m,\qquad m=\log_2 M.\]</div>
+<p>这里 <span class="arithmatex">\(\log_2 M\)</span> 是“2 的几次方等于 <span class="arithmatex">\(M\)</span>”。例如 QPSK 有 4 个状态，每个符号标 2 比特；8PSK 有 8 个状态，标 3 比特；16APSK、32APSK 分别标 4、5 比特。这里的“每符号比特数”是<strong>映射器输入端的编码比特数</strong>，不等于用户业务的净比特数。若发送符号率为 <span class="arithmatex">\(R_s\)</span> 符号/秒，未考虑纠错和帧开销时，Mapper 消耗编码比特的速率是 <span class="arithmatex">\(mR_s\)</span> 比特/秒。真实业务速率还要扣除纠错冗余、帧头、导频和适配开销。</p>
+<p>一个最小例子：QPSK 的两个输入比特为 <code>10</code>，Mapper 查表输出一个复数点；下一组 <code>01</code> 再输出另一个点。接收机观测的并不是干净的 <code>10</code> 或 <code>01</code>，而是被信道扰动的点坐标。</p>
+<h2 id="3">3. 为什么用复数表示无线电信号<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<h3 id="31-iq">3.1 I、Q 是平面坐标，不是两根天线<a class="headerlink" href="#31-iq" title="Permanent link">&para;</a></h3>
+<p>在纸上画横轴 <span class="arithmatex">\(I\)</span>（同相）、纵轴 <span class="arithmatex">\(Q\)</span>（正交），一个点可写作 <span class="arithmatex">\((I,Q)\)</span>。复数只是把这对实数紧凑地记为</p>
+<div class="arithmatex">\[s=I+jQ,\qquad j^2=-1.\]</div>
+<p>这里 <span class="arithmatex">\(j\)</span> 是工程中常用的虚数单位，<span class="arithmatex">\(I\)</span> 和 <span class="arithmatex">\(Q\)</span> 仍是可测的实数。点到原点的距离（幅度）为 <span class="arithmatex">\(|s|=\sqrt{I^2+Q^2}\)</span>；点相对于横轴的角度是相位。<code>I=0.8, Q=0.2</code> 表示“向右 0.8、向上 0.2”，不要求真实电压含有一个神秘的“虚数部分”。</p>
+<p>为什么能用两个坐标？固定载波频率 <span class="arithmatex">\(f_c\)</span> 时，余弦和相差四分之一周期的正弦可作为两种彼此独立的波形基底。一个简化的实射频信号是</p>
+<div class="arithmatex">\[x(t)=I(t)\cos(2\pi f_ct)-Q(t)\sin(2\pi f_ct).\]</div>
+<p><span class="arithmatex">\(t\)</span> 是时间，<span class="arithmatex">\(f_c\)</span> 单位为 Hz；<span class="arithmatex">\(\cos\)</span>、<span class="arithmatex">\(\sin\)</span> 的自变量是角度（弧度），<span class="arithmatex">\(2\pi f_ct\)</span> 是载波相位。接收端用相应的载波参考做下变频，才重新得到 I/Q。上式的负号是常见约定；实现中若整体约定一致，也会看到其他符号习惯。</p>
+<p><strong>复基带</strong>指只保留缓慢变化的 <span class="arithmatex">\(I(t)+jQ(t)\)</span>，暂不写高速载波。星座图画的是符号采样时刻的复基带值，而非空中电磁波的形状。实践中符号还会经过脉冲成形，故连续时间的 <span class="arithmatex">\(I(t),Q(t)\)</span> 不会简单地在符号边界突变。</p>
+<h3 id="32">3.2 星座图与距离<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
+<p><strong>星座</strong>是允许发送的理想复数点集合。接收点 <span class="arithmatex">\(y\)</span> 与候选点 <span class="arithmatex">\(s\)</span> 的欧几里得距离为</p>
+<div class="arithmatex">\[|y-s|=\sqrt{(I_y-I_s)^2+(Q_y-Q_s)^2}.\]</div>
+<p>这就是平面勾股定理。距离平方 <span class="arithmatex">\(|y-s|^2\)</span> 不开根号，比较大小时结果相同，后面的高斯似然也恰好使用它。</p>
+<p><img alt="QPSK、8PSK 与 APSK 的几何示意" src="../../assert/dvb-s2-constellations.svg" /></p>
+<p>图用于理解几何位置，并非完整的标准比特标签表。BPSK 的教学模型可设 <code>0 → +1</code>、<code>1 → -1</code>。BPSK 只换左右相位。PSK 的点围绕同一圆，主要靠相位区分；APSK 的点还分布在不同半径的环上，同时利用幅度与相位。DVB-S2 的 16APSK 有内环 4 点和外环 12 点，32APSK 有三环 4、12、16 点；环半径比依 MODCOD 而变，不能把一张示意图当作所有模式的坐标表。<a href="https://www.etsi.org/deliver/etsi_en/302300_302399/30230701/01.04.01_60/en_30230701v010401p.pdf#page=28">标准第 5.4 节的映射图</a>给出实际约定。</p>
+<p>下面这张图进一步标出 8PSK 和 16APSK 的比特标签；读标签时要同时看点的位置，而不只是看环的形状。</p>
+<p><img alt="8PSK 和 16APSK 的比特标签映射示意" src="../../assert/mapper-8psk-16apsk.svg" /></p>
+<h3 id="33-qpsk-gray">3.3 QPSK 的完整小表与 Gray 相邻关系<a class="headerlink" href="#33-qpsk-gray" title="Permanent link">&para;</a></h3>
+<p>令 <span class="arithmatex">\(a=1/\sqrt{2}\approx0.7071\)</span>。如此每个 QPSK 点的能量 <span class="arithmatex">\(|s|^2=a^2+a^2=1\)</span>，便于不同方案比较。按 DVB-S2 的 QPSK 图，坐标与标签可写为：</p>
+<table>
+<thead>
+<tr>
+<th>标签 <span class="arithmatex">\(b_Ib_Q\)</span></th>
+<th>理想点 <span class="arithmatex">\(s\)</span></th>
+<th>象限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>00</code></td>
+<td><span class="arithmatex">\(+a+ja\)</span></td>
+<td>右上</td>
+</tr>
+<tr>
+<td><code>01</code></td>
+<td><span class="arithmatex">\(+a-ja\)</span></td>
+<td>右下</td>
+</tr>
+<tr>
+<td><code>10</code></td>
+<td><span class="arithmatex">\(-a+ja\)</span></td>
+<td>左上</td>
+</tr>
+<tr>
+<td><code>11</code></td>
+<td><span class="arithmatex">\(-a-ja\)</span></td>
+<td>左下</td>
+</tr>
+</tbody>
+</table>
+<p>因此第一个比特由 I 的正负区分，第二个比特由 Q 的正负区分。沿圆周走向相邻点，只翻转一个比特，这就是 <strong>Gray 标记</strong> 的核心作用：噪声让点越过最近的边界时，通常只错一位，而不是两位。Gray 标记不能消灭误码，也不表示所有 PSK/APSK 模式都能按同一套简单的笛卡尔规则标号。8PSK 的具体标签及 16/32APSK 的具体映射须遵循标准相应图表。</p>
+<h2 id="4">4. 接收判决前，先补概率论<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
+<h3 id="41">4.1 事件、条件概率和随机变量<a class="headerlink" href="#41" title="Permanent link">&para;</a></h3>
+<p>事件的概率 <span class="arithmatex">\(P(A)\)</span> 是它发生的可能性，介于 0 和 1。若已知道事件 <span class="arithmatex">\(B\)</span> 发生，则</p>
+<div class="arithmatex">\[P(A\mid B)=\frac{P(A\cap B)}{P(B)},\qquad P(B)&gt;0.\]</div>
+<p><span class="arithmatex">\(A\cap B\)</span> 表示二者同时发生。若投一颗公平骰子，<span class="arithmatex">\(A\)</span> 是“点数为偶数”，<span class="arithmatex">\(B\)</span> 是“点数大于 3”，则 <span class="arithmatex">\(P(B)=3/6\)</span>，<span class="arithmatex">\(P(A\cap B)=2/6\)</span>，所以 <span class="arithmatex">\(P(A\mid B)=2/3\)</span>。条件信息会改变概率。</p>
+<p><strong>随机变量</strong>是实验结果对应的数值。例如发送的是哪个离散星座点 <span class="arithmatex">\(S\)</span>，或噪声的某个实数坐标 <span class="arithmatex">\(N_I\)</span>。离散 <span class="arithmatex">\(S\)</span> 可给每个值分配概率 <span class="arithmatex">\(P(S=s)\)</span>；连续 <span class="arithmatex">\(N_I\)</span> 则通常使用<strong>概率密度</strong> <span class="arithmatex">\(f_{N_I}(u)\)</span>。密度值本身不是“恰好等于 <span class="arithmatex">\(u\)</span>”的概率；区间概率是密度曲线下面积：</p>
+<div class="arithmatex">\[P(a\le N_I\le b)=\int_a^b f_{N_I}(u)\,du.\]</div>
+<p><span class="arithmatex">\(\int\)</span> 可理解为把非常窄的小区间的“宽度 × 高度”加起来。连续变量恰好落在单个无限精确数上的概率通常为 0，但其密度可以大于 0，甚至大于 1。</p>
+<p><strong>独立</strong>意味着知道一个变量的结果不改变另一个变量的分布。若 I、Q 噪声独立，联合密度就是两项密度的乘积。此假设很重要，并非所有实际射频失真都满足它。</p>
+<h3 id="42">4.2 高斯噪声、均值、方差<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
+<p>均值（期望）是长期平均值，记 <span class="arithmatex">\(E[N_I]\)</span>；方差 <span class="arithmatex">\(E[(N_I-E[N_I])^2]\)</span> 衡量围绕均值的平方偏离。零均值、方差 <span class="arithmatex">\(\sigma^2\)</span> 的高斯实变量，其密度为</p>
+<div class="arithmatex">\[f_N(n)=\frac{1}{\sqrt{2\pi\sigma^2}}\exp\!\left(-\frac{n^2}{2\sigma^2}\right).\]</div>
+<p><span class="arithmatex">\(\sigma\)</span> 是标准差，<span class="arithmatex">\(\exp(z)=e^z\)</span>，<span class="arithmatex">\(e\approx2.71828\)</span>。距离零越远，负指数越小，因此大噪声较少见。分母使整条曲线下的面积等于 1。<span class="arithmatex">\(\pi\)</span> 是圆周率。方差越大，曲线越宽，接收点通常散得越远。</p>
+<p>这里的 <strong>AWGN</strong> 意为加性白高斯噪声：加性指噪声加到信号上；高斯指其统计分布；白指在所考虑频带内噪声谱近似平坦。我们先在接收机完成匹配滤波和定时采样后的<strong>离散复数符号模型</strong>讨论它；这不等于说实际卫星链路只有 AWGN，放大器非线性、相位噪声、衰落和同步误差另需处理。</p>
+<h3 id="43">4.3 似然、后验与对数<a class="headerlink" href="#43" title="Permanent link">&para;</a></h3>
+<p>接收后看到 <span class="arithmatex">\(y\)</span>，想反推发送点 <span class="arithmatex">\(s\)</span>。<span class="arithmatex">\(p(y\mid s)\)</span> 是<strong>假设发送了 <span class="arithmatex">\(s\)</span> 时，观测 <span class="arithmatex">\(y\)</span> 的密度</strong>，称似然；<span class="arithmatex">\(P(s\mid y)\)</span> 是<strong>已经观测到 <span class="arithmatex">\(y\)</span> 后，发送 <span class="arithmatex">\(s\)</span> 的概率</strong>，称后验。二者的条件方向不同。贝叶斯公式把它们联系起来：</p>
+<div class="arithmatex">\[P(S=s\mid Y=y)=\frac{p(y\mid s)P(S=s)}{\sum_{u\in\mathcal S}p(y\mid u)P(S=u)}.\]</div>
+<p><span class="arithmatex">\(\mathcal S\)</span> 是所有可能星座点；分母是在所有候选发送点上求和，保证后验和为 1。若各点先验概率相等，比较后验大小等价于比较似然大小。<strong>对数</strong> <span class="arithmatex">\(\ln\)</span> 是自然指数 <span class="arithmatex">\(\exp\)</span> 的反运算；因其单调递增，比较正数 <span class="arithmatex">\(A\)</span> 与 <span class="arithmatex">\(B\)</span> 的大小，也可比较 <span class="arithmatex">\(\ln A\)</span> 与 <span class="arithmatex">\(\ln B\)</span>。概率连乘变对数相加，数值计算更稳定，这正是 LLR 使用对数的原因。</p>
+<h2 id="5-awgn">5. AWGN 下，接收机为什么看距离<a class="headerlink" href="#5-awgn" title="Permanent link">&para;</a></h2>
+<h3 id="51">5.1 从两个实高斯噪声到复数似然<a class="headerlink" href="#51" title="Permanent link">&para;</a></h3>
+<p>令发送符号 <span class="arithmatex">\(s=s_I+js_Q\)</span>，接收采样 <span class="arithmatex">\(y=s+n\)</span>，其中 <span class="arithmatex">\(n=n_I+jn_Q\)</span>。假定 <span class="arithmatex">\(n_I,n_Q\)</span> <strong>独立</strong>、各为零均值高斯且方差均为 <span class="arithmatex">\(\sigma^2\)</span>。于是 <span class="arithmatex">\(y_I-s_I=n_I\)</span>、<span class="arithmatex">\(y_Q-s_Q=n_Q\)</span>。由独立性，两维条件密度是两项一维密度之积：</p>
+<div class="arithmatex">\[
+\begin{aligned}
+p(y\mid s)
+&amp;=\frac{1}{2\pi\sigma^2}
+  \exp\!\left(-\frac{(y_I-s_I)^2+(y_Q-s_Q)^2}{2\sigma^2}\right)\\
+&amp;=\frac{1}{\pi N_0}\exp\!\left(-\frac{|y-s|^2}{N_0}\right),
+\end{aligned}
+\]</div>
+<p>其中在本文的<strong>符号采样归一化约定</strong>下，<span class="arithmatex">\(N_0=2\sigma^2=E[|n|^2]\)</span>。有些资料用连续时间的单边/双边功率谱密度解释 <span class="arithmatex">\(N_0\)</span>，其因子约定会不同；套公式前必须先对齐定义。</p>
+<p>负指数只取决于距离平方：<span class="arithmatex">\(y\)</span> 离某理想点越近，在该点被发送的假设下越“常见”。若各星座点等先验，则<strong>最大似然判决</strong></p>
+<div class="arithmatex">\[\hat s_{\rm ML}=\arg\max_{s\in\mathcal S}p(y\mid s)
+=\arg\min_{s\in\mathcal S}|y-s|^2.\]</div>
+<p><span class="arithmatex">\(\arg\max\)</span> 表示“找出让表达式最大的那个候选值”；<span class="arithmatex">\(\arg\min\)</span> 类似。若各点先验不相等，最大后验判决应最大化 <span class="arithmatex">\(p(y\mid s)P(S=s)\)</span>，未必就是最近点。若实际噪声非独立、非圆对称高斯，简单欧几里得最近点规则也可能不是最优。</p>
+<h3 id="52-bpsk">5.2 一个 BPSK 概率小例子<a class="headerlink" href="#52-bpsk" title="Permanent link">&para;</a></h3>
+<p>仍采用<strong>教学</strong>映射 <code>0 → +1, 1 → -1</code>，实噪声标准差 <span class="arithmatex">\(\sigma=0.5\)</span>，观测 <span class="arithmatex">\(y=0.2\)</span>。到 <code>+1</code> 与 <code>-1</code> 的平方距离分别为 <span class="arithmatex">\(0.64\)</span>、<span class="arithmatex">\(1.44\)</span>。高斯指数分别为 <span class="arithmatex">\(-0.64/(2\cdot0.25)=-1.28\)</span> 和 <span class="arithmatex">\(-1.44/(2\cdot0.25)=-2.88\)</span>；两个密度的共同前因子可约掉。因此似然比为 <span class="arithmatex">\(e^{-1.28}/e^{-2.88}=e^{1.60}\approx4.95\)</span>。等先验时，<code>0</code> 的后验概率是 <span class="arithmatex">\(4.95/(1+4.95)\approx0.832\)</span>，<code>1</code> 约 <span class="arithmatex">\(0.168\)</span>。硬判决只给 <code>0</code>；软信息还保留“约 83% 对 17%”的区别。</p>
+<h2 id="6-mapper-demapper-llr">6. Mapper 的逆向工作：Demapper 与 LLR<a class="headerlink" href="#6-mapper-demapper-llr" title="Permanent link">&para;</a></h2>
+<h3 id="61">6.1 硬判决不是软判决<a class="headerlink" href="#61" title="Permanent link">&para;</a></h3>
+<p>Mapper 输入 <span class="arithmatex">\(m\)</span> 位、输出一个理想点。Demapper 输入有噪声的 <span class="arithmatex">\(y\)</span>，可以输出：</p>
+<ul>
+<li><strong>硬判决</strong>：选最近的一个理想点，再取其 <span class="arithmatex">\(m\)</span> 位标签。例如 <code>00</code>，但不说明点离判决边界有多近。</li>
+<li><strong>软判决</strong>：对每一位给一个实数，描述该位更像 <code>0</code> 还是 <code>1</code>，以及可信程度。LDPC 解码特别依赖这种软信息。</li>
+</ul>
+<p>对位 <span class="arithmatex">\(b_k\)</span>，本文采用“正数支持 0”的 LLR 约定：</p>
+<div class="arithmatex">\[L_k(y)=\ln\frac{P(b_k=0\mid y)}{P(b_k=1\mid y)}.\]</div>
+<p><span class="arithmatex">\(L_k=0\)</span> 表示两者同样可能；<span class="arithmatex">\(L_k&gt;0\)</span> 偏向 0，<span class="arithmatex">\(L_k&lt;0\)</span> 偏向 1；<span class="arithmatex">\(|L_k|\)</span> 越大越有把握。例如 <span class="arithmatex">\(L=\ln 9\approx2.197\)</span> 意味着 0 对 1 的后验赔率为 9:1，即 <span class="arithmatex">\(P(0\mid y)=0.9\)</span>。有的实现定义相反的 LLR，符号也就反转；对接解码器时必须统一。</p>
+<p>设 <span class="arithmatex">\(\mathcal S_{k,0}\)</span> 为第 <span class="arithmatex">\(k\)</span> 位标签为 0 的星座点集合，<span class="arithmatex">\(\mathcal S_{k,1}\)</span> 类似。若各点等先验，代入贝叶斯公式并约去公共分母，就得到精确 AWGN 位 LLR：</p>
+<div class="arithmatex">\[L_k(y)=\ln\frac{\displaystyle\sum_{s\in\mathcal S_{k,0}}
+ \exp(-|y-s|^2/N_0)}{\displaystyle\sum_{s\in\mathcal S_{k,1}}
+ \exp(-|y-s|^2/N_0)}.\]</div>
+<p>此式并非“先选最近点再给它的每位编一个置信度”，而是在两组候选点的似然之间比较。若点先验不均匀，求和项应分别乘 <span class="arithmatex">\(P(S=s)\)</span>，不能直接使用上面的等先验简式。</p>
+<p>当噪声较小、每组主要由最近的点贡献时，可用 <strong>max-log</strong> 近似：</p>
+<div class="arithmatex">\[L_k(y)\approx\frac{\min_{s\in\mathcal S_{k,1}}|y-s|^2
+-\min_{s\in\mathcal S_{k,0}}|y-s|^2}{N_0}.\]</div>
+<p>其来源是 <span class="arithmatex">\(\ln\sum_i e^{a_i}\approx\max_i a_i\)</span>；这一步丢掉了其他候选点的贡献，因此是近似，而非恒等式。工程实现常结合数值稳定的 log-sum-exp、查表、裁剪和量化。</p>
+<h3 id="62-qpsk">6.2 完整 QPSK 数值例子<a class="headerlink" href="#62-qpsk" title="Permanent link">&para;</a></h3>
+<p>使用上面的 DVB-S2 QPSK 标签，<span class="arithmatex">\(a\approx0.7071\)</span>。令接收点 <span class="arithmatex">\(y=0.8+j0.2\)</span>，每个实维噪声方差 <span class="arithmatex">\(\sigma^2=0.25\)</span>，故 <span class="arithmatex">\(N_0=0.5\)</span>。逐点计算平方距离：</p>
+<p>| 候选标签 | 候选点 | <span class="arithmatex">\(|y-s|^2\)</span>（约） |
+| --- | --- | ---: |
+| <code>00</code> | <span class="arithmatex">\(+a+ja\)</span> | <span class="arithmatex">\(0.266\)</span> |
+| <code>01</code> | <span class="arithmatex">\(+a-ja\)</span> | <span class="arithmatex">\(0.831\)</span> |
+| <code>10</code> | <span class="arithmatex">\(-a+ja\)</span> | <span class="arithmatex">\(2.529\)</span> |
+| <code>11</code> | <span class="arithmatex">\(-a-ja\)</span> | <span class="arithmatex">\(3.094\)</span> |</p>
+<p>例如 <code>00</code> 的计算是 <span class="arithmatex">\((0.8-0.7071)^2+(0.2-0.7071)^2\approx0.266\)</span>。最近点是 <code>00</code>，所以硬判决为 <code>00</code>。但是两位的把握程度不同：I 方向离分界线 <span class="arithmatex">\(I=0\)</span> 更远，第一位更可靠。</p>
+<p>由于 QPSK 这张表的第一位只由 I 的符号决定、第二位只由 Q 的符号决定，各 LLR 的求和可消去另一维共同因子。直接展开两个高斯指数之比可得</p>
+<div class="arithmatex">\[L_I=\frac{(0.8+a)^2-(0.8-a)^2}{N_0}=\frac{4a(0.8)}{0.5}\approx4.53,\]</div>
+<div class="arithmatex">\[L_Q=\frac{(0.2+a)^2-(0.2-a)^2}{N_0}=\frac{4a(0.2)}{0.5}\approx1.13.\]</div>
+<p>所以第一位为 0 的后验概率为 <span class="arithmatex">\(e^{4.53}/(1+e^{4.53})\approx0.989\)</span>，第二位为 0 的后验概率为 <span class="arithmatex">\(e^{1.13}/(1+e^{1.13})\approx0.756\)</span>。两位硬判决都是 0，但可信度明显不同。一般 8PSK/APSK 几何与标签并不这样按 I/Q 分离，应使用对候选点集合求和的通式。</p>
+<h2 id="7">7. 为什么纠错编码需要位交织和软信息<a class="headerlink" href="#7" title="Permanent link">&para;</a></h2>
+<h3 id="71">7.1 冗余的直觉<a class="headerlink" href="#71" title="Permanent link">&para;</a></h3>
+<p>若将一位重复三次，例如 <code>1 → 111</code>，接收 <code>101</code> 时可以多数投票猜回 <code>1</code>；代价是传 3 位才携带 1 位信息。真正的 FEC 不只是重复，而是根据多位之间的约束引入有结构的冗余。例如简单偶校验位 <span class="arithmatex">\(p=b_1\oplus b_2\)</span>，其中 <span class="arithmatex">\(\oplus\)</span> 表示异或（相同为 0，不同为 1）；收到三个数后可以检查约束是否满足，但单个校验通常还不足以定位并修复所有错误。</p>
+<p><strong>码率</strong> <span class="arithmatex">\(R=K/N\)</span>：<span class="arithmatex">\(K\)</span> 个输入位编码为 <span class="arithmatex">\(N\)</span> 个输出位，<span class="arithmatex">\(N-K\)</span> 是冗余位。码率越低，冗余通常越多，但并非仅凭码率就能判断纠错性能。DVB-S2 先用 BCH 外码，再用 LDPC 内码；接收侧顺序相反。LDPC 利用大量稀疏校验约束和软 LLR 迭代推断比特，BCH 外码帮助清除剩余错误。<a href="https://www.etsi.org/deliver/etsi_en/302300_302399/30230701/01.04.01_60/en_30230701v010401p.pdf#page=22">标准第 5.3 节的 FECFRAME 定义与参数表</a>给出具体长度。</p>
+<p>这里要分清两个数字：<code>3/5</code> 是某种 <strong>LDPC 内码率</strong>，不是业务有效载荷占整条卫星帧的精确比例；BBHEADER、BCH 校验、PLHEADER、导频等还会消耗位置。</p>
+<h3 id="72">7.2 位交织改变顺序，不增加信息<a class="headerlink" href="#72" title="Permanent link">&para;</a></h3>
+<p>交织是一种可逆置换。演示用 12 位按行写入 3 行 4 列：</p>
+<div class="highlight"><pre><span></span><code>原始序列： 0 1 2 3 4 5 6 7 8 9 A B
+写成矩阵： 0 1 2 3
+           4 5 6 7
+           8 9 A B
+按列读出： 0 4 8 1 5 9 2 6 A 3 7 B
+</code></pre></div>
+<p>数字/字母是位置标签，不是实际比特值。接收端用逆置换把每个软值放回原编码位位置。交织的目的不是凭空增加冗余，而是调整编码位在调制标签上的位置，改善不同比特位可靠性与纠错码之间的配合。<strong>DVB-S2 的位交织不是所有调制方式都有</strong>：标准第 5.3.3 节规定了 8PSK、16APSK、32APSK 的交织，QPSK 不走这套位交织；8PSK 的 3/5 模式还有特殊的列读取顺序。真实矩阵尺寸、读写方向应按 <a href="https://www.etsi.org/deliver/etsi_en/302300_302399/30230701/01.04.01_60/en_30230701v010401p.pdf#page=26">标准第 5.3.3 节及表 8</a>实现，不能照抄上面的玩具矩阵。</p>
+<p>从解码器视角，Demapper 输出的是按<strong>调制标签顺序</strong>排列的 LLR；解交织恢复<strong>LDPC 编码位顺序</strong>，否则即使每个 LLR 的正负号都正确，校验约束仍会接错位置。</p>
+<h2 id="8-dvb-s2-modcod">8. DVB-S2 的帧、MODCOD 与实际传输<a class="headerlink" href="#8-dvb-s2-modcod" title="Permanent link">&para;</a></h2>
+<h3 id="81">8.1 四个容易混淆的名字<a class="headerlink" href="#81" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>在链路上的位置</th>
+<th>包含什么、用什么单位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BBFRAME</td>
+<td>适配后、BCH 前</td>
+<td>BBHEADER（80 位）和数据字段组成的 <span class="arithmatex">\(K_{\rm bch}\)</span> 位基带帧</td>
+</tr>
+<tr>
+<td>FECFRAME</td>
+<td>BCH、LDPC 后</td>
+<td>长帧 <span class="arithmatex">\(N_{\rm ldpc}=64800\)</span> 位或短帧 <span class="arithmatex">\(16200\)</span> 位的纠错码字</td>
+</tr>
+<tr>
+<td>XFECFRAME</td>
+<td>交织、Mapper 后</td>
+<td><span class="arithmatex">\(N_{\rm ldpc}/m\)</span> 个复数<strong>数据符号</strong></td>
+</tr>
+<tr>
+<td>PLFRAME</td>
+<td>物理层成帧后</td>
+<td>PLHEADER、数据符号和可选导频组成的传输帧</td>
+</tr>
+</tbody>
+</table>
+<p>业务流可以是连续流，不意味着“一个业务包 = 一个 BBFRAME”。模式适配负责流标识、同步/包装等；80 位 BBHEADER 告诉接收机如何解释后续数据字段。BBFRAME 进入外码 BCH、内码 LDPC。Mapper 的数据输出称 XFECFRAME，再由 PL 成帧器加物理层头和导频。PLHEADER 不要和 BBHEADER 混淆：前者服务于物理层识别帧和模式，后者描述基带数据。<a href="https://www.etsi.org/deliver/etsi_en/302300_302399/30230701/01.04.01_60/en_30230701v010401p.pdf#page=18">标准第 5.1–5.2 节</a>与<a href="https://www.etsi.org/deliver/etsi_en/302300_302399/30230701/01.04.01_60/en_30230701v010401p.pdf#page=30">第 5.5 节</a>分别定义这些部分。</p>
+<h3 id="82-modcod">8.2 MODCOD 决定什么<a class="headerlink" href="#82-modcod" title="Permanent link">&para;</a></h3>
+<p><strong>MODCOD</strong> 是调制方式与纠错码率的组合，例如 <code>8PSK 3/5</code>。接收机必须知道当前帧应按哪个星座和 FEC 参数来解码。DVB-S2 的 90 符号 PLHEADER 由 26 符号的 SOF（帧起始标识）及 64 符号的 PLS（物理层信令）构成；其调制使用 <span class="arithmatex">\(\pi/2\)</span>-BPSK，与后续数据区选用的 QPSK/8PSK/APSK <strong>不是同一回事</strong>。PLS 表示 MODCOD 与 TYPE；TYPE 指示长/短 FECFRAME 及导频使用情况。标准表 12 给出 MODCOD 编码，例如 <code>8PSK 3/5</code> 对应 MODCOD 值 12。<a href="https://www.etsi.org/deliver/etsi_en/302300_302399/30230701/01.04.01_60/en_30230701v010401p.pdf#page=32">参见 PLHEADER 与 MODCOD 表</a>。</p>
+<p>CCM（固定编码调制）长期使用同一模式；VCM/ACM 可按帧改变模式，以适应业务或链路条件。“自适应”不表示同一帧内每个符号随意换星座：接收端要先读取该帧的 PL 信令，再按帧模式处理数据。</p>
+<h3 id="83">8.3 导频、脉冲成形与真实接收机<a class="headerlink" href="#83" title="Permanent link">&para;</a></h3>
+<p>数据区按 90 个数据符号为一个 slot 分组。启用导频时，按标准规定的间隔插入每组 36 个导频符号，用于载波同步等；导频本身不携带用户数据。发端后续的平方根升余弦（SRRC）脉冲成形限制带宽并控制符号间干扰；DVB-S2 规定滚降系数 <span class="arithmatex">\(\alpha=0.35,0.25,0.20\)</span>。直观地说，<span class="arithmatex">\(\alpha\)</span> 越小，在同一符号率下理论占用频带越窄，但实际系统对滤波器、同步和链路非理想因素仍有要求。<a href="https://www.etsi.org/deliver/etsi_en/302300_302399/30230701/01.04.01_60/en_30230701v010401p.pdf#page=30">标准第 5.5–5.6 节</a>定义 PL 成帧和基带成形。</p>
+<p>实际接收机不能直接把 ADC 样本送进上面的 <span class="arithmatex">\(y=s+n\)</span> 公式。它先要做频率/相位恢复、定时同步、匹配滤波、帧同步，并根据需要补偿信道与射频失真。<strong>只有在正确的采样时刻、正确的幅度和相位参考下</strong>，星座上的点才有可比较的距离。导频和 PLHEADER 也是让这一过程可行的关键结构。</p>
+<h2 id="9-8psk-35">9. 把数字算到底：正常帧 8PSK 3/5<a class="headerlink" href="#9-8psk-35" title="Permanent link">&para;</a></h2>
+<p>选 DVB-S2 <strong>正常 FECFRAME、8PSK 3/5、启用导频</strong>。由标准正常帧参数表，该模式 <span class="arithmatex">\(K_{\rm bch}=38688\)</span> 位，BCH 输出 <span class="arithmatex">\(N_{\rm bch}=K_{\rm ldpc}=38880\)</span> 位，LDPC 输出 <span class="arithmatex">\(N_{\rm ldpc}=64800\)</span> 位。于是：</p>
+<ol>
+<li>BBFRAME 为 38688 位，其中 BBHEADER 80 位，因此在<strong>数据字段填满且不计更上层开销</strong>时最多承载 <span class="arithmatex">\(38688-80=38608\)</span> 数据字段位。</li>
+<li>BCH 增加 <span class="arithmatex">\(38880-38688=192\)</span> 校验位；LDPC 再增加 <span class="arithmatex">\(64800-38880=25920\)</span> 校验位。LDPC 内码率确为 <span class="arithmatex">\(38880/64800=3/5\)</span>。</li>
+<li>位交织只重排 64800 位；8PSK 每符号放 3 位，因此 XFECFRAME 有 <span class="arithmatex">\(64800/3=21600\)</span> 个数据符号。</li>
+<li>每 slot 90 个数据符号，数据区有 <span class="arithmatex">\(21600/90=240\)</span> 个 slot。PLHEADER 另占 90 个符号。</li>
+<li>按标准“每 16 个 slot 后插入，且最后一个数据 slot 后不插入”规则，导频块数为 <span class="arithmatex">\(\lfloor(240-1)/16\rfloor=14\)</span>，每块 36 个符号，共 <span class="arithmatex">\(14\times36=504\)</span> 个导频符号。<span class="arithmatex">\(\lfloor x\rfloor\)</span> 表示不大于 <span class="arithmatex">\(x\)</span> 的最大整数。</li>
+<li>PLFRAME 总计 <span class="arithmatex">\(90+21600+504=22194\)</span> 个符号。不启用导频则为 <span class="arithmatex">\(21690\)</span> 个符号。</li>
+</ol>
+<p>按“每个 PLFRAME 的数据字段位 / PLFRAME 符号数”这个<strong>理想化口径</strong>，启用导频时为 <span class="arithmatex">\(38608/22194\approx1.740\)</span> 位/PL 符号；不能把它直接叫做用户净吞吐率。实际业务吞吐还受基带填充、上层封装、帧间处理、物理层传输与符号率等影响。若仅为了量级感取 <span class="arithmatex">\(R_s=10\)</span> Msymbol/s，上述口径约为 17.40 Mbit/s；它仍不是对任何具体业务链路的保证值。相关帧长、MODCOD、slot、导频规则见 <a href="https://www.etsi.org/deliver/etsi_en/302300_302399/30230701/01.04.01_60/en_30230701v010401p.pdf#page=22">ETSI 第 5.3–5.5 节</a>。</p>
+<p>这个例子串起了整条链：38608 个填满的数据字段位并非直接按 3 位一组发送；它们先和 80 位基带头一起经过 BCH/LDPC 变成 64800 个编码位，重排后映射为 21600 个 8PSK 数据点，再加 PLHEADER 和导频，最后才经脉冲成形发射。</p>
+<h2 id="10">10. 常见误区与回看路线<a class="headerlink" href="#10" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>容易产生的想法</th>
+<th>更准确的说法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“一个符号就是一个比特”</td>
+<td>QPSK/8PSK/16APSK/32APSK 分别每数据符号承载 2/3/4/5 个<strong>编码</strong>比特。</td>
+</tr>
+<tr>
+<td>“I、Q 是两个不同的无线信道”</td>
+<td>它们是同一复基带信号的两个正交实坐标。</td>
+</tr>
+<tr>
+<td>“星座点最接近哪个就能得到可靠的比特”</td>
+<td>最近点给硬判决；点到决策边界的距离及噪声方差还决定软置信度。</td>
+</tr>
+<tr>
+<td>“概率密度 <span class="arithmatex">\(p(y\mid s)\)</span> 就是发了 <span class="arithmatex">\(s\)</span> 的概率”</td>
+<td>前者是观测似然密度；后者需要结合先验，求后验 <span class="arithmatex">\(P(s\mid y)\)</span>。</td>
+</tr>
+<tr>
+<td>“LLR 正数一定代表 1”</td>
+<td>符号由定义决定；本文规定正数支持 0。</td>
+</tr>
+<tr>
+<td>“8PSK 3/5 每符号都有 <span class="arithmatex">\(3\times3/5\)</span> 个业务位”</td>
+<td>这仅近似考虑 LDPC 码率，漏掉 BCH、BB/PL 头、导频及填充等。</td>
+</tr>
+<tr>
+<td>“交织会增加纠错冗余”</td>
+<td>交织只重排位置；冗余由编码产生。QPSK 在 DVB-S2 中不使用该位交织。</td>
+</tr>
+<tr>
+<td>“PLHEADER 与 BBHEADER 是同一个头”</td>
+<td>一个是物理层帧同步/模式信令，一个描述基带帧数据。</td>
+</tr>
+<tr>
+<td>“信道只有 AWGN，解调只要算距离”</td>
+<td>AWGN 是理解与设计的重要基线模型；实际还需同步、滤波和处理非线性等。</td>
+</tr>
+</tbody>
+</table>
+<p>再读整条链时，可以只问三个连续问题：<strong>当前对象的单位是位、复符号，还是连续波形？当前步骤在增加冗余、重排、映射、包装，还是估计概率？接收侧靠哪一项信息做逆操作？</strong> 分清单位、概率条件方向与帧层次之后，Mapper、Demapper、LLR、FECFRAME、MODCOD 就不再是互不相干的术语。</p>
+<h2 id="_1">规范入口<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://www.etsi.org/deliver/etsi_en/302300_302399/30230701/01.04.01_60/en_30230701v010401p.pdf">ETSI EN 302 307-1 V1.4.1：DVB-S2 总规范</a>。优先核对第 4.2 节系统框图、第 5.3 节 FEC/交织、第 5.4 节星座映射、第 5.5 节 PL 成帧以及第 5.6 节脉冲成形。</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../../../protocols/http-https/" class="md-footer__link md-footer__link--prev" aria-label="上一页: HTTP / HTTPS">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                HTTP / HTTPS
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../Demapper-and-Interleaver/" class="md-footer__link md-footer__link--next" aria-label="下一页: 解映射与交织">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                解映射与交织
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.tabs", "navigation.indexes", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../../javascripts/page-search.js?v=3"></script>
+      
+        <script src="../../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

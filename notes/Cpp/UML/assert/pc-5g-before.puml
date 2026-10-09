@@ -1,0 +1,13 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+class Person {
++ name : string
++ firstname : string
++ email : string
++ isValidEmail() : bool
+}
+@enduml

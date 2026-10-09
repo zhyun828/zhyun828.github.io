@@ -1,0 +1,4917 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Notes on embedded systems, robotics, C++, FPGA, and interview preparation.">
+      
+      
+      
+        <link rel="canonical" href="https://zhyun828.github.io/notes/Cpp/UML/UML-Cheatsheet/">
+      
+      
+        <link rel="prev" href="../UML/">
+      
+      
+        <link rel="next" href="../../design_pattern/Design-Patterns/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>分类与图解速查 - ZY Engineering Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/home.css">
+    
+      <link rel="stylesheet" href="../../../../stylesheets/page-search.css?v=2">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#uml" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../../.." title="ZY Engineering Notes" class="md-header__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ZY Engineering Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              分类与图解速查
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal"  aria-label="深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="cyan"  aria-label="浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m3.55 19.09 1.41 1.41 1.8-1.79-1.42-1.42M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6c0-3.32-2.69-6-6-6m8 7h3v-2h-3m-2.76 7.71 1.8 1.79 1.41-1.41-1.79-1.8M20.45 5l-1.41-1.4-1.8 1.79 1.42 1.42M13 1h-2v3h2M6.76 5.39 4.96 3.6 3.55 5l1.79 1.81zM1 13h3v-2H1m12 9h-2v3h2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="ZY Engineering Notes" class="md-nav__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ZY Engineering Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../protocols/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通信协议
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    通信协议
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/usart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    USART
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/i2c/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I2C
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/spi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SPI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/can/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/tcp-udp-ip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TCP / UDP / IP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/modbus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modbus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/ethernet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ethernet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/lin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LIN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../protocols/http-https/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP / HTTPS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    专业通信
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    专业通信
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_1" id="__nav_2_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DVB-S2
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    DVB-S2
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pro-com/dvb-s2/Communication-System/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通信系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pro-com/dvb-s2/Demapper-and-Interleaver/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    解映射与交织
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_2" id="__nav_2_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    前向纠错
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    前向纠错
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pro-com/fec/Forward-Error-Correction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FEC 基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pro-com/fec/BCH/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BCH
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pro-com/fec/LDPC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LDPC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pro-com/versal/Versal-AIE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versal AI Engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pro-com/acceleration/High-Throughput-Architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高吞吐架构
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面试
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    面试
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%9D%A2%E8%AF%95/%E5%BF%AB%E9%80%9F%E6%A3%80%E7%B4%A2%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速检索表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%9D%A2%E8%AF%95/%E5%B5%8C%E5%85%A5%E5%BC%8F%E9%9D%A2%E8%AF%95%E6%B1%87%E6%80%BB%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    嵌入式面试汇总表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%9D%A2%E8%AF%95/%E9%AB%98%E9%A2%91%E9%A2%98%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高频题深度解析
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%9D%A2%E8%AF%95/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E9%97%AE%E7%AD%94%E9%9D%A2%E8%AF%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目经历问答面试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arduino
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Arduino
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/basics.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5_2" id="__nav_2_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    projet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/projet/projet.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/projet/pre.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    pre
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/projet/code.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Arduino/projet/thoughts.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thoughts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cpp
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cpp
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cmake%E6%95%99%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CMake 与 CMakeLists.txt
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_4" id="__nav_2_6_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UML
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    UML
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../UML/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    系统学习教材
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    分类与图解速查
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    分类与图解速查
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 完整分类与选图
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 类与成员表示
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 线条与箭头：类图关系表
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 线条与箭头：类图关系表">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        多重性与角色
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        额外关系和约束
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 用例图速查
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 对象图速查
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 时序图速查
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 通信、状态与活动速查
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. 通信、状态与活动速查">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#communication-collaboration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        通信图 Communication / Collaboration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#state-machine-etats-transitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        状态机 State Machine / États-transitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#activity-activites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        活动图 Activity / Activités
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 包、组件与部署速查
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 四种补充图实例
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. 四种补充图实例">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#composite-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        复合结构 Composite Structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        轮廓 Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interaction-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        交互概览 Interaction Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        时间 Timing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-csolid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. C++、SOLID 与易混淆概念
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. 中英法术语索引
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design_pattern/Design-Patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    设计模式详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design_pattern/Design-Patterns-Cheatsheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    设计模式速查
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    embedded_system
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    embedded_system
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../embedded_system/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_7_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../embedded_system/TP/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TP
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    TP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_8" id="__nav_2_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FPGA
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    FPGA
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../FPGA/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../FPGA/zynq-hardware-acceleration-intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zynq 硬件乘法加速器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_9" id="__nav_2_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gazebo
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    gazebo
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ros/gazebo/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_10" id="__nav_2_10_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_10_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_10_2" id="__nav_2_10_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux驱动
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_10_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    linux驱动
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/00_%E4%B8%8B%E8%BD%BD%E8%B5%84%E6%96%99/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    下载资料
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/01_%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    搭建开发环境
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/02_%E9%80%9A%E7%94%A8%E7%9A%84%E9%A9%B1%E5%8A%A8%E6%A1%86%E6%9E%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用的驱动框架
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/03_%E4%BD%BF%E7%94%A8%E6%A8%A1%E6%9D%BF%E6%93%8D%E4%BD%9C%E7%A1%AC%E4%BB%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    使用模板操作硬件
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/04_%E5%B9%B3%E5%8F%B0%E6%80%BB%E7%BA%BF%E8%AE%BE%E5%A4%87%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AE%BE%E5%A4%87%E6%A0%91/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    平台总线设备模型和设备树
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/linux%E9%A9%B1%E5%8A%A8/05_I2C%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F%E6%A8%A1%E6%9D%BF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I2C驱动程序模板
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVGL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LVGL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LVGL/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_12" id="__nav_2_12_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ros
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ros
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ros/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ros/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_13" id="__nav_2_13_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    stm32
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../stm32/stm32_knowledge_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32_knowledge_notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../stm32/rtos_freertos_notes_compact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RTOS / FreeRTOS 知识整理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../stm32/%E5%A4%96%E8%AE%BE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    外设
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../stm32/%E5%AF%84%E5%AD%98%E5%99%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    寄存器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 完整分类与选图
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 类与成员表示
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 线条与箭头：类图关系表
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 线条与箭头：类图关系表">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        多重性与角色
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        额外关系和约束
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 用例图速查
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 对象图速查
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 时序图速查
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 通信、状态与活动速查
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. 通信、状态与活动速查">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#communication-collaboration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        通信图 Communication / Collaboration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#state-machine-etats-transitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        状态机 State Machine / États-transitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#activity-activites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        活动图 Activity / Activités
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 包、组件与部署速查
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 四种补充图实例
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. 四种补充图实例">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#composite-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        复合结构 Composite Structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        轮廓 Profile
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interaction-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        交互概览 Interaction Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        时间 Timing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-csolid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. C++、SOLID 与易混淆概念
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. 中英法术语索引
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="导航栏" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Notes
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../basics/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Cpp
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../UML/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    UML
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="uml">UML 分类、符号与图例速查<a class="headerlink" href="#uml" title="Permanent link">&para;</a></h1>
+<p>用途：按图种、符号、英文／法文名称检索；需要推导与完整案例时跳转<a href="../UML/">教材</a>。标准分类参考 <a href="https://www.omg.org/spec/UML/2.5.1/">OMG UML 2.5.1</a>，课程分类保留 cours2 p14–19 的表述。图形旁文字是语义依据，颜色不具有 UML 标准含义。</p>
+<h2 id="1">1. 完整分类与选图<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<p><img alt="分类总览" src="../assert/uml-classification.svg" /></p>
+<p>图 A：结构图 7 种，行为图 7 种；其中交互图 4 种包含在行为图内。</p>
+<table>
+<thead>
+<tr>
+<th>标准分类</th>
+<th>中文 / English / Français</th>
+<th>问题与典型场景</th>
+<th>关键符号</th>
+<th>教材入口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>结构</td>
+<td>类 / Class / Classes</td>
+<td>类型、成员、关系；领域与软件接口设计</td>
+<td>三区矩形、关联、菱形、三角</td>
+<td><a href="../UML/#class-notation">类图</a>、<a href="../UML/#relationships">关系</a></td>
+</tr>
+<tr>
+<td>结构</td>
+<td>对象 / Object / Objets</td>
+<td>一个有效实例快照；检查类图数量</td>
+<td>下划线实例头、值槽、链接</td>
+<td><a href="../UML/#object-diagram">对象图</a></td>
+</tr>
+<tr>
+<td>结构</td>
+<td>包 / Package / Paquetages</td>
+<td>逻辑命名空间与跨包依赖</td>
+<td>文件夹、嵌套、import/merge</td>
+<td><a href="../UML/#architecture">架构图</a></td>
+</tr>
+<tr>
+<td>结构</td>
+<td>组件 / Component / Composants</td>
+<td>可替换单元、服务契约</td>
+<td>组件标记、接口球／插口、端口</td>
+<td><a href="../UML/#architecture">组件</a></td>
+</tr>
+<tr>
+<td>结构</td>
+<td>复合结构 / Composite Structure / Structure composite</td>
+<td>某分类器内部部件怎样连接</td>
+<td>部件角色、边界端口、连接器</td>
+<td><a href="../UML/#architecture">内部结构</a></td>
+</tr>
+<tr>
+<td>结构</td>
+<td>部署 / Deployment / Déploiement</td>
+<td>软件在哪些机器或执行环境运行</td>
+<td>三维节点、制品、通信路径</td>
+<td><a href="../UML/#architecture">部署</a></td>
+</tr>
+<tr>
+<td>结构</td>
+<td>轮廓 / Profile / Profils</td>
+<td>定义领域专用 UML 扩展</td>
+<td>profile、stereotype、元类、extension</td>
+<td><a href="../UML/#architecture">轮廓</a></td>
+</tr>
+<tr>
+<td>行为</td>
+<td>用例 / Use Case / Cas d'utilisation</td>
+<td>边界外角色获得哪些服务</td>
+<td>人形、椭圆、系统边界、include/extend</td>
+<td><a href="../UML/#usecase">用例</a></td>
+</tr>
+<tr>
+<td>行为</td>
+<td>活动 / Activity / Activités</td>
+<td>控制／数据怎样经过步骤、条件和并行</td>
+<td>动作、令牌流、决策、fork/join</td>
+<td><a href="../UML/#behavior">活动</a></td>
+</tr>
+<tr>
+<td>行为</td>
+<td>状态机 / State Machine / États-transitions</td>
+<td>一个对象怎样响应事件改变状态</td>
+<td>状态、转换、守卫、复合状态</td>
+<td><a href="../UML/#behavior">状态</a></td>
+</tr>
+<tr>
+<td>交互（行为子类）</td>
+<td>时序 / Sequence / Séquence</td>
+<td>一次场景的消息先后</td>
+<td>生命线、执行规格、消息、片段</td>
+<td><a href="../UML/#sequence">时序</a></td>
+</tr>
+<tr>
+<td>交互（行为子类）</td>
+<td>通信 / Communication / Communication</td>
+<td>谁与谁交换有序消息</td>
+<td>实例链接、箭头、消息编号</td>
+<td><a href="../UML/#behavior">通信</a></td>
+</tr>
+<tr>
+<td>交互（行为子类）</td>
+<td>交互概览 / Interaction Overview / Vue globale d'interaction</td>
+<td>多个交互之间的流程</td>
+<td>ref 框、决策、活动控制符号</td>
+<td><a href="../UML/#architecture">交互概览</a></td>
+</tr>
+<tr>
+<td>交互（行为子类）</td>
+<td>时间 / Timing / Temps</td>
+<td>状态／值随时间的变化及期限</td>
+<td>时间轴、状态线、时间／时长约束</td>
+<td><a href="../UML/#architecture">时间</a></td>
+</tr>
+</tbody>
+</table>
+<p><strong>课件分类对照。</strong>静态 5 图：用例、类、对象、组件、部署；动态 4 图：时序、协作、状态转换、活动；包图在“其他图”专页。标准中用例属于行为，协作图的现代名称为通信图，包图属于结构。课程列了活动图但未专页展开，教材活动细节及四个额外图种是明确补充。</p>
+<p>4+1 视图与图种不是同一分类：用例视图给场景；逻辑视图给类和协作；进程视图给并发与同步；实现视图给包、库、组件；部署视图给机器与网络。<a href="../UML/#classification">解释</a>。</p>
+<h2 id="2">2. 类与成员表示<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<p><img alt="标准成员实例" src="../assert/class-notation.svg" /></p>
+<p>图 B：类名、属性、操作分区；省略某区只是隐藏细节。</p>
+<div class="highlight"><pre><span></span><code>属性：可见性 名称 : 类型 [多重性] = 默认值 {性质}
+操作：可见性 名称(in/out/inout 参数 : 类型 = 默认值) : 返回类型 {性质}
+实例：对象名:类名       ← 头部加下划线
+值槽：属性名 = 值
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>表示</th>
+<th>含义</th>
+<th>例子 / C++ 对应</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>+</code> public / public</td>
+<td>公开</td>
+<td><code>+ withdraw(amount : Money) : Boolean</code></td>
+</tr>
+<tr>
+<td><code>-</code> private / privé</td>
+<td>私有</td>
+<td><code>- balance : Money</code></td>
+</tr>
+<tr>
+<td><code>#</code> protected / protégé</td>
+<td>受保护</td>
+<td>派生类可访问</td>
+</tr>
+<tr>
+<td><code>~</code> package / paquetage</td>
+<td>包级可见（补充）</td>
+<td>C++ 无直接访问级别对应</td>
+</tr>
+<tr>
+<td>成员下划线</td>
+<td>静态成员</td>
+<td><code>static count</code>；勿与实例头下划线混淆</td>
+</tr>
+<tr>
+<td>斜体、<code>{abstract}</code></td>
+<td>抽象类／操作</td>
+<td>纯虚函数 <code>= 0</code>；<code>override</code> 是代码层检查</td>
+</tr>
+<tr>
+<td><code>«interface»</code></td>
+<td>接口分类器</td>
+<td>契约；C++ 常用纯虚基类</td>
+</tr>
+<tr>
+<td><code>/total</code></td>
+<td>派生属性</td>
+<td>可通过其他属性计算</td>
+</tr>
+<tr>
+<td><code>{readOnly}</code></td>
+<td>只读</td>
+<td>不代表一定存为 <code>const</code> 字段</td>
+</tr>
+<tr>
+<td><code>{query}</code></td>
+<td>不改变模型状态的查询</td>
+<td><code>const</code> 常对应，但不是充分证明</td>
+</tr>
+<tr>
+<td><code>{id}</code></td>
+<td>标识属性</td>
+<td>不表示 C++ 指针地址</td>
+</tr>
+<tr>
+<td><code>«enumeration»</code></td>
+<td>枚举类型</td>
+<td><code>Active / Frozen / Closed</code></td>
+</tr>
+<tr>
+<td>模板签名 <code>T</code></td>
+<td>未绑定类型参数</td>
+<td><code>template&lt;class T&gt;</code></td>
+</tr>
+<tr>
+<td><code>«bind» &lt;T -&gt; X&gt;</code></td>
+<td>绑定类型参数</td>
+<td><code>List&lt;GraphicObject&gt;</code>；不是创建实例</td>
+</tr>
+<tr>
+<td><code>«entity»</code>、<code>«thread»</code> 等</td>
+<td>构造型／领域约定</td>
+<td>首先明确所属轮廓，不任意宣称为标准</td>
+</tr>
+<tr>
+<td><code>{条件}</code></td>
+<td>约束</td>
+<td><code>{quantity &gt;= 1}</code></td>
+</tr>
+<tr>
+<td>折角便笺</td>
+<td>注释</td>
+<td>可用虚线连接被说明元素</td>
+</tr>
+</tbody>
+</table>
+<p>成员方向：<code>in</code> 输入，<code>out</code> 输出，<code>inout</code> 输入并修改。默认参数 <code>drive(to : String = "Brest")</code> 不规定具体函数体。<a href="../UML/#class-notation">成员完整解释</a>。</p>
+<h2 id="3">3. 线条与箭头：类图关系表<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<p><img alt="类图关系总览" src="../assert/class-relations.svg" /></p>
+<p>图 C：先看线型，再看端点；菱形所在端是整体，三角指向一般类型／接口。</p>
+<table>
+<thead>
+<tr>
+<th>关系（中 / 英 / 法）</th>
+<th>标准表示</th>
+<th>从 A 到 B 的读法</th>
+<th>PlantUML</th>
+<th>所有权／C++ 提示</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>关联 / Association / Association</td>
+<td>实线，可无箭头</td>
+<td>A 的对象与 B 有业务链接</td>
+<td><code>A -- B</code></td>
+<td>不预设谁销毁谁</td>
+</tr>
+<tr>
+<td>导航关联 / Navigable Association / Association navigable</td>
+<td>实线开放箭头 A→B</td>
+<td>从 A 能访问 B</td>
+<td><code>A --&gt; B</code></td>
+<td>引用、指针或 ID 等；非拥有也可导航</td>
+</tr>
+<tr>
+<td>依赖 / Dependency / Dépendance</td>
+<td>虚线开放箭头 A→B</td>
+<td>A 使用 B，可能受 B 变化影响</td>
+<td><code>A ..&gt; B</code></td>
+<td>参数、局部使用、调用</td>
+</tr>
+<tr>
+<td>共享聚合 / Shared Aggregation / Agrégation</td>
+<td>实线，A 端空心菱形</td>
+<td>A 是整体，B 是可独立／共享部件</td>
+<td><code>A o-- B</code></td>
+<td>生命周期必须另说明</td>
+</tr>
+<tr>
+<td>组合 / Composition / Composition</td>
+<td>实线，A 端实心菱形</td>
+<td>A 负责其独占部件 B</td>
+<td><code>A *-- B</code></td>
+<td>值成员或 unique_ptr 常见；不规定复制</td>
+</tr>
+<tr>
+<td>泛化 / Generalization / Généralisation</td>
+<td>实线空心三角 A→B</td>
+<td>A 是 B 的一种</td>
+<td><code>A --|&gt; B</code></td>
+<td>public 继承需满足替换契约</td>
+</tr>
+<tr>
+<td>实现 / Realization / Réalisation</td>
+<td>虚线空心三角 A→B</td>
+<td>A 提供 B 接口的契约</td>
+<td><code>A ..|&gt; B</code></td>
+<td>纯虚接口实现</td>
+</tr>
+</tbody>
+</table>
+<p><strong>别把工具示例叫法当 UML 语义。</strong>PlantUML 某些例表把 <code>--&gt;</code> 写成 dependency 的泛称；本手册严格以实线表示导航关联、虚线表示依赖。<code>«use»</code> 是使用依赖标签；不是所有实线调用都要改名为依赖。<a href="../UML/#relationships">详细比较</a>。</p>
+<h3 id="_1">多重性与角色<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>标注</th>
+<th>含义</th>
+<th>固定一名对端对象后读本端</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>1</code></td>
+<td>恰一个</td>
+<td>每车恰有一位所有者</td>
+</tr>
+<tr>
+<td><code>0..1</code></td>
+<td>可无或一个</td>
+<td>空闲 ATM 可无会话</td>
+</tr>
+<tr>
+<td><code>*</code>、<code>0..*</code></td>
+<td>任意非负数量</td>
+<td>账户可能有零到多条历史交易</td>
+</tr>
+<tr>
+<td><code>1..*</code></td>
+<td>至少一项</td>
+<td>有效文档至少一页（本书假设）</td>
+</tr>
+<tr>
+<td><code>2..*</code></td>
+<td>至少两项</td>
+<td>pc 3(a) 的组孩子</td>
+</tr>
+<tr>
+<td><code>0..3</code></td>
+<td>最多三项</td>
+<td>pc 3(b) 放在雇主端，约束每自然人的雇主数</td>
+</tr>
+<tr>
+<td><code>3</code></td>
+<td>恰三项</td>
+<td>不等于“最多三项”</td>
+</tr>
+</tbody>
+</table>
+<p><code>LegalPerson "0..3" -- "0..*" NaturalPerson</code>：<strong>每个自然人最多三雇主，每法人可雇零到多人。</strong>多重性不是历史次数，也不是 C++ vector 自动执行的检查。角色标本端含义，如 employee、employer；关联名旁小实心三角表示读名方向，不是导航箭头。无箭头不必然是双向，先查图的约定。</p>
+<h3 id="_2">额外关系和约束<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>表示</th>
+<th>含义</th>
+<th>易错点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>自关联</td>
+<td>同类型不同实例连接</td>
+<td>邻国不是 Country 子类；需要角色</td>
+</tr>
+<tr>
+<td>中央菱形连三端以上</td>
+<td>n 元关联</td>
+<td>不是某类端的聚合；拆二元可能丢三元绑定</td>
+</tr>
+<tr>
+<td>类框虚线连关联线</td>
+<td>关联类</td>
+<td>关联带属性；重复事件常用独立记录更清楚</td>
+</tr>
+<tr>
+<td><code>{ordered}</code> / ordonnée</td>
+<td>集合有顺序</td>
+<td>不自动表示已排序</td>
+</tr>
+<tr>
+<td><code>{subsets soldiers}</code> / sous-ensemble</td>
+<td>此集合是另一端集合子集</td>
+<td>将军必须属于军人集合</td>
+</tr>
+<tr>
+<td><code>{xor}</code> / ou exclusif</td>
+<td>关联互斥</td>
+<td>是否必须选一个还看下限与条件</td>
+</tr>
+<tr>
+<td><code>{unique}</code> / <code>{nonunique}</code></td>
+<td>值集合是否允许重复</td>
+<td>普通多值端不能自动表达购物车重复商品</td>
+</tr>
+<tr>
+<td><code>A o-- B</code> 与 <code>A *-- B</code></td>
+<td>共享聚合／组合</td>
+<td>组合不要求物理包含，不自动规定深拷贝</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4">4. 用例图速查<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
+<p><img alt="用例关系实例" src="../assert/usecase-relations.svg" /></p>
+<p>图 D：Visitor 浏览，RegisteredCustomer 可结账；Checkout 必含 Payment，Help 有条件扩展 Checkout。</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>意义</th>
+<th>方向／阅读</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>外部小人、<code>«actor»</code> 形式</td>
+<td>参与者 Actor / Acteur</td>
+<td>人、外部软件或设备的角色</td>
+</tr>
+<tr>
+<td>系统矩形</td>
+<td>被建模系统 Subject / Sujet</td>
+<td>角色在外，用例在内</td>
+</tr>
+<tr>
+<td>椭圆</td>
+<td>用例 Use Case / Cas d'utilisation</td>
+<td>一组产生有价值结果的行为</td>
+</tr>
+<tr>
+<td>角色与椭圆实线</td>
+<td>参与关联</td>
+<td>不表示执行顺序</td>
+</tr>
+<tr>
+<td><code>«include»</code> 虚线开放箭头</td>
+<td>包含</td>
+<td>基础目标→必用子行为</td>
+</tr>
+<tr>
+<td><code>«extend»</code> 虚线开放箭头</td>
+<td>扩展</td>
+<td>可选扩展→独立基础行为；说明条件／扩展点</td>
+</tr>
+<tr>
+<td>空心三角实线</td>
+<td>泛化</td>
+<td>特殊角色／用例→一般角色／用例</td>
+</tr>
+</tbody>
+</table>
+<p>注册完成通常是购买前置条件，不能自动画成每次购买的 include；extend 不是继承。用例的操作先后写文字场景、活动或时序图。<a href="../UML/#usecase">完整绘制方法</a>、<a href="../UML/#course-examples">购物案例</a>、<a href="../UML/#pc-solutions">银行答案</a>。</p>
+<h2 id="5">5. 对象图速查<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<p><img alt="国家实例" src="../assert/pc-2a-objects.svg" /></p>
+<p>图 E：四个具体 Country 对象，两条已存在的邻接链接。</p>
+<p><code>france:Country</code> 是有名实例，<code>:Country</code> 是匿名实例；<strong>实例头必须下划线</strong>。<code>name = "France"</code> 是值槽而不是属性定义 <code>name : String</code>。实线是快照链接。对象图不能拿具体 France 画成继承 Country 的子类；局部快照必须说明省略，不允许省略后宣称有效多重性完整验证。<a href="../UML/#object-diagram">对象图</a>。</p>
+<h2 id="6">6. 时序图速查<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<p><img alt="时序符号" src="../assert/sequence-notation.svg" /></p>
+<p>图 F：从上往下读发生顺序；同步、异步、返回、创建和销毁各有含义。</p>
+<table>
+<thead>
+<tr>
+<th>符号 / 术语</th>
+<th>含义</th>
+<th>PlantUML／注意</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lifeline / Ligne de vie，头下虚线</td>
+<td>交互参与者的存在</td>
+<td><code>participant "pass:PASS" as P</code></td>
+</tr>
+<tr>
+<td>Execution Specification / Activation，细矩形</td>
+<td>正在执行行为</td>
+<td><code>activate P</code>；不等于永久拥有 CPU</td>
+</tr>
+<tr>
+<td>实线实心箭头</td>
+<td>同步调用 Message synchrone</td>
+<td><code>A -&gt; B : query()</code></td>
+</tr>
+<tr>
+<td>实线开放箭头</td>
+<td>异步 Message asynchrone</td>
+<td><code>A -&gt;&gt; B : notify()</code></td>
+</tr>
+<tr>
+<td>虚线开放箭头</td>
+<td>返回 Reply / Retour</td>
+<td><code>B --&gt; A : result</code></td>
+</tr>
+<tr>
+<td>弯回自己箭头</td>
+<td>自调用</td>
+<td><code>A -&gt; A : validate()</code></td>
+</tr>
+<tr>
+<td>回调 Callback</td>
+<td>先前协作者反向调用／通知</td>
+<td>不等于自调用，仍需声明同步性</td>
+</tr>
+<tr>
+<td>指向新对象头的创建消息</td>
+<td>创建实例</td>
+<td><code>create participant Task</code> 后发送创建消息</td>
+</tr>
+<tr>
+<td>生命线叉号</td>
+<td>销毁发生点</td>
+<td><code>destroy Task</code>；之后不得正常使用</td>
+</tr>
+<tr>
+<td><code>sd</code> 框</td>
+<td>交互边界</td>
+<td>不是系统类组合框</td>
+</tr>
+<tr>
+<td>gate</td>
+<td>边界消息连接点</td>
+<td>接续内外交互，不是演员</td>
+</tr>
+<tr>
+<td><code>{10..200 ms}</code></td>
+<td>时长约束</td>
+<td>两个指定发生点之间，不是图总耗时</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>片段</th>
+<th>快速含义</th>
+<th>场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>alt [条件] / else</code></td>
+<td>互斥分支</td>
+<td>授权成功／失败</td>
+</tr>
+<tr>
+<td><code>opt [条件]</code></td>
+<td>执行或略过</td>
+<td>请求收据才打印</td>
+</tr>
+<tr>
+<td><code>loop [每项]</code></td>
+<td>重复</td>
+<td>Bag 对每个 Item 设置折扣</td>
+</tr>
+<tr>
+<td><code>par</code></td>
+<td>分支允许并发交错</td>
+<td>多个搜索服务</td>
+</tr>
+<tr>
+<td><code>ref</code></td>
+<td>引用其他交互</td>
+<td>Balance Lookup</td>
+</tr>
+<tr>
+<td><code>break</code>（补充）</td>
+<td>此片段替代剩余交互</td>
+<td>失败结束</td>
+</tr>
+<tr>
+<td><code>critical</code>（补充）</td>
+<td>相关执行不能任意交错</td>
+<td>原子状态更新，仍需代码同步</td>
+</tr>
+</tbody>
+</table>
+<p>守卫 <code>[condition]</code> 与说明约束 <code>{condition}</code> 不能混作同一位置语法。水平排序只影响排版；没有标尺的竖直间隔不表示秒数。接收消息操作必须与类图一致。<a href="../UML/#sequence">完整解释</a>、<a href="../UML/#pc-solutions">PASS 完整图</a>。</p>
+<h2 id="7">7. 通信、状态与活动速查<a class="headerlink" href="#7" title="Permanent link">&para;</a></h2>
+<h3 id="communication-collaboration">通信图 Communication / Collaboration<a class="headerlink" href="#communication-collaboration" title="Permanent link">&para;</a></h3>
+<p><img alt="通信实例" src="../assert/communication-pass.svg" /></p>
+<p>图 G：空间图中的消息 <code>1</code>、<code>1.1</code>、<code>1.2</code> 表示外层请求与嵌套协作。先找实例及链接，再按序号追踪箭头；编号不是时间数值。旧课件称“协作图”，现代为通信图。<a href="../UML/#behavior">教材</a>。</p>
+<h3 id="state-machine-etats-transitions">状态机 State Machine / États-transitions<a class="headerlink" href="#state-machine-etats-transitions" title="Permanent link">&para;</a></h3>
+<p><img alt="洗车状态图" src="../assert/state-wash.svg" /></p>
+<p>图 H：复合洗车状态、时间触发、紧急停止与恢复。恢复到默认入口不同于历史恢复。</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>实心圆</td>
+<td>初始伪状态</td>
+</tr>
+<tr>
+<td>圆角矩形</td>
+<td>对象的一种持续状态</td>
+</tr>
+<tr>
+<td>靶心圆</td>
+<td>区域终态</td>
+</tr>
+<tr>
+<td><code>trigger [guard] / effect</code></td>
+<td>事件触发、条件、转换效果</td>
+</tr>
+<tr>
+<td><code>entry / action</code></td>
+<td>进入状态时动作</td>
+</tr>
+<tr>
+<td><code>do / activity</code></td>
+<td>状态持续活动</td>
+</tr>
+<tr>
+<td><code>exit / action</code></td>
+<td>退出状态时动作</td>
+</tr>
+<tr>
+<td><code>after(2min)</code></td>
+<td>进入相应源状态后的时间事件</td>
+</tr>
+<tr>
+<td>包含子状态的大框</td>
+<td>复合状态</td>
+</tr>
+<tr>
+<td><code>H</code>、<code>H*</code>（补充）</td>
+<td>浅／深历史恢复</td>
+</tr>
+</tbody>
+</table>
+<h3 id="activity-activites">活动图 Activity / Activités<a class="headerlink" href="#activity-activites" title="Permanent link">&para;</a></h3>
+<p><img alt="查询活动" src="../assert/activity-pass.svg" /></p>
+<p>图 I：步骤之间传递控制，菱形选择分支；最后结束整个活动。</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>含义</th>
+<th>常见混淆</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>圆角动作框</td>
+<td>一次工作／计算动作</td>
+<td>不必是持久状态</td>
+</tr>
+<tr>
+<td>箭头</td>
+<td>控制流或对象流</td>
+<td>明确流的种类及传递值</td>
+</tr>
+<tr>
+<td>菱形，1 入多出</td>
+<td>决策 decision / décision</td>
+<td>守卫决定走哪条路</td>
+</tr>
+<tr>
+<td>菱形，多入 1 出</td>
+<td>合并 merge / fusion</td>
+<td>汇合互斥分支，不等待所有分支</td>
+</tr>
+<tr>
+<td>粗条，1 入多出</td>
+<td>fork / bifurcation</td>
+<td>产生并发控制流</td>
+</tr>
+<tr>
+<td>粗条，多入 1 出</td>
+<td>join / synchronisation</td>
+<td>同步需要的并行分支</td>
+</tr>
+<tr>
+<td>矩形对象节点</td>
+<td>被传递数据</td>
+<td>不等于参与者类</td>
+</tr>
+<tr>
+<td>泳道 Partition / Couloir</td>
+<td>责任分区</td>
+<td>不自动规定线程</td>
+</tr>
+<tr>
+<td>靶心 Activity Final</td>
+<td>结束整个活动</td>
+<td>与圈内叉 Flow Final（只结束一条流）不同</td>
+</tr>
+</tbody>
+</table>
+<p>状态机问“对象在哪种状态、响应什么事件”；活动问“工作怎样流动”；时序问“谁向谁发什么消息”。<a href="../UML/#behavior">并排解释</a>。</p>
+<h2 id="8">8. 包、组件与部署速查<a class="headerlink" href="#8" title="Permanent link">&para;</a></h2>
+<p><img alt="逻辑分组与组件服务" src="../assert/packages-components.svg" /></p>
+<p><img alt="标准组件与提供接口" src="../assert/components-pass.svg" /></p>
+<p>组件小图标与圆球分别表示实现单元和提供接口；虚线 <code>«use»</code> 指向需要使用的服务接口。所需接口也可画插口，球与插口接合才表示组装连接。</p>
+<p><img alt="部署实例" src="../assert/deployment-atm.svg" /></p>
+<p>图 J：上图组织逻辑职责与服务接口；下图把软件制品放到机器节点。</p>
+<table>
+<thead>
+<tr>
+<th>图种／符号</th>
+<th>语义</th>
+<th>错误读法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>包的文件夹标签</td>
+<td>模型命名空间</td>
+<td>必然是一个 C++ DLL</td>
+</tr>
+<tr>
+<td>包嵌套</td>
+<td>命名与包含层次</td>
+<td>对象组合所有权</td>
+</tr>
+<tr>
+<td><code>«import»</code> / <code>«access»</code></td>
+<td>公开／私有导入（补充）</td>
+<td>复制源文件</td>
+</tr>
+<tr>
+<td><code>«merge»</code></td>
+<td>包定义合并（补充）</td>
+<td>C++ 类继承</td>
+</tr>
+<tr>
+<td>组件小图标、<code>«component»</code></td>
+<td>封装可替换单元</td>
+<td>任意对象实例</td>
+</tr>
+<tr>
+<td>接口小圆球</td>
+<td>提供接口</td>
+<td>某个成员对象</td>
+</tr>
+<tr>
+<td>半圆插口</td>
+<td>所需接口</td>
+<td>一个继承三角</td>
+</tr>
+<tr>
+<td>小方框端口</td>
+<td>分类器边界交互点</td>
+<td>属性槽</td>
+</tr>
+<tr>
+<td>组装连接器</td>
+<td>接合需要与提供能力</td>
+<td>必然网络连接</td>
+</tr>
+<tr>
+<td>委派连接器</td>
+<td>外部端口连接内部部件</td>
+<td>消息时间顺序</td>
+</tr>
+<tr>
+<td>三维节点、<code>«device»</code></td>
+<td>物理设备</td>
+<td>业务类</td>
+</tr>
+<tr>
+<td><code>«executionEnvironment»</code></td>
+<td>软件执行环境</td>
+<td>只能是一台机器</td>
+</tr>
+<tr>
+<td>折角制品、<code>«artifact»</code></td>
+<td>代码／可执行文件等实际制品</td>
+<td>UML 注释便笺（标签与上下文区分）</td>
+</tr>
+<tr>
+<td>节点间实线</td>
+<td>通信路径</td>
+<td>继承／组合</td>
+</tr>
+</tbody>
+</table>
+<p>逻辑层 layer 与部署层 tier 可以不一一对应。编译依赖制品图、运行组件图和机器部署图关注不同关系，勿混成一张含义不明的箭头网。<a href="../UML/#architecture">完整阅读方法</a>。</p>
+<h2 id="9">9. 四种补充图实例<a class="headerlink" href="#9" title="Permanent link">&para;</a></h2>
+<h3 id="composite-structure">复合结构 Composite Structure<a class="headerlink" href="#composite-structure" title="Permanent link">&para;</a></h3>
+<p><img alt="部件与端口" src="../assert/composite-structure.svg" /></p>
+<p>图 K：某个 ATM 分类器内部的角色、数量、端口和连接器。先看边界，再沿端口进入内部。类图表达类型关系，本图展开其内部结构。</p>
+<h3 id="profile">轮廓 Profile<a class="headerlink" href="#profile" title="Permanent link">&para;</a></h3>
+<p><img alt="轮廓定义" src="../assert/profile.svg" /></p>
+<p>图 L：Persistent 构造型扩展 Class 元类，实心三角指向元类；它定义 <code>tableName</code> 附加性质。这不是类继承的空心三角。定义轮廓与给类应用构造型是两项不同工作。</p>
+<h3 id="interaction-overview">交互概览 Interaction Overview<a class="headerlink" href="#interaction-overview" title="Permanent link">&para;</a></h3>
+<p><img alt="交互流程" src="../assert/interaction-overview.svg" /></p>
+<p>图 M：每个 ref 框引用完整交互，控制图决定认证后运行取款还是失败报告。消息细节仍在被引用时序图中。</p>
+<h3 id="timing">时间 Timing<a class="headerlink" href="#timing" title="Permanent link">&para;</a></h3>
+<p><img alt="状态时间变化" src="../assert/timing.svg" /></p>
+<p>图 N：横轴有明确单位和数值，阶梯表示状态变化；高度不是余额值。可用于查询认证到出钞耗时。<a href="../UML/#architecture">四种补充图教程</a>。</p>
+<h2 id="10-csolid">10. C++、SOLID 与易混淆概念<a class="headerlink" href="#10-csolid" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>易混项</th>
+<th>判别方法</th>
+<th>教材</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>类／对象</td>
+<td>类型定义 vs 某时刻有身份状态的实例</td>
+<td><a href="../UML/#objects">基础</a></td>
+</tr>
+<tr>
+<td>操作／方法</td>
+<td>可请求契约 vs 实现函数体</td>
+<td><a href="../UML/#class-notation">类</a></td>
+</tr>
+<tr>
+<td>公开接口／UML Interface</td>
+<td>public 能力集合 vs 显式接口分类器</td>
+<td><a href="../UML/#class-notation">接口</a></td>
+</tr>
+<tr>
+<td>属性／关联</td>
+<td>值特征 vs 有身份对象之间链接</td>
+<td><a href="../UML/#relationships">关系</a></td>
+</tr>
+<tr>
+<td>读名三角／导航箭头</td>
+<td>名称阅读方向 vs 能否访问对象</td>
+<td><a href="../UML/#relationships">导航</a></td>
+</tr>
+<tr>
+<td>聚合／组合</td>
+<td>整体部分说明 vs 独占部件及销毁责任</td>
+<td><a href="../UML/#cpp-mapping">所有权</a></td>
+</tr>
+<tr>
+<td>多重性／容器长度</td>
+<td>模型合法状态约束 vs 实际某时刻数据</td>
+<td><a href="../UML/#relationships">关系</a></td>
+</tr>
+<tr>
+<td>图形集合关系／LSP</td>
+<td>几何定义 vs 所有父类型客户端契约仍成立</td>
+<td><a href="../UML/#pc-solutions">5a</a></td>
+</tr>
+<tr>
+<td>DI／DIP</td>
+<td>外部传入依赖 vs 高低层依赖合适抽象</td>
+<td><a href="../UML/#design-principles">原则</a></td>
+</tr>
+<tr>
+<td>shared_ptr／共享聚合</td>
+<td>实现的共同拥有 vs 模型整体部分语义</td>
+<td><a href="../UML/#cpp-mapping">C++</a></td>
+</tr>
+<tr>
+<td>下划线</td>
+<td>类成员下划线＝静态；实例头下划线＝对象</td>
+<td><a href="../UML/#class-notation">类</a></td>
+</tr>
+<tr>
+<td>类图开放箭头／时序开放箭头</td>
+<td>实线关联导航 vs 实线异步消息</td>
+<td><a href="../UML/#sequence">时序</a></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>原则</th>
+<th>完整英文／法文</th>
+<th>看图时检查</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SRP 单一职责</td>
+<td>Single Responsibility / Responsabilité unique</td>
+<td>一类是否混入不同变化原因？</td>
+</tr>
+<tr>
+<td>OCP 开闭</td>
+<td>Open–Closed / Ouvert-fermé</td>
+<td>新增预期规则是否总改稳定流程？</td>
+</tr>
+<tr>
+<td>LSP 里氏替换</td>
+<td>Liskov Substitution / Substitution de Liskov</td>
+<td>子类型是否拒绝原合法调用或削弱结果？</td>
+</tr>
+<tr>
+<td>ISP 接口隔离</td>
+<td>Interface Segregation / Ségrégation des interfaces</td>
+<td>客户端是否依赖无关能力？</td>
+</tr>
+<tr>
+<td>DIP 依赖倒置</td>
+<td>Dependency Inversion / Inversion des dépendances</td>
+<td>高层是否直接绑定文件、设备等细节？</td>
+</tr>
+</tbody>
+</table>
+<p>查询答案：银行题 1；邻国、多边形、森林、媒体馆、维修、画廊、递归绘图、酒店题 2(a–h)；编辑器和购车题 3(a–b)；ATM 与 PASS 题 4.1–4.2；SOLID 题 5(a–g)，均在<a href="../UML/#pc-solutions">全部练习</a>。课件网站三视图、Bag、图书馆、评论回调和授权例图在<a href="../UML/#course-examples">课件案例</a>。</p>
+<h2 id="11">11. 中英法术语索引<a class="headerlink" href="#11" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>中文</th>
+<th>English</th>
+<th>Français</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>模型／建模</td>
+<td>Model / Modeling</td>
+<td>Modèle / Modélisation</td>
+</tr>
+<tr>
+<td>抽象</td>
+<td>Abstraction</td>
+<td>Abstraction</td>
+</tr>
+<tr>
+<td>类／实例／对象</td>
+<td>Class / Instance / Object</td>
+<td>Classe / Instance / Objet</td>
+</tr>
+<tr>
+<td>属性／操作／方法</td>
+<td>Attribute / Operation / Method</td>
+<td>Attribut / Opération / Méthode</td>
+</tr>
+<tr>
+<td>状态／行为／身份</td>
+<td>State / Behavior / Identity</td>
+<td>État / Comportement / Identité</td>
+</tr>
+<tr>
+<td>封装</td>
+<td>Encapsulation</td>
+<td>Encapsulation</td>
+</tr>
+<tr>
+<td>关联／链接</td>
+<td>Association / Link</td>
+<td>Association / Lien</td>
+</tr>
+<tr>
+<td>依赖</td>
+<td>Dependency</td>
+<td>Dépendance</td>
+</tr>
+<tr>
+<td>导航性</td>
+<td>Navigability</td>
+<td>Navigabilité</td>
+</tr>
+<tr>
+<td>多重性</td>
+<td>Multiplicity</td>
+<td>Multiplicité / Cardinalité（课程）</td>
+</tr>
+<tr>
+<td>聚合／组合</td>
+<td>Aggregation / Composition</td>
+<td>Agrégation / Composition</td>
+</tr>
+<tr>
+<td>泛化／专业化／继承</td>
+<td>Generalization / Specialization / Inheritance</td>
+<td>Généralisation / Spécialisation / Héritage</td>
+</tr>
+<tr>
+<td>实现</td>
+<td>Realization</td>
+<td>Réalisation</td>
+</tr>
+<tr>
+<td>接口</td>
+<td>Interface</td>
+<td>Interface</td>
+</tr>
+<tr>
+<td>构造型</td>
+<td>Stereotype</td>
+<td>Stéréotype</td>
+</tr>
+<tr>
+<td>模板／泛型</td>
+<td>Template / Genericity</td>
+<td>Modèle paramétré / Généricité</td>
+</tr>
+<tr>
+<td>参与者／用例</td>
+<td>Actor / Use Case</td>
+<td>Acteur / Cas d'utilisation</td>
+</tr>
+<tr>
+<td>场景</td>
+<td>Scenario</td>
+<td>Scénario</td>
+</tr>
+<tr>
+<td>生命线</td>
+<td>Lifeline</td>
+<td>Ligne de vie</td>
+</tr>
+<tr>
+<td>同步／异步</td>
+<td>Synchronous / Asynchronous</td>
+<td>Synchrone / Asynchrone</td>
+</tr>
+<tr>
+<td>守卫／约束</td>
+<td>Guard / Constraint</td>
+<td>Garde / Contrainte</td>
+</tr>
+<tr>
+<td>包／组件／制品／节点</td>
+<td>Package / Component / Artifact / Node</td>
+<td>Paquetage / Composant / Artefact / Nœud</td>
+</tr>
+<tr>
+<td>耦合／内聚</td>
+<td>Coupling / Cohesion</td>
+<td>Couplage / Cohésion</td>
+</tr>
+<tr>
+<td>需求／设计／实现</td>
+<td>Requirements / Design / Implementation</td>
+<td>Besoins / Conception / Implémentation</td>
+</tr>
+</tbody>
+</table>
+<p>所有 PlantUML 图的同名 <code>.puml</code> 与渲染 SVG 存于 <code>assert/</code>；轮廓和交互概览采用可直接编辑的标准 SVG 源文件，以准确保留实心扩展箭头和 ref 框。原始 PDF 图像作为来源对照，不代替中文解答。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../UML/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 系统学习教材">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                系统学习教材
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../design_pattern/Design-Patterns/" class="md-footer__link md-footer__link--next" aria-label="下一页: 设计模式详解">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                设计模式详解
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.instant", "navigation.tabs", "navigation.indexes", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../../javascripts/page-search.js?v=3"></script>
+      
+        <script src="../../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
