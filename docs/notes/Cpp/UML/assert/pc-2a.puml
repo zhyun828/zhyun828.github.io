@@ -1,0 +1,11 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+class Country {
+- name : String
+}
+Country "0..*" -- "0..*" Country : 邻国 {symmetric, irreflexive}
+@enduml

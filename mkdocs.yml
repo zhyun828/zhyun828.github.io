@@ -100,7 +100,11 @@ nav:
           - basics: notes/Cpp/basics.md
           - code: notes/Cpp/code.md
           - CMake 与 CMakeLists.txt: notes/Cpp/cmake教程.md
-          - 设计模式详解: notes/Cpp/cpp_设计模式详解_扩展版.md
+          - UML:
+              - 系统学习教材: notes/Cpp/UML/UML.md
+              - 分类与图解速查: notes/Cpp/UML/UML-Cheatsheet.md
+          - 设计模式详解: notes/Cpp/design_pattern/Design-Patterns.md
+          - 设计模式速查: notes/Cpp/design_pattern/Design-Patterns-Cheatsheet.md
       - embedded_system:
           - basic: notes/embedded_system/basic.md
           - TP:

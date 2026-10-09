@@ -1,0 +1,49 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+left to right direction
+class ATMController {
+ - session : Session [0..1]
+ + cardRead(cardData : CardData)
+ + withdraw(amount : Money) : Result
+}
+class Session {
+- accountId : String
+- authenticated : Boolean
+- credentials : Credentials
+}
+class CardReader {
++ readCard() : CardData
++ ejectCard()
+}
+class Screen {
++ requestCredentialsAndAmount() : WithdrawalInput
++ display(result : Result)
++ displayFailure()
++ showSuccessAndReceiptStatus()
+}
+class CashDispenser {
+- cashStock : Money
++ canDispense(amount : Money) : Boolean
++ dispense(amount : Money) : Result
+}
+class ReceiptPrinter {
++ printReceipt(txId : String, amount : Money) : Result
+}
+interface BankGateway {
++ authorize(credentials, accountId, amount, txId) : Result
++ confirm(txId)
++ cancel(txId)
+}
+class RouterGateway
+ATMController "1" *-- "0..1" Session
+ATMController "1" --> "1" CardReader
+ATMController "1" --> "1" Screen
+ATMController "1" --> "1" CashDispenser
+ATMController "1" --> "1" ReceiptPrinter
+ATMController "1" --> "1" BankGateway
+RouterGateway ..|> BankGateway
+@enduml

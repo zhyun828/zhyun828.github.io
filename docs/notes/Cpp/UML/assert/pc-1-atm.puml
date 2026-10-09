@@ -1,0 +1,27 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+left to right direction
+actor "持卡用户" as U
+actor "中央路由计算机" as R
+rectangle "ATM 本机软件" {
+ usecase "取款" as W
+ usecase "接受卡并交互" as Card
+ usecase "请求交易" as Tx
+ usecase "发放现金" as Cash
+ usecase "打印收据" as Receipt
+ W ..> Card : <<include>>
+ W ..> Tx : <<include>>
+ W ..> Cash : <<include>>
+ W ..> Receipt : <<include>>
+}
+U -- W
+R -- Tx
+note bottom of W
+此图展开成功取款目标；失败分支见时序图
+
+end note
+@enduml

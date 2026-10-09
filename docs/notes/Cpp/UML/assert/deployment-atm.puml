@@ -1,0 +1,18 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+node "ATM <<device>>" as ATM {
+ artifact "atm.exe" as A
+}
+node "路由节点" as Router {
+ artifact "router-service" as R
+}
+node "银行节点" as Bank {
+ artifact "bank-service" as B
+}
+ATM -- Router : 安全交易网络
+Router -- Bank : 安全交易网络
+@enduml

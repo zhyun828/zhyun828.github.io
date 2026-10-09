@@ -1,0 +1,24 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+class MathTeacher {
++ lecture()
+}
+interface MathLearner {
++ learnMath(exercise : String)
+}
+interface Musician {
++ playPiano()
+}
+interface Writer {
++ writeNovel()
+}
+class FirstYearStudent
+MathTeacher "0..*" --> "1" MathLearner
+FirstYearStudent ..|> MathLearner
+FirstYearStudent ..|> Musician
+FirstYearStudent ..|> Writer
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+state "完整洗车 lavageComplet" as Full {
+ state "洗涤 lavage" as Washing
+ state "抛光 lustrage" as Polish
+ [*] --> Washing
+ Washing --> Polish : after(2min)
+}
+state "干燥 séchage" as Dry
+state "等待 attente" as Wait
+[*] --> Full
+Polish --> Dry : after(4min)
+Full --> Wait : 紧急停止
+Wait --> Full : 恢复 / 重新从洗涤开始
+Wait --> [*] : after(2min)
+Dry --> [*] : after(2min)
+Dry --> [*] : 紧急停止
+@enduml

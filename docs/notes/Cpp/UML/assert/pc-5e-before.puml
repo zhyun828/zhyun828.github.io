@@ -1,0 +1,19 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+class Application {
++ Application()
++ run()
+}
+class Logger {
++ log(message : string)
+}
+Application *-- Logger : uses
+note bottom of Application
+void run() { logger.log("Hi"); }
+
+end note
+@enduml

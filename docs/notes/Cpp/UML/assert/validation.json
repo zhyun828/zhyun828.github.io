@@ -1,0 +1,39 @@
+{
+  "UML-Cheatsheet.md": {
+    "characters": 12844,
+    "headings": 21,
+    "images": 16
+  },
+  "UML.md": {
+    "characters": 56555,
+    "headings": 91,
+    "images": 121
+  },
+  "C++17": {
+    "compiled_snippets": 10
+  },
+  "assets": {
+    "svg": 52,
+    "puml": 50,
+    "png": 120
+  },
+  "date": "2026-10-09",
+  "sources": {
+    "cours1": 148,
+    "cours2": 96,
+    "pc_uml": 7
+  },
+  "checks": {
+    "exercise_sections": 20,
+    "local_images_and_internal_anchors": "passed",
+    "svg_xml_and_png_integrity": "passed",
+    "rendered_figures_visual_review": "passed",
+    "editable_sources_and_rendered_pairs": "passed",
+    "unintended_diagram_hyperlinks": "none",
+    "placeholder_check": "passed",
+    "C++17_runtime_examples": 10,
+    "mkdocs_strict_build": "passed"
+  },
+  "scope": "保留 UML、对象建模与相关设计基础；排除设计模式及反模式专讲。参考答案为推导方案，非讲义官方答案。",
+  "build_notes": "MkDocs 1.6.1 严格构建成功；主题启动提示及仓库原有两页未进入导航的 INFO 不阻断构建。"
+}

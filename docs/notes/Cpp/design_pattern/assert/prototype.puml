@@ -1,0 +1,27 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam ArrowColor #334155
+skinparam classBorderColor #334155
+skinparam classBackgroundColor #DBEAFE
+skinparam packageBackgroundColor #F8FAFC
+skinparam packageBorderColor #94A3B8
+skinparam nodesep 55
+skinparam ranksep 55
+hide empty members
+title Prototype
+interface Prototype {
+ +clone(): Prototype
+}
+class ConcretePrototype1
+class ConcretePrototype2
+class Client
+Prototype <|.. ConcretePrototype1
+Prototype <|.. ConcretePrototype2
+Client --> Prototype : clone
+ConcretePrototype1 ..> ConcretePrototype1 : copy
+ConcretePrototype2 ..> ConcretePrototype2 : copy
+@enduml

@@ -1,0 +1,19 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+class Client
+class Repair
+class Mechanic
+class Skill
+Client "1" -- "0..*" Repair : requests
+Mechanic "1" -- "0..*" Repair : performs
+Repair "0..*" -- "1..*" Skill : requires
+Mechanic "0..*" -- "0..*" Skill : possesses
+note bottom of Repair
+{requiredSkills subset of mechanic.skills}
+
+end note
+@enduml
