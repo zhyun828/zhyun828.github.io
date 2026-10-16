@@ -1,5 +1,11 @@
-# C++ 基础知识点总结
-## 头文件
+# C++ 基础知识点总结 {#c}
+
+
+
+## 基础语法与代码组织 {#cpp-language-basics}
+
+### 头文件 {#_1}
+
 | 头文件               | 主要内容    | 常用函数 / 对象                                    | 典型用途  |
 | ----------------- | ------- | -------------------------------------------- | ----- |
 | `<iostream>`      | 标准输入输出  | `cin` `cout` `cerr` `endl`                   | 基础 IO |
@@ -33,7 +39,93 @@
 | `<cstdio>`        | C输入输出   | `printf` `scanf`                             | 串口调试  |
 | `<bits/stdc++.h>` | 全部STL   | —                                            | 竞赛专用  |
 
-## 类型转换
+### 命名空间 {#_17}
+
+`namespace` 用于封装同一领域的一组实体，本质上就是给名字“分组”，用来避免命名冲突。使用 `::` 运算符可以访问命名空间中的成员。
+
+### 全局变量与静态变量 {#_18}
+
+全局变量是在所有函数外定义的变量，整个程序都能访问。它的内存在程序启动时分配，在程序结束时释放。
+
+<a id="_19"></a>
+
+静态变量只创建一次，生命周期贯穿整个程序。例如 `static int cpt = 0;` 在某函数中一旦被创建，即使后续再次调用该函数，也不会重新初始化。它的内存同样在程序启动时分配，在程序结束时释放。
+
+### 条件判断与循环 {#_14}
+
+- 可以写成 `if (条件) return; else return;`
+- 也可以写成三目运算符：`return (条件) ? 正确结果 : 错误结果;`
+- 有时还可以直接 `return (条件);`，这样返回值就是 `1` 或 `0`
+
+<a id="_15"></a>
+
+```cpp
+vector<int> candies(5, 10);  // 创建一个长度为 5 的数组，每个元素初始为 10
+
+for (int x : candies) {
+    // 依次把 candies 里的每个元素取出来赋给 x
+}
+```
+
+### 函数默认参数 {#_16}
+
+例如：
+
+```cpp
+stackArray(int size = default_size);
+```
+
+如果这段出现在 `.h` 文件中，表示调用时如果没有给 `size` 传值，就自动使用 `default_size`。
+
+### 异或、幂运算与移位 {#cpp-xor-power-shift}
+
+C++ 里面没有“幂运算符” `^`。
+
+```cpp
+2 ^ 31   // ❌ 不是 2 的 31 次方，而是按位异或
+```
+
+例如：
+
+```text
+ 2  = 00010
+31  = 11111
+-----------
+XOR = 11101 = 29
+```
+
+真正表示 `2` 的 `31` 次方，常见写法是：
+
+```cpp
+pow(2, 31);   // 需要 <cmath>
+1 << 31;      // 也是常见位运算写法
+```
+
+## 类型、引用与类型推导 {#cpp-types-and-deduction}
+
+### 数据类型 {#_13}
+
+| 数据类型 | 说明           | 内存大小（字节） |
+| -------- | -------------- | -------------- |
+| `int`    | 整数           | 4              |
+| `long`   | 长整数         | 4 或 8         |  
+| `float`  | 单精度浮点数     | 4              |
+| `double` | 双精度浮点数     | 8              |
+| `char`   | 字符           | 1              |
+| `bool`   | 布尔值（true/false） | 1              |
+| `long long` | 长长整数(至少-2^63~2^63 - 1)       | 8              |
+
+平台差异：表中大小是常见实现的取值，不是所有 C++ 平台的统一保证。Windows 的常见 64 位环境使用 LLP64（`int` 和 `long` 通常为 4 字节，指针为 8 字节）；Linux/macOS 的常见 64 位环境使用 LP64（`int` 通常为 4 字节，`long` 和指针为 8 字节）。`float`、`double`、`bool` 等也不应仅凭此表假定大小。标准保证 `sizeof(char) == 1`，但一个字节的位数由 `CHAR_BIT` 表示，不一定在所有实现中都是 8。实际大小用 `sizeof(T)` 查询，范围与精度可查 `std::numeric_limits<T>`；跨平台存储和通信需明确位宽及表示，不能只依赖这些常见值。
+
+```cpp
+int number = 1; // 整数
+(char)number; // 强制类型转换为 char，结果是 '\x01'（ASCII 码为 1 的字符）
+char c = '0'+number; // 结果是 '1'（ASCII 码为 48 的字符）
+char c2 = to_string(number)[0]; // 结果也是 '1'，to_string(number) 将整数转换为字符串 "1"，然后取第一个字符
+```
+
+### 类型转换与数值处理 {#_2}
+
 | 转换方式               | 头文件          | 作用                     | 示例                                |
 | ------------------ | ------------ | ---------------------- | --------------------------------- |
 | `stoi`             | `<string>`   | string → int           | `int x = stoi("123");`            |
@@ -64,9 +156,11 @@
 | `bitset::to_ulong` | `<bitset>`   | bitset → unsigned long |                                   |
 | `to_integer`       | `<cstddef>`  | byte → 整数              |                                   |
 
-### 类型转换的选择与注意事项
+#### 类型转换的选择与注意事项 {#_3}
 
-#### 1. 隐式转换
+
+
+##### 隐式转换 {#1}
 
 编译器会自动进行部分转换，但从范围大的类型转向范围小的类型时可能丢失数据：
 
@@ -77,7 +171,7 @@ int safe{42};            // 列表初始化会阻止明显的窄化转换
 // int error{3.14};      // 编译错误：double 窄化为 int
 ```
 
-#### 2. 四种 C++ 显式转换
+##### 四种 C++ 显式转换 {#2-c}
 
 ```cpp
 int n = static_cast<int>(3.14);  // 常规数值转换，最常用
@@ -97,7 +191,7 @@ std::uintptr_t address = reinterpret_cast<std::uintptr_t>(p); // 底层位模式
 - `reinterpret_cast` 主要用于底层编程，应尽量少用；
 - C++ 中不推荐 C 风格强制转换，因为它不容易看出实际采用了哪种转换。
 
-#### 3. 字符串转数字
+##### 字符串转数字 {#3}
 
 ```cpp
 try {
@@ -113,145 +207,7 @@ try {
 
 > `floor`、`ceil` 和 `round` 是取整运算，但返回值仍是浮点类型；需要整数时还要进行范围检查并显式转换。
 
-## 异常处理：`try`、`throw` 与 `catch`
-
-C++ 异常用于处理函数无法在本地正常解决的错误：`throw` 抛出异常，`try` 包围可能失败的代码，`catch` 根据异常类型进行处理。
-
-```cpp
-#include <iostream>
-#include <stdexcept>
-
-double divide(double a, double b) {
-    if (b == 0.0) {
-        throw std::invalid_argument("除数不能为 0");
-    }
-    return a / b;
-}
-
-int main() {
-    try {
-        std::cout << divide(10.0, 0.0) << '\n';
-    } catch (const std::invalid_argument& e) {
-        // 优先捕获更具体的异常类型
-        std::cerr << "参数错误：" << e.what() << '\n';
-    } catch (const std::exception& e) {
-        // 标准异常的通用基类，what() 返回错误说明
-        std::cerr << "程序异常：" << e.what() << '\n';
-    } catch (...) {
-        // 捕获其他所有类型的异常，但无法直接取得异常信息
-        std::cerr << "未知异常\n";
-    }
-}
-```
-
-异常抛出后，程序会沿函数调用栈向外寻找第一个匹配的 `catch`。查找过程中，已经创建的局部对象会自动析构，这称为**栈展开**；因此资源应交给 `std::string`、容器和智能指针等 RAII 对象管理。
-
-常用标准异常包括 `std::invalid_argument`（参数无效）、`std::out_of_range`（超出范围）和 `std::runtime_error`（运行时错误）。通常按值 `throw`、按 `const` 引用捕获，避免复制和对象切片：
-
-```cpp
-throw std::runtime_error("读取配置失败");
-
-try {
-    loadConfig();
-} catch (const std::exception& e) {
-    logError(e.what());
-    throw;  // 不写对象，原样重新抛出当前异常
-}
-```
-
-不要使用 `throw e;` 代替重新抛出的 `throw;`，前者可能复制异常并丢失派生类型信息。具体类型的 `catch` 应放在基类之前；如果异常一直没有被捕获，程序最终会调用 `std::terminate()`。标记为 `noexcept` 的函数承诺异常不会逃出函数，一旦违背同样会终止程序，所以只应在确实不会向外抛出异常时使用。
-
-## 字符串
-
-```cpp
-string s1;                 // 创建一个空字符串
-string s2 = "hello";       // 创建一个字符串并初始化
-s1.reserve(s2.size());     // 预分配 s2.size() 个字符的空间
-s1.push_back('h');         // 在字符串末尾添加一个字符
-s1 += "ello";              // 在字符串末尾添加一个字符串
-cout << sizeof(s) << endl; // 输出字符串对象占用的内存大小
-
-string s = "ABCDEFG";
-string first3 = s.substr(0, 3);              // "ABC"
-string last3 = s.substr(s.size() - 3, 3);    // "EFG"
-s.erase(2, 3);                               // 从下标 2 开始删 3 个，结果 "ABFG"
-s.erase(n);                                  // 保留前 n 个字符，删除剩余的
-s.empty();                                   // 判断字符串是否为空
-s.clear();                                   // 清空字符串
-reverse(s.begin(), s.end());                 // 反转字符
-reverse(words.begin(), words.end());         // 反转字符串顺序，words 是 vector<string>
-
-auto it = s.begin();                         // 获取字符串迭代器，指向第一个字符
-std::string::iterator it2;                   // 等价写法
-
-s.insert(it, 'X');                           // 在字符串开头插入字符 'X'
-s.insert(pos, count, 'c');                   // 在 pos 位置插入 count 个字符 c
-s.find('o', pos);                            // 从 pos 开始查找字符 'o'
-```
-
-补充说明：
-
-- `for (char c : s)` 可以逐个遍历字符串里的字符。
-- `insert(pos, count, 'c')` 这种重载是 `string` 自带的，其他容器不一定有。
-- `find()` 没找到时会返回 `string::npos`。
-
-## 输入输出控制
-
-`<iostream>` 是头文件；`std::istream`、`std::ostream` 和 `std::iostream` 是流类型，分别表示输入流、输出流和可同时输入输出的流。`std::cin`、`std::cout` 则是标准库预先创建的对象：`cin` 是 `istream` 对象，`cout` 是 `ostream` 对象。
-
-```cpp
-std::istream& input = std::cin;    // 类型是 istream，对象是 cin
-std::ostream& output = std::cout;  // 类型是 ostream，对象是 cout
-```
-
-| 控制符 | 作用 |
-| ---- | ---- |
-| `fixed` | 使用固定小数格式 |
-| `setprecision(n)` | 保留 `n` 位小数 |
-
-```cpp
-#include <iostream>
-#include <iomanip>
-using namespace std;
-
-int main() {
-    double x = 3.1415926;
-
-    cout << fixed << setprecision(2) << x << endl;
-}
-```
-
-补充：
-
-- 如果没有 `fixed`
-
-  ```cpp
-  cout << setprecision(2) << x;
-  ```
-
-  表示保留的是 `2` 位有效数字，而不是 `2` 位小数。
-
-- 科学计数法输出：
-
-  ```cpp
-  cout << scientific << setprecision(3) << x;
-  ```
-
-- 控制宽度：
-
-  ```cpp
-  cout << setw(10) << x << endl;
-  ```
-
-  表示字段宽度为 `10`。
-
-- 设置填充字符：
-
-  ```cpp
-  cout << setfill('*') << setw(10) << x << endl;
-  ```
-
-## 引用
+### 引用 {#_6}
 
 引用可以理解成“别名”。
 
@@ -267,7 +223,7 @@ r = b;   // ❌ 不是改引用对象
 a = b;
 ```
 
-### 引用的基本用法
+#### 引用的基本用法 {#_7}
 
 引用不是一个独立的对象，而是已有对象的另一个名字。通过引用读写变量，实际操作的仍然是被引用的对象。
 
@@ -287,7 +243,7 @@ cout << &n << endl;
 cout << &ref << endl; // 与 &n 相同
 ```
 
-### 常量引用
+#### 常量引用 {#_8}
 
 在引用前加 `const`，表示不能通过该引用修改对象：
 被引用对象的生命周期必须比引用长。
@@ -308,7 +264,7 @@ void print(const string& text) {
 print("hello"); // 可以绑定到临时的 string 对象
 ```
 
-### 引用作为函数参数
+#### 引用作为函数参数 {#_9}
 
 使用普通引用作为参数，可以让函数直接修改调用者提供的变量：
 
@@ -325,7 +281,7 @@ swapValue(x, y); // x == 2，y == 1
 
 如果函数不需要修改参数，优先使用 `const` 引用；如果参数很小且复制成本低，也可以直接按值传递。
 
-### 引用作为返回值
+#### 引用作为返回值 {#_10}
 
 函数可以返回引用，以便直接操作原对象：
 
@@ -349,7 +305,7 @@ int& wrong() {
 }
 ```
 
-### 引用与指针的区别
+#### 引用与指针的区别 {#_11}
 
 | 特性 | 引用 | 指针 |
 | --- | --- | --- |
@@ -361,7 +317,7 @@ int& wrong() {
 
 引用适合表示“必定存在的对象别名”；需要表示空值、改变指向或进行指针运算时，应使用指针。
 
-### 左值、右值与两类引用
+#### 左值、右值与两类引用 {#_12}
 
 值类别描述的是**表达式如何表示对象或值**，不是另一套数据类型。左值（lvalue）表示有身份的对象或函数；右值（rvalue）包括纯右值（prvalue，如整数值 `3`）和将亡值（xvalue，如 `std::move(value)`）。将亡值仍表示有身份的对象，只是允许它作为移动来源，并不意味着对象马上被销毁。
 
@@ -373,847 +329,11 @@ int&& rightRef = 20;        // T&&：右值引用，可以绑定到临时右值
 
 `T&` 常用于修改已有对象，`T&&` 是移动语义和完美转发的基础。需要注意：变量一旦有名字，表达式本身就是左值，所以 `rightRef` 虽然类型是 `int&&`，直接使用 `rightRef` 时仍是左值；若要再次把它当作可移动的右值，需要使用 `std::move(rightRef)`。
 
-## Makefile
-普通编译
+### `auto`、`decltype` 与返回类型推导 {#auto}
 
-```bash
-g++ test.cpp -o test -std=c++17 -Wall -Wextra
-```
+理解引用与值类别后，再看新变量的推导规则、表达式的类型，以及函数如何确定返回类型。
 
-```makefile
-CXX = g++ # 定义编译器CXX 是 make 的惯例变量名（C++ compiler）
-CXXFLAGS = -Wall -Wextra -g -MMD -MP 
-#编译选项
-# | 参数      | 作用              |
-# | -Wall   | 打开常见警告          |
-# | -Wextra | 打开更多警告          |
-# | -g      | 生成调试信息（给 gdb 用） |
-# | -MMD    | 自动生成 .d 依赖文件    |
-# | -MP     | 避免删除头文件时报错      |
-TARGET = test # 最终生成的可执行文件名最终会生成：./test
-SRCS = main.cpp Surcharge.cpp # 所有源文件如果你再加一个文件：SRCS = main.cpp Surcharge.cpp utils.cpp 后面会自动适配。
-OBJS = $(SRCS:.cpp=.o) # 变量替换意思是：main.cpp → main.o Surcharge.cpp → Surcharge.o
-# $(变量:旧后缀=新后缀)
-DEPS = $(SRCS:.cpp=.d) # 生成依赖文件名main.d Surcharge.d .d 文件是 -MMD 自动生成的依赖文件。
-$(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $(OBJS)
-# 等价于g++ -Wall -Wextra -g -MMD -MP -o test main.o Surcharge.o
-# | 符号 | 意义              |
-# | -- | --------------- |
-# | $@ | 当前目标名（这里是 test） |
-# | $< | 第一个依赖文件         |
-# | $^ | 所有依赖文件          |
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@  
-# 模式匹配规则 意思是：任何 .o 文件 都可以由 对应的 .cpp 文件 生成
-# 等价于g++ -Wall -Wextra -g -MMD -MP -c main.cpp -o main.o  其中 -c 表示只编译，不链接
-
--include $(DEPS) # 自动包含依赖，意思是：包含所有 .d 文件。前面的 - 表示：如果 .d 文件不存在，不报错
-
-.PHONY: clean
-# 伪目标 clean 的意思是：告诉 make clean 不是一个文件名，而是一个命令。否则如果目录里有个叫 clean 的文件就会冲突。
-clean:
-	rm -f $(OBJS) $(DEPS) $(TARGET)
-```
-
-补充说明：
-
-- `-Wall`：打开常见警告
-- `-Wextra`：打开更多警告
-- `-g`：生成调试信息，给 `gdb` 用
-- `-MMD`：自动生成 `.d` 依赖文件
-- `-MP`：避免删除头文件时报错
-- `$@`：当前目标名
-- `$<`：第一个依赖文件
-- `$^`：所有依赖文件
-- `-include $(DEPS)`：自动包含依赖文件；前面的 `-` 表示即使文件不存在也不报错
-- `.PHONY: clean`：声明伪目标，避免和同名文件冲突
-
-## 数据类型
-
-| 数据类型 | 说明           | 内存大小（字节） |
-| -------- | -------------- | -------------- |
-| `int`    | 整数           | 4              |
-| `long`   | 长整数         | 4 或 8         |  
-| `float`  | 单精度浮点数     | 4              |
-| `double` | 双精度浮点数     | 8              |
-| `char`   | 字符           | 1              |
-| `bool`   | 布尔值（true/false） | 1              |
-| `long long` | 长长整数(至少-2^63~2^63 - 1)       | 8              |
-
-```cpp
-int number = 1; // 整数
-(char)number; // 强制类型转换为 char，结果是 '\x01'（ASCII 码为 1 的字符）
-char c = '0'+number; // 结果是 '1'（ASCII 码为 48 的字符）
-char c2 = to_string(number)[0]; // 结果也是 '1'，to_string(number) 将整数转换为字符串 "1"，然后取第一个字符
-```
-
-## `const` 的用法
-
-```cpp
-bool stackArray::isEmpty() const {
-    return head == -1;
-}
-```
-
-这里的 `const` 保证函数不修改 `head` 的数值。
-
-## Attributes、annotations 与编译器扩展
-
-C++ 标准属性使用 `[[attr]]` 语法，为编译器提供额外信息，但不改变普通类型语法。属性可以带参数，也可以放在函数、类型或变量等特定位置：
-
-```cpp
-[[deprecated("请改用 newApi")]]
-void oldApi();
-
-[[noreturn]]
-void fatalError(); // 承诺函数不会正常返回
-```
-
-- `[[deprecated]]` 表示实体仍可使用，但编译器通常会给出弃用警告。
-- `[[noreturn]]` 表示函数不会返回调用者；若它实际正常返回，程序行为未定义。
-- `[[carries_dependency]]` 曾用于描述底层原子操作的依赖链，实际支持和标准状态取决于语言版本与编译器；新代码通常不应依赖它。
-
-下面几种写法也能向编译器提供额外指令，但可移植性不同：
-
-| 写法 | 来源 | 示例 |
-| --- | --- | --- |
-| `[[attr]]` | C++ 标准属性语法 | `[[deprecated]]` |
-| `#pragma` | 编译器指令，不同实现支持项不同 | `#pragma once` |
-| `__attribute__((...))` | GCC / Clang 扩展 | `__attribute__((unused))` |
-| `__declspec(...)` | MSVC 扩展 | `__declspec(dllexport)` |
-
-优先使用标准 `[[...]]` 属性；必须使用平台扩展时，通常用条件编译或宏封装，避免把编译器专用语法散布到整个项目。
-
-## 判断
-
-- 可以写成 `if (条件) return; else return;`
-- 也可以写成三目运算符：`return (条件) ? 正确结果 : 错误结果;`
-- 有时还可以直接 `return (条件);`，这样返回值就是 `1` 或 `0`
-
-## 循环
-
-```cpp
-vector<int> candies(5, 10);  // 创建一个长度为 5 的数组，每个元素初始为 10
-
-for (int x : candies) {
-    // 依次把 candies 里的每个元素取出来赋给 x
-}
-```
-
-## 默认赋值
-
-例如：
-
-```cpp
-stackArray(int size = default_size);
-```
-
-如果这段出现在 `.h` 文件中，表示调用时如果没有给 `size` 传值，就自动使用 `default_size`。
-
-## 命名空间
-
-`namespace` 用于封装同一领域的一组实体，本质上就是给名字“分组”，用来避免命名冲突。使用 `::` 运算符可以访问命名空间中的成员。
-
-## 全局变量
-
-全局变量是在所有函数外定义的变量，整个程序都能访问。它的内存在程序启动时分配，在程序结束时释放。
-
-## 静态变量
-
-静态变量只创建一次，生命周期贯穿整个程序。例如 `static int cpt = 0;` 在某函数中一旦被创建，即使后续再次调用该函数，也不会重新初始化。它的内存同样在程序启动时分配，在程序结束时释放。
-
-## `this` `other`
-
-`this` 是一个指针，指向“当前正在使用这个成员函数的那个对象”。`other` 没有什么特殊语法意义，它只是程序员自己起的参数名字。
-
-## 构造函数
-
-构造函数是类的一种特殊成员函数，用于在创建对象时初始化对象。构造函数名称与类名相同，没有返回类型。
-
-### 类内声明与类外定义
-
-成员函数可以只在头文件的类中声明，再到 `.cpp` 文件中定义。类外定义时需要使用作用域解析运算符 `::`，说明这个函数属于哪个类：
-
-```cpp
-// Sensor.h
-class Sensor {
-public:
-    Sensor(double initialValue);
-
-private:
-    double value;
-    bool active;
-};
-```
-
-```cpp
-// Sensor.cpp
-#include "Sensor.h"
-
-Sensor::Sensor(double initialValue)
-    : value(initialValue), active(false)
-{
-}
-```
-
-这段构造函数定义可以按三部分理解：
-
-| 语法 | 含义 |
-| --- | --- |
-| `Sensor::Sensor(double initialValue)` | `::` 指定右侧的构造函数属于 `Sensor` 类 |
-| `: value(initialValue)` | 单个冒号开始构造函数的成员初始化列表 |
-| `, active(false)` | 逗号分隔多个成员初始化项 |
-
-`::` 用于限定名字所属的作用域，不只用于类，也用于命名空间，例如 `std::string`。类内已经处于该类的作用域，所以在类内直接写 `Sensor(...)`；到了类外，则要写成 `Sensor::Sensor(...)`。
-
-### 成员初始化列表
-
-初始化列表会在进入构造函数体之前直接初始化成员，比先默认初始化、再在函数体中赋值更准确：
-
-```cpp
-// 推荐：直接初始化
-Sensor::Sensor(double initialValue)
-    : value(initialValue), active(false)
-{
-}
-
-// 这是先初始化、后赋值，并不完全等价
-Sensor::Sensor(double initialValue)
-{
-    value = initialValue;
-    active = false;
-}
-```
-
-`const` 成员、引用成员、没有默认构造函数的对象成员，以及基类部分，必须通过初始化列表初始化。成员真正的初始化顺序只由它们在类中的**声明顺序**决定，而不是由初始化列表的书写顺序决定，因此最好让两者保持一致：
-
-```cpp
-class Record {
-    const int id;
-    std::string name;
-
-public:
-    Record(int value, const std::string& text)
-        : id(value), name(text) {}
-};
-```
-
-需要注意，同一个符号可能在不同语法位置承担不同职责：`public:` 中的冒号标记访问控制区域，构造函数参数列表后的冒号开始初始化列表，而初始化项之间使用逗号分隔。判断含义时应结合它所在的语法位置。
-
-### 构造技巧：委托构造、`= default` 与 `= delete`
-
-一个构造函数可以调用同一个类的另一个构造函数，这称为**委托构造**，可以避免重复初始化代码：
-
-```cpp
-class Device {
-    int id;
-
-public:
-    Device() : Device(0) {}            // 委托给下面的构造函数
-    explicit Device(int value) : id(value) {}
-
-    Device(const Device&) = default;   // 要求编译器生成默认拷贝构造
-};
-```
-
-`= default` 表示使用编译器生成的默认实现；`= delete` 表示明确禁止某种调用。例如，不允许对象被复制：
-
-```cpp
-class NonCopyable {
-public:
-    NonCopyable() = default;
-    NonCopyable(const NonCopyable&) = delete;
-    NonCopyable& operator=(const NonCopyable&) = delete;
-};
-```
-
-### `explicit`：禁止隐式转换
-
-只有一个参数的构造函数有时会被编译器当作“类型转换规则”。例如：
-
-```cpp
-class Temperature {
-public:
-    Temperature(double value) {}
-};
-
-void printTemperature(Temperature value) {}
-
-printTemperature(36.5); // 编译器自动把 36.5 转成 Temperature
-```
-
-如果不希望发生这种不明显的自动转换，就在构造函数前加 `explicit`：
-
-```cpp
-class Temperature {
-public:
-    explicit Temperature(double value) {}
-};
-
-Temperature a(36.5);                  // 正确：直接初始化
-Temperature b{36.5};                  // 正确：直接列表初始化
-// Temperature c = 36.5;              // 错误：拷贝初始化不使用 explicit 构造函数
-// printTemperature(36.5);             // 错误：不再允许隐式转换
-printTemperature(Temperature(36.5));   // 正确：明确创建对象
-```
-
-直接初始化会考虑 `explicit` 构造函数，拷贝初始化则不会。简单记忆：`explicit` 表示“必须明确地构造对象”。能接收单个其他类型实参的构造函数通常建议加上它，除非确实希望两种类型可以自动转换。
-
-### 拷贝构造函数
-
-拷贝构造函数的作用是：**根据一个已有对象，创建一个内容相同的新对象**。典型签名是 `类名(const 类名& other)`：
-
-```cpp
-class Record {
-    std::string name;
-    int score;
-
-public:
-    Record(const std::string& n, int s) : name(n), score(s) {}
-
-    Record(const Record& other)
-        : name(other.name), score(other.score) {}
-
-    void setScore(int value) { score = value; }
-    int getScore() const { return score; }
-};
-
-Record a("Alice", 90);
-Record b = a;               // 写法一：调用拷贝构造函数
-Record c(a);                // 写法二：同样调用拷贝构造函数
-b.setScore(100);            // b 是独立的新对象，不影响 a
-std::cout << a.getScore();  // 仍然输出 90
-
-Record d("Bob", 80);
-d = a;                      // 对象 d 已经存在，这是拷贝赋值
-```
-
-拷贝构造（copy construction）发生在“创建新对象”时；拷贝赋值（copy assignment）发生在“修改已有对象”时。**有没有创建新对象，是判断 copy constructor 和 `operator=` 的关键。**按值传参以及按值返回对象时也可能发生拷贝，但返回对象的拷贝经常会被 RVO/NRVO 省略。
-
-赋值（assignment）还可分为两种：
-
-```cpp
-T& operator=(const T& other); // copy assignment：复制内容，保留源对象
-T& operator=(T&& other);      // move assignment：转移资源
-```
-
-移动赋值通常接收右值，把源对象持有的资源转交给目标对象；移动后源对象仍可析构和重新赋值，但不应依赖它原来的内容。
-
-参数使用 `const Record&` 有三个原因：引用避免为了传参再次拷贝，`const` 保证不修改原对象，并且还能接收常量对象。拷贝构造函数不能按值接收同类型参数，因为初始化这个参数本身就需要调用拷贝构造函数。
-
-**如果没有自己写拷贝构造函数，编译器通常会自动生成一个。**如果成员都是 `int`、`std::string`、`std::vector` 等可正常复制的类型，这个默认版本通常就够了。若类直接管理裸指针，默认行为只会复制地址，两个对象可能指向同一块内存，这称为**浅拷贝**，容易导致修改互相影响或重复释放；为了避免这些风险，需要让新对象拥有独立资源，也就是**深拷贝**。现代 C++ 应优先让标准容器或智能指针管理资源（Rule of Zero）：容器可直接复制，而 `unique_ptr` 会明确禁止复制，避免意外共享资源。
-
-下面用裸指针直观展示深拷贝。关键是 `new int(*other.value)`：先申请一块新内存，再把原对象保存的值复制进去。
-
-```cpp
-class Box {
-    int* value;
-
-public:
-    Box(int n) : value(new int(n)) {}
-
-    Box(const Box& other)
-        : value(new int(*other.value)) {} // 深拷贝：地址不同，数值相同
-
-    Box& operator=(const Box& other) {
-        if (this != &other) {              // 防止 a = a 这种自赋值
-            int* newValue = new int(*other.value);
-            delete value;
-            value = newValue;
-        }
-        return *this;
-    }
-
-    ~Box() { delete value; }
-
-    void setValue(int n) { *value = n; }
-    int getValue() const { return *value; }
-};
-
-Box a(10);
-Box b = a;
-b.setValue(20);
-
-std::cout << a.getValue(); // 10，说明 a 和 b 拥有独立的数据
-```
-
-`if (this != &other)` 比较当前对象和源对象的地址，避免 `a = a;` 这种 self-assignment（自赋值）破坏自己的资源。这个例子用于说明资源复制的原理，实际项目通常优先使用标准容器和智能指针。
-
-### 移动语义、移动构造与 `std::move`
-
-拷贝构造函数（copy constructor）会复制资源；移动构造函数（move constructor）则接收 `T&&`，尽量把资源所有权转移给新对象，避免昂贵的深拷贝：
-
-```cpp
-class Buffer {
-    std::vector<int> data;
-
-public:
-    Buffer(std::size_t size) : data(size) {}
-    Buffer(const Buffer& other) : data(other.data) {}              // 拷贝
-    Buffer(Buffer&& other) noexcept : data(std::move(other.data)) {} // 移动
-
-    Buffer& operator=(const Buffer&) = default; // copy assignment
-    Buffer& operator=(Buffer&&) noexcept = default; // move assignment
-};
-
-Buffer source(1000);
-Buffer copied = source;              // source 是左值，调用拷贝构造
-Buffer moved = std::move(source);    // 转为右值，调用移动构造
-```
-
-移动语义（move semantics）的核心是转移资源而不是逐项复制。`std::move()` 本身不搬运任何数据，它只是把表达式转换为右值，是否真正移动取决于类型是否提供移动构造或移动赋值。被移动对象仍可析构或重新赋值，但不要依赖它原来的内容。
-
-### RVO 与 NRVO
-
-RVO（返回值优化）会省略返回临时对象时的拷贝/移动；NRVO（命名返回值优化）针对返回函数内的具名局部对象。对象会直接在调用方的存储位置构造：
-
-```cpp
-Record makeRvo() {
-    return Record("RVO", 1);  // 临时对象：C++17 起保证省略拷贝/移动
-}
-
-Record makeNrvo() {
-    Record result("NRVO", 2);
-    return result;             // 具名局部对象：NRVO 允许但不保证
-}
-
-Record choose(bool first) {
-    Record a("A", 3);
-    Record b("B", 4);
-    if (first) return a;
-    return b;                  // 可能返回不同对象，通常无法进行 NRVO
-}
-
-Record x = makeRvo();
-Record y = makeNrvo();
-```
-
-要点：
-
-- C++17 起，`return T{...};` 这类同类型纯右值会直接构造结果对象，即使拷贝/移动构造函数被删除也可以成立。
-- 返回局部对象时的一般优先关系是 **RVO/NRVO → move → copy**：先尝试省略构造；不能省略时，通常优先移动；不能移动时才复制。
-- NRVO 仍是可选优化，因此被返回类型仍应提供可用的移动或拷贝构造函数。
-- 不要写 `return std::move(result);` 来“帮助”优化：它会把表达式变成右值，通常反而阻止 NRVO。
-- 不应依赖拷贝/移动构造函数中的副作用，因为是否省略可能改变它们的调用次数。
-
-## 析构函数
-
-析构函数用于在对象生命周期结束时执行清理操作。析构函数名称与类名相同，但前面加波浪号 `~`，并且没有返回类型和参数。
-
-如果没有手写析构函数，编译器会自动生成一个默认析构函数，负责做基础销毁工作。
-
-一定要写析构函数的典型情况：
-
-类里有 new 
-```cpp
-class A {
-    int* p;
-public:
-    A() {
-        p = new int(5);
-    }
-};
-// 如果你不写析构函数：
-// ❌ 内存泄漏
-// 必须写：
-~A() {
-    delete p;
-}
-```
-
-`new[]` 创建的动态数组必须使用 `delete[]` 释放；若错误地使用单对象的 `delete`，行为未定义：
-
-```cpp
-Image* image = new Image[10];
-// 使用 image[0] 到 image[9]
-delete[] image;
-image = nullptr;
-```
-
-`new` 对应 `delete`，`new[]` 对应 `delete[]`，两组不能混用。现代 C++ 通常优先使用 `std::vector<Image>` 或 `std::make_unique<Image[]>(10)` 自动管理数组生命周期。
-
-## 成员函数和友元函数
-成员函数就是“属于这个类的函数”；友元函数不是这个类的成员，但被这个类授权，可以访问它的 private / protected。
-```cpp
-成员函数格式
-class ClassName
-{
-public:
-    ReturnType functionName(ParameterList)
-    {
-        // function body
-    }
-};
-友元函数格式
-class ClassName
-{
-public:
-    friend ReturnType functionName(ParameterList);
-};
-```
-例子：
-```cpp
-class Vector2D
-{
-public:
-    Vector2D(int x, int y) : x_(x), y_(y) {
-        std::cout << "构造Vector2D" << std::endl;
-    }
-
-    Vector2D operator+(const Vector2D& other) const
-    {
-        return Vector2D(x_ + other.x_, y_ + other.y_);
-    }
-
-private:
-    int x_;
-    int y_;
-};
-```
-这里：
-```cpp
-Vector2D operator+(const Vector2D& other) const
-```
-就是成员函数。
-
-它其实等价于：
-```cpp
-Vector2D operator+(const Vector2D& other) const
-{
-    return Vector2D(this->x_ + other.x_,
-                    this->y_ + other.y_);
-}
-```
-这里的：
-
-this就是当前对象。
-
-比如：
-```cpp
-Vector2D first(1, 2);
-Vector2D second(3, 4);
-
-first + second;
-// 实际上调用的是：first.operator+(second);
-```
-所以：
-this指向 first
-other就是 second
-
-也就是说：
-
-x_其实就是：this->x_
-
-成员函数最常见的写法有两种。
-
-第一种，直接写在类里面：
-```cpp
-class Student
-{
-public:
-    void hello()
-    {
-        std::cout << "hello" << std::endl;
-    }
-};
-
-调用：
-
-Student s;
-s.hello();
-```
-
-第二种，类里面只声明，类外定义：
-```cpp
-class Student
-{
-public:
-    void hello();
-};
-
-然后类外：
-
-void Student::hello()
-{
-    std::cout << "hello" << std::endl;
-}
-```
-这里：
-
-Student::
-
-表示：hello() 是 Student 类的成员函数。
-
-成员函数有几个重要特点。
-
-第一，它属于类。
-
-所以调用方式通常是：obj.function();比如：first.operator+(second);
-
-第二，它有隐含的 this 指针。
-
-所以成员函数里面可以直接访问：x_,y_。而不需要写：first.x_
-
-第三，成员函数天然可以访问本类的：public、protected、private
-
-再看友元函数。
-
-例如：
-```cpp
-class Vector2D
-{
-public:
-    Vector2D(int x, int y) : x_(x), y_(y) {}
-
-    friend std::ostream& operator<<(std::ostream& os,
-                                    const Vector2D& vector)
-    {
-        return os << "("
-                  << vector.x_
-                  << ", "
-                  << vector.y_
-                  << ")";
-    }
-
-private:
-    int x_;
-    int y_;
-};
-```
-这个：
-
-operator<< 
-
-虽然写在类里面，但它不是成员函数。
-
-所以不能写：
-
-this->x_
-
-因为它根本没有 this。
-
-它必须通过参数：
-vector.x_
-vector.y_
-访问对象。
-
-但是因为前面有：
-
-friend
-
-所以即使：
-
-x_,y_是 private，它也可以访问。
-
-比如成员函数：
-```cpp
-class A
-{
-private:
-    int x_;
-
-public:
-    void show()
-    {
-        std::cout << x_;
-    }
-};
-```
-调用：
-
-A a;
-a.show();
-
-本质上：
-
-a.show();
-
-里面：
-
-this == &a
-
-友元函数：
-```cpp
-class A
-{
-private:
-    int x_;
-
-public:
-    friend void show(const A& a);
-};
-
-类外定义：
-
-void show(const A& a)
-{
-    std::cout << a.x_;
-}
-```
-调用：
-
-A a;
-show(a);
-
-注意这里不是：a.show();
-
-因为 show 不是成员函数。
-
-为什么有时候要用友元函数，而不全写成员函数？
-
-最经典就是：
-
-std::cout << obj;
-
-因为左边是：
-
-std::cout
-
-不是你的对象。
-
-## 运算符重载
-
-基本语法：
-返回类型 operator运算符(参数)
-{
-    // 操作
-}
-
-```cpp
-class Point {
-public:
-    int x, y;
-
-    Point(int x, int y) : x(x), y(y) {}
-
-    Point operator+(const Point& other) const {//最后一个const表示这个成员函数不会修改当前对象this指向的对象
-        return Point(x + other.x, y + other.y);
-    }
-};
-//使用：
-Point a(1, 2);
-Point b(3, 4);
-
-Point c = a + b;
-
-//等价于：
-Point c = a.operator+(b);
-```
-```cpp
-常见运算符
-
-==：
-
-bool operator==(const Point& other) const {
-    return x == other.x && y == other.y;
-}
-
-+=：
-
-Point& operator+=(const Point& other) {
-    x += other.x;
-    y += other.y;
-    return *this;
-}
-
-前置 ++：
-
-Point& operator++() {
-    ++x;
-    ++y;
-    return *this;
-}
-
-后置 ++：
-
-Point operator++(int) {
-    Point temp = *this;
-    ++x;
-    ++y;
-    return temp;
-}
-
-区别：
-
-++a   -> a.operator++()
-a++   -> a.operator++(0)
-
-输出运算符 << 通常写成非成员函数：
-
-friend std::ostream& operator<<(std::ostream& os, const Point& p) {
-    os << p.x << ", " << p.y;
-    return os;
-} 
-
-
-使用：
-
-cout << p;
-
-可以理解为：
-
-operator<<(cout, p);
-```
-
-C++ 里面没有“幂运算符” `^`。
-
-```cpp
-2 ^ 31   // ❌ 不是 2 的 31 次方，而是按位异或
-```
-
-例如：
-
-```text
- 2  = 00010
-31  = 11111
------------
-XOR = 11101 = 29
-```
-
-真正表示 `2` 的 `31` 次方，常见写法是：
-
-```cpp
-pow(2, 31);   // 需要 <cmath>
-1 << 31;      // 也是常见位运算写法
-```
-
-运算符重载的核心是：允许程序员为自定义类型定义运算符行为，让它们像内置类型一样使用。
-
-1. `a + b` 本质上可以写成 `operator+(a, b)`，或者成员函数形式 `a.operator+(b)`
-2. 运算符重载通常有两种实现方式：外部函数 / 成员函数
-3. 外部函数写法：不属于类，没有 `this` 指针，所有操作数都作为参数传入
-4. 成员函数写法：左操作数就是 `this`，右操作数作为参数传入
-
-典型声明示例：
-
-```cpp
-const T operator+(const T& a, const T& b);
-```
-
-### Functor / function object 与 `operator()`
-
-重载函数调用运算符 `operator()` 的类对象称为函数对象（Functor / function object）。它可以像普通函数一样调用，同时在成员变量中保存上下文或状态：
-
-```cpp
-class Adder {
-    int base;
-
-public:
-    explicit Adder(int value) : base(value) {}
-
-    int operator()(int value) const {
-        return base + value;
-    }
-};
-
-Adder add10(10);         // base 是函数对象保存的状态
-int result = add10(5);   // 普通调用语法，等价于 add10.operator()(5)
-```
-
-普通函数本身不能保存每个实例独有的状态，而不同的函数对象可以各自保存不同的 `base`。带捕获的 Lambda 本质上也会生成一个保存捕获状态、并提供 `operator()` 的闭包对象。
-
-## `auto`
+#### `auto` 的类型推导规则 {#cpp-auto-deduction}
 
 `auto` 根据初始化表达式推断类型，因此声明变量时必须能得到初始值：
 
@@ -1274,25 +394,7 @@ auto&& c = 30;       // int&&：绑定纯右值
    unordered_map<int, string>::iterator it = mp.find(key);
    ```
 
-### 尾置返回类型与 C++14 返回类型推断
-
-尾置返回类型（trailing return type）把返回类型写在参数列表后面，适合返回类型依赖参数的模板或较复杂类型：
-
-```cpp
-auto add(int a, int b) -> int {
-    return a + b;
-}
-```
-
-C++14 起，普通函数可以直接用 `auto` 从 `return` 表达式推断返回类型；多个 `return` 必须能推断为同一类型：
-
-```cpp
-auto multiply(int a, int b) {
-    return a * b; // 推断为 int
-}
-```
-
-### `decltype` 与 `decltype(auto)`
+#### `decltype` 与 `decltype(auto)` {#decltype-decltypeauto}
 
 **`auto` 和 `decltype` 使用不同的类型推导规则。** 可以这样记：普通 `auto` 更关心“我要用这个初始值声明一个什么类型的新变量”；`decltype` 更关心“这个实体的声明类型，或这个表达式的类型与值类别是什么”。`decltype` 在编译期查询类型，不会实际执行括号中的表达式。
 
@@ -1381,6 +483,2220 @@ decltype(auto) getReference() { return (value); } // int&
 
 规则依据：C++ 标准工作草案的 [占位类型推导](https://eel.is/c++draft/dcl.type.auto.deduct)、[`decltype` 说明符](https://eel.is/c++draft/dcl.type.decltype)、[值类别](https://eel.is/c++draft/basic.lval)与[转发及移动辅助函数](https://eel.is/c++draft/forward)。以上示例使用 C++17 已有规则，不涉及较新标准新增的语法。
 
+#### 尾置返回类型与 C++14 返回类型推断 {#c14}
+
+尾置返回类型（trailing return type）把返回类型写在参数列表后面，适合返回类型依赖参数的模板或较复杂类型：
+
+```cpp
+auto add(int a, int b) -> int {
+    return a + b;
+}
+```
+
+C++14 起，普通函数可以直接用 `auto` 从 `return` 表达式推断返回类型；多个 `return` 必须能推断为同一类型：
+
+```cpp
+auto multiply(int a, int b) {
+    return a * b; // 推断为 int
+}
+```
+
+## 字符串与输入输出 {#cpp-strings-and-io}
+
+### 字符串 {#_4}
+
+以下是接口知识点片段，不是独立完整程序。示例假定已包含相关头文件并使用相应命名空间；`words` 是已声明的 `vector<string>`，`n`、`pos`、`count` 是按操作需要给定的有效位置或数量。下面先声明 `s`，再使用 `sizeof(s)`；其余操作用于分别查阅接口，不要求连续执行。
+
+```cpp
+string s1;                 // 创建一个空字符串
+string s2 = "hello";       // 创建一个字符串并初始化
+s1.reserve(s2.size());     // 预分配 s2.size() 个字符的空间
+s1.push_back('h');         // 在字符串末尾添加一个字符
+s1 += "ello";              // 在字符串末尾添加一个字符串
+string s = "ABCDEFG";
+cout << sizeof(s) << endl; // 输出字符串对象占用的内存大小
+
+string first3 = s.substr(0, 3);              // "ABC"
+string last3 = s.substr(s.size() - 3, 3);    // "EFG"
+s.erase(2, 3);                               // 从下标 2 开始删 3 个，结果 "ABFG"
+s.erase(n);                                  // 保留前 n 个字符，删除剩余的
+s.empty();                                   // 判断字符串是否为空
+s.clear();                                   // 清空字符串
+reverse(s.begin(), s.end());                 // 反转字符
+reverse(words.begin(), words.end());         // 反转字符串顺序，words 是 vector<string>
+
+auto it = s.begin();                         // 获取字符串迭代器，指向第一个字符
+std::string::iterator it2;                   // 等价写法
+
+s.insert(it, 'X');                           // 在字符串开头插入字符 'X'
+s.insert(pos, count, 'c');                   // 在 pos 位置插入 count 个字符 c
+s.find('o', pos);                            // 从 pos 开始查找字符 'o'
+```
+
+补充说明：
+
+- `for (char c : s)` 可以逐个遍历字符串里的字符。
+- `insert(pos, count, 'c')` 这种重载是 `string` 自带的，其他容器不一定有。
+- `find()` 没找到时会返回 `string::npos`。
+
+### 输入输出控制 {#_5}
+
+`<iostream>` 是头文件；`std::istream`、`std::ostream` 和 `std::iostream` 是流类型，分别表示输入流、输出流和可同时输入输出的流。`std::cin`、`std::cout` 则是标准库预先创建的对象：`cin` 是 `istream` 对象，`cout` 是 `ostream` 对象。
+
+```cpp
+std::istream& input = std::cin;    // 类型是 istream，对象是 cin
+std::ostream& output = std::cout;  // 类型是 ostream，对象是 cout
+```
+
+| 控制符 | 作用 |
+| ---- | ---- |
+| `fixed` | 使用固定小数格式 |
+| `setprecision(n)` | 保留 `n` 位小数 |
+
+```cpp
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int main() {
+    double x = 3.1415926;
+
+    cout << fixed << setprecision(2) << x << endl;
+}
+```
+
+补充：
+
+- 如果没有 `fixed`
+
+  ```cpp
+  cout << setprecision(2) << x;
+  ```
+
+  表示保留的是 `2` 位有效数字，而不是 `2` 位小数。
+
+- 科学计数法输出：
+
+  ```cpp
+  cout << scientific << setprecision(3) << x;
+  ```
+
+- 控制宽度：
+
+  ```cpp
+  cout << setw(10) << x << endl;
+  ```
+
+  表示字段宽度为 `10`。
+
+- 设置填充字符：
+
+  ```cpp
+  cout << setfill('*') << setw(10) << x << endl;
+  ```
+
+## 类、对象与值语义 {#cpp-classes-and-value-semantics}
+
+### 面向对象与对象操作 {#_53}
+
+面向对象可以理解成：用“对象”来组织数据，并把操作这些数据的方法也放到对象身上。
+
+```cpp
+string s = "HELLO";
+s.erase(2);
+s.push_back('!');
+```
+
+这里 `s` 是对象，`erase` 和 `push_back` 是操作这个对象的方法。
+
+### 成员函数、`this` 与友元 {#_25}
+
+成员函数就是“属于这个类的函数”；友元函数不是这个类的成员，但被这个类授权，可以访问它的 private / protected。
+```cpp
+成员函数格式
+class ClassName
+{
+public:
+    ReturnType functionName(ParameterList)
+    {
+        // function body
+    }
+};
+友元函数格式
+class ClassName
+{
+public:
+    friend ReturnType functionName(ParameterList);
+};
+```
+
+#### 成员函数的声明、定义与调用 {#cpp-member-definitions}
+
+成员函数最常见的写法有两种。
+
+第一种，直接写在类里面：
+```cpp
+class Student
+{
+public:
+    void hello()
+    {
+        std::cout << "hello" << std::endl;
+    }
+};
+
+调用：
+
+Student s;
+s.hello();
+```
+
+第二种，类里面只声明，类外定义：
+```cpp
+class Student
+{
+public:
+    void hello();
+};
+
+然后类外：
+
+void Student::hello()
+{
+    std::cout << "hello" << std::endl;
+}
+```
+这里：
+
+Student::
+
+表示：hello() 是 Student 类的成员函数。
+
+成员函数有几个重要特点。
+
+第一，它属于类。
+
+所以调用方式通常是：obj.function();比如：first.operator+(second);
+
+第二，它有隐含的 this 指针。
+
+所以成员函数里面可以直接访问：x_,y_。而不需要写：first.x_
+
+第三，成员函数天然可以访问本类的：public、protected、private
+
+#### `this` 与 `other` {#this-other}
+
+`this` 是一个指针，指向“当前正在使用这个成员函数的那个对象”。`other` 没有什么特殊语法意义，它只是程序员自己起的参数名字。
+
+
+例子：
+```cpp
+class Vector2D
+{
+public:
+    Vector2D(int x, int y) : x_(x), y_(y) {
+        std::cout << "构造Vector2D" << std::endl;
+    }
+
+    Vector2D operator+(const Vector2D& other) const
+    {
+        return Vector2D(x_ + other.x_, y_ + other.y_);
+    }
+
+private:
+    int x_;
+    int y_;
+};
+```
+这里：
+```cpp
+Vector2D operator+(const Vector2D& other) const
+```
+就是成员函数。
+
+它其实等价于：
+```cpp
+Vector2D operator+(const Vector2D& other) const
+{
+    return Vector2D(this->x_ + other.x_,
+                    this->y_ + other.y_);
+}
+```
+这里的：
+
+this就是当前对象。
+
+比如：
+```cpp
+Vector2D first(1, 2);
+Vector2D second(3, 4);
+
+first + second;
+// 实际上调用的是：first.operator+(second);
+```
+所以：
+this指向 first
+other就是 second
+
+也就是说：
+
+x_其实就是：this->x_
+
+#### `const` 成员函数 {#const}
+
+```cpp
+bool stackArray::isEmpty() const {
+    return head == -1;
+}
+```
+
+这里的 `const` 保证函数不修改 `head` 的数值。
+
+#### 友元函数与访问权限 {#cpp-friend-access}
+
+再看友元函数。
+
+例如：
+```cpp
+class Vector2D
+{
+public:
+    Vector2D(int x, int y) : x_(x), y_(y) {}
+
+    friend std::ostream& operator<<(std::ostream& os,
+                                    const Vector2D& vector)
+    {
+        return os << "("
+                  << vector.x_
+                  << ", "
+                  << vector.y_
+                  << ")";
+    }
+
+private:
+    int x_;
+    int y_;
+};
+```
+这个：
+
+operator<< 
+
+虽然写在类里面，但它不是成员函数。
+
+所以不能写：
+
+this->x_
+
+因为它根本没有 this。
+
+它必须通过参数：
+vector.x_
+vector.y_
+访问对象。
+
+但是因为前面有：
+
+friend
+
+所以即使：
+
+x_,y_是 private，它也可以访问。
+
+#### 成员函数与友元函数的对比示例 {#cpp-member-friend-comparison}
+
+比如成员函数：
+```cpp
+class A
+{
+private:
+    int x_;
+
+public:
+    void show()
+    {
+        std::cout << x_;
+    }
+};
+```
+调用：
+
+A a;
+a.show();
+
+本质上：
+
+a.show();
+
+里面：
+
+this == &a
+
+友元函数：
+```cpp
+class A
+{
+private:
+    int x_;
+
+public:
+    friend void show(const A& a);
+};
+
+类外定义：
+
+void show(const A& a)
+{
+    std::cout << a.x_;
+}
+```
+调用：
+
+A a;
+show(a);
+
+注意这里不是：a.show();
+
+因为 show 不是成员函数。
+
+为什么有时候要用友元函数，而不全写成员函数？
+
+最经典就是：
+
+std::cout << obj;
+
+因为左边是：
+
+std::cout
+
+不是你的对象。
+
+### 对象初始化与构造函数 {#_20}
+
+构造函数是类的一种特殊成员函数，用于在创建对象时初始化对象。构造函数名称与类名相同，没有返回类型。
+
+#### 类内声明与类外定义 {#_21}
+
+成员函数可以只在头文件的类中声明，再到 `.cpp` 文件中定义。类外定义时需要使用作用域解析运算符 `::`，说明这个函数属于哪个类：
+
+```cpp
+// Sensor.h
+class Sensor {
+public:
+    Sensor(double initialValue);
+
+private:
+    double value;
+    bool active;
+};
+```
+
+```cpp
+// Sensor.cpp
+#include "Sensor.h"
+
+Sensor::Sensor(double initialValue)
+    : value(initialValue), active(false)
+{
+}
+```
+
+这段构造函数定义可以按三部分理解：
+
+| 语法 | 含义 |
+| --- | --- |
+| `Sensor::Sensor(double initialValue)` | `::` 指定右侧的构造函数属于 `Sensor` 类 |
+| `: value(initialValue)` | 单个冒号开始构造函数的成员初始化列表 |
+| `, active(false)` | 逗号分隔多个成员初始化项 |
+
+`::` 用于限定名字所属的作用域，不只用于类，也用于命名空间，例如 `std::string`。类内已经处于该类的作用域，所以在类内直接写 `Sensor(...)`；到了类外，则要写成 `Sensor::Sensor(...)`。
+
+#### 成员初始化列表 {#_22}
+
+初始化列表会在进入构造函数体之前直接初始化成员，比先默认初始化、再在函数体中赋值更准确：
+
+```cpp
+// 推荐：直接初始化
+Sensor::Sensor(double initialValue)
+    : value(initialValue), active(false)
+{
+}
+
+// 这是先初始化、后赋值，并不完全等价
+Sensor::Sensor(double initialValue)
+{
+    value = initialValue;
+    active = false;
+}
+```
+
+`const` 成员、引用成员、没有默认构造函数的对象成员，以及基类部分，必须通过初始化列表初始化。成员真正的初始化顺序只由它们在类中的**声明顺序**决定，而不是由初始化列表的书写顺序决定，因此最好让两者保持一致：
+
+```cpp
+class Record {
+    const int id;
+    std::string name;
+
+public:
+    Record(int value, const std::string& text)
+        : id(value), name(text) {}
+};
+```
+
+需要注意，同一个符号可能在不同语法位置承担不同职责：`public:` 中的冒号标记访问控制区域，构造函数参数列表后的冒号开始初始化列表，而初始化项之间使用逗号分隔。判断含义时应结合它所在的语法位置。
+
+#### 构造技巧：委托构造、`= default` 与 `= delete` {#default-delete}
+
+一个构造函数可以调用同一个类的另一个构造函数，这称为**委托构造**，可以避免重复初始化代码：
+
+```cpp
+class Device {
+    int id;
+
+public:
+    Device() : Device(0) {}            // 委托给下面的构造函数
+    explicit Device(int value) : id(value) {}
+
+    Device(const Device&) = default;   // 要求编译器生成默认拷贝构造
+};
+```
+
+`= default` 表示使用编译器生成的默认实现；`= delete` 表示明确禁止某种调用。例如，不允许对象被复制：
+
+```cpp
+class NonCopyable {
+public:
+    NonCopyable() = default;
+    NonCopyable(const NonCopyable&) = delete;
+    NonCopyable& operator=(const NonCopyable&) = delete;
+};
+```
+
+#### `explicit`：禁止隐式转换 {#explicit}
+
+只有一个参数的构造函数有时会被编译器当作“类型转换规则”。例如：
+
+```cpp
+class Temperature {
+public:
+    Temperature(double value) {}
+};
+
+void printTemperature(Temperature value) {}
+
+printTemperature(36.5); // 编译器自动把 36.5 转成 Temperature
+```
+
+如果不希望发生这种不明显的自动转换，就在构造函数前加 `explicit`：
+
+```cpp
+class Temperature {
+public:
+    explicit Temperature(double value) {}
+};
+
+Temperature a(36.5);                  // 正确：直接初始化
+Temperature b{36.5};                  // 正确：直接列表初始化
+// Temperature c = 36.5;              // 错误：拷贝初始化不使用 explicit 构造函数
+// printTemperature(36.5);             // 错误：不再允许隐式转换
+printTemperature(Temperature(36.5));   // 正确：明确创建对象
+```
+
+直接初始化会考虑 `explicit` 构造函数，拷贝初始化则不会。简单记忆：`explicit` 表示“必须明确地构造对象”。能接收单个其他类型实参的构造函数通常建议加上它，除非确实希望两种类型可以自动转换。
+
+对象还可能由已有对象创建，下面保留拷贝、移动以及返回值优化的对比；构造新对象与对已有对象赋值应分别阅读。
+
+### 拷贝构造与拷贝赋值 {#_23}
+
+拷贝构造函数的作用是：**根据一个已有对象，创建一个内容相同的新对象**。典型签名是 `类名(const 类名& other)`：
+
+```cpp
+class Record {
+    std::string name;
+    int score;
+
+public:
+    Record(const std::string& n, int s) : name(n), score(s) {}
+
+    Record(const Record& other)
+        : name(other.name), score(other.score) {}
+
+    void setScore(int value) { score = value; }
+    int getScore() const { return score; }
+};
+
+Record a("Alice", 90);
+Record b = a;               // 写法一：调用拷贝构造函数
+Record c(a);                // 写法二：同样调用拷贝构造函数
+b.setScore(100);            // b 是独立的新对象，不影响 a
+std::cout << a.getScore();  // 仍然输出 90
+
+Record d("Bob", 80);
+d = a;                      // 对象 d 已经存在，这是拷贝赋值
+```
+
+拷贝构造（copy construction）发生在“创建新对象”时；拷贝赋值（copy assignment）发生在“修改已有对象”时。**有没有创建新对象，是判断 copy constructor 和 `operator=` 的关键。**按值传参以及按值返回对象时也可能发生拷贝，但返回对象的拷贝经常会被 RVO/NRVO 省略。
+
+赋值（assignment）还可分为两种：
+
+```cpp
+T& operator=(const T& other); // copy assignment：复制内容，保留源对象
+T& operator=(T&& other);      // move assignment：转移资源
+```
+
+移动赋值通常接收右值，把源对象持有的资源转交给目标对象；移动后源对象仍可析构和重新赋值，但不应依赖它原来的内容。
+
+参数使用 `const Record&` 有三个原因：引用避免为了传参再次拷贝，`const` 保证不修改原对象，并且还能接收常量对象。拷贝构造函数不能按值接收同类型参数，因为初始化这个参数本身就需要调用拷贝构造函数。
+
+**如果没有自己写拷贝构造函数，编译器通常会自动生成一个。**如果成员都是 `int`、`std::string`、`std::vector` 等可正常复制的类型，这个默认版本通常就够了。若类直接管理裸指针，默认行为只会复制地址，两个对象可能指向同一块内存，这称为**浅拷贝**，容易导致修改互相影响或重复释放；为了避免这些风险，需要让新对象拥有独立资源，也就是**深拷贝**。现代 C++ 应优先让标准容器或智能指针管理资源（Rule of Zero）：容器可直接复制，而 `unique_ptr` 会明确禁止复制，避免意外共享资源。
+
+下面用裸指针直观展示深拷贝。关键是 `new int(*other.value)`：先申请一块新内存，再把原对象保存的值复制进去。
+
+```cpp
+class Box {
+    int* value;
+
+public:
+    Box(int n) : value(new int(n)) {}
+
+    Box(const Box& other)
+        : value(new int(*other.value)) {} // 深拷贝：地址不同，数值相同
+
+    Box& operator=(const Box& other) {
+        if (this != &other) {              // 防止 a = a 这种自赋值
+            int* newValue = new int(*other.value);
+            delete value;
+            value = newValue;
+        }
+        return *this;
+    }
+
+    ~Box() { delete value; }
+
+    void setValue(int n) { *value = n; }
+    int getValue() const { return *value; }
+};
+
+Box a(10);
+Box b = a;
+b.setValue(20);
+
+std::cout << a.getValue(); // 10，说明 a 和 b 拥有独立的数据
+```
+
+`if (this != &other)` 比较当前对象和源对象的地址，避免 `a = a;` 这种 self-assignment（自赋值）破坏自己的资源。这个例子用于说明资源复制的原理，实际项目通常优先使用标准容器和智能指针。
+
+### 移动语义、移动构造与 `std::move` {#stdmove}
+
+拷贝构造函数（copy constructor）会复制资源；移动构造函数（move constructor）则接收 `T&&`，尽量把资源所有权转移给新对象，避免昂贵的深拷贝：
+
+```cpp
+class Buffer {
+    std::vector<int> data;
+
+public:
+    Buffer(std::size_t size) : data(size) {}
+    Buffer(const Buffer& other) : data(other.data) {}              // 拷贝
+    Buffer(Buffer&& other) noexcept : data(std::move(other.data)) {} // 移动
+
+    Buffer& operator=(const Buffer&) = default; // copy assignment
+    Buffer& operator=(Buffer&&) noexcept = default; // move assignment
+};
+
+Buffer source(1000);
+Buffer copied = source;              // source 是左值，调用拷贝构造
+Buffer moved = std::move(source);    // 转为右值，调用移动构造
+```
+
+移动语义（move semantics）的核心是转移资源而不是逐项复制。`std::move()` 本身不搬运任何数据，它只是把表达式转换为右值，是否真正移动取决于类型是否提供移动构造或移动赋值。被移动对象仍可析构或重新赋值，但不要依赖它原来的内容。
+
+### RVO 与 NRVO {#rvo-nrvo}
+
+RVO（返回值优化）会省略返回临时对象时的拷贝/移动；NRVO（命名返回值优化）针对返回函数内的具名局部对象。对象会直接在调用方的存储位置构造：
+
+```cpp
+Record makeRvo() {
+    return Record("RVO", 1);  // 临时对象：C++17 起保证省略拷贝/移动
+}
+
+Record makeNrvo() {
+    Record result("NRVO", 2);
+    return result;             // 具名局部对象：NRVO 允许但不保证
+}
+
+Record choose(bool first) {
+    Record a("A", 3);
+    Record b("B", 4);
+    if (first) return a;
+    return b;                  // 可能返回不同对象，通常无法进行 NRVO
+}
+
+Record x = makeRvo();
+Record y = makeNrvo();
+```
+
+要点：
+
+- C++17 起，`return T{...};` 这类同类型纯右值会直接构造结果对象，即使拷贝/移动构造函数被删除也可以成立。
+- 返回局部对象时的一般优先关系是 **RVO/NRVO → move → copy**：先尝试省略构造；不能省略时，通常优先移动；不能移动时才复制。
+- NRVO 仍是可选优化，因此被返回类型仍应提供可用的移动或拷贝构造函数。
+- 不要写 `return std::move(result);` 来“帮助”优化：它会把表达式变成右值，通常反而阻止 NRVO。
+- 不应依赖拷贝/移动构造函数中的副作用，因为是否省略可能改变它们的调用次数。
+
+### 析构函数 {#_24}
+
+析构函数用于在对象生命周期结束时执行清理操作。析构函数名称与类名相同，但前面加波浪号 `~`，并且没有返回类型和参数。
+
+如果没有手写析构函数，编译器会自动生成一个默认析构函数，负责做基础销毁工作。
+
+一定要写析构函数的典型情况：
+
+类里有 new 
+```cpp
+class A {
+    int* p;
+public:
+    A() {
+        p = new int(5);
+    }
+};
+// 如果你不写析构函数：
+// ❌ 内存泄漏
+// 必须写：
+~A() {
+    delete p;
+}
+```
+
+`new[]` 创建的动态数组必须使用 `delete[]` 释放；若错误地使用单对象的 `delete`，行为未定义：
+
+```cpp
+Image* image = new Image[10];
+// 使用 image[0] 到 image[9]
+delete[] image;
+image = nullptr;
+```
+
+`new` 对应 `delete`，`new[]` 对应 `delete[]`，两组不能混用。现代 C++ 通常优先使用 `std::vector<Image>` 或 `std::make_unique<Image[]>(10)` 自动管理数组生命周期。
+
+继承场景下通过基类指针删除对象，还需要考虑[虚析构函数](#c_3)。
+
+### 运算符重载 {#_26}
+
+基本语法：
+返回类型 operator运算符(参数)
+{
+    // 操作
+}
+
+```cpp
+class Point {
+public:
+    int x, y;
+
+    Point(int x, int y) : x(x), y(y) {}
+
+    Point operator+(const Point& other) const {//最后一个const表示这个成员函数不会修改当前对象this指向的对象
+        return Point(x + other.x, y + other.y);
+    }
+};
+//使用：
+Point a(1, 2);
+Point b(3, 4);
+
+Point c = a + b;
+
+//等价于：
+Point c = a.operator+(b);
+```
+```cpp
+常见运算符
+
+==：
+
+bool operator==(const Point& other) const {
+    return x == other.x && y == other.y;
+}
+
++=：
+
+Point& operator+=(const Point& other) {
+    x += other.x;
+    y += other.y;
+    return *this;
+}
+
+前置 ++：
+
+Point& operator++() {
+    ++x;
+    ++y;
+    return *this;
+}
+
+后置 ++：
+
+Point operator++(int) {
+    Point temp = *this;
+    ++x;
+    ++y;
+    return temp;
+}
+
+区别：
+
+++a   -> a.operator++()
+a++   -> a.operator++(0)
+
+输出运算符 << 通常写成非成员函数：
+
+friend std::ostream& operator<<(std::ostream& os, const Point& p) {
+    os << p.x << ", " << p.y;
+    return os;
+} 
+
+
+使用：
+
+cout << p;
+
+可以理解为：
+
+operator<<(cout, p);
+```
+
+运算符重载的核心是：允许程序员为自定义类型定义运算符行为，让它们像内置类型一样使用。
+
+1. `a + b` 本质上可以写成 `operator+(a, b)`，或者成员函数形式 `a.operator+(b)`
+2. 运算符重载通常有两种实现方式：外部函数 / 成员函数
+3. 外部函数写法：不属于类，没有 `this` 指针，所有操作数都作为参数传入
+4. 成员函数写法：左操作数就是 `this`，右操作数作为参数传入
+
+典型声明示例：
+
+```cpp
+const T operator+(const T& a, const T& b);
+```
+
+函数调用运算符的应用另见[函数对象](#functor-function-object-operator)。
+
+## 继承、抽象类与多态 {#cpp-inheritance-and-polymorphism}
+
+### 继承与继承方式 {#_57}
+
+继承的核心思想是：如果一个类是另一个类的“特殊情况”，那就可以用继承。
+
+比如：
+
+- 狗是动物
+- 车是交通工具
+- 学生是人
+
+```csharp
+Student is a Person
+Dog is an Animal
+```
+
+在 C++ 里就是：
+
+```cpp
+class Student : public Person
+```
+
+```cpp
+class C : public A
+```
+
+意思是：`C` 继承 `A`，`C` 会自动拥有 `A` 的所有 `public` 成员。
+
+这里的 `public` 表示继承方式：
+
+| 写法        | 意义                      |
+| --------- | ----------------------- |
+| public    | 保持父类的 public 仍然是 public |
+| protected | 父类 public 变成 protected  |
+| private   | 父类 public 变成 private    |
+
+如果不写，默认是 `private` 继承。
+
+好，这个是 C++ 面向对象三大特性之一：
+
+> 封装、继承、多态
+
+### 抽象类与纯虚接口 {#_54}
+
+在 C++ 中，只要一个类中包含至少一个纯虚函数（pure virtual function），这个类就是抽象类。
+
+纯虚函数写法：
+
+```cpp
+virtual 返回类型 函数名() = 0;
+```
+
+这里的 `= 0` 不是“等于 0”，而是 C++ 规定的纯虚函数写法。
+
+#### 抽象类的核心特点 {#_55}
+
+1. 不能创建对象
+
+```cpp
+class Animal {
+public:
+    virtual void speak() = 0;  // 纯虚函数
+};
+Animal a; // ❌ 错误，不能创建抽象类对象
+```
+
+2. 可以作为基类
+3. 子类必须实现所有纯虚函数，否则子类本身还是抽象类
+
+#### 工程风格示例：Device 与 UART {#_56}
+
+```cpp
+class Device {
+public:
+    virtual void init() = 0;
+    virtual void start() = 0;
+    virtual void stop() = 0;
+
+    virtual ~Device() {}   // 必须有虚析构函数
+};
+// 实现：
+class UART : public Device {
+public:
+    void init() override { cout << "UART init\n"; }
+    void start() override { cout << "UART start\n"; }
+    void stop() override { cout << "UART stop\n"; }
+};
+// 然后在主程序里：
+Device* dev = new UART();
+dev->init();
+// 这就是：面向接口编程
+```
+
+#### 抽象类与多态的关系 {#_66}
+
+抽象类通常用来实现多态。
+
+流程是：
+
+```
+抽象类定义接口
+↓
+子类实现接口
+↓
+基类指针调用
+↓
+产生多态
+```
+
+### 多态的基本概念与成立条件 {#cpp-polymorphism-basics}
+
+#### 多态与动态调用 {#_59}
+
+多态（Polymorphism）字面意思是：
+
+> 多种形态
+
+在 C++ 里通常指：
+
+> 同一个接口，不同对象，表现不同的行为
+
+举个例子：
+
+```cpp
+Animal* a = new Dog();
+Animal* b = new Cat();
+
+a->speak();   // 汪
+b->speak();   // 喵
+```
+
+同样是 `speak()`，但行为不同，这就是多态。
+
+#### 实现多态的三个条件 {#_60}
+
+1. 继承
+2. 虚函数（`virtual`）
+3. 基类指针或引用调用
+
+缺一个都不是真正的运行时多态。
+
+#### 多态概念的简短复述 {#_65}
+
+多态是指同一接口在不同对象上表现出不同的行为。在 C++ 中通常通过继承和虚函数实现运行时多态，依赖虚函数表进行动态绑定。
+
+### 虚函数调用与对照示例 {#cpp-virtual-call-examples}
+
+#### Animal、Dog、Cat 完整示例 {#_61}
+
+下面是可独立编译的完整示例。`Animal` 将通过基类指针删除派生对象，因此需要虚析构函数。
+
+```cpp
+#include <iostream>
+using namespace std;
+class Animal {
+public:
+    virtual ~Animal() = default;
+    virtual void speak() {     // 虚函数
+        cout << "Animal sound" << endl;
+    }
+};
+class Dog : public Animal {
+public:
+    void speak() override {
+        cout << "Dog: Woof" << endl;
+    }
+};
+class Cat : public Animal {
+public:
+    void speak() override {
+        cout << "Cat: Meow" << endl;
+    }
+};
+int main() {
+    Animal* a1 = new Dog();
+    Animal* a2 = new Cat();
+
+    a1->speak();   // 调用 Dog 的版本
+    a2->speak();   // 调用 Cat 的版本
+
+    delete a1;
+    delete a2;
+}
+```
+
+原有错误方式对照（独立的反例片段，**不要运行**）：下面保留“基类没有虚析构函数，却通过基类指针删除派生对象”的错误结构，用来说明上面为什么要增加虚析构函数。
+
+```cpp
+class Animal {
+public:
+    virtual void speak() {}
+    // 错误前提：没有 virtual 析构函数。
+};
+class Dog : public Animal {};
+
+Animal* animal = new Dog();
+delete animal; // 未定义行为，不能保证析构顺序与资源释放结果。
+```
+
+仅有虚成员函数 `speak()` 并不会自动让析构函数成为虚函数；正确示例中的 `virtual ~Animal() = default;` 才使这条多态删除路径安全。
+
+#### 如果没有 virtual 会怎样？ {#virtual}
+
+```cpp
+class Animal {
+public:
+    void speak() {   // 没有 virtual
+        cout << "Animal sound" << endl;
+    }
+};
+```
+那就会变成：
+```
+Animal sound
+Animal sound
+```
+
+### 基类引用、基类指针与按值传递 {#_69}
+
+本节使用的抽象通信接口定义见[通信场景示例](#_68)；其中基类声明了虚析构函数。
+
+这个参数不是指针，而是引用。
+
+```cpp
+void sendData(Communication& com) {
+    com.send();
+}
+```
+
+`Communication&` 表示基类引用，`com` 是传入对象的别名。
+
+```cpp
+UART uart;
+sendData(uart);
+```
+
+只要 `send()` 是虚函数，真实对象是 `UART`，就会调用 `UART::send()`。
+指针版本也可以。
+
+```cpp
+void sendData(Communication* com) {
+    com->send();
+}
+UART uart;
+sendData(&uart);
+```
+
+也可以动态创建对象。
+
+```cpp
+Communication* p = new UART();
+sendData(p);
+delete p;
+```
+
+但是简单场景下更推荐引用和局部对象，因为不用手动 `new` 和 `delete`。
+不要用值传递实现多态。
+
+下面是**错误示例**，不是可运行的调用方式。沿用通信场景示例中的定义，`Communication` 含有纯虚函数，是抽象类，因此这个按值参数的函数定义本身就不合法：
+
+```cpp
+void sendData(Communication com) {
+    com.send();
+}
+```
+
+这里首先遇到的是**编译错误**，不能把这个抽象类示例描述成“运行时发生对象切片”。抽象类不能作为这里的完整按值对象；前面的 `Communication&` 和 `Communication*` 则不会创建抽象基类的独立对象。
+
+**对象切片是另一个问题：**如果基类可以实例化，把派生对象复制为基类值对象时，只会保留基类部分；按值参数也会发生这样的复制。新对象的动态类型已经是基类，即使成员函数是虚函数，也不会再调用原派生对象的重写。引用或指针访问原对象则保留动态类型。
+
+下面是独立完整程序，使用可实例化的 `CommunicationValue` 专门演示切片，与上面的抽象接口反例分开：
+
+```cpp
+#include <iostream>
+
+class CommunicationValue {
+public:
+    virtual ~CommunicationValue() = default;
+    virtual void send() const {
+        std::cout << "Send by base\n";
+    }
+};
+
+class UARTValue : public CommunicationValue {
+public:
+    void send() const override {
+        std::cout << "Send by UART\n";
+    }
+};
+
+void sendByValue(CommunicationValue com) {
+    com.send(); // 参数已经切片，调用基类版本。
+}
+
+void sendByReference(const CommunicationValue& com) {
+    com.send(); // 引用原派生对象，调用 UART 版本。
+}
+
+int main() {
+    UARTValue uart;
+    CommunicationValue sliced = uart; // 复制为基类对象，只保留基类部分。
+    sliced.send();                   // Send by base
+    sendByValue(uart);                // Send by base
+    sendByReference(uart);            // Send by UART
+}
+```
+
+### `override` 与 `final` {#override-final}
+
+`override` 表示子类函数要重写基类虚函数。若函数名、参数或 `const` 等签名不匹配，编译器会直接报错，因此重写虚函数时建议始终添加：
+
+```cpp
+class Device {
+public:
+    virtual void start() const = 0;
+};
+
+class Sensor : public Device {
+public:
+    void start() const override final {}  // 正确重写，并禁止继续重写
+};
+```
+
+`final` 用在虚函数后表示禁止子类再次重写，用在类名后表示禁止该类被继承：
+
+```cpp
+class FixedDevice final : public Device {
+public:
+    void start() const override {}
+};
+```
+
+简单记忆：`override` 是“确认我在重写”，`final` 是“到这里为止”。
+
+### 虚析构函数与通过基类指针删除对象 {#cpp-polymorphic-destruction}
+
+#### 虚析构函数的必要性与示例 {#c_3}
+
+在 C++ 继承中，有一个很重要的规则：
+> 如果一个类可能被继承，并且将来可能通过“基类指针”删除子类对象，那么基类的析构函数应该声明为 `virtual`。
+例如：
+```cpp
+class Base {
+public:
+    ~Base() {
+        std::cout << "Base destructor\n";
+    }
+};
+class Derived : public Base {
+public:
+    ~Derived() {
+        std::cout << "Derived destructor\n";
+    }
+};
+```
+如果这样使用：
+```cpp
+Base* p = new Derived();
+delete p;
+```
+`p` 的类型是 `Base*`，但是它实际指向的是一个 `Derived` 对象。
+**错误示例说明：**这里的 `Base` 没有虚析构函数，通过 `Base*` 删除 `Derived` 对象会产生未定义行为，不能保证析构调用过程或资源释放结果。在某些运行中可能观察到下面的输出，但它不是 C++ 保证的行为：
+```cpp
+Base destructor
+```
+不能据此断言“只调用基类析构函数、一定不调用派生类析构函数”；程序已经进入未定义行为。用于通过基类指针多态删除的基类通常应声明虚析构函数。
+这会带来严重问题：如果子类中申请了内存、打开了文件、创建了线程，或者占用了其他资源，那么这些资源可能无法被正确释放。
+正确写法应该是：
+```cpp
+class Base {
+public:
+    virtual ~Base() {
+        std::cout << "Base destructor\n";
+    }
+};
+class Derived : public Base {
+public:
+    ~Derived() {
+        std::cout << "Derived destructor\n";
+    }
+};
+```
+这时再执行：
+```cpp
+Base* p = new Derived();
+delete p;
+```
+析构函数的调用顺序是：
+```cpp
+Derived destructor
+Base destructor
+```
+也就是说，先析构子类部分，再析构基类部分。
+注意：虚析构函数不等于抽象类
+一个类被继承，并不代表它一定要写成抽象类。
+抽象类指的是包含纯虚函数的类，例如：
+```cpp
+class Base {
+public:
+    virtual void run() = 0;
+};
+```
+这里的 `= 0` 表示纯虚函数，所以 `Base` 是抽象类，不能直接创建对象。
+但是下面这个类不是抽象类：
+```cpp
+class Base {
+public:
+    virtual ~Base() {}
+};
+```
+
+虽然它有虚析构函数，但析构函数不是纯虚函数，所以这个类仍然可以创建对象。
+
+#### 虚析构函数使用要点 {#_58}
+
+继承本身不要求基类必须是抽象类。
+
+但是，只要一个类会作为基类使用，并且可能出现下面这种写法：
+
+```cpp
+Base* p = new Derived();
+delete p;
+```
+
+那么基类的析构函数就应该写成虚析构函数：
+
+```cpp
+virtual ~Base() {}
+```
+
+这样可以保证删除对象时，子类和基类的析构函数都会被正确调用，避免资源泄漏。
+
+### 静态多态与动态多态 {#_62}
+
+1. 编译时多态（静态多态）
+
+   - 函数重载
+   - 运算符重载
+   - 模板
+
+   例子：
+
+```cpp
+int add(int a, int b);
+double add(double a, double b);
+```
+
+   编译时就确定调用哪个版本。
+
+2. 运行时多态（动态多态）
+
+   - 通过 `virtual` 实现
+   - 通过基类指针调用
+
+### 虚函数表与动态绑定原理 {#_63}
+
+多态靠的是：
+
+> 虚函数表（vtable）
+
+每个带 `virtual` 的类通常都会有虚函数表，对象内部也会存一个 `vptr`（指向虚函数表的指针）。
+
+当你调用 `a->speak();` 时，实际流程大致是：
+
+1. 通过 `vptr` 找到 `vtable`
+2. 再找到真正的函数地址
+3. 最终调用 `Dog::speak()`
+
+这就是动态绑定（Dynamic Binding）。
+
+### 多态的设计动机与应用 {#cpp-polymorphism-applications}
+
+#### 多态的好处（工程角度） {#_64}
+
+在以后做嵌入式架构时，假设你有：
+
+- UART 驱动
+- SPI 驱动
+- CAN 驱动
+
+你可以这样写：
+
+```cpp
+Device* dev = new UART();
+dev->init();
+```
+
+主程序根本不关心具体是什么设备，这就是：
+
+> 面向接口编程
+
+#### 为什么不直接创建 Dog 和 Cat，而要用多态 {#dog-cat}
+
+如果程序里只处理几个确定对象，可以直接创建具体类。
+
+```cpp
+Dog d;
+Cat c;
+d.speak();
+c.speak();
+```
+
+这种写法简单直接，完全没问题。
+但是如果希望用一套统一代码处理多种不同对象，就适合使用多态。
+
+```cpp
+void makeSpeak(Animal& a) {
+    a.speak();
+}
+```
+
+这里 `makeSpeak()` 不关心传进来的是 `Dog` 还是 `Cat`，只要求它是一个 `Animal`。
+
+```cpp
+Dog d;
+Cat c;
+makeSpeak(d);
+makeSpeak(c);
+```
+
+如果 `speak()` 是虚函数，那么虽然参数类型是 `Animal&`，实际执行时会根据真实对象类型调用对应版本。
+
+```cpp
+Animal& a = d;
+a.speak(); // 实际调用 Dog::speak()
+```
+
+多态的核心作用是：用统一接口处理不同类型对象，减少重复代码，方便以后扩展新类型。
+
+#### 多态的典型使用场景 {#_68}
+
+多态适合处理“类型不同，但行为接口相同”的对象。
+例如动物系统中，不同动物都可以 `speak()`。
+
+```cpp
+vector<Animal*> animals;
+animals.push_back(new Dog());
+animals.push_back(new Cat());
+for (Animal* a : animals) {
+    a->speak();
+}
+```
+
+循环中代码只有一份：
+
+```cpp
+a->speak();
+```
+
+但实际执行时，可能调用 `Dog::speak()`，也可能调用 `Cat::speak()`。
+实际开发中，多态常用于通信接口、设备接口、驱动接口、任务接口等。
+
+```cpp
+class Communication {
+public:
+    virtual ~Communication() = default; // 用于通过基类指针删除派生对象
+    virtual void send() = 0;
+};
+class UART : public Communication {
+public:
+    void send() override {
+        cout << "Send by UART" << endl;
+    }
+};
+class CAN : public Communication {
+public:
+    void send() override {
+        cout << "Send by CAN" << endl;
+    }
+};
+```
+
+主程序只依赖统一接口：
+
+```cpp
+void sendData(Communication& com) {
+    com.send();
+}
+```
+
+以后新增 `TCP`、`RS485` 等通信方式时，原来的 `sendData()` 不需要修改。
+
+### 继承、抽象类与多态的对照复习 {#_67}
+
+继承表示“是一种”的关系。
+
+```cpp
+class Dog : public Animal {};
+```
+
+意思是 `Dog` 是一种 `Animal`。
+继承适合把多个类的共同特征抽出来，形成统一的父类类型。
+抽象类一般用来定义规则，而不是直接创建对象。
+
+```cpp
+class Animal {
+public:
+    virtual void speak() = 0;
+};
+```
+
+这里 `= 0` 表示纯虚函数，`Animal` 就变成抽象类。
+抽象类适合规定所有子类必须实现某些函数。
+
+```cpp
+class Dog : public Animal {
+public:
+    void speak() override {
+        cout << "Dog: Woof" << endl;
+    }
+};
+```
+
+如果 `Dog` 不实现 `speak()`，那么 `Dog` 也会继续是抽象类，不能创建对象。
+多态指的是：同一个接口，不同对象有不同表现。
+
+```cpp
+Animal* a = new Dog();
+a->speak(); // 调用 Dog 的版本
+```
+
+多态通常需要：有继承关系，父类函数是 `virtual`，子类重写该函数，通过父类指针或父类引用调用。
+
+## 资源管理、异常与智能指针 {#cpp-resource-management}
+
+统一接口解决对象如何使用的问题；本章接着讨论对象存在哪里、异常发生时怎样释放，以及谁拥有对象。
+
+### 堆和栈的区别 {#_51}
+
+- 栈：自动分配、自动回收的临时内存
+- 堆：手动申请、手动（或系统）释放的长期内存
+- 栈中常见存放：函数参数、局部变量、基本数据类型、指针/引用变量本身、返回地址等函数调用信息
+- 堆中常见存放：通过 `new` / `malloc` 动态申请的对象、数组、结构体、类实例等生命周期不固定的数据
+
+| 中文 | 英语 | 法语 |
+| ---- | ---- | ---- |
+| 栈 | **Stack** | **Pile** |
+| 堆 | **Heap** | **Tas** |
+
+```text
+ListNode* p = new ListNode(3);
+
+栈（Stack / Pile）        堆（Heap / Tas）
+┌────────────┐           ┌──────────────┐
+│ p (地址)   │ ────────▶ │ ListNode{3}  │
+└────────────┘           └──────────────┘
+```
+
+指针变量 `p` 在栈上，而它指向的对象在堆上。
+
+```cpp
+int a = 10;              // 普通局部变量，通常在栈上
+int* p = new int(20);    // 指针变量 p 在栈上，*p 在堆上
+```
+
+### 异常处理：`try`、`throw` 与 `catch` {#trythrow-catch}
+
+C++ 异常用于处理函数无法在本地正常解决的错误：`throw` 抛出异常，`try` 包围可能失败的代码，`catch` 根据异常类型进行处理。
+
+```cpp
+#include <iostream>
+#include <stdexcept>
+
+double divide(double a, double b) {
+    if (b == 0.0) {
+        throw std::invalid_argument("除数不能为 0");
+    }
+    return a / b;
+}
+
+int main() {
+    try {
+        std::cout << divide(10.0, 0.0) << '\n';
+    } catch (const std::invalid_argument& e) {
+        // 优先捕获更具体的异常类型
+        std::cerr << "参数错误：" << e.what() << '\n';
+    } catch (const std::exception& e) {
+        // 标准异常的通用基类，what() 返回错误说明
+        std::cerr << "程序异常：" << e.what() << '\n';
+    } catch (...) {
+        // 捕获其他所有类型的异常，但无法直接取得异常信息
+        std::cerr << "未知异常\n";
+    }
+}
+```
+
+异常抛出后，程序会沿函数调用栈向外寻找第一个匹配的 `catch`。查找过程中，已经创建的局部对象会自动析构，这称为**栈展开**；因此资源应交给 `std::string`、容器和智能指针等 RAII 对象管理。
+
+常用标准异常包括 `std::invalid_argument`（参数无效）、`std::out_of_range`（超出范围）和 `std::runtime_error`（运行时错误）。通常按值 `throw`、按 `const` 引用捕获，避免复制和对象切片：
+
+```cpp
+throw std::runtime_error("读取配置失败");
+
+try {
+    loadConfig();
+} catch (const std::exception& e) {
+    logError(e.what());
+    throw;  // 不写对象，原样重新抛出当前异常
+}
+```
+
+不要使用 `throw e;` 代替重新抛出的 `throw;`，前者可能复制异常并丢失派生类型信息。具体类型的 `catch` 应放在基类之前；如果异常一直没有被捕获，程序最终会调用 `std::terminate()`。标记为 `noexcept` 的函数承诺异常不会逃出函数，一旦违背同样会终止程序，所以只应在确实不会向外抛出异常时使用。
+
+### 智能指针与所有权 {#smart-pointer-ownership}
+
+智能指针首先是一个类对象：它保存指针，通过 `*`、`->` 等操作提供类似指针的访问，并按照**所有权策略**管理资源。问题不仅是“地址指向哪里”，还包括“谁负责销毁对象、对象需要活多久”。以下内容根据课件《C++ - Slot 9 - Smart pointers》第 2–23 页补充；代码统一采用 C++17，课件的历史写法与现代建议分别说明。
+
+#### RAII：让资源释放跟随管理对象的生命周期 {#raii}
+
+局部裸指针变量离开作用域，只会结束这个指针变量本身的生命周期，不会自动 `delete` 它指向的动态对象。手动释放一旦遗漏，或被异常、提前 `return` 跳过，就可能泄漏；反过来，对象销毁后仍使用旧地址则会产生悬空访问。
+
+RAII（Resource Acquisition Is Initialization，资源获取即初始化）将资源交给一个对象管理，由该对象的析构过程负责释放。智能指针是 RAII 的一种应用；文件、锁等也可采用相同思路。对于正常离开作用域和正常栈展开，局部智能指针会被析构，但不能据此假定进程被强制终止等情况也会完成清理。
+
+```cpp
+#include <memory>
+#include <stdexcept>
+
+void raiiOnException() {
+    auto buffer = std::make_unique<int[]>(4);
+    buffer[0] = 42;
+    throw std::runtime_error("operation failed");
+    // 栈展开时 buffer 析构，数组通过 delete[] 自动释放。
+}
+```
+
+智能指针不会自动修复一切内存问题：从 `get()` 取出的裸指针仍可能悬空，多个独立所有者仍可能重复删除同一对象，共享所有权形成环仍可能泄漏。能直接按值保存的对象不必仅为使用智能指针而动态分配。
+
+#### 从 `auto_ptr` 到显式移动 {#auto_ptr}
+
+课件第 5–8 页的 `std::auto_ptr` 是历史背景：它在 C++98 中提供独占所有权，却在“复制”时转移所有权，使源指针变空。按值传入一个看似只读的函数，也可能意外转走并销毁调用者的对象；这种复制语义不符合普通容器所需的值语义。
+
+`auto_ptr` 在 C++11 被弃用，在 C++17 从标准中移除，不应写进新的 C++17 示例。替代者 `unique_ptr` 禁止复制，通过移动明确表达转移；`shared_ptr` 的复制则表示共享，不是把底层对象深拷贝一份。需要复制多态对象本身时，要另行提供 `clone()` 等协议，可参考 Prototype 模式，而不能期待智能指针自动推断怎样复制派生类型。
+
+`unique_ptr`、`shared_ptr`、`weak_ptr` 和 `make_shared` 属于 C++11；`make_unique` 从 C++14 起提供。Boost 曾为标准化提供重要实践，但 `boost::shared_ptr` 与 `std::shared_ptr` 是不同类型，不能通过各自接管同一个裸地址来“转换”。
+
+### `unique_ptr`：独占所有权 {#unique_ptr}
+
+
+
+#### 基本使用、移动与函数参数 {#cpp-unique-ptr-basics}
+
+`std::unique_ptr` 是 C++ 里的智能指针，头文件是：
+
+```cpp
+#include <memory>
+```
+
+`std::make_unique<T>(参数)` 会创建一个 `T` 类型的对象，并立即交给 `unique_ptr` 管理。例如：
+
+```cpp
+auto number = std::make_unique<int>(42);
+std::cout << *number; // 输出 42；*number 取得它管理的 int
+```
+
+这里的 `int` 是要创建的类型，圆括号中的 `42` 是传给它的初始化值。类似地，`std::make_unique<Dog>()` 会调用 `Dog` 的无参构造函数；`std::make_unique<Dog>(name)` 会把 `name` 传给 `Dog` 的构造函数。优先使用 `make_unique`，可以避免直接书写 `new`，对象也会在智能指针离开作用域时自动释放。
+
+它可以理解成“自动 delete 的指针”，并且独占它管理的对象。
+
+```cpp
+auto p = std::make_unique<Dog>();
+p->speak();
+```
+
+当 `p` 生命周期结束时，它会自动释放对象，不需要手动 `delete`。
+`unique_ptr` 不能复制，只能转移所有权。
+
+```cpp
+std::unique_ptr<Dog> p1 = std::make_unique<Dog>();
+// std::unique_ptr<Dog> p2 = p1; // 错误
+std::unique_ptr<Dog> p2 = std::move(p1); // 正确
+```
+
+转移后，`p1` 变空，`p2` 接管对象。
+`unique_ptr` 常用于替代裸指针的 `new/delete`，也常和多态一起使用。
+
+```cpp
+std::unique_ptr<Animal> a = std::make_unique<Dog>();
+a->speak();
+```
+
+如果函数只是临时使用对象，一般传引用。
+
+```cpp
+void makeSpeak(Animal& animal) {
+    animal.speak();
+}
+auto dog = std::make_unique<Dog>();
+makeSpeak(*dog);
+```
+
+如果函数要接管对象所有权，才传 `unique_ptr`，并用 `std::move`。
+
+```cpp
+void takeAnimal(std::unique_ptr<Animal> animal) {
+    animal->speak();
+}
+auto dog = std::make_unique<Dog>();
+takeAnimal(std::move(dog));
+```
+
+#### `get`、`reset` 与 `release` {#unique-pointer-operations}
+
+| 操作 | 所有权变化 | 应注意什么 |
+| --- | --- | --- |
+| `p.get()` | 不变，返回借用的裸指针 | 不要 `delete` 它，不会延长对象寿命 |
+| `p.reset()` | 释放当前对象并变空 | 之后不能继续解引用旧对象 |
+| `p.reset(raw)` | 先按接口规则接管新地址，释放原资源 | raw 必须可由相应删除器管理；不要传 `p.get()` |
+| `p.release()` | 变空并返回原地址，不删除对象 | 调用者接手释放责任，否则泄漏 |
+| `q = std::move(p)` | q 原有资源被释放，再接管 p 的资源 | 对不同对象进行正常移动后，p 为空 |
+
+```cpp
+#include <cassert>
+#include <memory>
+#include <utility>
+
+void transferUniqueOwnership() {
+    auto source = std::make_unique<int>(42);
+    int* borrowed = source.get();
+    auto target = std::move(source);
+    assert(!source && target.get() == borrowed);
+    // 移动的是所有权句柄，原 int 没有被复制或搬到新地址。
+    target.reset(new int(7)); // 旧 int 被销毁，borrowed 此后不能再使用
+    int* released = target.release();
+    assert(!target);
+    std::unique_ptr<int> restored(released); // 立即重新交给唯一所有者
+    assert(*restored == 7);
+}
+```
+
+默认构造的 `unique_ptr` 为空；在调用 `*p`、`p->member` 前应满足非空前提，可用 `if (p)` 检查。`release()` 不是“立即释放内存”；它常用于交接给明确接管所有权的旧接口，不宜作为日常访问对象的方法。
+
+默认的 `unique_ptr<T>` 对应单对象 `delete`，`unique_ptr<T[]>` 对应数组 `delete[]`，后者提供 `operator[]`，不会自动检查数组越界。删除策略可由第二个模板参数定制，从而管理文件句柄等资源；删除器必须匹配资源的释放方式且不应向外抛出异常。动态序列通常先考虑 `vector<T>`。
+
+`unique_ptr<Derived>` 本身不继承 `unique_ptr<Base>`；某些类型间转换由转换构造函数提供，且须满足指针和删除器条件。用默认删除器通过 `unique_ptr<Base>` 管理派生对象时，Base 通常需要虚析构函数。与 STL 容器组合的例子见本笔记 STL 章节和后面的多态综合示例。
+
+### `shared_ptr`：共享所有权 {#shared_ptr}
+
+
+
+#### 基本使用、复制与函数参数 {#cpp-shared-ptr-basics}
+
+`std::shared_ptr` 也是智能指针，头文件是：
+
+```cpp
+#include <memory>
+```
+
+它可以理解成“多个指针共同管理同一个对象”。
+
+```cpp
+auto p1 = std::make_shared<Dog>();
+auto p2 = p1;
+```
+
+这时 `p1` 和 `p2` 共同拥有同一个 `Dog` 对象。
+共享同一所有权组的 `shared_ptr` 使用同一个控制块。控制块中的强引用计数记录共享该所有权的 `shared_ptr` 数量；复制一个句柄不会复制底层 `Dog` 对象。
+
+```cpp
+cout << p1.use_count() << endl;
+```
+
+当最后一个 `shared_ptr` 消失时，对象才会自动释放。
+
+```cpp
+std::shared_ptr<Animal> a = std::make_shared<Dog>();
+a->speak();
+```
+
+如果函数只是使用对象，不保存它，推荐传引用。
+
+```cpp
+void makeSpeak(Animal& animal) {
+    animal.speak();
+}
+auto a = std::make_shared<Dog>();
+makeSpeak(*a);
+```
+
+如果函数要保存对象，让对象在函数结束后继续存在，可以传 `shared_ptr`。
+
+```cpp
+std::shared_ptr<Animal> savedAnimal; // 示例保存位置，实际通常是某个类的成员
+void saveAnimal(std::shared_ptr<Animal> animal) {
+    savedAnimal = std::move(animal);
+}
+auto a = std::make_shared<Dog>();
+saveAnimal(a); // 参数取得共享所有权，再将这份所有权移入保存位置
+```
+
+传入左值 `a` 时会复制一份共享句柄；函数把它移入 `savedAnimal` 后，这份所有权在函数返回后仍然存在。如果函数只按值接收并调用 `speak()`，却没有保存句柄，增加的引用会在函数返回时释放，并不表示完成了长期保存。
+
+#### 控制块、`use_count()` 与 `reset()` {#shared-pointer-control-block}
+
+控制块保存强引用计数、弱引用相关状态和删除器等管理信息。`shared_ptr` 的典型实现保存“访问对象的指针 + 控制块指针”，但不能依赖它固定占几个字节；`make_shared` 通常把对象与控制块放进一次分配中，从而减少分配次数。
+
+```cpp
+#include <cassert>
+#include <memory>
+#include <utility>
+
+void sharedOwnershipCounts() {
+    auto first = std::make_shared<int>(10);
+    auto second = first;
+    assert(first.use_count() == 2);
+    auto third = std::move(second);
+    assert(!second && first.use_count() == 2); // 移动没有新增拥有者
+    first = std::make_shared<int>(20);        // first 加入一个新的所有权组
+    assert(first.use_count() == 1 && third.use_count() == 1);
+    assert(*third == 10);                     // 原对象仍由 third 管理
+    third.reset();                           // 最后一个强拥有者释放原对象
+}
+```
+
+`reset()` 仅让当前句柄放弃共享所有权，其他拥有者仍可维持原对象。`reset(new T(...))` 或赋入新的 `make_shared<T>(...)` 结果，会让当前句柄管理新对象，不是把所有旧拥有者一起清空。
+
+当强引用计数降为 0 时，管理的对象通过相应删除器释放；只要仍有相关 `weak_ptr`，用于判断过期的控制块还可能存在。最后的相关弱引用也消失后，控制块才可释放。`make_shared` 合并分配时，**对象已经析构**与**整块分配已归还**还可能发生在不同时间。
+
+补充边界：`shared_ptr` 还支持别名构造，可访问一个成员、同时共享其宿主对象的所有权。因此 `get()` 是访问指针，不总等于最终由控制块销毁的对象地址；计数描述的是所有权组，不能简单按裸地址统计。
+
+不同 `shared_ptr` 句柄共享控制块时，引用计数管理支持并发操作，不等于被指对象的数据自动线程安全；并发修改同一个句柄也需按规则同步。`use_count()` 在并发场景只是观察结果，不能凭 `use_count() == 1` 就断言拥有安全的独占访问。
+
+#### 从裸指针构造：接管资源与重复接管的区别 {#shared-pointer-raw-pointer}
+
+课件第 16 页将“raw pointer → shared_ptr”标为 forbidden，是对不明所有权接管的警示，**不是说语言禁止显式构造**：`std::shared_ptr<T>(new T(...))` 合法，但通常优先使用 `make_shared`。接管要求明确、唯一地交出释放责任，并保证删除方式匹配。
+
+```cpp
+#include <memory>
+
+void borrowWithoutAdopting() {
+    auto owner = std::make_shared<int>(42);
+    int* borrowed = owner.get();
+    auto anotherOwner = owner; // 正确：共享原控制块
+    // std::shared_ptr<int> wrong(borrowed); // 危险：建立第二个独立控制块
+    *borrowed += 1; // 这里只借用；owner / anotherOwner 仍保持对象存活
+}
+```
+
+两个独立控制块分别认为自己负责删除同一个对象，会导致重复删除。不能将借用指针、栈对象地址，或已由智能指针管理的 `get()` 结果再交给默认删除的拥有者。`get()` 不转移所有权，不能把它得到的地址当成“尚无人负责释放的新资源”。
+
+#### 智能指针放入 set：按地址还是按对象内容比较 {#shared-pointer-set}
+
+课件第 17 页同时把共享指针存入 vector、默认 set 和自定义比较器 set。它们的去重依据不同：vector 保存每次添加的句柄；默认 `set<shared_ptr<T>>` 按保存的指针值排序，不会自动比较 `T` 的成员；自定义比较器则可以按对象内容定义等价键。
+
+```cpp
+#include <cassert>
+#include <memory>
+#include <set>
+#include <vector>
+
+struct SharedItem {
+    int value;
+    explicit SharedItem(int number) : value(number) {}
+};
+struct CompareSharedItem {
+    bool operator()(const std::shared_ptr<SharedItem>& a,
+                    const std::shared_ptr<SharedItem>& b) const {
+        return a->value > b->value; // 示例保证非空，按 value 降序
+    }
+};
+
+void compareSharedPointers() {
+    auto first = std::make_shared<SharedItem>(2);
+    auto second = std::make_shared<SharedItem>(2);
+    std::vector<std::shared_ptr<SharedItem>> sequence{first, second};
+    std::set<std::shared_ptr<SharedItem>> byPointer{first, second};
+    std::set<std::shared_ptr<SharedItem>, CompareSharedItem> byValue{first, second};
+    assert(sequence.size() == 2 && byPointer.size() == 2);
+    assert(byValue.size() == 1); // value 相同，被比较器视为同一个键
+}
+```
+
+默认指针次序不能被当作对象数值顺序，课件打印的具体顺序也不是可移植保证。按成员比较时，元素在 set 内期间不能经由其他共享句柄改变其排序字段；否则可能破坏有序容器要求。比较器应提供 `const operator()`，并满足严格弱序；示例排除了空指针，生产接口需明确是否允许空值。若真正需要按共享所有权而非保存地址分组，可研究 `std::owner_less`。
+
+有序容器的比较规则另见[关联容器](#stl-associative)。
+
+#### shared_ptr 的循环引用问题 {#shared_ptr_1}
+
+`shared_ptr` 最大的坑是循环引用。
+
+```cpp
+class B;
+class A {
+public:
+    std::shared_ptr<B> b;
+};
+class B {
+public:
+    std::shared_ptr<A> a;
+};
+```
+
+如果 `A` 持有 `B`，`B` 又持有 `A`，它们的引用计数可能永远无法变成 0。
+解决方法是让其中一边使用 `weak_ptr`。
+
+```cpp
+class B {
+public:
+    std::weak_ptr<A> a;
+};
+```
+
+`weak_ptr` 只观察对象，不增加引用计数，所以可以打破循环引用。
+
+### `weak_ptr`：安全观察与临时共享所有权 {#weak-pointer}
+
+`weak_ptr<T>` 在 `<memory>` 中声明，它本身不拥有对象，不增加强引用计数，也没有 `operator*` 或 `operator->`。它关联的是 `shared_ptr` 的控制块，不能直接观察一个任意裸指针或由 `unique_ptr` 独占的对象。
+
+| 操作 | 含义 |
+| --- | --- |
+| `weak = shared` | 建立弱观察，不增加强计数 |
+| `weak.use_count()` | 观察当前强拥有者数量，不是弱引用数量 |
+| `weak.expired()` | 强计数是否已为 0；空弱指针也返回 true |
+| `weak.lock()` | 尝试取得共享所有权；过期则返回空 shared_ptr |
+| `weak.reset()` | 清除当前弱观察；不负责销毁被观察对象 |
+
+```cpp
+#include <cassert>
+#include <memory>
+
+void observeSharedObject() {
+    std::weak_ptr<int> observer;
+    {
+        auto owner = std::make_shared<int>(10);
+        observer = owner;
+        assert(owner.use_count() == 1); // weak_ptr 不算强拥有者
+        if (auto temporaryOwner = observer.lock()) {
+            assert(owner.use_count() == 2);
+            *temporaryOwner = 20;
+            owner.reset();
+            assert(!observer.expired()); // temporaryOwner 仍维持对象存活
+        } // 最后的强拥有者消失，int 被释放
+    }
+    assert(observer.expired());
+    assert(!observer.lock());
+    observer.reset(); // 解除最后的弱观察，控制块也可释放
+}
+```
+
+实际使用时直接写 `if (auto p = weak.lock())`，让成功取得的 `shared_ptr` 覆盖整个访问过程。`expired()` 只是检查，不会替你保持对象存活；在并发环境中，先检查 `!expired()`，再单独访问或再次 `lock()`，两步之间对象仍可能被释放。`lock()` 以原子方式完成“如果还活着就取得强所有权”的尝试，但不自动同步对象内部数据。
+
+课件第 20 页的 `if (sp4 == true)` 应改为 `if (sp4)`：智能指针支持条件中的显式 bool 转换，并不因此支持与 `true` 做这种相等比较。直接用 shared_ptr 从已过期的 weak_ptr 构造会抛 `std::bad_weak_ptr`；正常的可选观察通常使用不抛该异常的 `lock()`。
+
+#### 用弱回边打破循环，并保留真正的拥有关系 {#_70}
+
+仅声明 `shared_ptr<A>` 与 `shared_ptr<B>` 成员不会自动形成泄漏；当实际赋值产生强所有权环，且外部拥有者离开后环内仍互相保活，计数才无法归零。课件第 18 页的双节点例子属于这种情况。
+
+```cpp
+#include <cassert>
+#include <memory>
+
+struct OwnedNode {
+    std::shared_ptr<OwnedNode> next; // 沿链方向拥有后继
+    std::weak_ptr<OwnedNode> previous; // 回边只观察，不延长前驱寿命
+};
+
+void breakOwnershipCycle() {
+    std::weak_ptr<OwnedNode> observed;
+    {
+        auto first = std::make_shared<OwnedNode>();
+        auto second = std::make_shared<OwnedNode>();
+        first->next = second;
+        second->previous = first;
+        observed = second;
+        assert(first.use_count() == 1 && second.use_count() == 2);
+    } // 外部拥有者消失后，两节点均被清理
+    assert(observed.expired());
+}
+```
+
+课件第 21 页把两条连接都改为 weak_ptr，能够在外部 shared_ptr 存在时相互观察；但如果还需要由链头拥有整条链，应保留向前的强连接，只把回边改为弱连接，不能机械地把所有连接都换成 weak_ptr。
+
+Observer 模式也是典型用途：发布者保存观察者的弱引用，需要通知时 `lock()`，成功就暂时持有并调用，失败则跳过或移除过期记录；weak_ptr 不会让本已退出的观察者仅因注册关系继续存活。弱边应由领域中的真实所有权关系决定。
+
+### unique_ptr、shared_ptr、weak_ptr 的区别 {#unique_ptrshared_ptrweak_ptr}
+
+```text
+unique_ptr：独占，不能复制，只能 move
+shared_ptr：共享，可以复制，有引用计数
+weak_ptr：观察，不拥有对象，不增加引用计数
+```
+
+一般优先用 `unique_ptr`，确实需要多个地方共享对象时再用 `shared_ptr`。
+
+### 综合例子：多态 + unique_ptr {#unique_ptr_1}
+
+```cpp
+#include <iostream>
+#include <memory>
+#include <vector>
+using namespace std;
+class Animal {
+public:
+    virtual ~Animal() = default;
+    virtual void speak() = 0;
+};
+class Dog : public Animal {
+public:
+    void speak() override {
+        cout << "Dog: Woof" << endl;
+    }
+};
+class Cat : public Animal {
+public:
+    void speak() override {
+        cout << "Cat: Meow" << endl;
+    }
+};
+void makeSpeak(Animal& animal) {
+    animal.speak();
+}
+int main() {
+    vector<unique_ptr<Animal>> animals;
+    animals.push_back(make_unique<Dog>());
+    animals.push_back(make_unique<Cat>());
+    for (auto& animal : animals) {
+        makeSpeak(*animal);
+    }
+    return 0;
+}
+```
+
+这个例子里，`vector<unique_ptr<Animal>>` 保存的是基类智能指针，但实际对象可以是 `Dog` 或 `Cat`。
+`makeSpeak(Animal& animal)` 使用基类引用接收不同子类对象。
+`speak()` 是虚函数，所以运行时会根据真实对象类型调用对应版本。
+`unique_ptr` 负责自动释放对象，不需要手动 `delete`。
+
+### 智能指针相关来源与课件说明 {#_71}
+
+主要参考 IMT Atlantique 课件《C++ - Slot 9 - Smart pointers》（2025）：第 2–9 页为动机、历史与所有权；第 10–12 页为 unique_ptr 与容器；第 13–18 页为共享控制块、比较与循环引用；第 19–21 页为弱观察；第 22 页总结生命周期，第 23 页介绍 Boost。课堂练习编号不作为笔记中的操作要求。
+
+本节保留课件的所有权主线；`get/reset/release` 的对照、并发与别名边界、接管风险及弱回边的细化解释为补充。课件第 16 页的绝对化表述、第 20 页的 bool 判断写法已在对应知识点中校正；旧式 auto_ptr 代码只作为历史说明，不推荐使用。
+
+- [Microsoft unique_ptr 文档](https://learn.microsoft.com/en-us/cpp/standard-library/unique-ptr-class?view=msvc-170)：独占所有权与成员操作。
+- [Microsoft shared_ptr 文档](https://learn.microsoft.com/en-us/cpp/standard-library/shared-ptr-class?view=msvc-170)：共享控制块、构造与重置。
+- [Microsoft weak_ptr 文档](https://learn.microsoft.com/en-us/cpp/standard-library/weak-ptr-class?view=msvc-170)：`expired()` 与 `lock()`；lock 取得的是共享所有权，不是独占所有权。
+- [Boost Smart Pointers 官方文档](https://www.boost.org/doc/libs/latest/libs/smart_ptr/doc/html/smart_ptr.html)：Boost 智能指针体系与历史背景。标准 C++ 示例无需因此添加 Boost 依赖。
+
+## 可调用对象、Lambda 与回调 {#cpp-callables-and-callbacks}
+
+### Functor / function object 与 `operator()` {#functor-function-object-operator}
+
+重载函数调用运算符 `operator()` 的类对象称为函数对象（Functor / function object）。它可以像普通函数一样调用，同时在成员变量中保存上下文或状态：
+
+```cpp
+class Adder {
+    int base;
+
+public:
+    explicit Adder(int value) : base(value) {}
+
+    int operator()(int value) const {
+        return base + value;
+    }
+};
+
+Adder add10(10);         // base 是函数对象保存的状态
+int result = add10(5);   // 普通调用语法，等价于 add10.operator()(5)
+```
+
+普通函数本身不能保存每个实例独有的状态，而不同的函数对象可以各自保存不同的 `base`。带捕获的 Lambda 本质上也会生成一个保存捕获状态、并提供 `operator()` 的闭包对象。
+
+### Lambda 的基本概念 {#lambda_1}
+
+lambda 可以理解成“没有名字的临时函数”。
+普通函数写法：
+
+```cpp
+void hello() {
+    cout << "Hello" << endl;
+}
+```
+
+lambda 写法：
+
+```cpp
+[]() {
+    cout << "Hello" << endl;
+}
+```
+
+lambda 常用于只需要临时使用一次的小函数，不想单独起名字。
+它也可以保存到 `std::function` 里。
+
+```cpp
+std::function<void()> f = []() {
+    cout << "Hello lambda" << endl;
+};
+f();
+```
+
+这里 `f` 是一个函数变量，里面保存了这个 lambda，`f()` 就是调用它。
+
+### Lambda 的语法、捕获与调用 {#lambda_2}
+
+
+
+#### `[]`、`()`、`{}` 与返回类型 {#cpp-lambda-syntax}
+
+Lambda 的完整常用语法是：
+
+```cpp
+[capture-list](params) mutable -> return_type {
+    body
+}
+```
+
+其中参数列表、`mutable` 和尾置返回类型都可以按需省略。没有显式写 `-> return_type` 时，编译器会根据 `return` 表达式推断返回类型；多个返回分支必须能推断成兼容的类型。
+
+`[]` 是捕获列表，用来捕获外部变量。
+
+```cpp
+[] // 不捕获外部变量
+```
+
+`()` 是参数列表，和普通函数参数一样。
+
+```cpp
+[](int a, int b) {
+    return a + b;
+}
+```
+
+`{}` 是函数体，里面写真正执行的代码。
+
+```cpp
+[]() {
+    cout << "Hello lambda" << endl;
+}
+```
+
+这段 lambda 表示：不捕获外部变量，没有参数，执行时输出一行文字。
+
+#### 捕获列表与 `mutable` {#cpp-lambda-captures}
+
+如果要使用外部变量，可以写捕获列表：
+
+```cpp
+int x = 10;
+auto f = [x]() {
+    cout << x << endl;
+};
+f();
+```
+
+这里 `[x]` 表示把外部变量 `x` 捕获进 lambda。
+
+常见捕获方式：
+
+| 写法 | 含义 |
+| --- | --- |
+| `[]` | 不捕获外部变量 |
+| `[&]` | 默认按引用捕获使用到的外部变量 |
+| `[=]` | 默认按值捕获使用到的外部变量 |
+| `[a]` | 只按值捕获 `a` |
+| `[&a]` | 只按引用捕获 `a` |
+| `[=, &a]` | 其他变量按值捕获，`a` 按引用捕获 |
+| `[this]` | 捕获当前对象的 `this` 指针，以访问成员 |
+
+按值捕获会把创建 Lambda 时的值保存到闭包对象中，默认不能修改这份副本；按引用捕获直接访问原变量，可以修改原变量，但 Lambda 的使用时间不能超过被引用变量的生命周期。
+
+Lambda 生成的闭包对象中，`operator()` 默认是 `const`，所以按值捕获的成员默认只读。`mutable` 解决的问题是：**让 Lambda 能修改并保存自己的捕获副本状态，同时不修改外部原变量**。
+
+```cpp
+int count = 0;
+
+// auto wrong = [count]() { return ++count; }; // 错误：副本默认只读
+auto next = [count]() mutable {
+    return ++count;
+};
+
+next(); // 返回 1
+next(); // 返回 2，Lambda 自己保存了状态
+// 外部 count 仍然是 0
+```
+
+因此，`mutable` 适合计数器、生成器等需要在多次调用之间保存内部状态的 Lambda。它只改变按值捕获副本的可修改性；按引用捕获本来就能修改外部对象，`mutable` 也不表示线程安全。
+
+#### 立即调用与嵌套 Lambda {#cpp-lambda-invocation}
+
+Lambda 定义后紧跟 `()` 就会立即调用；返回类型既可以推断，也可以显式写成尾置返回类型：
+
+```cpp
+int square = [](int x) { return x * x; }(5); // 立即调用，结果为 25
+
+auto divide = [](double a, double b) -> double {
+    return a / b;
+};
+```
+
+嵌套 Lambda 只能使用它自己捕获的变量；需要使用外层作用域的变量时，外层 Lambda 必须先捕获，内层再从外层环境捕获：
+
+```cpp
+int value = 10;
+auto outer = [value]() mutable {
+    auto inner = [&value]() { ++value; };
+    inner();
+    return value;
+};
+
+outer(); // 返回 11；外部原始 value 仍为 10
+```
+
+认识这些可调用对象后，再看如何用统一的函数签名保存并传递它们。
+
+### `std::function`：统一保存可调用对象 {#stdfunction}
+
+`std::function` 是 C++ 里的通用函数包装器，头文件是：
+
+```cpp
+#include <functional>
+```
+
+它可以保存“能像函数一样被调用的东西”，比如普通函数、lambda、函数对象、绑定后的成员函数。
+基本语法：
+
+```cpp
+std::function<返回值类型(参数类型列表)> 变量名;
+```
+
+常见形式：
+
+```cpp
+std::function<void()> f1;          // 无参数，无返回值
+std::function<int(int, int)> f2;   // 两个 int 参数，返回 int
+std::function<void(int)> f3;       // 一个 int 参数，无返回值
+```
+
+保存普通函数：
+
+```cpp
+int add(int a, int b) {
+    return a + b;
+}
+std::function<int(int, int)> f = add;
+cout << f(3, 5) << endl;
+```
+
+`std::function` 常用于回调函数，也就是把一个函数行为作为参数传给另一个函数。
+
+### callback 参数的传递与调用 {#callback}
+
+在下面这段代码中，`callback` 不是普通函数名，而是函数参数名。
+
+```cpp
+void process(std::function<void()> callback) {
+    callback();
+}
+```
+
+它的类型是：
+
+```cpp
+std::function<void()>
+```
+
+意思是 `callback` 可以保存一个“无参数、无返回值”的可调用对象。
+调用 `process()` 时，可以直接传入 lambda。
+
+```cpp
+process([]() {
+    cout << "This is callback" << endl;
+});
+```
+
+这相当于把这个匿名函数传给 `callback` 参数。
+进入 `process()` 后，`callback` 里面已经保存了这个 lambda，所以可以写：
+
+```cpp
+callback();
+```
+
+这不是调用一个提前写好的普通函数，而是调用传进来的函数对象。
+可以类比普通参数：
+
+```cpp
+void func(int x) {
+    cout << x << endl;
+}
+func(10);
+```
+
+`x` 没有提前单独定义，但它是函数参数，所以可以在函数内部使用。
+同理，`callback` 也是函数参数，只不过它保存的是一个函数行为。
+
+### std::function 和函数指针的区别 {#stdfunction_1}
+
+函数指针可以保存普通函数。
+
+```cpp
+void hello() {
+    cout << "Hello" << endl;
+}
+void (*fp)() = hello;
+fp();
+```
+
+但是函数指针不能方便地保存带捕获的 lambda。
+
+```cpp
+int x = 10;
+// void (*fp)() = [x]() { cout << x << endl; }; // 错误
+```
+
+`std::function` 可以保存带捕获的 lambda。
+
+```cpp
+int x = 10;
+std::function<void()> f = [x]() {
+    cout << x << endl;
+};
+f();
+```
+
+简单理解：函数指针更轻量，但功能简单；`std::function` 更灵活，但有一定额外开销。
+在嵌入式裸机或资源很小的 MCU 上，经常使用函数指针；在 Linux、上位机、ROS、普通 C++ 应用里，`std::function` 很常见。
+
 ## 模板（`template`） {#templates}
 
 模板让一份代码描述一族函数、类或变量，由编译器根据**类型参数或编译期值**生成需要的具体版本。它是 C++ 泛型编程的基础：先表达算法需要哪些操作，再让满足要求的类型参与，而不是为每一种类型复制代码。
@@ -1391,13 +2707,15 @@ decltype(auto) getReference() { return (value); } // int&
 
 ### Template Functions（函数模板） {#template-functions}
 
-#### Template 基本概念
+
+
+#### Template 基本概念 {#template}
 
 不使用模板时，同一个取较大值算法可能分别写成 `int larger(int, int)`、`double larger(double, double)`。两者只有类型不同，重复实现却要分别维护。模板把类型变化提取为参数，让算法主体只写一次。
 
 模板不是运行时传入一个“类型对象”，也不是动态类型：`larger<int>` 与 `larger<double>` 是编译期确定的不同函数版本。它们生成后仍可像普通函数一样在运行时调用。
 
-#### 函数模板语法
+#### 函数模板语法 {#_27}
 
 假设要对整数、浮点数做同样的“取较大值”操作。分别写多个函数会重复算法；模板把变化部分抽成类型参数 `T`：
 
@@ -1457,7 +2775,7 @@ int n = makeDefault<int>();
 
 有些位置属于**非推导上下文**，例如 `typename T::value_type` 中的 `T`：仅凭某个成员类型，无法唯一反推出它属于哪个容器。C++20 的 `std::type_identity_t<T>` 可有意让某个参数不参与推导，让 `T` 由其他参数先确定；在 C++17 中可以用一个带 `using type = T` 的类模板表达相同思路。
 
-#### 显式指定模板实参
+#### 显式指定模板实参 {#_28}
 
 推导不能统一两种实参类型时，可以明确指定类型，让对应形参按照这个类型接收实参：
 
@@ -1471,7 +2789,7 @@ double result = minimum<double>(10.4, 23); // 23 转成 double，再比较
 
 `minimum<double>` 中的参数是编译期模板实参，圆括号内才是函数实参。显式指定也不能使不存在或不允许的转换变得合法，转换还可能改变精度。显式实参按声明顺序从左到右填写；剩余参数若允许，仍可推导或采用默认值。
 
-#### 多个模板类型参数
+#### 多个模板类型参数 {#_29}
 
 两个输入不必同类型时，应把它们建模为两个独立参数，而不是强迫调用者指定共同类型：
 
@@ -1490,7 +2808,7 @@ static_assert(std::is_same_v<decltype(result), double>);
 
 这里分别推导 `T1 = int`、`T2 = double`，`common_type_t` 确定共同结果类型。并非任意类型组合都有共同类型，也不保证结果不会溢出。可以显式写 `addMixed<int>(2, 3.5)` 只指定第一个参数，第二个继续推导；是否需要共同类型取决于算法，表达式的结果类型也可用后面的尾置返回类型描述。
 
-#### 函数模板重载（Overloading）
+#### 函数模板重载（Overloading） {#overloading}
 
 普通函数与函数模板可以共存。先比较候选的可行性与转换质量；在其他条件相当时，非模板函数通常优先，多个函数模板则通过偏序等规则挑选更特定的版本。
 
@@ -1510,7 +2828,7 @@ int c = choose(&value);  // 3：T* 模板比通用 T 模板更特定
 int d = choose<>(1);     // 2：显式模板调用，不选普通 choose(int)
 ```
 
-#### 显式特化（Explicit Specialization）
+#### 显式特化（Explicit Specialization） {#explicit-specialization}
 
 显式特化为一组确定的模板参数提供不同实现。下面通用版本比较值，`const char*` 版本比较字符串内容，避免把字符指针的比较误当作文本比较：
 
@@ -1532,7 +2850,7 @@ bool ordered = lessValue("alpha", "beta"); // 使用 const char* 特化
 
 函数模板**不能偏特化**。想处理“所有指针”应写 `template<class T> ... (T*)` 重载；类模板的偏特化在后文单独说明。函数全特化定义放在头文件时还须处理 ODR，通常显式写 `inline` 或集中在一个 `.cpp` 中。
 
-#### 重载与特化的优先关系
+#### 重载与特化的优先关系 {#_30}
 
 不要记成“普通函数永远优先”。函数模板全特化也不作为独立重载候选参加同样的选择流程；通常先确定主模板，再确定它的特化。想给函数增加某一类参数的实现，重载往往比函数全特化更直观。
 
@@ -1598,7 +2916,7 @@ struct Constant { static constexpr auto value = Value; };
 static_assert(Constant<42>::value == 42);
 ```
 
-#### 成员函数模板
+#### 成员函数模板 {#_31}
 
 普通类也可以定义成员函数模板；类本身不必是模板：
 
@@ -1643,7 +2961,9 @@ double result = converter.convert(3); // 外层 T = double，成员 U = int
 
 ### Template Classes（类模板） {#template-classes}
 
-#### 类模板基本语法
+
+
+#### 类模板基本语法 {#_32}
 
 类模板描述一族类型，`Box<int>`、`Box<std::string>` 才是具体类型；`Box` 本身不能在普通类型位置直接代替它们。
 
@@ -1683,7 +3003,7 @@ const T& Holder<T>::get() const {
 
 这里的 `get()` 是**类模板的普通成员函数**：它使用外层参数 `T`，自己没有新增模板参数，因此类外定义只写一层 `template<class T>`。相比之下，前面 `Converter<T>::convert<U>()` 还有内层参数 `U`，类外定义要写两层。成员位于类模板中，并不意味着该成员本身也是成员函数模板。
 
-#### 类型与非类型参数组合
+#### 类型与非类型参数组合 {#_33}
 
 固定维数坐标既需要元素类型，也需要维数；两者共同决定对象类型：
 
@@ -1704,7 +3024,7 @@ Point<int, 2> pixelPoint;
 
 `Point<double, 3>` 与 `Point<double, 2>` 是不同类型，不能默认互相赋值。类型参数决定数据表示，非类型参数决定编译期维数；运行时可变长度应考虑 `std::vector`。每种不同组合都可能产生新的实例化并增加编译成本。
 
-#### 默认模板参数
+#### 默认模板参数 {#_34}
 
 默认模板参数为常见配置提供省略写法；即使全部采用默认值，通常仍要写 `<>`：
 
@@ -1725,7 +3045,7 @@ Buffer<double, 16> samples;    // 容量进入类型
 
 类模板普通参数的默认值通常安排在尾部；之后仍可有参数包。函数模板后续参数若能从函数实参推导，默认参数的排列限制有所不同。调用时显式模板实参从左到右指定，不能像命名参数那样随意跳过中间位置。
 
-#### 类模板构造函数
+#### 类模板构造函数 {#_35}
 
 构造函数负责创建某个已经确定的类模板对象；它与模板实例化不是同一过程。同类型复制可用普通拷贝构造函数，跨类型转换则常用构造函数模板：
 
@@ -1760,7 +3080,7 @@ Coordinate<double> real(integer);     // 构造函数模板，U = int
 
 不同的 `Coordinate<U>` 与 `Coordinate<T>` 是不同类的特化，不能当然访问彼此的私有数据；本例通过公开 `get()` 获取值。若设计确实需要，可显式声明模板友元。过于宽泛的 `U&&` 转发构造函数可能抢走原本预期的复制调用，应对适用类型进行约束。
 
-#### 类模板的文件组织
+#### 类模板的文件组织 {#_36}
 
 模板定义是生成具体实体的规则；实例化则把指定参数代入这些规则。隐式实例化由需要具体实体的使用触发，并不是定义模板时就为所有可能类型生成代码。类模板实例化也不等于立即实例化每个成员函数体：未使用的成员可以尚未被要求实例化。
 
@@ -1904,6 +3224,8 @@ struct Derived : Base<T> {
 也能写 `Base<T>::reset()`，但显式限定调用对于虚函数会绕过虚分派；`this->reset()` 保留通常的虚调用语义。模板与用户类型的非成员操作常利用 ADL，例如先 `using std::swap;` 再调用 `swap(a, b)`，让用户类型提供的同命名空间重载有机会被找到。
 
 ### Introducing Constraints（模板约束） {#template-constraints}
+
+
 
 #### SFINAE 与检测惯用法 {#template-sfinae}
 
@@ -2087,6 +3409,8 @@ static_assert(IsPointer<int*>::value);
 
 ### Interesting Features（模板的其他功能） {#template-features}
 
+
+
 #### 参数包与折叠表达式 {#template-packs}
 
 参数包（parameter pack）表示零个或多个模板参数；函数参数包则表示零个或多个函数参数。`...` 的展开把某个模式应用到包内每一个元素，`sizeof...(Ts)` 得到参数个数。
@@ -2119,9 +3443,11 @@ auto sum(Ts... args) {
 
 在 C++11/14 中，参数包也能配合递归重载展开；C++17 折叠表达式简化了很多这种写法。使用 `std::index_sequence` / `std::make_index_sequence`（C++14）还能生成编译期索引包，用于按下标展开 tuple 等固定结构；C++17 的 `std::apply` 则直接把 tuple 中的元素作为函数参数展开。
 
-#### 其他模板特性
+#### 其他模板特性 {#_37}
 
-##### tuple、get 与 make_tuple
+
+
+##### tuple、get 与 make_tuple {#tupleget-make_tuple}
 
 `std::tuple` 用可变参数类模板保存不同类型的元素；`std::get<I>` 通过编译期索引访问，`std::make_tuple` 便于推导元素类型：
 
@@ -2144,7 +3470,7 @@ std::get<0>(references) = 12; // std::ref 被展开为引用，修改原 count
 
 C++17 可用结构化绑定拆开 tuple；`std::apply` 将 tuple 的元素展开给可调用对象，与前面的参数包机制对应。
 
-##### 别名模板与变量模板
+##### 别名模板与变量模板 {#_38}
 
 别名模板给复杂类型起名字，不创建一个具有新身份的类型：
 
@@ -2164,7 +3490,7 @@ static_assert(objectBytes<int> == sizeof(int));
 
 `Vec<int>` 就是 `std::vector<int>`。变量模板则定义一族变量，例如 `objectBytes<int>`、`objectBytes<double>`；可用 `constexpr` 保存编译期计算结果。C++17 的 `inline` 变量便于把同一个定义放在被多个翻译单元包含的头文件中。
 
-##### 模板模板参数
+##### 模板模板参数 {#_39}
 
 模板模板参数表示“传入一种容器模板”，再由内部补上元素类型：
 
@@ -2183,7 +3509,7 @@ Collection<int, std::deque> dequeCollection;
 
 这里要求传入模板能用 `Container<T>` 构造有效类型；`std::array` 还需要容量参数，不能按这个接口直接替换。参数形状兼容与操作语义兼容是两件事：如果算法使用下标操作，所选容器还必须提供相应操作。
 
-##### extern template
+##### extern template {#extern-template}
 
 `extern template` 是显式实例化声明，用来抑制相应的隐式实例化；程序仍应在其他翻译单元提供需要的显式实例化定义。它通常用于集中生成有限类型的版本，不是让任意模板实现都能隐藏在 `.cpp` 中的通用开关。完整的多文件布局见[编译与链接](#template-instantiation)。
 
@@ -2213,7 +3539,7 @@ decltype(auto) relay(F&& function, Args&&... args) {
 
 此处 `decltype(auto)` 保留被调用函数的引用返回值；若包装器改成普通 `auto`，可能复制结果。这个最小包装器支持普通可调用对象；成员函数指针等形式可改用 `std::invoke`（C++17）。还要考虑返回引用的生命周期、`noexcept` 传播，且不要多次转发同一个可移动对象后继续假定它保留原资源。花括号列表没有普通表达式类型，裸 `{1, 2}` 也不能直接供这种 `Args&&` 推导。
 
-##### 泛型 Lambda 与缩写函数模板
+##### 泛型 Lambda 与缩写函数模板 {#lambda}
 
 C++14 泛型 Lambda 可用 `auto` 形参，它的调用运算符本质上是成员函数模板：
 
@@ -2235,7 +3561,7 @@ auto addAny(auto a, auto b) { return a + b; } // C++20：缩写函数模板
 
 普通 `auto` 返回类型推导从 C++14 就存在，而在普通函数参数列表里用 `auto` 是 C++20 的缩写函数模板语法，两者不是同一版本的功能。Lambda 的 `auto&&` 形参也可用于转发，仍要在函数体里配合正确的 `std::forward`；不要仅因出现 `&&` 就认定已经完成完美转发。
 
-##### 模板元编程、策略类与 CRTP
+##### 模板元编程、策略类与 CRTP {#crtp}
 
 模板元编程用模板选择与编译期计算产生类型或值。类型萃取、参数包与条件类型都属于常见工具；能用清晰的 `constexpr` 函数计算一个数值时，通常不用为了数值运算建立很深的递归类模板。
 
@@ -2301,7 +3627,7 @@ decltype(auto) copyValue(T value) { return value; } // decltype(value) = T，按
 
 不要为保留引用而引用局部变量、按值形参或已销毁的临时对象。`auto` 推导返回类型的定义一般需要在使用前可见；尾置返回类型中的替换可用于候选判断，而仅在函数体里失败的返回推导通常不能当作安全的 SFINAE 手段。前面的类型推导章节给出了完整的 `decltype` 与 `auto` 规则。
 
-#### 性能、错误定位与常见陷阱
+#### 性能、错误定位与常见陷阱 {#_40}
 
 模板能把类型选择提前，减少某些运行时间接调用，并给优化器更多信息；但不是“用了模板就一定更快”。代价包括编译时间增加、错误信息变长，以及许多实例化带来的代码体积增长。链接器可能合并部分机器代码，但不能依赖它消除所有膨胀。
 
@@ -2389,7 +3715,7 @@ int main() {
 
 这不是 `std::vector` 的替代实现：所有槽位预先默认构造，所以限制了可用类型；`pushAll` 逐项执行，若中途失败，前面成功添加的项目仍保留，不能宣称整个批次有强异常保证。若需要支持不能默认构造的类型、严格事务式批次或可变容量，应进一步设计存储与异常策略。
 
-#### 版本速查与原始参考
+#### 版本速查与原始参考 {#_41}
 
 | 标准 | 本节相关能力 |
 | --- | --- |
@@ -2407,8 +3733,9 @@ int main() {
 - [C++20 工作草案 N4861](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/n4861.pdf)：Concept 定义 `[temp.concept]`、约束 `[temp.constr]`、requires 表达式 `[expr.prim.req]`，以及模板参数和推导规则的扩展。
 - [C++23 工作草案 N4950](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/n4950.pdf)：函数声明 `[dcl.fct]` 中的显式对象参数；本节仅介绍其用途，不将其混入 C++17 示例。
 
-
 ## STL：容器、迭代器与算法 {#stl}
+
+
 
 ### STL、泛型编程与 `namespace std` {#stl-overview}
 
@@ -2534,7 +3861,9 @@ void insertAndEraseRange() {
 
 ### 顺序容器的结构与使用 {#stl-sequence}
 
-#### `std::array`：固定大小与连续存储
+
+
+#### `std::array`：固定大小与连续存储 {#stdarray}
 
 `std::array<T, N>` 保存恰好 `N` 个元素，`size()` 总为 `N`。它没有 `push_back`、`erase`、`clear` 或动态扩容接口，但能遍历、排序、填充。固定容量不表示一定存放在栈上：对象可以是局部变量、类成员，也可以由动态分配获得，存储位置取决于对象本身。
 
@@ -2575,7 +3904,7 @@ void manageVectorStorage() {
 
 预先知道数量时，`reserve(n)` 能减少扩容；不宜每插入一个元素都调用 `reserve(size() + 1)`，这种做法可能破坏高效增长策略。`reserve()` 只在请求超过现有容量时重新分配，不是缩容操作；`resize()` 才改变元素数量。
 
-#### 容器复制、移动与 `noexcept`
+#### 容器复制、移动与 `noexcept` {#noexcept}
 
 | 操作 | 例子 | 主要含义 |
 | --- | --- | --- |
@@ -2592,7 +3921,7 @@ void manageVectorStorage() {
 
 容器按值保存 `T`，并负责销毁它保存的对象；`vector<T*>` 保存的是裸地址，删除或销毁容器不会自动 `delete` 指针所指对象。通用拷贝、移动及资源管理规则见本笔记的构造函数与移动语义章节。
 
-#### `std::deque`：分块存储与两端操作
+#### `std::deque`：分块存储与两端操作 {#stddeque}
 
 `deque` 通常使用多个存储块与块索引，提供 `O(1)` 随机访问，却不保证元素形成一个连续数组。不能像 `vector` 那样把首元素地址加下标当作通用访问方式。两端单元素插入、删除为 `O(1)`；中间插入、删除仍需要移动元素，通常为线性复杂度。
 
@@ -2609,7 +3938,7 @@ void useDeque() {
 }
 ```
 
-#### `std::list`：双向链表
+#### `std::list`：双向链表 {#stdlist}
 
 `list` 通常每个节点保存值、前驱与后继，节点不连续。已取得有效位置迭代器时，单元素插入与删除为 `O(1)`；**寻找位置**仍可能需要 `O(n)`，因此不应笼统说“链表中间插入总比 vector 快”。额外指针、逐节点分配和缓存局部性也会影响实际性能。
 
@@ -2630,7 +3959,7 @@ void useList() {
 }
 ```
 
-#### `std::forward_list`：单向链表与前驱位置
+#### `std::forward_list`：单向链表与前驱位置 {#stdforward_list}
 
 单链表删除节点需要知道前驱，接口因此提供 `before_begin()`、`insert_after()` 与 `erase_after()`。`before_begin()` 是首节点之前的位置，不能解引用；`erase_after(prev)` 删除 `prev` 的后继，要求这个后继存在。
 
@@ -2698,7 +4027,9 @@ void useAdapters() {
 
 ### 关联容器：键、比较器与哈希 {#stl-associative}
 
-#### 有序关联容器与平衡搜索树
+
+
+#### 有序关联容器与平衡搜索树 {#_42}
 
 `set` / `map` 家族通常用平衡搜索树实现，常见实现采用红黑树。红黑树是一种自平衡二叉搜索树，使按键查找、插入及删除的主要搜索过程为 `O(log n)`；**标准要求的是接口、顺序与复杂度，不强制规定必须用红黑树**。
 
@@ -2737,7 +4068,7 @@ void insertEmployees() {
 
 `set` 元素不能通过迭代器随意修改，因为修改键可能破坏顺序；`map` 的键同样只读，映射值可以修改。需要更改键时可删除再插入，或使用 C++17 节点句柄并遵守相关接口。
 
-#### `std::pair`、map 键值对与查询
+#### `std::pair`、map 键值对与查询 {#stdpairmap}
 
 `std::pair<A, B>` 在 `<utility>` 中声明，成员 `first`、`second` 分别保存两个值。`map<K, T>` 和 `unordered_map<K, T>` 的元素类型是 `std::pair<const K, T>`：`first` 为只读键，`second` 为映射值。
 
@@ -2771,7 +4102,7 @@ void queryMap() {
 
 仅想查询时优先 `find()`，不要用 `operator[]` 意外添加数据。`map` / `unordered_map` 的 `find` 按键查找，不能直接按映射值查找；按值搜索一般要遍历。`multimap` / `unordered_multimap` 不提供 `operator[]` 或 `at()`，可用 `equal_range(key)` 遍历同键的范围。
 
-#### 无序关联容器、Hash Table 与 Bucket
+#### 无序关联容器、Hash Table 与 Bucket {#hash-table-bucket}
 
 哈希表（Hash Table）根据哈希函数（Hash Function）计算键的哈希值，再映射到哈希桶（Bucket）。不同键可能落入同一桶或产生相同哈希值，称为碰撞，因此还需要相等判断；哈希相等不代表键相等。
 
@@ -2846,7 +4177,7 @@ void visitElements() {
 
 `cbegin()` / `cend()` 明确获得只读元素迭代器；对 const 容器调用 `begin()` 也会获得相应 const_iterator。**const_iterator** 限制通过迭代器修改元素；`const auto it = values.begin()` 则限制迭代器对象本身，元素可能仍可修改，两者不同。
 
-#### 五类经典迭代器与能力要求
+#### 五类经典迭代器与能力要求 {#_43}
 
 下面采用 C++17 常用的经典分类；“读写能力”还取决于元素是否 const，输出迭代器也不是必须可读的输入迭代器。
 
@@ -2860,7 +4191,7 @@ void visitElements() {
 
 随机访问并不等于连续存储，`deque` 就是反例。C++20 进一步提供连续迭代器（Contiguous Iterator）的概念；不要把新旧概念体系完全等同。输入迭代器不保证多遍能力，例如从流中读取数据后不能假定一个旧副本仍指向可重新读取的同一项。
 
-#### `std::advance` 与 `std::next`
+#### `std::advance` 与 `std::next` {#stdadvance-stdnext}
 
 两者在 `<iterator>` 中声明。`std::advance(it, n)` 修改原迭代器；`std::next(it, n)` 返回移动后的副本，原迭代器不变。随机访问迭代器可用常数时间跳转，链表迭代器需逐项移动，通常为 `O(abs(n))`。
 
@@ -2880,7 +4211,7 @@ void moveIterator() {
 
 负数步长要求双向或更强迭代器；前向迭代器不能倒退。任何移动都必须在有效范围内，`next` / `advance` 不会自动检查越界。`std::distance(first, last)` 同样在随机访问范围中为 `O(1)`，对一般链表范围为 `O(n)`。
 
-#### 范围 for：`auto`、`auto&` 与 `const auto&`
+#### 范围 for：`auto`、`auto&` 与 `const auto&` {#forautoauto-const-auto}
 
 | 声明 | 含义 | 典型用途 |
 | --- | --- | --- |
@@ -2964,7 +4295,7 @@ void eraseWhileIterating() {
 
 `std::sort` 不适用于 list / forward_list，应调用其成员 `sort()`。set / map 的键不能赋值，不能通过 `std::remove` 压缩或 `std::sort` 改变键排列；需要它们自己的查询与删除接口。算法能力取决于迭代器和元素操作，不能只看“容器有 begin/end”。
 
-#### Function Pointer、Functor、Lambda 与 Predicate
+#### Function Pointer、Functor、Lambda 与 Predicate {#function-pointerfunctorlambda-predicate}
 
 算法可接收函数指针（Function Pointer）、函数对象（Functor，定义 `operator()` 的类实例）或 Lambda。返回可用于条件判断结果的可调用对象称为谓词（Predicate）；比较器通常是接收两个参数的谓词，并有额外的严格弱序要求。
 
@@ -3109,7 +4440,7 @@ int main() {
 
 智能指针管理多态对象还有一个稳定性区别：vector 扩容会移动 unique_ptr 元素，使指向这些指针槽位的引用失效，但所拥有的堆上对象通常没有因此搬迁；当其所有者被删除或重置时，指向实际对象的裸指针才也会悬空。析构函数、虚函数及智能指针的通用机制继续参见本笔记对应章节。
 
-### 原始参考与版本范围
+### 原始参考与版本范围 {#_44}
 
 本章代码以 C++17 为主；标注的连续迭代器概念与 `std::erase_if` 等属于 C++20。完整规则应以对应标准版本与后续缺陷修正为准。
 
@@ -3118,9 +4449,40 @@ int main() {
 - [Microsoft vector 文档](https://learn.microsoft.com/en-us/cpp/standard-library/vector-class?view=msvc-170)：构造、容量和修改接口。
 - [Microsoft algorithm 文档](https://learn.microsoft.com/en-us/cpp/standard-library/algorithm-functions?view=msvc-170)：通用算法及接口要求。
 
-## 二叉树
+## 数据结构、算法与复杂度 {#cpp-data-structures-and-algorithms}
 
-### 一、二叉树基础概念
+### 时间复杂度（Time Complexity） {#time-complexity}
+
+- `O(n)`：线性时间，例如遍历一个长度为 `n` 的数组
+- `O(n^2)`：二次时间，例如双重循环遍历 `n x n` 矩阵
+- `O(log n)`：对数时间，例如红黑树、二分查找、堆操作
+
+额外速记：
+
+- 哈希表：平均 `O(1)`
+- 红黑树：`O(log n)`
+- 暴力循环：常见是 `O(n)`
+
+### 空间复杂度 {#_50}
+
+空间复杂度描述的是算法运行时额外占用的内存大小。
+
+```cpp
+vector<int> v(n);  // O(n)，需要一个长度为 n 的数组
+
+int sum(int n) {
+    int s = 0;
+    for (int i = 1; i <= n; i++)
+        s += i;
+    return s;
+}  // O(1)，只用了常数个额外变量
+```
+
+### 二叉树 {#_45}
+
+
+
+#### 二叉树基础概念 {#_46}
 
 二叉树是一种树形数据结构，每个节点最多有两个孩子，通常叫做左孩子和右孩子。
 
@@ -3140,7 +4502,7 @@ int main() {
    4   5 6   7
 ```
 
-### 二、二叉树在 C 语言中的结构体定义
+#### 二叉树在 C 语言中的结构体定义 {#c_1}
 
 LeetCode 的二叉树题一般已经给好这个结构体：
 
@@ -3158,7 +4520,33 @@ struct TreeNode {
 - `left`：指向左孩子，没有左孩子就是 `NULL`。
 - `right`：指向右孩子，没有右孩子就是 `NULL`。
 
-### 三、二叉树遍历
+#### 递归思想解释 {#_48}
+
+递归可以理解成：把一棵大树的问题，拆成根节点、左子树、右子树三个部分。
+
+```text
+处理 root
+递归处理 root->left
+递归处理 root->right
+```
+
+以遍历为例，函数只负责“当前这棵树”：
+
+- 如果当前节点是 `NULL`，说明这棵树为空，直接返回。
+- 如果当前节点不是 `NULL`，就按指定顺序访问根节点、左子树、右子树。
+- 左右子树本身也是二叉树，所以继续调用同一个函数。
+
+三种 DFS 遍历只差“访问根节点”的位置：
+
+```text
+前序：先访问根，再递归左右
+中序：先递归左，再访问根，再递归右
+后序：先递归左右，再访问根
+```
+
+下面结合遍历顺序和 C 语言模板，查看对子树递归处理如何落实为代码。
+
+#### 二叉树遍历 {#_47}
 
 常见遍历顺序：
 
@@ -3184,7 +4572,7 @@ struct TreeNode {
 | 后序 | `4 5 2 6 7 3 1` |
 | 层序 | `1 2 3 4 5 6 7` |
 
-### 四、C 语言代码模板
+#### C 语言代码模板 {#c_2}
 
 递归遍历的核心写法是：先判断 `root == NULL`，再按遍历顺序处理根、左子树、右子树。
 
@@ -3294,31 +4682,7 @@ int** levelOrder(struct TreeNode* root, int* returnSize, int** returnColumnSizes
 }
 ```
 
-### 五、递归思想解释
-
-递归可以理解成：把一棵大树的问题，拆成根节点、左子树、右子树三个部分。
-
-```text
-处理 root
-递归处理 root->left
-递归处理 root->right
-```
-
-以遍历为例，函数只负责“当前这棵树”：
-
-- 如果当前节点是 `NULL`，说明这棵树为空，直接返回。
-- 如果当前节点不是 `NULL`，就按指定顺序访问根节点、左子树、右子树。
-- 左右子树本身也是二叉树，所以继续调用同一个函数。
-
-三种 DFS 遍历只差“访问根节点”的位置：
-
-```text
-前序：先访问根，再递归左右
-中序：先递归左，再访问根，再递归右
-后序：先递归左右，再访问根
-```
-
-## 双指针
+### 双指针 {#_49}
 
 ```cpp
 // 对撞指针（左右夹逼）
@@ -3356,62 +4720,7 @@ while (i < s && j < t) {
 4. 是否涉及“左边和 == 右边和”？
    可以先想到前缀和
 
-## 时间复杂度（Time Complexity）
-
-- `O(n)`：线性时间，例如遍历一个长度为 `n` 的数组
-- `O(n^2)`：二次时间，例如双重循环遍历 `n x n` 矩阵
-- `O(log n)`：对数时间，例如红黑树、二分查找、堆操作
-
-额外速记：
-
-- 哈希表：平均 `O(1)`
-- 红黑树：`O(log n)`
-- 暴力循环：常见是 `O(n)`
-
-## 空间复杂度
-
-空间复杂度描述的是算法运行时额外占用的内存大小。
-
-```cpp
-vector<int> v(n);  // O(n)，需要一个长度为 n 的数组
-
-int sum(int n) {
-    int s = 0;
-    for (int i = 1; i <= n; i++)
-        s += i;
-    return s;
-}  // O(1)，只用了常数个额外变量
-```
-
-## 堆和栈的区别
-
-- 栈：自动分配、自动回收的临时内存
-- 堆：手动申请、手动（或系统）释放的长期内存
-- 栈中常见存放：函数参数、局部变量、基本数据类型、指针/引用变量本身、返回地址等函数调用信息
-- 堆中常见存放：通过 `new` / `malloc` 动态申请的对象、数组、结构体、类实例等生命周期不固定的数据
-
-| 中文 | 英语 | 法语 |
-| ---- | ---- | ---- |
-| 栈 | **Stack** | **Pile** |
-| 堆 | **Heap** | **Tas** |
-
-```text
-ListNode* p = new ListNode(3);
-
-栈（Stack / Pile）        堆（Heap / Tas）
-┌────────────┐           ┌──────────────┐
-│ p (地址)   │ ────────▶ │ ListNode{3}  │
-└────────────┘           └──────────────┘
-```
-
-指针变量 `p` 在栈上，而它指向的对象在堆上。
-
-```cpp
-int a = 10;              // 普通局部变量，通常在栈上
-int* p = new int(20);    // 指针变量 p 在栈上，*p 在堆上
-```
-
-## 最大公约数思想
+### 最大公约数思想 {#_52}
 
 可以用辗转相除法：
 
@@ -3421,1234 +4730,90 @@ a = b;
 b = r;
 ```
 
-## 面向对象
+## 编译与工程实践 {#cpp-build-and-tooling}
 
-面向对象可以理解成：用“对象”来组织数据，并把操作这些数据的方法也放到对象身上。
+### 单文件编译与常用编译选项 {#cpp-single-file-build}
 
-```cpp
-string s = "HELLO";
-s.erase(2);
-s.push_back('!');
-```
-
-这里 `s` 是对象，`erase` 和 `push_back` 是操作这个对象的方法。
-
-
-## 抽象类
-
-在 C++ 中，只要一个类中包含至少一个纯虚函数（pure virtual function），这个类就是抽象类。
-
-纯虚函数写法：
-
-```cpp
-virtual 返回类型 函数名() = 0;
-```
-
-这里的 `= 0` 不是“等于 0”，而是 C++ 规定的纯虚函数写法。
-
-## 抽象类的核心特点
-
-1. 不能创建对象
-
-```cpp
-class Animal {
-public:
-    virtual void speak() = 0;  // 纯虚函数
-};
-Animal a; // ❌ 错误，不能创建抽象类对象
-```
-
-2. 可以作为基类
-3. 子类必须实现所有纯虚函数，否则子类本身还是抽象类
-
-## 工程风格示例
-
-```cpp
-class Device {
-public:
-    virtual void init() = 0;
-    virtual void start() = 0;
-    virtual void stop() = 0;
-
-    virtual ~Device() {}   // 必须有虚析构函数
-};
-// 实现：
-class UART : public Device {
-public:
-    void init() override { cout << "UART init\n"; }
-    void start() override { cout << "UART start\n"; }
-    void stop() override { cout << "UART stop\n"; }
-};
-// 然后在主程序里：
-Device* dev = new UART();
-dev->init();
-// 这就是：面向接口编程
-```
-
-## 继承
-
-继承的核心思想是：如果一个类是另一个类的“特殊情况”，那就可以用继承。
-
-比如：
-
-- 狗是动物
-- 车是交通工具
-- 学生是人
-
-```csharp
-Student is a Person
-Dog is an Animal
-```
-
-在 C++ 里就是：
-
-```cpp
-class Student : public Person
-```
-
-```cpp
-class C : public A
-```
-
-意思是：`C` 继承 `A`，`C` 会自动拥有 `A` 的所有 `public` 成员。
-
-这里的 `public` 表示继承方式：
-
-| 写法        | 意义                      |
-| --------- | ----------------------- |
-| public    | 保持父类的 public 仍然是 public |
-| protected | 父类 public 变成 protected  |
-| private   | 父类 public 变成 private    |
-
-如果不写，默认是 `private` 继承。
-
-好，这个是 C++ 面向对象三大特性之一：
-
-> 封装、继承、多态
-
-## C++ 继承中的虚析构函数
-在 C++ 继承中，有一个很重要的规则：
-> 如果一个类可能被继承，并且将来可能通过“基类指针”删除子类对象，那么基类的析构函数应该声明为 `virtual`。
-例如：
-```cpp
-class Base {
-public:
-    ~Base() {
-        std::cout << "Base destructor\n";
-    }
-};
-class Derived : public Base {
-public:
-    ~Derived() {
-        std::cout << "Derived destructor\n";
-    }
-};
-```
-如果这样使用：
-```cpp
-Base* p = new Derived();
-delete p;
-```
-`p` 的类型是 `Base*`，但是它实际指向的是一个 `Derived` 对象。
-如果 `Base` 的析构函数不是虚函数，那么通过 `delete p` 删除对象时，可能只会调用基类的析构函数：
-```cpp
-Base destructor
-```
-而不会调用子类 `Derived` 的析构函数。
-这会带来严重问题：如果子类中申请了内存、打开了文件、创建了线程，或者占用了其他资源，那么这些资源可能无法被正确释放。
-正确写法应该是：
-```cpp
-class Base {
-public:
-    virtual ~Base() {
-        std::cout << "Base destructor\n";
-    }
-};
-class Derived : public Base {
-public:
-    ~Derived() {
-        std::cout << "Derived destructor\n";
-    }
-};
-```
-这时再执行：
-```cpp
-Base* p = new Derived();
-delete p;
-```
-析构函数的调用顺序是：
-```cpp
-Derived destructor
-Base destructor
-```
-也就是说，先析构子类部分，再析构基类部分。
-注意：虚析构函数不等于抽象类
-一个类被继承，并不代表它一定要写成抽象类。
-抽象类指的是包含纯虚函数的类，例如：
-```cpp
-class Base {
-public:
-    virtual void run() = 0;
-};
-```
-这里的 `= 0` 表示纯虚函数，所以 `Base` 是抽象类，不能直接创建对象。
-但是下面这个类不是抽象类：
-```cpp
-class Base {
-public:
-    virtual ~Base() {}
-};
-```
-
-虽然它有虚析构函数，但析构函数不是纯虚函数，所以这个类仍然可以创建对象。
-
-## 总结
-
-继承本身不要求基类必须是抽象类。
-
-但是，只要一个类会作为基类使用，并且可能出现下面这种写法：
-
-```cpp
-Base* p = new Derived();
-delete p;
-```
-
-那么基类的析构函数就应该写成虚析构函数：
-
-```cpp
-virtual ~Base() {}
-```
-
-这样可以保证删除对象时，子类和基类的析构函数都会被正确调用，避免资源泄漏。
-
-
-## 多态
-
-多态（Polymorphism）字面意思是：
-
-> 多种形态
-
-在 C++ 里通常指：
-
-> 同一个接口，不同对象，表现不同的行为
-
-举个例子：
-
-```cpp
-Animal* a = new Dog();
-Animal* b = new Cat();
-
-a->speak();   // 汪
-b->speak();   // 喵
-```
-
-同样是 `speak()`，但行为不同，这就是多态。
-
-## 实现多态的三个条件
-
-1. 继承
-2. 虚函数（`virtual`）
-3. 基类指针或引用调用
-
-缺一个都不是真正的运行时多态。
-
-## 完整示例代码
-
-```cpp
-#include <iostream>
-using namespace std;
-class Animal {
-public:
-    virtual void speak() {     // 虚函数
-        cout << "Animal sound" << endl;
-    }
-};
-class Dog : public Animal {
-public:
-    void speak() override {
-        cout << "Dog: Woof" << endl;
-    }
-};
-class Cat : public Animal {
-public:
-    void speak() override {
-        cout << "Cat: Meow" << endl;
-    }
-};
-int main() {
-    Animal* a1 = new Dog();
-    Animal* a2 = new Cat();
-
-    a1->speak();   // 调用 Dog 的版本
-    a2->speak();   // 调用 Cat 的版本
-
-    delete a1;
-    delete a2;
-}
-```
-
-## `override` 与 `final`
-
-`override` 表示子类函数要重写基类虚函数。若函数名、参数或 `const` 等签名不匹配，编译器会直接报错，因此重写虚函数时建议始终添加：
-
-```cpp
-class Device {
-public:
-    virtual void start() const = 0;
-};
-
-class Sensor : public Device {
-public:
-    void start() const override final {}  // 正确重写，并禁止继续重写
-};
-```
-
-`final` 用在虚函数后表示禁止子类再次重写，用在类名后表示禁止该类被继承：
-
-```cpp
-class FixedDevice final : public Device {
-public:
-    void start() const override {}
-};
-```
-
-简单记忆：`override` 是“确认我在重写”，`final` 是“到这里为止”。
-
-## 如果没有 virtual 会怎样？
-
-```cpp
-class Animal {
-public:
-    void speak() {   // 没有 virtual
-        cout << "Animal sound" << endl;
-    }
-};
-```
-那就会变成：
-```
-Animal sound
-Animal sound
-```
-
-## 多态分两种
-
-1. 编译时多态（静态多态）
-
-   - 函数重载
-   - 运算符重载
-   - 模板
-
-   例子：
-
-```cpp
-int add(int a, int b);
-double add(double a, double b);
-```
-
-   编译时就确定调用哪个版本。
-
-2. 运行时多态（动态多态）
-
-   - 通过 `virtual` 实现
-   - 通过基类指针调用
-
-## 底层原理
-
-多态靠的是：
-
-> 虚函数表（vtable）
-
-每个带 `virtual` 的类通常都会有虚函数表，对象内部也会存一个 `vptr`（指向虚函数表的指针）。
-
-当你调用 `a->speak();` 时，实际流程大致是：
-
-1. 通过 `vptr` 找到 `vtable`
-2. 再找到真正的函数地址
-3. 最终调用 `Dog::speak()`
-
-这就是动态绑定（Dynamic Binding）。
-
-## 多态的好处（工程角度）
-
-在以后做嵌入式架构时，假设你有：
-
-- UART 驱动
-- SPI 驱动
-- CAN 驱动
-
-你可以这样写：
-
-```cpp
-Device* dev = new UART();
-dev->init();
-```
-
-主程序根本不关心具体是什么设备，这就是：
-
-> 面向接口编程
-
-## 什么是多态？
-
-多态是指同一接口在不同对象上表现出不同的行为。在 C++ 中通常通过继承和虚函数实现运行时多态，依赖虚函数表进行动态绑定。
-
-## 和抽象类的关系
-
-抽象类通常用来实现多态。
-
-流程是：
-
-```
-抽象类定义接口
-↓
-子类实现接口
-↓
-基类指针调用
-↓
-产生多态
-```
-
-## 为什么不直接创建 Dog 和 Cat，而要用多态
-
-如果程序里只处理几个确定对象，可以直接创建具体类。
-
-```cpp
-Dog d;
-Cat c;
-d.speak();
-c.speak();
-```
-
-这种写法简单直接，完全没问题。
-但是如果希望用一套统一代码处理多种不同对象，就适合使用多态。
-
-```cpp
-void makeSpeak(Animal& a) {
-    a.speak();
-}
-```
-
-这里 `makeSpeak()` 不关心传进来的是 `Dog` 还是 `Cat`，只要求它是一个 `Animal`。
-
-```cpp
-Dog d;
-Cat c;
-makeSpeak(d);
-makeSpeak(c);
-```
-
-如果 `speak()` 是虚函数，那么虽然参数类型是 `Animal&`，实际执行时会根据真实对象类型调用对应版本。
-
-```cpp
-Animal& a = d;
-a.speak(); // 实际调用 Dog::speak()
-```
-
-多态的核心作用是：用统一接口处理不同类型对象，减少重复代码，方便以后扩展新类型。
-
-## 继承、抽象类、多态分别是什么
-
-继承表示“是一种”的关系。
-
-```cpp
-class Dog : public Animal {};
-```
-
-意思是 `Dog` 是一种 `Animal`。
-继承适合把多个类的共同特征抽出来，形成统一的父类类型。
-抽象类一般用来定义规则，而不是直接创建对象。
-
-```cpp
-class Animal {
-public:
-    virtual void speak() = 0;
-};
-```
-
-这里 `= 0` 表示纯虚函数，`Animal` 就变成抽象类。
-抽象类适合规定所有子类必须实现某些函数。
-
-```cpp
-class Dog : public Animal {
-public:
-    void speak() override {
-        cout << "Dog: Woof" << endl;
-    }
-};
-```
-
-如果 `Dog` 不实现 `speak()`，那么 `Dog` 也会继续是抽象类，不能创建对象。
-多态指的是：同一个接口，不同对象有不同表现。
-
-```cpp
-Animal* a = new Dog();
-a->speak(); // 调用 Dog 的版本
-```
-
-多态通常需要：有继承关系，父类函数是 `virtual`，子类重写该函数，通过父类指针或父类引用调用。
+普通编译
 
-## 多态的典型使用场景
-
-多态适合处理“类型不同，但行为接口相同”的对象。
-例如动物系统中，不同动物都可以 `speak()`。
-
-```cpp
-vector<Animal*> animals;
-animals.push_back(new Dog());
-animals.push_back(new Cat());
-for (Animal* a : animals) {
-    a->speak();
-}
-```
-
-循环中代码只有一份：
-
-```cpp
-a->speak();
-```
-
-但实际执行时，可能调用 `Dog::speak()`，也可能调用 `Cat::speak()`。
-实际开发中，多态常用于通信接口、设备接口、驱动接口、任务接口等。
-
-```cpp
-class Communication {
-public:
-    virtual void send() = 0;
-};
-class UART : public Communication {
-public:
-    void send() override {
-        cout << "Send by UART" << endl;
-    }
-};
-class CAN : public Communication {
-public:
-    void send() override {
-        cout << "Send by CAN" << endl;
-    }
-};
-```
-
-主程序只依赖统一接口：
-
-```cpp
-void sendData(Communication& com) {
-    com.send();
-}
-```
-
-以后新增 `TCP`、`RS485` 等通信方式时，原来的 `sendData()` 不需要修改。
-
-## 基类引用和基类指针都可以实现多态
-
-这个参数不是指针，而是引用。
-
-```cpp
-void sendData(Communication& com) {
-    com.send();
-}
-```
-
-`Communication&` 表示基类引用，`com` 是传入对象的别名。
-
-```cpp
-UART uart;
-sendData(uart);
-```
-
-只要 `send()` 是虚函数，真实对象是 `UART`，就会调用 `UART::send()`。
-指针版本也可以。
-
-```cpp
-void sendData(Communication* com) {
-    com->send();
-}
-UART uart;
-sendData(&uart);
-```
-
-也可以动态创建对象。
-
-```cpp
-Communication* p = new UART();
-sendData(p);
-delete p;
-```
-
-但是简单场景下更推荐引用和局部对象，因为不用手动 `new` 和 `delete`。
-不要用值传递实现多态。
-
-```cpp
-void sendData(Communication com) {
-    com.send();
-}
-```
-
-这种写法会发生对象切片，只保留基类部分，子类部分会丢失，多态会失效。
-
-## std::function 是什么
-
-`std::function` 是 C++ 里的通用函数包装器，头文件是：
-
-```cpp
-#include <functional>
-```
-
-它可以保存“能像函数一样被调用的东西”，比如普通函数、lambda、函数对象、绑定后的成员函数。
-基本语法：
-
-```cpp
-std::function<返回值类型(参数类型列表)> 变量名;
-```
-
-常见形式：
-
-```cpp
-std::function<void()> f1;          // 无参数，无返回值
-std::function<int(int, int)> f2;   // 两个 int 参数，返回 int
-std::function<void(int)> f3;       // 一个 int 参数，无返回值
-```
-
-保存普通函数：
-
-```cpp
-int add(int a, int b) {
-    return a + b;
-}
-std::function<int(int, int)> f = add;
-cout << f(3, 5) << endl;
-```
-
-`std::function` 常用于回调函数，也就是把一个函数行为作为参数传给另一个函数。
-
-## lambda 是什么
-
-lambda 可以理解成“没有名字的临时函数”。
-普通函数写法：
-
-```cpp
-void hello() {
-    cout << "Hello" << endl;
-}
-```
-
-lambda 写法：
-
-```cpp
-[]() {
-    cout << "Hello" << endl;
-}
-```
-
-lambda 常用于只需要临时使用一次的小函数，不想单独起名字。
-它也可以保存到 `std::function` 里。
-
-```cpp
-std::function<void()> f = []() {
-    cout << "Hello lambda" << endl;
-};
-f();
-```
-
-这里 `f` 是一个函数变量，里面保存了这个 lambda，`f()` 就是调用它。
-
-## lambda 中 [](){} 分别是什么意思
-
-Lambda 的完整常用语法是：
-
-```cpp
-[capture-list](params) mutable -> return_type {
-    body
-}
-```
-
-其中参数列表、`mutable` 和尾置返回类型都可以按需省略。没有显式写 `-> return_type` 时，编译器会根据 `return` 表达式推断返回类型；多个返回分支必须能推断成兼容的类型。
-
-`[]` 是捕获列表，用来捕获外部变量。
-
-```cpp
-[] // 不捕获外部变量
-```
-
-`()` 是参数列表，和普通函数参数一样。
-
-```cpp
-[](int a, int b) {
-    return a + b;
-}
-```
-
-`{}` 是函数体，里面写真正执行的代码。
-
-```cpp
-[]() {
-    cout << "Hello lambda" << endl;
-}
-```
-
-这段 lambda 表示：不捕获外部变量，没有参数，执行时输出一行文字。
-如果要使用外部变量，可以写捕获列表：
-
-```cpp
-int x = 10;
-auto f = [x]() {
-    cout << x << endl;
-};
-f();
-```
-
-这里 `[x]` 表示把外部变量 `x` 捕获进 lambda。
-
-常见捕获方式：
-
-| 写法 | 含义 |
-| --- | --- |
-| `[]` | 不捕获外部变量 |
-| `[&]` | 默认按引用捕获使用到的外部变量 |
-| `[=]` | 默认按值捕获使用到的外部变量 |
-| `[a]` | 只按值捕获 `a` |
-| `[&a]` | 只按引用捕获 `a` |
-| `[=, &a]` | 其他变量按值捕获，`a` 按引用捕获 |
-| `[this]` | 捕获当前对象的 `this` 指针，以访问成员 |
-
-按值捕获会把创建 Lambda 时的值保存到闭包对象中，默认不能修改这份副本；按引用捕获直接访问原变量，可以修改原变量，但 Lambda 的使用时间不能超过被引用变量的生命周期。
-
-Lambda 生成的闭包对象中，`operator()` 默认是 `const`，所以按值捕获的成员默认只读。`mutable` 解决的问题是：**让 Lambda 能修改并保存自己的捕获副本状态，同时不修改外部原变量**。
-
-```cpp
-int count = 0;
-
-// auto wrong = [count]() { return ++count; }; // 错误：副本默认只读
-auto next = [count]() mutable {
-    return ++count;
-};
-
-next(); // 返回 1
-next(); // 返回 2，Lambda 自己保存了状态
-// 外部 count 仍然是 0
-```
-
-因此，`mutable` 适合计数器、生成器等需要在多次调用之间保存内部状态的 Lambda。它只改变按值捕获副本的可修改性；按引用捕获本来就能修改外部对象，`mutable` 也不表示线程安全。
-
-Lambda 定义后紧跟 `()` 就会立即调用；返回类型既可以推断，也可以显式写成尾置返回类型：
-
-```cpp
-int square = [](int x) { return x * x; }(5); // 立即调用，结果为 25
-
-auto divide = [](double a, double b) -> double {
-    return a / b;
-};
-```
-
-嵌套 Lambda 只能使用它自己捕获的变量；需要使用外层作用域的变量时，外层 Lambda 必须先捕获，内层再从外层环境捕获：
-
-```cpp
-int value = 10;
-auto outer = [value]() mutable {
-    auto inner = [&value]() { ++value; };
-    inner();
-    return value;
-};
-
-outer(); // 返回 11；外部原始 value 仍为 10
-```
-
-## callback 为什么没有单独定义也能调用
-
-在下面这段代码中，`callback` 不是普通函数名，而是函数参数名。
-
-```cpp
-void process(std::function<void()> callback) {
-    callback();
-}
-```
-
-它的类型是：
-
-```cpp
-std::function<void()>
-```
-
-意思是 `callback` 可以保存一个“无参数、无返回值”的可调用对象。
-调用 `process()` 时，可以直接传入 lambda。
-
-```cpp
-process([]() {
-    cout << "This is callback" << endl;
-});
-```
-
-这相当于把这个匿名函数传给 `callback` 参数。
-进入 `process()` 后，`callback` 里面已经保存了这个 lambda，所以可以写：
-
-```cpp
-callback();
-```
-
-这不是调用一个提前写好的普通函数，而是调用传进来的函数对象。
-可以类比普通参数：
-
-```cpp
-void func(int x) {
-    cout << x << endl;
-}
-func(10);
+```bash
+g++ test.cpp -o test -std=c++17 -Wall -Wextra
 ```
 
-`x` 没有提前单独定义，但它是函数参数，所以可以在函数内部使用。
-同理，`callback` 也是函数参数，只不过它保存的是一个函数行为。
+### Makefile {#makefile}
 
-## std::function 和函数指针的区别
+```makefile
+CXX = g++ # 定义编译器CXX 是 make 的惯例变量名（C++ compiler）
+CXXFLAGS = -Wall -Wextra -g -MMD -MP 
+#编译选项
+# | 参数      | 作用              |
+# | -Wall   | 打开常见警告          |
+# | -Wextra | 打开更多警告          |
+# | -g      | 生成调试信息（给 gdb 用） |
+# | -MMD    | 自动生成 .d 依赖文件    |
+# | -MP     | 避免删除头文件时报错      |
+TARGET = test # 最终生成的可执行文件名最终会生成：./test
+SRCS = main.cpp Surcharge.cpp # 所有源文件如果你再加一个文件：SRCS = main.cpp Surcharge.cpp utils.cpp 后面会自动适配。
+OBJS = $(SRCS:.cpp=.o) # 变量替换意思是：main.cpp → main.o Surcharge.cpp → Surcharge.o
+# $(变量:旧后缀=新后缀)
+DEPS = $(SRCS:.cpp=.d) # 生成依赖文件名main.d Surcharge.d .d 文件是 -MMD 自动生成的依赖文件。
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $@ $(OBJS)
+# 等价于g++ -Wall -Wextra -g -MMD -MP -o test main.o Surcharge.o
+# | 符号 | 意义              |
+# | -- | --------------- |
+# | $@ | 当前目标名（这里是 test） |
+# | $< | 第一个依赖文件         |
+# | $^ | 所有依赖文件          |
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@  
+# 模式匹配规则 意思是：任何 .o 文件 都可以由 对应的 .cpp 文件 生成
+# 等价于g++ -Wall -Wextra -g -MMD -MP -c main.cpp -o main.o  其中 -c 表示只编译，不链接
 
-函数指针可以保存普通函数。
+-include $(DEPS) # 自动包含依赖，意思是：包含所有 .d 文件。前面的 - 表示：如果 .d 文件不存在，不报错
 
-```cpp
-void hello() {
-    cout << "Hello" << endl;
-}
-void (*fp)() = hello;
-fp();
-```
-
-但是函数指针不能方便地保存带捕获的 lambda。
-
-```cpp
-int x = 10;
-// void (*fp)() = [x]() { cout << x << endl; }; // 错误
-```
-
-`std::function` 可以保存带捕获的 lambda。
-
-```cpp
-int x = 10;
-std::function<void()> f = [x]() {
-    cout << x << endl;
-};
-f();
-```
-
-简单理解：函数指针更轻量，但功能简单；`std::function` 更灵活，但有一定额外开销。
-在嵌入式裸机或资源很小的 MCU 上，经常使用函数指针；在 Linux、上位机、ROS、普通 C++ 应用里，`std::function` 很常见。
-
-## 智能指针与所有权 {#smart-pointer-ownership}
-
-智能指针首先是一个类对象：它保存指针，通过 `*`、`->` 等操作提供类似指针的访问，并按照**所有权策略**管理资源。问题不仅是“地址指向哪里”，还包括“谁负责销毁对象、对象需要活多久”。以下内容根据课件《C++ - Slot 9 - Smart pointers》第 2–23 页补充；代码统一采用 C++17，课件的历史写法与现代建议分别说明。
-
-### RAII：让资源释放跟随管理对象的生命周期
-
-局部裸指针变量离开作用域，只会结束这个指针变量本身的生命周期，不会自动 `delete` 它指向的动态对象。手动释放一旦遗漏，或被异常、提前 `return` 跳过，就可能泄漏；反过来，对象销毁后仍使用旧地址则会产生悬空访问。
-
-RAII（Resource Acquisition Is Initialization，资源获取即初始化）将资源交给一个对象管理，由该对象的析构过程负责释放。智能指针是 RAII 的一种应用；文件、锁等也可采用相同思路。对于正常离开作用域和正常栈展开，局部智能指针会被析构，但不能据此假定进程被强制终止等情况也会完成清理。
-
-```cpp
-#include <memory>
-#include <stdexcept>
-
-void raiiOnException() {
-    auto buffer = std::make_unique<int[]>(4);
-    buffer[0] = 42;
-    throw std::runtime_error("operation failed");
-    // 栈展开时 buffer 析构，数组通过 delete[] 自动释放。
-}
-```
-
-智能指针不会自动修复一切内存问题：从 `get()` 取出的裸指针仍可能悬空，多个独立所有者仍可能重复删除同一对象，共享所有权形成环仍可能泄漏。能直接按值保存的对象不必仅为使用智能指针而动态分配。
-
-### 从 `auto_ptr` 到显式移动
-
-课件第 5–8 页的 `std::auto_ptr` 是历史背景：它在 C++98 中提供独占所有权，却在“复制”时转移所有权，使源指针变空。按值传入一个看似只读的函数，也可能意外转走并销毁调用者的对象；这种复制语义不符合普通容器所需的值语义。
-
-`auto_ptr` 在 C++11 被弃用，在 C++17 从标准中移除，不应写进新的 C++17 示例。替代者 `unique_ptr` 禁止复制，通过移动明确表达转移；`shared_ptr` 的复制则表示共享，不是把底层对象深拷贝一份。需要复制多态对象本身时，要另行提供 `clone()` 等协议，可参考 Prototype 模式，而不能期待智能指针自动推断怎样复制派生类型。
-
-`unique_ptr`、`shared_ptr`、`weak_ptr` 和 `make_shared` 属于 C++11；`make_unique` 从 C++14 起提供。Boost 曾为标准化提供重要实践，但 `boost::shared_ptr` 与 `std::shared_ptr` 是不同类型，不能通过各自接管同一个裸地址来“转换”。
-
-## unique_ptr 是什么
-
-`std::unique_ptr` 是 C++ 里的智能指针，头文件是：
-
-```cpp
-#include <memory>
-```
-
-`std::make_unique<T>(参数)` 会创建一个 `T` 类型的对象，并立即交给 `unique_ptr` 管理。例如：
-
-```cpp
-auto number = std::make_unique<int>(42);
-std::cout << *number; // 输出 42；*number 取得它管理的 int
+.PHONY: clean
+# 伪目标 clean 的意思是：告诉 make clean 不是一个文件名，而是一个命令。否则如果目录里有个叫 clean 的文件就会冲突。
+clean:
+	rm -f $(OBJS) $(DEPS) $(TARGET)
 ```
 
-这里的 `int` 是要创建的类型，圆括号中的 `42` 是传给它的初始化值。类似地，`std::make_unique<Dog>()` 会调用 `Dog` 的无参构造函数；`std::make_unique<Dog>(name)` 会把 `name` 传给 `Dog` 的构造函数。优先使用 `make_unique`，可以避免直接书写 `new`，对象也会在智能指针离开作用域时自动释放。
+补充说明：
 
-它可以理解成“自动 delete 的指针”，并且独占它管理的对象。
+- `-Wall`：打开常见警告
+- `-Wextra`：打开更多警告
+- `-g`：生成调试信息，给 `gdb` 用
+- `-MMD`：自动生成 `.d` 依赖文件
+- `-MP`：避免删除头文件时报错
+- `$@`：当前目标名
+- `$<`：第一个依赖文件
+- `$^`：所有依赖文件
+- `-include $(DEPS)`：自动包含依赖文件；前面的 `-` 表示即使文件不存在也不报错
+- `.PHONY: clean`：声明伪目标，避免和同名文件冲突
 
-```cpp
-auto p = std::make_unique<Dog>();
-p->speak();
-```
-
-当 `p` 生命周期结束时，它会自动释放对象，不需要手动 `delete`。
-`unique_ptr` 不能复制，只能转移所有权。
-
-```cpp
-std::unique_ptr<Dog> p1 = std::make_unique<Dog>();
-// std::unique_ptr<Dog> p2 = p1; // 错误
-std::unique_ptr<Dog> p2 = std::move(p1); // 正确
-```
+### Attributes、annotations 与编译器扩展 {#attributesannotations}
 
-转移后，`p1` 变空，`p2` 接管对象。
-`unique_ptr` 常用于替代裸指针的 `new/delete`，也常和多态一起使用。
+C++ 标准属性使用 `[[attr]]` 语法，为编译器提供额外信息，但不改变普通类型语法。属性可以带参数，也可以放在函数、类型或变量等特定位置：
 
 ```cpp
-std::unique_ptr<Animal> a = std::make_unique<Dog>();
-a->speak();
-```
+[[deprecated("请改用 newApi")]]
+void oldApi();
 
-如果函数只是临时使用对象，一般传引用。
-
-```cpp
-void makeSpeak(Animal& animal) {
-    animal.speak();
-}
-auto dog = std::make_unique<Dog>();
-makeSpeak(*dog);
+[[noreturn]]
+void fatalError(); // 承诺函数不会正常返回
 ```
 
-如果函数要接管对象所有权，才传 `unique_ptr`，并用 `std::move`。
-
-```cpp
-void takeAnimal(std::unique_ptr<Animal> animal) {
-    animal->speak();
-}
-auto dog = std::make_unique<Dog>();
-takeAnimal(std::move(dog));
-```
+- `[[deprecated]]` 表示实体仍可使用，但编译器通常会给出弃用警告。
+- `[[noreturn]]` 表示函数不会返回调用者；若它实际正常返回，程序行为未定义。
+- `[[carries_dependency]]` 曾用于描述底层原子操作的依赖链，实际支持和标准状态取决于语言版本与编译器；新代码通常不应依赖它。
 
-### `get`、`reset` 与 `release` {#unique-pointer-operations}
+下面几种写法也能向编译器提供额外指令，但可移植性不同：
 
-| 操作 | 所有权变化 | 应注意什么 |
+| 写法 | 来源 | 示例 |
 | --- | --- | --- |
-| `p.get()` | 不变，返回借用的裸指针 | 不要 `delete` 它，不会延长对象寿命 |
-| `p.reset()` | 释放当前对象并变空 | 之后不能继续解引用旧对象 |
-| `p.reset(raw)` | 先按接口规则接管新地址，释放原资源 | raw 必须可由相应删除器管理；不要传 `p.get()` |
-| `p.release()` | 变空并返回原地址，不删除对象 | 调用者接手释放责任，否则泄漏 |
-| `q = std::move(p)` | q 原有资源被释放，再接管 p 的资源 | 对不同对象进行正常移动后，p 为空 |
-
-```cpp
-#include <cassert>
-#include <memory>
-#include <utility>
-
-void transferUniqueOwnership() {
-    auto source = std::make_unique<int>(42);
-    int* borrowed = source.get();
-    auto target = std::move(source);
-    assert(!source && target.get() == borrowed);
-    // 移动的是所有权句柄，原 int 没有被复制或搬到新地址。
-    target.reset(new int(7)); // 旧 int 被销毁，borrowed 此后不能再使用
-    int* released = target.release();
-    assert(!target);
-    std::unique_ptr<int> restored(released); // 立即重新交给唯一所有者
-    assert(*restored == 7);
-}
-```
-
-默认构造的 `unique_ptr` 为空；在调用 `*p`、`p->member` 前应满足非空前提，可用 `if (p)` 检查。`release()` 不是“立即释放内存”；它常用于交接给明确接管所有权的旧接口，不宜作为日常访问对象的方法。
-
-默认的 `unique_ptr<T>` 对应单对象 `delete`，`unique_ptr<T[]>` 对应数组 `delete[]`，后者提供 `operator[]`，不会自动检查数组越界。删除策略可由第二个模板参数定制，从而管理文件句柄等资源；删除器必须匹配资源的释放方式且不应向外抛出异常。动态序列通常先考虑 `vector<T>`。
-
-`unique_ptr<Derived>` 本身不继承 `unique_ptr<Base>`；某些类型间转换由转换构造函数提供，且须满足指针和删除器条件。用默认删除器通过 `unique_ptr<Base>` 管理派生对象时，Base 通常需要虚析构函数。与 STL 容器组合的例子见本笔记 STL 章节和后面的多态综合示例。
-
-## shared_ptr 是什么
-
-`std::shared_ptr` 也是智能指针，头文件是：
-
-```cpp
-#include <memory>
-```
-
-它可以理解成“多个指针共同管理同一个对象”。
-
-```cpp
-auto p1 = std::make_shared<Dog>();
-auto p2 = p1;
-```
-
-这时 `p1` 和 `p2` 共同拥有同一个 `Dog` 对象。
-共享同一所有权组的 `shared_ptr` 使用同一个控制块。控制块中的强引用计数记录共享该所有权的 `shared_ptr` 数量；复制一个句柄不会复制底层 `Dog` 对象。
-
-```cpp
-cout << p1.use_count() << endl;
-```
-
-当最后一个 `shared_ptr` 消失时，对象才会自动释放。
-
-```cpp
-std::shared_ptr<Animal> a = std::make_shared<Dog>();
-a->speak();
-```
-
-如果函数只是使用对象，不保存它，推荐传引用。
-
-```cpp
-void makeSpeak(Animal& animal) {
-    animal.speak();
-}
-auto a = std::make_shared<Dog>();
-makeSpeak(*a);
-```
-
-如果函数要保存对象，让对象在函数结束后继续存在，可以传 `shared_ptr`。
-
-```cpp
-std::shared_ptr<Animal> savedAnimal; // 示例保存位置，实际通常是某个类的成员
-void saveAnimal(std::shared_ptr<Animal> animal) {
-    savedAnimal = std::move(animal);
-}
-auto a = std::make_shared<Dog>();
-saveAnimal(a); // 参数取得共享所有权，再将这份所有权移入保存位置
-```
-
-传入左值 `a` 时会复制一份共享句柄；函数把它移入 `savedAnimal` 后，这份所有权在函数返回后仍然存在。如果函数只按值接收并调用 `speak()`，却没有保存句柄，增加的引用会在函数返回时释放，并不表示完成了长期保存。
-
-### 控制块、`use_count()` 与 `reset()` {#shared-pointer-control-block}
-
-控制块保存强引用计数、弱引用相关状态和删除器等管理信息。`shared_ptr` 的典型实现保存“访问对象的指针 + 控制块指针”，但不能依赖它固定占几个字节；`make_shared` 通常把对象与控制块放进一次分配中，从而减少分配次数。
-
-```cpp
-#include <cassert>
-#include <memory>
-#include <utility>
-
-void sharedOwnershipCounts() {
-    auto first = std::make_shared<int>(10);
-    auto second = first;
-    assert(first.use_count() == 2);
-    auto third = std::move(second);
-    assert(!second && first.use_count() == 2); // 移动没有新增拥有者
-    first = std::make_shared<int>(20);        // first 加入一个新的所有权组
-    assert(first.use_count() == 1 && third.use_count() == 1);
-    assert(*third == 10);                     // 原对象仍由 third 管理
-    third.reset();                           // 最后一个强拥有者释放原对象
-}
-```
-
-`reset()` 仅让当前句柄放弃共享所有权，其他拥有者仍可维持原对象。`reset(new T(...))` 或赋入新的 `make_shared<T>(...)` 结果，会让当前句柄管理新对象，不是把所有旧拥有者一起清空。
-
-当强引用计数降为 0 时，管理的对象通过相应删除器释放；只要仍有相关 `weak_ptr`，用于判断过期的控制块还可能存在。最后的相关弱引用也消失后，控制块才可释放。`make_shared` 合并分配时，**对象已经析构**与**整块分配已归还**还可能发生在不同时间。
-
-补充边界：`shared_ptr` 还支持别名构造，可访问一个成员、同时共享其宿主对象的所有权。因此 `get()` 是访问指针，不总等于最终由控制块销毁的对象地址；计数描述的是所有权组，不能简单按裸地址统计。
-
-不同 `shared_ptr` 句柄共享控制块时，引用计数管理支持并发操作，不等于被指对象的数据自动线程安全；并发修改同一个句柄也需按规则同步。`use_count()` 在并发场景只是观察结果，不能凭 `use_count() == 1` 就断言拥有安全的独占访问。
-
-### 从裸指针构造：接管资源与重复接管的区别 {#shared-pointer-raw-pointer}
-
-课件第 16 页将“raw pointer → shared_ptr”标为 forbidden，是对不明所有权接管的警示，**不是说语言禁止显式构造**：`std::shared_ptr<T>(new T(...))` 合法，但通常优先使用 `make_shared`。接管要求明确、唯一地交出释放责任，并保证删除方式匹配。
-
-```cpp
-#include <memory>
-
-void borrowWithoutAdopting() {
-    auto owner = std::make_shared<int>(42);
-    int* borrowed = owner.get();
-    auto anotherOwner = owner; // 正确：共享原控制块
-    // std::shared_ptr<int> wrong(borrowed); // 危险：建立第二个独立控制块
-    *borrowed += 1; // 这里只借用；owner / anotherOwner 仍保持对象存活
-}
-```
-
-两个独立控制块分别认为自己负责删除同一个对象，会导致重复删除。不能将借用指针、栈对象地址，或已由智能指针管理的 `get()` 结果再交给默认删除的拥有者。`get()` 不转移所有权，不能把它得到的地址当成“尚无人负责释放的新资源”。
-
-### 智能指针放入 set：按地址还是按对象内容比较 {#shared-pointer-set}
-
-课件第 17 页同时把共享指针存入 vector、默认 set 和自定义比较器 set。它们的去重依据不同：vector 保存每次添加的句柄；默认 `set<shared_ptr<T>>` 按保存的指针值排序，不会自动比较 `T` 的成员；自定义比较器则可以按对象内容定义等价键。
-
-```cpp
-#include <cassert>
-#include <memory>
-#include <set>
-#include <vector>
-
-struct SharedItem {
-    int value;
-    explicit SharedItem(int number) : value(number) {}
-};
-struct CompareSharedItem {
-    bool operator()(const std::shared_ptr<SharedItem>& a,
-                    const std::shared_ptr<SharedItem>& b) const {
-        return a->value > b->value; // 示例保证非空，按 value 降序
-    }
-};
-
-void compareSharedPointers() {
-    auto first = std::make_shared<SharedItem>(2);
-    auto second = std::make_shared<SharedItem>(2);
-    std::vector<std::shared_ptr<SharedItem>> sequence{first, second};
-    std::set<std::shared_ptr<SharedItem>> byPointer{first, second};
-    std::set<std::shared_ptr<SharedItem>, CompareSharedItem> byValue{first, second};
-    assert(sequence.size() == 2 && byPointer.size() == 2);
-    assert(byValue.size() == 1); // value 相同，被比较器视为同一个键
-}
-```
-
-默认指针次序不能被当作对象数值顺序，课件打印的具体顺序也不是可移植保证。按成员比较时，元素在 set 内期间不能经由其他共享句柄改变其排序字段；否则可能破坏有序容器要求。比较器应提供 `const operator()`，并满足严格弱序；示例排除了空指针，生产接口需明确是否允许空值。若真正需要按共享所有权而非保存地址分组，可研究 `std::owner_less`。
-
-## shared_ptr 的循环引用问题
-
-`shared_ptr` 最大的坑是循环引用。
-
-```cpp
-class B;
-class A {
-public:
-    std::shared_ptr<B> b;
-};
-class B {
-public:
-    std::shared_ptr<A> a;
-};
-```
-
-如果 `A` 持有 `B`，`B` 又持有 `A`，它们的引用计数可能永远无法变成 0。
-解决方法是让其中一边使用 `weak_ptr`。
-
-```cpp
-class B {
-public:
-    std::weak_ptr<A> a;
-};
-```
-
-`weak_ptr` 只观察对象，不增加引用计数，所以可以打破循环引用。
-
-## weak_ptr：安全观察与临时共享所有权 {#weak-pointer}
-
-`weak_ptr<T>` 在 `<memory>` 中声明，它本身不拥有对象，不增加强引用计数，也没有 `operator*` 或 `operator->`。它关联的是 `shared_ptr` 的控制块，不能直接观察一个任意裸指针或由 `unique_ptr` 独占的对象。
-
-| 操作 | 含义 |
-| --- | --- |
-| `weak = shared` | 建立弱观察，不增加强计数 |
-| `weak.use_count()` | 观察当前强拥有者数量，不是弱引用数量 |
-| `weak.expired()` | 强计数是否已为 0；空弱指针也返回 true |
-| `weak.lock()` | 尝试取得共享所有权；过期则返回空 shared_ptr |
-| `weak.reset()` | 清除当前弱观察；不负责销毁被观察对象 |
-
-```cpp
-#include <cassert>
-#include <memory>
-
-void observeSharedObject() {
-    std::weak_ptr<int> observer;
-    {
-        auto owner = std::make_shared<int>(10);
-        observer = owner;
-        assert(owner.use_count() == 1); // weak_ptr 不算强拥有者
-        if (auto temporaryOwner = observer.lock()) {
-            assert(owner.use_count() == 2);
-            *temporaryOwner = 20;
-            owner.reset();
-            assert(!observer.expired()); // temporaryOwner 仍维持对象存活
-        } // 最后的强拥有者消失，int 被释放
-    }
-    assert(observer.expired());
-    assert(!observer.lock());
-    observer.reset(); // 解除最后的弱观察，控制块也可释放
-}
-```
-
-实际使用时直接写 `if (auto p = weak.lock())`，让成功取得的 `shared_ptr` 覆盖整个访问过程。`expired()` 只是检查，不会替你保持对象存活；在并发环境中，先检查 `!expired()`，再单独访问或再次 `lock()`，两步之间对象仍可能被释放。`lock()` 以原子方式完成“如果还活着就取得强所有权”的尝试，但不自动同步对象内部数据。
-
-课件第 20 页的 `if (sp4 == true)` 应改为 `if (sp4)`：智能指针支持条件中的显式 bool 转换，并不因此支持与 `true` 做这种相等比较。直接用 shared_ptr 从已过期的 weak_ptr 构造会抛 `std::bad_weak_ptr`；正常的可选观察通常使用不抛该异常的 `lock()`。
-
-### 用弱回边打破循环，并保留真正的拥有关系
-
-仅声明 `shared_ptr<A>` 与 `shared_ptr<B>` 成员不会自动形成泄漏；当实际赋值产生强所有权环，且外部拥有者离开后环内仍互相保活，计数才无法归零。课件第 18 页的双节点例子属于这种情况。
-
-```cpp
-#include <cassert>
-#include <memory>
-
-struct OwnedNode {
-    std::shared_ptr<OwnedNode> next; // 沿链方向拥有后继
-    std::weak_ptr<OwnedNode> previous; // 回边只观察，不延长前驱寿命
-};
-
-void breakOwnershipCycle() {
-    std::weak_ptr<OwnedNode> observed;
-    {
-        auto first = std::make_shared<OwnedNode>();
-        auto second = std::make_shared<OwnedNode>();
-        first->next = second;
-        second->previous = first;
-        observed = second;
-        assert(first.use_count() == 1 && second.use_count() == 2);
-    } // 外部拥有者消失后，两节点均被清理
-    assert(observed.expired());
-}
-```
-
-课件第 21 页把两条连接都改为 weak_ptr，能够在外部 shared_ptr 存在时相互观察；但如果还需要由链头拥有整条链，应保留向前的强连接，只把回边改为弱连接，不能机械地把所有连接都换成 weak_ptr。
-
-Observer 模式也是典型用途：发布者保存观察者的弱引用，需要通知时 `lock()`，成功就暂时持有并调用，失败则跳过或移除过期记录；weak_ptr 不会让本已退出的观察者仅因注册关系继续存活。弱边应由领域中的真实所有权关系决定。
-
-## unique_ptr、shared_ptr、weak_ptr 的区别
-
-```text
-unique_ptr：独占，不能复制，只能 move
-shared_ptr：共享，可以复制，有引用计数
-weak_ptr：观察，不拥有对象，不增加引用计数
-```
-
-一般优先用 `unique_ptr`，确实需要多个地方共享对象时再用 `shared_ptr`。
-
-### 智能指针相关来源与课件说明
-
-主要参考 IMT Atlantique 课件《C++ - Slot 9 - Smart pointers》（2025）：第 2–9 页为动机、历史与所有权；第 10–12 页为 unique_ptr 与容器；第 13–18 页为共享控制块、比较与循环引用；第 19–21 页为弱观察；第 22 页总结生命周期，第 23 页介绍 Boost。课堂练习编号不作为笔记中的操作要求。
-
-本节保留课件的所有权主线；`get/reset/release` 的对照、并发与别名边界、接管风险及弱回边的细化解释为补充。课件第 16 页的绝对化表述、第 20 页的 bool 判断写法已在对应知识点中校正；旧式 auto_ptr 代码只作为历史说明，不推荐使用。
-
-- [Microsoft unique_ptr 文档](https://learn.microsoft.com/en-us/cpp/standard-library/unique-ptr-class?view=msvc-170)：独占所有权与成员操作。
-- [Microsoft shared_ptr 文档](https://learn.microsoft.com/en-us/cpp/standard-library/shared-ptr-class?view=msvc-170)：共享控制块、构造与重置。
-- [Microsoft weak_ptr 文档](https://learn.microsoft.com/en-us/cpp/standard-library/weak-ptr-class?view=msvc-170)：`expired()` 与 `lock()`；lock 取得的是共享所有权，不是独占所有权。
-- [Boost Smart Pointers 官方文档](https://www.boost.org/doc/libs/latest/libs/smart_ptr/doc/html/smart_ptr.html)：Boost 智能指针体系与历史背景。标准 C++ 示例无需因此添加 Boost 依赖。
-
-## 综合例子：多态 + unique_ptr
-
-```cpp
-#include <iostream>
-#include <memory>
-#include <vector>
-using namespace std;
-class Animal {
-public:
-    virtual ~Animal() = default;
-    virtual void speak() = 0;
-};
-class Dog : public Animal {
-public:
-    void speak() override {
-        cout << "Dog: Woof" << endl;
-    }
-};
-class Cat : public Animal {
-public:
-    void speak() override {
-        cout << "Cat: Meow" << endl;
-    }
-};
-void makeSpeak(Animal& animal) {
-    animal.speak();
-}
-int main() {
-    vector<unique_ptr<Animal>> animals;
-    animals.push_back(make_unique<Dog>());
-    animals.push_back(make_unique<Cat>());
-    for (auto& animal : animals) {
-        makeSpeak(*animal);
-    }
-    return 0;
-}
-```
-
-这个例子里，`vector<unique_ptr<Animal>>` 保存的是基类智能指针，但实际对象可以是 `Dog` 或 `Cat`。
-`makeSpeak(Animal& animal)` 使用基类引用接收不同子类对象。
-`speak()` 是虚函数，所以运行时会根据真实对象类型调用对应版本。
-`unique_ptr` 负责自动释放对象，不需要手动 `delete`。
+| `[[attr]]` | C++ 标准属性语法 | `[[deprecated]]` |
+| `#pragma` | 编译器指令，不同实现支持项不同 | `#pragma once` |
+| `__attribute__((...))` | GCC / Clang 扩展 | `__attribute__((unused))` |
+| `__declspec(...)` | MSVC 扩展 | `__declspec(dllexport)` |
+
+优先使用标准 `[[...]]` 属性；必须使用平台扩展时，通常用条件编译或宏封装，避免把编译器专用语法散布到整个项目。

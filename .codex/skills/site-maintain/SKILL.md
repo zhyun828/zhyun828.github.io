@@ -1,687 +1,126 @@
 ---
 name: site-maintain
-description: Incrementally maintain a simple MkDocs notes website. Only inspect newly added or currently modified content, verify new pages, links, anchors, images, build output, and safely synchronize validated changes.
+description: Incrementally check a MkDocs notes website. Default to read-only, in-memory static checks without generating files; run a full build only for an explicit site-maintain build invocation.
 ---
 
 # Site Maintain
 
-Maintain the current MkDocs notes website using an incremental workflow.
+Inspect newly added or currently modified notes and their directly affected dependencies. Preserve user work and the existing website conventions. Do not scan historical notes beyond what is needed to verify a changed link target, asset, or navigation entry.
 
-The main principle is:
+## Modes and authorization
 
-> Only audit newly added or currently modified content. Do not rescan unchanged historical notes unless they are directly referenced by new or modified content or are needed to verify a link target.
+| Invocation | Behavior | Files generated |
+| --- | --- | --- |
+| `site-maintain` | Static checks only | None |
+| `site-maintain build` | Static checks, then a strict MkDocs build | One fixed external build tree |
 
-The goal is:
+The `$` prefix used to invoke a skill does not change the mode. Only the explicit `build` argument enables full build verification. A request to check anchors, inspect HTML, resolve uncertainty, or maintain a site must not silently activate a build.
 
-> Check this round of changes, make sure new or modified notes work correctly on the website, fix obvious issues, build the site, then safely commit and push.
+For compatibility, `site-maintain check` is a static-only alias; `site-maintain links` narrows the static check to changed links, anchors, and images. `site-maintain links full` permits a broader link audit only because the user explicitly requested it. None of these aliases runs a build or writes reports.
 
-Do not over-engineer the repository.
-Prefer simple fixes that match the current website structure.
+Both primary modes are read-only with respect to formal notes, final image assets, configuration, and other user files unless the task separately and explicitly authorizes modifications. Report safe fixes instead of applying them when the request is only a check. An explicitly requested fix does not automatically authorize a build.
 
-# Usage
+Neither mode by itself authorizes Git staging, commits, fetching, pulling, rebasing, or pushing. Perform those operations only when separately requested, and preserve any narrower user restrictions. Never discard uncommitted changes or use force-push, `git reset --hard`, or `git clean -fd` as maintenance shortcuts.
 
-Main command:
+## Default mode: static checks without file generation
 
-```text
-$site-maintain
-```
+Run this workflow for `site-maintain`:
 
-Run the normal incremental maintenance workflow.
+1. Inspect Git status and diffs to determine the incremental scope. Include relevant staged, unstaged, new, moved, and deleted documentation files; do not mistake temporary output for publishable notes.
+2. Read affected Markdown and assets, and the configuration needed to understand their navigation and rendering rules.
+3. Check Markdown structure, internal links and anchors, image paths, navigation, and related file references using the rules below.
+4. Report findings directly in the response. Do not create or save a report.
 
-Check only:
+Use read-only operations and in-memory processing. Do not run `mkdocs build`, `mkdocs serve`, a documentation-generating command, or a helper that writes output. Do not create temporary files, build directories, logs, JSON inventories, screenshots, compiled examples, caches, or Markdown/HTML reports. Pass small check programs through stdin instead of saving them as scripts; for Python checks use `python -B` to avoid writing bytecode caches.
 
-```text
-$site-maintain check
-```
+Parse configuration without running build hooks or plugins that could write files. Markdown can be rendered to an in-memory string with the relevant configured extensions when this is safe; do not write that HTML to disk. If an extension or plugin cannot be reproduced safely in memory, report the verification limitation instead of generating output or assuming an anchor is valid.
 
-Inspect this round of changes without modifying files, committing, pulling, or pushing.
+If there are no changed documentation files, report that there is no incremental documentation scope. Do not respond by scanning the entire historical site or building it. Skill files can be checked separately when the user's task is to update the skill.
 
-Check links and anchors only:
+### Markdown structure
 
-```text
-$site-maintain links
-```
+Check affected headings and their hierarchy, code fences, lists, tables, and newly introduced raw HTML. Use the surrounding document's style; do not reformat unrelated sections. Detect repeated heading names and malformed links or table syntax introduced by the change.
 
-Check links, heading anchors, cross-file links, and images only in newly added or modified content.
+For new pages, confirm that they are in the intended documentation tree and statically reachable through the site's existing navigation or index conventions. Static mode confirms source organization and navigation, not that MkDocs has generated a page.
 
-Optional full scan:
+### Internal links and anchors
 
-```text
-$site-maintain links full
-```
+Check changed links such as:
 
-Only when explicitly requested, perform a broader site-wide link and anchor audit.
-
-Additional instructions may follow naturally.
-
-Examples:
-
-```text
-$site-maintain do not push
-```
-
-```text
-$site-maintain links only check docs/notes/Cpp
-```
-
-```text
-$site-maintain fix everything but do not modify mkdocs.yml
-```
-
-# Default workflow
-
-When invoked as:
-
-```text
-$site-maintain
-```
-
-perform this workflow:
-
-```text
-check Git status
-        ↓
-find new/modified/moved files
-        ↓
-inspect only affected Markdown files and assets
-        ↓
-check new pages are visible on the website
-        ↓
-check links, anchors, and images in changed content
-        ↓
-build MkDocs
-        ↓
-inspect generated HTML for affected pages when needed
-        ↓
-fix safe problems
-        ↓
-rebuild and verify
-        ↓
-review Git diff
-        ↓
-commit
-        ↓
-pull --rebase if needed
-        ↓
-push
-        ↓
-short report
-```
-
-Do not scan the entire historical note collection during normal maintenance.
-
-Do not push a known broken build.
-
-# 1. Inspect Git status
-
-Start by checking the repository state.
-
-Inspect:
-
-- modified files;
-- new untracked files;
-- deleted files;
-- renamed or moved files;
-- staged files;
-- local commits not yet pushed.
-
-Useful commands may include:
-
-```text
-git status
-git status --short
-git diff
-```
-
-If useful, inspect the current branch and remote.
-
-The Git working tree defines the normal audit scope.
-
-# 2. Incremental scope
-
-During a normal run, only inspect:
-
-- newly added Markdown files;
-- currently modified Markdown files;
-- moved or renamed Markdown files;
-- newly added or modified images/assets;
-- `mkdocs.yml` if it changed or must be updated for a new page;
-- files directly affected by the current changes.
-
-Do not fully inspect unchanged historical notes.
-
-An unchanged old file may be opened only when necessary to verify something referenced by changed content.
-
-Example:
-
-If a new note contains:
-
-```md
-[Move constructor](../Cpp/basics.md#move-constructor)
-```
-
-it is acceptable to inspect the target heading in `basics.md`.
-
-Do not then audit the rest of `basics.md`.
-
-# 3. Git safety
-
-Preserve user-authored work.
-
-Never automatically use destructive commands such as:
-
-```text
-git reset --hard
-git clean -fd
-git push --force
-git push --force-with-lease
-```
-
-Do not discard uncommitted changes.
-
-Do not overwrite unrelated work.
-
-If a merge or rebase conflict occurs:
-
-- inspect the conflict;
-- resolve it only when the correct result is clear;
-- preserve user content;
-- rebuild afterward;
-- if uncertain, stop and explain instead of guessing.
-
-# 4. New Markdown files
-
-For every newly added `.md` file, check:
-
-- the file is inside the intended documentation tree;
-- Markdown renders correctly;
-- headings render correctly;
-- local links resolve;
-- image paths resolve;
-- the page is generated by MkDocs;
-- the page is accessible from the website;
-- navigation is updated if the current site requires manual navigation.
-
-Determine how the site currently exposes pages.
-
-Possible cases:
-
-- explicit `nav:` in `mkdocs.yml`;
-- automatic navigation;
-- category/index pages.
-
-Follow the existing project convention.
-
-Do not blindly add every Markdown file to navigation.
-
-If explicit navigation is used and the new file is clearly a normal published note, add it to the appropriate existing section.
-
-Preserve current ordering and naming style.
-
-# 5. Modified Markdown files
-
-For modified Markdown files, inspect only the parts relevant to current changes when practical.
-
-Check:
-
-- newly added headings;
-- newly added or changed links;
-- newly added images;
-- changed paths;
-- changed anchors;
-- Markdown syntax affected by the edit.
-
-Do not perform an unrelated full rewrite or full historical audit.
-
-# 6. Internal links
-
-In changed content, check links such as:
-
-```md
+```markdown
 [Text](#anchor)
-```
-
-```md
 [Text](other.md)
-```
-
-```md
 [Text](other.md#anchor)
 ```
 
-and equivalent HTML links.
+Also inspect equivalent HTML references and reference-style Markdown links. Ignore examples inside code fences when identifying actual links. Resolve relative paths from the note, account for URL escaping, and verify that target files and explicit anchors exist. Inspect only the required target when it is an unchanged historical note.
 
-Verify:
+VS Code and MkDocs can produce different heading IDs. Pay particular attention to Chinese headings, punctuation, inline code, `C++`, `std::move()`, `&&`, and duplicate headings. Verify automatic IDs using safe in-memory rendering consistent with `mkdocs.yml` rather than guessing. If plugin-specific IDs remain uncertain, state that they require explicit build verification; do not trigger a build automatically.
 
-- target file exists;
-- relative path is correct;
-- target heading exists;
-- referenced anchor is valid.
+Stable explicit IDs may be proposed for fragile anchors when the existing configuration supports them. Only add IDs or change extensions such as `attr_list` when the task explicitly authorizes a fix; otherwise report the issue.
 
-If the target is an old unchanged file, inspect only the referenced target.
+### Images and related resources
 
-Do not scan all links in that old file.
+For newly added, referenced, modified, or relocated assets, verify existence, relative paths, capitalization, and publication location. Check that new final assets will be included by Git rather than ignored; do not stage them merely to perform a check.
 
-# 7. Heading anchors
+Watch for local absolute paths such as `C:\Users\...`, `D:\...`, or `E:\...` in published references. Check image readability using existing files and read-only viewers when available. Do not generate previews in static mode. Report unclear or missing assets without inventing a replacement path.
 
-VS Code and MkDocs may generate different heading IDs.
+### Navigation and configuration
 
-Pay special attention to newly added or modified headings containing:
+Determine whether the site uses explicit `nav:`, automatic navigation, or index pages. Follow that convention and preserve ordering and naming. Confirm that explicit navigation paths exist and that new normal notes have an appropriate entry where required. Do not blindly add every Markdown file or reorganize the site.
 
-- Chinese text;
-- `C++`;
-- `std::move()`;
-- `&&`;
-- parentheses;
-- punctuation;
-- inline code;
-- repeated heading names.
+Only inspect unchanged configuration as needed to interpret affected content. Do not change the theme, dependencies, `.gitignore`, or unrelated navigation. A necessary `.gitignore` change requires a clear task-related reason and disclosure; ordinary checks do not justify it.
 
-Do not guess the MkDocs anchor when uncertain.
+## Build mode: explicit opt-in only
 
-Build the site and inspect the generated HTML for the affected page.
+For `site-maintain build`, first complete the same static checks. Report any findings; do not silently fix formal content. Then perform strict build verification unless an unsafe output target or other external blocker prevents it. Do not report success if static errors or the build remain unresolved.
 
-If Markdown contains:
+Always use this exact output directory and command on Windows:
 
-```md
-[Move](#std-move)
+```powershell
+mkdocs build --strict --site-dir E:\Temp\mkdocs-site-check
 ```
 
-verify that the generated HTML actually contains:
+`E:\Temp\mkdocs-site-check` is the user-designated external temporary build directory. Use this explicit path even if the current `%TEMP%` points elsewhere; do not change `%TEMP%` or other system environment settings.
 
-```html
-id="std-move"
-```
+Before the first use in a run:
 
-If an important heading produces an unstable anchor, a stable explicit ID may be used when supported by the current MkDocs configuration.
+- Resolve the repository and output paths and ensure the output is outside the repository and exactly the designated directory. Do not traverse an unexpected symlink or reparse point.
+- If the directory already exists, confirm that it is dedicated generated MkDocs output. If it contains formal notes, user documents, configuration, or other unrelated files, stop before MkDocs cleans it; preserve those files and report the conflict.
+- If the drive or directory is unavailable or unwritable, report the limitation. Do not fall back to a repository-local directory or create another output location.
 
-Example:
+Do not use `--dirty`. Reuse this same directory for every build and rebuild, relying on MkDocs' normal cleanup to replace the previous generated output. Do not create per-topic, per-run, or timestamped copies. Do not use repository-local `tmp/site-check`, `site/`, or another build folder.
 
-```md
-## `std::move()` 和移动语义 {#std-move}
-```
+MkDocs' normal cleanup preserves hidden entries whose names begin with `.`. Do not store hidden scratch files or folders inside the build directory or assume they will be removed by a build.
 
-Then:
+After building, inspect generated HTML and copied assets only for affected pages or directly referenced targets. Confirm generated pages, important IDs, fragment links, and images. The build may process the whole site; the content audit must remain incremental. Do not start unrelated cleanup of historical warnings unless they block the requested validation; report any such blocker.
 
-```md
-[Move](#std-move)
-```
+If an explicitly authorized fix changes a build-relevant source, repeat static checks and rebuild into the same external directory. Keep at most this one generated build tree after success, allowing the next build to replace it. The fixed result is allowed to remain; do not attempt a separate recursive deletion merely to clean a successful build.
 
-Before adding explicit IDs, inspect the current MkDocs configuration.
+## Extra temporary artifacts
 
-If necessary, minimally enable the required extension such as `attr_list`.
+Default static checks generate no artifacts. PDF previews, UML rendering, C++ compilation tests, and similar extra work are not implicit parts of a static site check. If a separately authorized task actually requires them, prefer system temporary storage and record the paths created by that run. Do not change `%TEMP%` or put disposable artifacts among formal notes.
 
-Do not add explicit IDs to unrelated historical headings.
+After such work, attempt safe cleanup of this run's extra disposable files, including after failure when the files are no longer needed. Verify resolved paths and ownership before deletion. On Windows, use native PowerShell operations within the verified target and check for reparse points before recursive removal.
 
-# 8. Images
+Never delete formal notes, final images, configuration, or other user files. Do not sweep pre-existing temporary folders as part of routine maintenance; historical cleanup needs explicit authorization. Retain only diagnostics still needed for an unresolved issue or artifacts the user asked to keep, and report their locations.
 
-Only inspect images that are:
+If cleanup returns `blocked by policy`, stop trying to delete those artifacts. Do not retry through another command, language, tool, indirect execution, or security-setting change. Report the residual paths and the stated reason. Do not promise that cleanup succeeded or will always be permitted.
 
-- newly added;
-- newly referenced;
-- modified;
-- affected by changed Markdown.
+Do not modify `.gitignore` merely to hide temporary output. Do not stage or commit generated results.
 
-Verify:
+## If source changes or Git synchronization are separately requested
 
-- image exists;
-- relative path is correct;
-- filename capitalization is correct;
-- new images are tracked by Git.
+Apply only the authorized, minimal fixes: incorrect paths or anchors, missing required navigation entries, or equivalent obvious current-change problems. Preserve unrelated content and assets. Recheck fixes statically; only the explicit `build` mode enables a build.
 
-Watch for local absolute paths such as:
+Review the diff and intended source paths before any separately requested commit. Exclude temporary files, caches, editor backups, and generated build output. Do not create empty commits or duplicate existing unpushed commits. Integrate remote work safely only when synchronization is requested. If a conflict cannot be resolved confidently while preserving user content, stop and explain. Never force-push or publish a known broken build.
 
-```text
-C:\Users\...
-D:\...
-E:\...
-```
+## Final report
 
-These may work locally but fail on the website.
+Respond briefly with the selected mode, affected files, findings, and verification limits. Report only counts for changed content, not unchanged historical notes. Do not save a report file.
 
-Fix them only when the intended project-relative path is clear.
+For default mode, explicitly state that the check was static, no build was run, and no files were generated. Do not claim that HTML output or a full build was verified.
 
-# 9. Navigation
+For build mode, report the static-check result, build success or failure, and the fixed output path `E:\Temp\mkdocs-site-check`. Confirm reuse on repeated builds when relevant. Mention any residual extra temporary files and why they remain.
 
-When a new Markdown page is added, determine whether the site requires a manual navigation update.
-
-If `mkdocs.yml` uses explicit `nav:`, add the new normal note to the appropriate section.
-
-If navigation is automatic, do not add unnecessary configuration.
-
-Do not modify unrelated navigation items.
-
-Do not reorganize the whole site.
-
-# 10. MkDocs build
-
-Run the normal project build.
-
-Prefer:
-
-```text
-mkdocs build --strict
-```
-
-when supported.
-
-If the repository already uses another build command, follow the existing setup.
-
-The build itself may process the whole site, but the content audit should remain focused on current changes.
-
-If the build fails:
-
-1. inspect the error;
-2. determine whether it was caused by current changes;
-3. fix safe and obvious issues;
-4. rebuild.
-
-Do not start unrelated cleanup of old warnings unless they block the current build.
-
-# 11. Generated HTML validation
-
-After building, inspect generated HTML only for affected pages when needed.
-
-This is especially important for:
-
-- newly added pages;
-- modified pages with anchor links;
-- cross-file fragment links introduced by current changes.
-
-For:
-
-```text
-other.md#example
-```
-
-verify:
-
-1. the target page exists;
-2. the generated target contains `id="example"`.
-
-If the target belongs to an unchanged old page, only verify that specific page/anchor.
-
-Do not crawl the whole site by default.
-
-# 12. Safe fixes
-
-Automatically fix simple and clear problems such as:
-
-- wrong relative path;
-- broken anchor introduced by current changes;
-- stale link caused by a file rename;
-- missing navigation entry for a new normal note;
-- incorrect image path;
-- unstable new heading anchor;
-- minimal MkDocs configuration needed for explicit IDs.
-
-Prefer the smallest possible change.
-
-Do not:
-
-- redesign the website;
-- change the theme;
-- reorganize historical notes;
-- rewrite old content;
-- upgrade dependencies without need;
-- scan and fix unrelated historical issues.
-
-# 13. Rebuild after fixes
-
-After making changes:
-
-1. rebuild MkDocs;
-2. verify affected pages;
-3. verify repaired links and anchors;
-4. inspect Git diff.
-
-Do not push until the current changes are valid.
-
-# 14. Review Git changes
-
-Before committing, inspect:
-
-```text
-git status
-git diff
-```
-
-Make sure only intended files are included.
-
-Do not accidentally commit:
-
-- temporary files;
-- caches;
-- editor backup files;
-- generated build files unless the repository already tracks them.
-
-Respect the existing `.gitignore`.
-
-# 15. Commit
-
-If there are validated changes, create a concise meaningful commit message based on the current work.
-
-Examples:
-
-```text
-Add DVB-S2 notes
-```
-
-```text
-Update FPGA notes
-```
-
-```text
-Fix links in C++ notes
-```
-
-```text
-Add new notes and update navigation
-```
-
-Do not create an empty commit.
-
-# 16. Synchronize and push
-
-Before pushing, check whether the remote has newer commits.
-
-If needed, safely integrate them.
-
-A normal workflow may use:
-
-```text
-git pull --rebase
-```
-
-but only after local work is safely committed.
-
-If remote integration changes files relevant to the current site update, rebuild before pushing.
-
-If a conflict occurs and the correct resolution is unclear, stop and explain.
-
-Never force-push during normal maintenance.
-
-# 17. Existing unpushed commits
-
-If local commits already exist and have not been pushed:
-
-- do not duplicate them;
-- include them in normal synchronization when appropriate;
-- validate the current website state before pushing.
-
-# 18. Check mode
-
-For:
-
-```text
-$site-maintain check
-```
-
-do not modify anything.
-
-Only inspect this round of changes.
-
-Check:
-
-- Git status;
-- new Markdown files;
-- modified Markdown files;
-- newly introduced links;
-- newly introduced anchors;
-- newly referenced images;
-- whether new pages need navigation entries;
-- MkDocs build result.
-
-Do not audit unchanged historical notes.
-
-Return a concise report.
-
-Example:
-
-```text
-Site check completed.
-
-Changed Markdown files: 3
-New Markdown files: 1
-New/changed links checked: 8
-Anchor problems: 1
-Image problems: 0
-Navigation update needed: yes
-MkDocs build: PASS
-
-No files were modified.
-No Git changes were pushed.
-```
-
-# 19. Links mode
-
-For:
-
-```text
-$site-maintain links
-```
-
-only inspect links and anchors in newly added or modified content.
-
-Check:
-
-- same-page anchors;
-- cross-file anchors;
-- relative file links;
-- newly referenced images.
-
-If a link points to unchanged old content, verify only the referenced target.
-
-Do not perform a site-wide link scan.
-
-Fix safe issues unless the user says `check only`.
-
-Do not push by default in links mode.
-
-# 20. Full links mode
-
-Only when explicitly invoked as:
-
-```text
-$site-maintain links full
-```
-
-perform a broader site-wide link and anchor audit.
-
-This mode is optional and should not be used during normal maintenance.
-
-# 21. Additional instructions
-
-Treat everything after the command as additional requirements.
-
-Examples:
-
-```text
-$site-maintain do not push
-```
-
-Run the normal incremental workflow but stop before remote synchronization.
-
-```text
-$site-maintain check only changed files
-```
-
-Keep the scope strictly limited to current changes.
-
-```text
-$site-maintain links only check docs/notes/Cpp
-```
-
-Limit the incremental link audit to that directory.
-
-```text
-$site-maintain do not modify mkdocs.yml
-```
-
-Respect the restriction even if a navigation issue is found; report it instead.
-
-# 22. Existing project conventions
-
-Always inspect the current repository before making structural changes.
-
-Priority:
-
-```text
-existing project convention
->
-minimal compatible fix
->
-new convention
-```
-
-Use the site's current:
-
-- navigation structure;
-- folder organization;
-- Markdown extensions;
-- image organization;
-- Git workflow.
-
-# 23. Final report
-
-After a normal run, return a short summary.
-
-Example:
-
-```text
-Site maintenance completed.
-
-Changed Markdown files: 4
-New pages: 1
-New/changed links checked: 12
-Broken links fixed: 2
-Broken anchors fixed: 1
-Navigation updated: yes
-MkDocs build: PASS
-Commit: abc1234
-Push: SUCCESS
-```
-
-Do not report counts for unchanged historical content.
-
-Do not dump long terminal logs unless necessary.
-
-# Success criteria
-
-A normal `$site-maintain` run is successful when:
-
-- current user changes are preserved;
-- newly added notes are accessible;
-- modified notes still render;
-- new or changed internal links work;
-- new or changed heading anchors work on the generated website;
-- newly referenced images resolve;
-- new pages are added to navigation when required;
-- MkDocs builds successfully;
-- validated current changes are committed;
-- remote changes are safely integrated when needed;
-- push succeeds.
-
-The objective is:
-
-> Maintain only the current round of changes efficiently, without wasting time auditing unchanged historical notes.
+Do not report a commit or push unless the user separately requested it and it actually completed.
