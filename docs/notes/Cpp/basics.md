@@ -4229,6 +4229,38 @@ f();
 简单理解：函数指针更轻量，但功能简单；`std::function` 更灵活，但有一定额外开销。
 在嵌入式裸机或资源很小的 MCU 上，经常使用函数指针；在 Linux、上位机、ROS、普通 C++ 应用里，`std::function` 很常见。
 
+## 智能指针与所有权 {#smart-pointer-ownership}
+
+智能指针首先是一个类对象：它保存指针，通过 `*`、`->` 等操作提供类似指针的访问，并按照**所有权策略**管理资源。问题不仅是“地址指向哪里”，还包括“谁负责销毁对象、对象需要活多久”。以下内容根据课件《C++ - Slot 9 - Smart pointers》第 2–23 页补充；代码统一采用 C++17，课件的历史写法与现代建议分别说明。
+
+### RAII：让资源释放跟随管理对象的生命周期
+
+局部裸指针变量离开作用域，只会结束这个指针变量本身的生命周期，不会自动 `delete` 它指向的动态对象。手动释放一旦遗漏，或被异常、提前 `return` 跳过，就可能泄漏；反过来，对象销毁后仍使用旧地址则会产生悬空访问。
+
+RAII（Resource Acquisition Is Initialization，资源获取即初始化）将资源交给一个对象管理，由该对象的析构过程负责释放。智能指针是 RAII 的一种应用；文件、锁等也可采用相同思路。对于正常离开作用域和正常栈展开，局部智能指针会被析构，但不能据此假定进程被强制终止等情况也会完成清理。
+
+```cpp
+#include <memory>
+#include <stdexcept>
+
+void raiiOnException() {
+    auto buffer = std::make_unique<int[]>(4);
+    buffer[0] = 42;
+    throw std::runtime_error("operation failed");
+    // 栈展开时 buffer 析构，数组通过 delete[] 自动释放。
+}
+```
+
+智能指针不会自动修复一切内存问题：从 `get()` 取出的裸指针仍可能悬空，多个独立所有者仍可能重复删除同一对象，共享所有权形成环仍可能泄漏。能直接按值保存的对象不必仅为使用智能指针而动态分配。
+
+### 从 `auto_ptr` 到显式移动
+
+课件第 5–8 页的 `std::auto_ptr` 是历史背景：它在 C++98 中提供独占所有权，却在“复制”时转移所有权，使源指针变空。按值传入一个看似只读的函数，也可能意外转走并销毁调用者的对象；这种复制语义不符合普通容器所需的值语义。
+
+`auto_ptr` 在 C++11 被弃用，在 C++17 从标准中移除，不应写进新的 C++17 示例。替代者 `unique_ptr` 禁止复制，通过移动明确表达转移；`shared_ptr` 的复制则表示共享，不是把底层对象深拷贝一份。需要复制多态对象本身时，要另行提供 `clone()` 等协议，可参考 Prototype 模式，而不能期待智能指针自动推断怎样复制派生类型。
+
+`unique_ptr`、`shared_ptr`、`weak_ptr` 和 `make_shared` 属于 C++11；`make_unique` 从 C++14 起提供。Boost 曾为标准化提供重要实践，但 `boost::shared_ptr` 与 `std::shared_ptr` 是不同类型，不能通过各自接管同一个裸地址来“转换”。
+
 ## unique_ptr 是什么
 
 `std::unique_ptr` 是 C++ 里的智能指针，头文件是：
@@ -4290,6 +4322,41 @@ auto dog = std::make_unique<Dog>();
 takeAnimal(std::move(dog));
 ```
 
+### `get`、`reset` 与 `release` {#unique-pointer-operations}
+
+| 操作 | 所有权变化 | 应注意什么 |
+| --- | --- | --- |
+| `p.get()` | 不变，返回借用的裸指针 | 不要 `delete` 它，不会延长对象寿命 |
+| `p.reset()` | 释放当前对象并变空 | 之后不能继续解引用旧对象 |
+| `p.reset(raw)` | 先按接口规则接管新地址，释放原资源 | raw 必须可由相应删除器管理；不要传 `p.get()` |
+| `p.release()` | 变空并返回原地址，不删除对象 | 调用者接手释放责任，否则泄漏 |
+| `q = std::move(p)` | q 原有资源被释放，再接管 p 的资源 | 对不同对象进行正常移动后，p 为空 |
+
+```cpp
+#include <cassert>
+#include <memory>
+#include <utility>
+
+void transferUniqueOwnership() {
+    auto source = std::make_unique<int>(42);
+    int* borrowed = source.get();
+    auto target = std::move(source);
+    assert(!source && target.get() == borrowed);
+    // 移动的是所有权句柄，原 int 没有被复制或搬到新地址。
+    target.reset(new int(7)); // 旧 int 被销毁，borrowed 此后不能再使用
+    int* released = target.release();
+    assert(!target);
+    std::unique_ptr<int> restored(released); // 立即重新交给唯一所有者
+    assert(*restored == 7);
+}
+```
+
+默认构造的 `unique_ptr` 为空；在调用 `*p`、`p->member` 前应满足非空前提，可用 `if (p)` 检查。`release()` 不是“立即释放内存”；它常用于交接给明确接管所有权的旧接口，不宜作为日常访问对象的方法。
+
+默认的 `unique_ptr<T>` 对应单对象 `delete`，`unique_ptr<T[]>` 对应数组 `delete[]`，后者提供 `operator[]`，不会自动检查数组越界。删除策略可由第二个模板参数定制，从而管理文件句柄等资源；删除器必须匹配资源的释放方式且不应向外抛出异常。动态序列通常先考虑 `vector<T>`。
+
+`unique_ptr<Derived>` 本身不继承 `unique_ptr<Base>`；某些类型间转换由转换构造函数提供，且须满足指针和删除器条件。用默认删除器通过 `unique_ptr<Base>` 管理派生对象时，Base 通常需要虚析构函数。与 STL 容器组合的例子见本笔记 STL 章节和后面的多态综合示例。
+
 ## shared_ptr 是什么
 
 `std::shared_ptr` 也是智能指针，头文件是：
@@ -4306,7 +4373,7 @@ auto p2 = p1;
 ```
 
 这时 `p1` 和 `p2` 共同拥有同一个 `Dog` 对象。
-`shared_ptr` 内部有引用计数，记录当前有多少个 `shared_ptr` 正在管理这个对象。
+共享同一所有权组的 `shared_ptr` 使用同一个控制块。控制块中的强引用计数记录共享该所有权的 `shared_ptr` 数量；复制一个句柄不会复制底层 `Dog` 对象。
 
 ```cpp
 cout << p1.use_count() << endl;
@@ -4332,14 +4399,97 @@ makeSpeak(*a);
 如果函数要保存对象，让对象在函数结束后继续存在，可以传 `shared_ptr`。
 
 ```cpp
+std::shared_ptr<Animal> savedAnimal; // 示例保存位置，实际通常是某个类的成员
 void saveAnimal(std::shared_ptr<Animal> animal) {
-    animal->speak();
+    savedAnimal = std::move(animal);
 }
 auto a = std::make_shared<Dog>();
-saveAnimal(a);
+saveAnimal(a); // 参数取得共享所有权，再将这份所有权移入保存位置
 ```
 
-这会复制一份 `shared_ptr`，引用计数会增加。
+传入左值 `a` 时会复制一份共享句柄；函数把它移入 `savedAnimal` 后，这份所有权在函数返回后仍然存在。如果函数只按值接收并调用 `speak()`，却没有保存句柄，增加的引用会在函数返回时释放，并不表示完成了长期保存。
+
+### 控制块、`use_count()` 与 `reset()` {#shared-pointer-control-block}
+
+控制块保存强引用计数、弱引用相关状态和删除器等管理信息。`shared_ptr` 的典型实现保存“访问对象的指针 + 控制块指针”，但不能依赖它固定占几个字节；`make_shared` 通常把对象与控制块放进一次分配中，从而减少分配次数。
+
+```cpp
+#include <cassert>
+#include <memory>
+#include <utility>
+
+void sharedOwnershipCounts() {
+    auto first = std::make_shared<int>(10);
+    auto second = first;
+    assert(first.use_count() == 2);
+    auto third = std::move(second);
+    assert(!second && first.use_count() == 2); // 移动没有新增拥有者
+    first = std::make_shared<int>(20);        // first 加入一个新的所有权组
+    assert(first.use_count() == 1 && third.use_count() == 1);
+    assert(*third == 10);                     // 原对象仍由 third 管理
+    third.reset();                           // 最后一个强拥有者释放原对象
+}
+```
+
+`reset()` 仅让当前句柄放弃共享所有权，其他拥有者仍可维持原对象。`reset(new T(...))` 或赋入新的 `make_shared<T>(...)` 结果，会让当前句柄管理新对象，不是把所有旧拥有者一起清空。
+
+当强引用计数降为 0 时，管理的对象通过相应删除器释放；只要仍有相关 `weak_ptr`，用于判断过期的控制块还可能存在。最后的相关弱引用也消失后，控制块才可释放。`make_shared` 合并分配时，**对象已经析构**与**整块分配已归还**还可能发生在不同时间。
+
+补充边界：`shared_ptr` 还支持别名构造，可访问一个成员、同时共享其宿主对象的所有权。因此 `get()` 是访问指针，不总等于最终由控制块销毁的对象地址；计数描述的是所有权组，不能简单按裸地址统计。
+
+不同 `shared_ptr` 句柄共享控制块时，引用计数管理支持并发操作，不等于被指对象的数据自动线程安全；并发修改同一个句柄也需按规则同步。`use_count()` 在并发场景只是观察结果，不能凭 `use_count() == 1` 就断言拥有安全的独占访问。
+
+### 从裸指针构造：接管资源与重复接管的区别 {#shared-pointer-raw-pointer}
+
+课件第 16 页将“raw pointer → shared_ptr”标为 forbidden，是对不明所有权接管的警示，**不是说语言禁止显式构造**：`std::shared_ptr<T>(new T(...))` 合法，但通常优先使用 `make_shared`。接管要求明确、唯一地交出释放责任，并保证删除方式匹配。
+
+```cpp
+#include <memory>
+
+void borrowWithoutAdopting() {
+    auto owner = std::make_shared<int>(42);
+    int* borrowed = owner.get();
+    auto anotherOwner = owner; // 正确：共享原控制块
+    // std::shared_ptr<int> wrong(borrowed); // 危险：建立第二个独立控制块
+    *borrowed += 1; // 这里只借用；owner / anotherOwner 仍保持对象存活
+}
+```
+
+两个独立控制块分别认为自己负责删除同一个对象，会导致重复删除。不能将借用指针、栈对象地址，或已由智能指针管理的 `get()` 结果再交给默认删除的拥有者。`get()` 不转移所有权，不能把它得到的地址当成“尚无人负责释放的新资源”。
+
+### 智能指针放入 set：按地址还是按对象内容比较 {#shared-pointer-set}
+
+课件第 17 页同时把共享指针存入 vector、默认 set 和自定义比较器 set。它们的去重依据不同：vector 保存每次添加的句柄；默认 `set<shared_ptr<T>>` 按保存的指针值排序，不会自动比较 `T` 的成员；自定义比较器则可以按对象内容定义等价键。
+
+```cpp
+#include <cassert>
+#include <memory>
+#include <set>
+#include <vector>
+
+struct SharedItem {
+    int value;
+    explicit SharedItem(int number) : value(number) {}
+};
+struct CompareSharedItem {
+    bool operator()(const std::shared_ptr<SharedItem>& a,
+                    const std::shared_ptr<SharedItem>& b) const {
+        return a->value > b->value; // 示例保证非空，按 value 降序
+    }
+};
+
+void compareSharedPointers() {
+    auto first = std::make_shared<SharedItem>(2);
+    auto second = std::make_shared<SharedItem>(2);
+    std::vector<std::shared_ptr<SharedItem>> sequence{first, second};
+    std::set<std::shared_ptr<SharedItem>> byPointer{first, second};
+    std::set<std::shared_ptr<SharedItem>, CompareSharedItem> byValue{first, second};
+    assert(sequence.size() == 2 && byPointer.size() == 2);
+    assert(byValue.size() == 1); // value 相同，被比较器视为同一个键
+}
+```
+
+默认指针次序不能被当作对象数值顺序，课件打印的具体顺序也不是可移植保证。按成员比较时，元素在 set 内期间不能经由其他共享句柄改变其排序字段；否则可能破坏有序容器要求。比较器应提供 `const operator()`，并满足严格弱序；示例排除了空指针，生产接口需明确是否允许空值。若真正需要按共享所有权而非保存地址分组，可研究 `std::owner_less`。
 
 ## shared_ptr 的循环引用问题
 
@@ -4369,6 +4519,76 @@ public:
 
 `weak_ptr` 只观察对象，不增加引用计数，所以可以打破循环引用。
 
+## weak_ptr：安全观察与临时共享所有权 {#weak-pointer}
+
+`weak_ptr<T>` 在 `<memory>` 中声明，它本身不拥有对象，不增加强引用计数，也没有 `operator*` 或 `operator->`。它关联的是 `shared_ptr` 的控制块，不能直接观察一个任意裸指针或由 `unique_ptr` 独占的对象。
+
+| 操作 | 含义 |
+| --- | --- |
+| `weak = shared` | 建立弱观察，不增加强计数 |
+| `weak.use_count()` | 观察当前强拥有者数量，不是弱引用数量 |
+| `weak.expired()` | 强计数是否已为 0；空弱指针也返回 true |
+| `weak.lock()` | 尝试取得共享所有权；过期则返回空 shared_ptr |
+| `weak.reset()` | 清除当前弱观察；不负责销毁被观察对象 |
+
+```cpp
+#include <cassert>
+#include <memory>
+
+void observeSharedObject() {
+    std::weak_ptr<int> observer;
+    {
+        auto owner = std::make_shared<int>(10);
+        observer = owner;
+        assert(owner.use_count() == 1); // weak_ptr 不算强拥有者
+        if (auto temporaryOwner = observer.lock()) {
+            assert(owner.use_count() == 2);
+            *temporaryOwner = 20;
+            owner.reset();
+            assert(!observer.expired()); // temporaryOwner 仍维持对象存活
+        } // 最后的强拥有者消失，int 被释放
+    }
+    assert(observer.expired());
+    assert(!observer.lock());
+    observer.reset(); // 解除最后的弱观察，控制块也可释放
+}
+```
+
+实际使用时直接写 `if (auto p = weak.lock())`，让成功取得的 `shared_ptr` 覆盖整个访问过程。`expired()` 只是检查，不会替你保持对象存活；在并发环境中，先检查 `!expired()`，再单独访问或再次 `lock()`，两步之间对象仍可能被释放。`lock()` 以原子方式完成“如果还活着就取得强所有权”的尝试，但不自动同步对象内部数据。
+
+课件第 20 页的 `if (sp4 == true)` 应改为 `if (sp4)`：智能指针支持条件中的显式 bool 转换，并不因此支持与 `true` 做这种相等比较。直接用 shared_ptr 从已过期的 weak_ptr 构造会抛 `std::bad_weak_ptr`；正常的可选观察通常使用不抛该异常的 `lock()`。
+
+### 用弱回边打破循环，并保留真正的拥有关系
+
+仅声明 `shared_ptr<A>` 与 `shared_ptr<B>` 成员不会自动形成泄漏；当实际赋值产生强所有权环，且外部拥有者离开后环内仍互相保活，计数才无法归零。课件第 18 页的双节点例子属于这种情况。
+
+```cpp
+#include <cassert>
+#include <memory>
+
+struct OwnedNode {
+    std::shared_ptr<OwnedNode> next; // 沿链方向拥有后继
+    std::weak_ptr<OwnedNode> previous; // 回边只观察，不延长前驱寿命
+};
+
+void breakOwnershipCycle() {
+    std::weak_ptr<OwnedNode> observed;
+    {
+        auto first = std::make_shared<OwnedNode>();
+        auto second = std::make_shared<OwnedNode>();
+        first->next = second;
+        second->previous = first;
+        observed = second;
+        assert(first.use_count() == 1 && second.use_count() == 2);
+    } // 外部拥有者消失后，两节点均被清理
+    assert(observed.expired());
+}
+```
+
+课件第 21 页把两条连接都改为 weak_ptr，能够在外部 shared_ptr 存在时相互观察；但如果还需要由链头拥有整条链，应保留向前的强连接，只把回边改为弱连接，不能机械地把所有连接都换成 weak_ptr。
+
+Observer 模式也是典型用途：发布者保存观察者的弱引用，需要通知时 `lock()`，成功就暂时持有并调用，失败则跳过或移除过期记录；weak_ptr 不会让本已退出的观察者仅因注册关系继续存活。弱边应由领域中的真实所有权关系决定。
+
 ## unique_ptr、shared_ptr、weak_ptr 的区别
 
 ```text
@@ -4378,6 +4598,17 @@ weak_ptr：观察，不拥有对象，不增加引用计数
 ```
 
 一般优先用 `unique_ptr`，确实需要多个地方共享对象时再用 `shared_ptr`。
+
+### 智能指针相关来源与课件说明
+
+主要参考 IMT Atlantique 课件《C++ - Slot 9 - Smart pointers》（2025）：第 2–9 页为动机、历史与所有权；第 10–12 页为 unique_ptr 与容器；第 13–18 页为共享控制块、比较与循环引用；第 19–21 页为弱观察；第 22 页总结生命周期，第 23 页介绍 Boost。课堂练习编号不作为笔记中的操作要求。
+
+本节保留课件的所有权主线；`get/reset/release` 的对照、并发与别名边界、接管风险及弱回边的细化解释为补充。课件第 16 页的绝对化表述、第 20 页的 bool 判断写法已在对应知识点中校正；旧式 auto_ptr 代码只作为历史说明，不推荐使用。
+
+- [Microsoft unique_ptr 文档](https://learn.microsoft.com/en-us/cpp/standard-library/unique-ptr-class?view=msvc-170)：独占所有权与成员操作。
+- [Microsoft shared_ptr 文档](https://learn.microsoft.com/en-us/cpp/standard-library/shared-ptr-class?view=msvc-170)：共享控制块、构造与重置。
+- [Microsoft weak_ptr 文档](https://learn.microsoft.com/en-us/cpp/standard-library/weak-ptr-class?view=msvc-170)：`expired()` 与 `lock()`；lock 取得的是共享所有权，不是独占所有权。
+- [Boost Smart Pointers 官方文档](https://www.boost.org/doc/libs/latest/libs/smart_ptr/doc/html/smart_ptr.html)：Boost 智能指针体系与历史背景。标准 C++ 示例无需因此添加 Boost 依赖。
 
 ## 综合例子：多态 + unique_ptr
 
