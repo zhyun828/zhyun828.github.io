@@ -1,6 +1,6 @@
 ---
 name: site-maintain
-description: Incrementally check a MkDocs notes website. Default to read-only, in-memory static checks without generating files; run a full build only for an explicit site-maintain build invocation.
+description: Incrementally check a MkDocs notes website. Default to read-only static checks; explicit site-maintain build runs a strict external build, then commits and pushes validated source changes by default.
 ---
 
 # Site Maintain
@@ -12,7 +12,7 @@ Inspect newly added or currently modified notes and their directly affected depe
 | Invocation | Behavior | Files generated |
 | --- | --- | --- |
 | `site-maintain` | Static checks only | None |
-| `site-maintain build` | Static checks, then a strict MkDocs build | One fixed external build tree |
+| `site-maintain build` | Static checks, strict MkDocs build, then commit and push validated source changes | One fixed external build tree |
 
 The `$` prefix used to invoke a skill does not change the mode. Only the explicit `build` argument enables full build verification. A request to check anchors, inspect HTML, resolve uncertainty, or maintain a site must not silently activate a build.
 
@@ -20,7 +20,7 @@ For compatibility, `site-maintain check` is a static-only alias; `site-maintain 
 
 Both primary modes are read-only with respect to formal notes, final image assets, configuration, and other user files unless the task separately and explicitly authorizes modifications. Report safe fixes instead of applying them when the request is only a check. An explicitly requested fix does not automatically authorize a build.
 
-Neither mode by itself authorizes Git staging, commits, fetching, pulling, rebasing, or pushing. Perform those operations only when separately requested, and preserve any narrower user restrictions. Never discard uncommitted changes or use force-push, `git reset --hard`, or `git clean -fd` as maintenance shortcuts.
+An explicit `site-maintain build` invocation authorizes staging, committing, and pushing validated source changes to the current branch and its configured upstream by default. It also authorizes fetching to check remote state. Honor explicit restrictions such as "do not commit" or "do not push" without asking again. Static-only modes do not authorize Git mutations. Never discard uncommitted changes or use force-push, `git reset --hard`, or `git clean -fd` as maintenance shortcuts.
 
 ## Default mode: static checks without file generation
 
@@ -73,7 +73,7 @@ Only inspect unchanged configuration as needed to interpret affected content. Do
 
 ## Build mode: explicit opt-in only
 
-For `site-maintain build`, first complete the same static checks. Report any findings; do not silently fix formal content. Then perform strict build verification unless an unsafe output target or other external blocker prevents it. Do not report success if static errors or the build remain unresolved.
+For `site-maintain build`, first complete the same static checks. Report any findings; do not silently fix formal content. Then perform strict build verification unless an unsafe output target or other external blocker prevents it. After static checks, the strict build, and affected-output verification pass, commit and push the validated source changes using the Git workflow below. Do not commit or push if validation fails, and do not report success while errors remain unresolved.
 
 Always use this exact output directory and command on Windows:
 
@@ -109,11 +109,18 @@ If cleanup returns `blocked by policy`, stop trying to delete those artifacts. D
 
 Do not modify `.gitignore` merely to hide temporary output. Do not stage or commit generated results.
 
-## If source changes or Git synchronization are separately requested
+## Source fixes and Git workflow
 
 Apply only the authorized, minimal fixes: incorrect paths or anchors, missing required navigation entries, or equivalent obvious current-change problems. Preserve unrelated content and assets. Recheck fixes statically; only the explicit `build` mode enables a build.
 
-Review the diff and intended source paths before any separately requested commit. Exclude temporary files, caches, editor backups, and generated build output. Do not create empty commits or duplicate existing unpushed commits. Integrate remote work safely only when synchronization is requested. If a conflict cannot be resolved confidently while preserving user content, stop and explain. Never force-push or publish a known broken build.
+For build mode, after validation succeeds (or when Git synchronization is separately requested):
+
+1. Review the source diff and select only the validated notes, assets, configuration, and relevant skill changes. Preserve unrelated work. Exclude temporary files, caches, editor backups, and generated build output, including tracked `site/` changes; leave excluded working-tree changes untouched.
+2. Inspect the current branch, configured remote/upstream, staged files, and existing unpushed commits. Fetch the relevant remote to check divergence. Do not include unrelated pre-staged changes in the commit. If the destination is ambiguous or the remote has diverged, stop and explain rather than guessing or rewriting history.
+3. Stage the selected paths explicitly and create a descriptive commit. Do not create an empty commit or duplicate existing unpushed commits; when no new validated changes exist, push any already validated pending commits instead.
+4. Push the current branch to its configured upstream. If no upstream exists but the repository has one unambiguous remote, push the same branch name there with `--set-upstream`. Verify the push result and report the commit and destination. Never force-push or publish a known broken build.
+
+If separately requested integration changes build-relevant sources, repeat the checks and strict build before pushing. If a conflict cannot be resolved confidently while preserving user content, stop and explain.
 
 ## Final report
 
@@ -121,6 +128,6 @@ Respond briefly with the selected mode, affected files, findings, and verificati
 
 For default mode, explicitly state that the check was static, no build was run, and no files were generated. Do not claim that HTML output or a full build was verified.
 
-For build mode, report the static-check result, build success or failure, and the fixed output path `E:\Temp\mkdocs-site-check`. Confirm reuse on repeated builds when relevant. Mention any residual extra temporary files and why they remain.
+For build mode, report the static-check result, build success or failure, the fixed output path `E:\Temp\mkdocs-site-check`, and the commit/push outcome (commit ID and destination, or why either step was skipped or blocked). Confirm reuse on repeated builds when relevant. Mention any residual extra temporary files and why they remain.
 
-Do not report a commit or push unless the user separately requested it and it actually completed.
+Only report a commit or push as successful after it actually completes. A successful push can trigger the repository's deployment workflow; distinguish push success from deployment completion.
