@@ -2758,6 +2758,8 @@ template long twiceValue<long>(long); // 显式实例化定义
 
 函数模板从函数实参与形参结构推导类型。前面普通 `auto`、`auto&`、`auto&&` 的推导与这个机制紧密相关。
 
+对于 `template<class T> void func(T&& x)`，**模板类型参数是 `T`，形参类型才是 `T&&`**。编译器首先要确定 `T = ?`，然后将结果代回形参声明并进行引用折叠；`T` 本身允许是引用类型，不能先假定它一定是 `int` 这样的非引用类型。`T&`、`T&&` 是参与推导的形参模式，不是另外两个模板参数。
+
 | 形参形式 | 主要效果 |
 | --- | --- |
 | `T value` | 按值推导，忽略实参的引用和顶层 `const`；数组/函数通常退化为指针 |
@@ -3519,6 +3521,31 @@ Collection<int, std::deque> dequeCollection;
 
 ##### 转发引用、引用折叠与完美转发
 
+**先区分声明类型、表达式值类别和绑定规则。** `&`、`&&` 决定引用能绑定哪些表达式，但引用变量一旦有名字，直接使用这个名字的表达式就是左值；右值引用变量的名字也不例外。
+
+```cpp
+int n = 10;
+int& left = n;
+int&& right = 20;
+// int&& wrong = right;       // right 是左值，不能绑定普通 int&&
+int&& again = std::move(right); // 转成将亡值后可以绑定，需要 <utility>
+```
+
+普通 `int&` 绑定可修改的 `int` 左值，`const int&` 还可绑定右值，普通 `int&&` 则绑定相容的右值。`right` 的声明类型是 `int&&`，不代表表达式 `right` 是右值；`decltype(right)` 得到声明类型 `int&&`，`decltype((right))` 根据表达式得到 `int&`。
+
+**为什么需要 `&&`？** 它让接口能区分“调用者通常还要保留的左值对象”和“允许考虑转移资源的右值对象”。例如 `std::string` 可以为后者选择移动构造，接管其缓冲区，避免复制字符。不过右值不保证一定发生移动；真正的操作由构造函数或赋值运算符等决定。`std::move` 也不会自行搬运资源，不能凭 `&&` 断言原对象已经清空或销毁。
+
+**何时是转发引用？** 在 `template<class T> void func(T&& x)` 中，当无 `const/volatile` 限定的 `T` 由本次调用推导时，`T&&` 采用转发引用（Forwarding Reference）的规则，可以接收左值与右值：
+
+| 调用（设 `int n`、`const int cn`） | 推导出的 `T` | 代入后的形参类型 |
+| --- | --- | --- |
+| `func(n)` | `int&` | `int& &&` → `int&` |
+| `func(cn)` | `const int&` | `const int& &&` → `const int&` |
+| `func(10)` | `int` | `int&&` |
+| `func(std::move(n))` | `int` | `int&&` |
+
+关键的特殊规则是：**转发引用接收左值时，将 `T` 推导为左值引用类型**。这条规则先保存调用者的左值信息，之后的引用折叠再让最终形参成为合法的引用类型。显式写 `func<int>(n)` 时 `T` 已固定为 `int`，不会应用左值推导得到 `int&` 的过程，因而不能用 `n` 绑定该 `int&&` 形参。
+
 包装函数需要把参数交给另一个函数。如果把所有参数按值接收，会丢掉引用并可能复制；如果一律 `std::move`，又会把调用者的左值当成可移动来源。完美转发的目标是保持调用者传入时的值类别与相关限定。
 
 ```cpp
@@ -3537,7 +3564,50 @@ decltype(auto) relay(F&& function, Args&&... args) {
 | `T& &`、`T& &&`、`T&& &` | `T&` |
 | `T&& &&` | `T&&` |
 
-引用折叠通过模板替换或类型别名产生，不能直接在普通声明中把两个 `&` 类型拼写出来。形参有名字后，它在函数体里的表达式是左值；`std::forward<T>` 根据推导出的 `T` 恢复应有的转发形式。`std::move` 则无条件把通常的对象表达式转换为将亡值，两者不能互换。
+引用折叠通过模板替换或类型别名产生，不能直接在普通声明中把两个 `&` 类型拼写出来。规则可以记为：**只要组合中出现 `&` 就折叠为 `&`，只有两个 `&&` 才得到 `&&`**。它不限于转发引用，例如 `using L = int&; using R = L&&;` 中 `R` 也是 `int&`。
+
+**完美转发如何用到引用折叠？** 推导出的 `T` 记录调用者传入的是左值还是右值，但具名形参 `x` 在函数体里始终是左值。如果直接写 `target(x)`，就丢失了原来的右值调用形式；`std::forward<T>(x)` 通过 `T&&` 的折叠结果，将左值继续作为左值传递，将原来的右值作为右值传递，并保留相关 `const` 限定。
+
+```cpp
+#include <iostream>
+#include <utility>
+
+void target(int&)  { std::cout << "lvalue\n"; }
+void target(int&&) { std::cout << "rvalue\n"; }
+
+template<class T>
+void func(T&& x) {
+    target(x);                  // x 是具名左值，两次调用都输出 lvalue
+    target(std::forward<T>(x));  // 按调用者的值类别选择重载
+}
+
+// 在 main 中：
+// int n = 1;
+// func(n);  // lvalue、lvalue
+// func(2);  // lvalue、rvalue
+```
+
+**`std::forward` 的核心原理**是返回 `static_cast<T&&>(x)`。当 `T = int&`，转换目标为 `int& &&`，折叠后是 `int&`；当 `T = int`，转换目标为 `int&&`，结果是将亡值。它不是运行时检查对象是否为临时对象，而是使用编译期传入的 `T`。
+
+下面只展示处理具名形参所需的一个重载，便于理解，不是标准库的完整实现：
+
+```cpp
+#include <type_traits>
+
+template<class T>
+constexpr T&& forwardNamed(std::remove_reference_t<T>& x) noexcept {
+    return static_cast<T&&>(x);
+}
+```
+
+`remove_reference_t<T>&` 让这里的输入绑定具名左值；返回类型仍保留 `T`，使原来的引用信息参与折叠。实际 `std::forward` 还提供接收 `remove_reference_t<T>&&` 的重载，并禁止通过该重载把右值转发为左值。通常必须写 `std::forward<T>(x)`，而不是期望从已经变成左值的 `x` 重新推导出原来的类别。
+
+| 工具 | 核心转换（对象类型情形） | 用途 |
+| --- | --- | --- |
+| `std::move(x)` | `static_cast<std::remove_reference_t<T>&&>(x)`，其中 `T` 由其自身的转发引用形参推导 | 无条件获得将亡值，表示允许把对象作为移动来源 |
+| `std::forward<T>(x)` | `static_cast<T&&>(x)`，其中 `T` 通常来自外层包装函数的推导 | 有条件地恢复转发类别，左值保持左值 |
+
+两者的区别在于：`move` 先去掉引用再加 `&&`，因此不会因为 `T = int&` 而折叠回左值引用；`forward` 保留 `T` 中的引用信息，正是为了允许这种折叠。包装器转交未知实参时使用 `forward`；已决定允许消耗某个对象时使用 `move`。它们都只是类型转换，不负责实际移动，也都不会去掉 `const`；对 `const std::string` 使用 `move` 常会选择复制，因为普通移动构造需要非常量右值引用。
 
 `const T&&` 不是上述转发引用。`class Box<T>` 的普通成员参数 `T&&` 若 `T` 已由类的实参固定，也不是转发引用；需要成员自身的 `template<class U> ... (U&&)` 才能进行这一推导。
 
@@ -3595,6 +3665,38 @@ public:
 #### 返回类型推导
 
 函数模板的结果类型不一定与某个输入类型相同。可以使用 `auto`、`decltype`、`decltype(auto)` 或尾置返回类型描述，选择取决于是否需要保留引用。
+
+**普通函数调用不会根据接收结果的变量类型或外层调用位置反推模板参数。** 例如：
+
+```cpp
+#include <string>
+
+template<class T, class R>
+R numberText(T value) { return std::to_string(value); }
+
+// std::string text = numberText(42); // T = int，但 R 无法从函数实参推导
+// auto text = numberText<int>(42);   // 只指定 T，仍缺少 R
+std::string text = numberText<int, std::string>(42); // 显式指定两个参数
+```
+
+这里 `return` 表达式也不会帮助推导已经声明为模板参数的 `R`。若接口的结果本来就固定为字符串，最直接、优先推荐的设计是**明确返回 `std::string`，移除多余的 `R`**；若结果取决于实现表达式，可以改为 `auto` 返回类型推导。也可以保留供调用者选择的 `R`，并给它默认模板实参：
+
+```cpp
+template<class T>
+std::string fixedText(T value) { return std::to_string(value); }
+
+template<class T>
+auto inferredText(T value) { return std::to_string(value); } // C++14，结果是 string
+
+template<class T, class R = std::string>
+R defaultText(T value) { return std::to_string(value); }
+
+auto a = fixedText(42);     // 只需推导 T
+auto b = inferredText(42);  // 先推导 T，再从 return 表达式推导返回类型
+auto c = defaultText(42);   // T = int，R 使用默认值 std::string
+```
+
+这四种方式解决的是接口设计中的不同需求，并非要求调用者总写两个模板实参。仅把 `R numberText(...)` 改成 `auto numberText(...)`，却保留无法推导、也没有默认值的模板参数 `R`，调用仍会失败。默认模板实参也不保证函数体对所有显式类型都合法，例如本例 `R = int` 不能直接接收 `std::to_string` 返回的字符串。以上规则针对普通调用；通过目标函数指针类型选择函数模板等上下文有另行规定的推导规则。
 
 ```cpp
 #include <type_traits>
@@ -3733,6 +3835,7 @@ int main() {
 以下链接指向 WG21 官方发布的工作草案，可在 PDF 中搜索方括号内的稳定条款标识；草案不是付费正式标准，阅读时也要注意版本及后续缺陷修正。
 
 - [C++17 工作草案 N4659](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4659.pdf)：模板参数 `[temp.param]`、调用推导 `[temp.deduct.call]`、推导指南 `[temp.deduct.guide]`、偏特化 `[temp.class.spec]`、显式特化 `[temp.expl.spec]` 与显式实例化 `[temp.explicit]`。
+- [C++ 标准工作草案：调用时的模板实参推导](https://eel.is/c++draft/temp.deduct.call)、[引用与引用折叠](https://eel.is/c++draft/dcl.ref)、[转发与移动辅助函数](https://eel.is/c++draft/forward)：对应本章的转发引用规则、折叠过程及 `forward` / `move` 的转换语义。
 - 同一份 C++17 草案还包括依赖名称 `[temp.dep]`、参数包 `[temp.variadic]`、折叠表达式 `[expr.prim.fold]`、转发辅助函数 `[forward]`、模板推导与替换 `[temp.deduct]` 和 `if constexpr` `[stmt.if]`。
 - [C++20 工作草案 N4861](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/n4861.pdf)：Concept 定义 `[temp.concept]`、约束 `[temp.constr]`、requires 表达式 `[expr.prim.req]`，以及模板参数和推导规则的扩展。
 - [C++23 工作草案 N4950](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/n4950.pdf)：函数声明 `[dcl.fct]` 中的显式对象参数；本节仅介绍其用途，不将其混入 C++17 示例。
