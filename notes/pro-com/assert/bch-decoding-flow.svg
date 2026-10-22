@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1050 300" role="img" aria-labelledby="title desc">
+  <title id="title">BCH 译码中的错误定位流程</title>
+  <desc id="desc">接收多项式经过 syndrome 计算、Berlekamp-Massey 和 Chien 搜索，得到错误位置并翻转，最后重新校验。</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#59758a"/></marker></defs>
+  <rect width="1050" height="300" rx="16" fill="#f7fafc"/>
+  <text x="525" y="43" text-anchor="middle" font-family="sans-serif" font-size="24" font-weight="700" fill="#18384a">BCH：从错误痕迹到比特位置</text>
+  <g font-family="sans-serif" text-anchor="middle">
+    <g fill="#e3eff5" stroke="#7290a2" stroke-width="2">
+      <rect x="25" y="101" width="150" height="84" rx="12"/><rect x="195" y="101" width="150" height="84" rx="12"/>
+      <rect x="365" y="101" width="150" height="84" rx="12"/><rect x="535" y="101" width="150" height="84" rx="12"/>
+      <rect x="705" y="101" width="150" height="84" rx="12"/><rect x="875" y="101" width="150" height="84" rx="12"/>
+    </g>
+    <g font-size="18" font-weight="700" fill="#18384a">
+      <text x="100" y="136">接收多项式</text><text x="100" y="162">r(x)</text>
+      <text x="270" y="136">syndrome</text><text x="270" y="162">非零点值</text>
+      <text x="440" y="136">Berlekamp–</text><text x="440" y="162">Massey</text>
+      <text x="610" y="136">Chien search</text><text x="610" y="162">扫描根</text>
+      <text x="780" y="136">翻转定位位</text><text x="780" y="162">修正码字</text>
+      <text x="950" y="136">重新校验</text><text x="950" y="162">syndrome</text>
+    </g>
+  </g>
+  <g stroke="#59758a" stroke-width="3" marker-end="url(#arrow)">
+    <path d="M176 143H191"/><path d="M346 143H361"/><path d="M516 143H531"/><path d="M686 143H701"/><path d="M856 143H871"/>
+  </g>
+  <g font-family="sans-serif" font-size="15" fill="#476274" text-anchor="middle">
+    <text x="270" y="222">错误留下的证据</text><text x="440" y="222">求定位多项式</text><text x="610" y="222">根映射到位置</text>
+    <text x="525" y="270">教学流程：syndrome 全零也不单独证明恢复了原发送码字</text>
+  </g>
+</svg>

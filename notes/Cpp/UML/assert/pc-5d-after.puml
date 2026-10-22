@@ -1,0 +1,24 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+interface Switchable {
++ on()
++ off()
+}
+interface ConsumptionReadable {
++ consumption() : Real
+}
+class Switch {
+- state : Boolean
++ toggle()
+}
+class Lamp
+class EnergyMonitor
+Switch "0..*" --> "1" Switchable
+Lamp ..|> Switchable
+Lamp ..|> ConsumptionReadable
+EnergyMonitor --> ConsumptionReadable
+@enduml

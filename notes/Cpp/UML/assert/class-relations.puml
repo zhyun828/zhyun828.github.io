@@ -1,0 +1,23 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+class Company
+class Person
+class Window
+class MouseEvent
+class Room
+class Wall
+class Car
+class Engine
+abstract class Vehicle
+interface Drivable
+Company "0..3" -- "0..*" Person : 雇佣
+Window ..> MouseEvent : 使用参数
+Room "0..*" o-- "1..*" Wall : 整体/可共享部分
+Car "1" *-- "1" Engine : 独占部件
+Car --|> Vehicle
+Car ..|> Drivable
+@enduml

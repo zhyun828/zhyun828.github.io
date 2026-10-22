@@ -1,0 +1,15 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+class Forest
+class Tree
+Forest "0..1" o-- "1..*" Tree : contains
+note bottom of Forest
+此方案不由森林对象负责销毁树
+实体树可脱离森林模型存在
+
+end note
+@enduml

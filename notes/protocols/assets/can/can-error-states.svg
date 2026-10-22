@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1050" height="390" viewBox="0 0 1050 390" role="img" aria-label="CAN error counters and states">
+  <rect width="1050" height="390" fill="#fff"/>
+  <style>
+    text{font-family:Arial,"Microsoft YaHei",sans-serif;fill:#1f2933}
+    .title{font-size:26px;font-weight:700}
+    .box{fill:#f8fafc;stroke:#64748b;stroke-width:2}
+    .ok{fill:#dcfce7;stroke:#16a34a;stroke-width:2}
+    .warn{fill:#fef9c3;stroke:#ca8a04;stroke-width:2}
+    .bad{fill:#fee2e2;stroke:#ef4444;stroke-width:2}
+    .arrow{stroke:#243b53;stroke-width:3;marker-end:url(#arr)}
+    .label{font-size:20px;font-weight:700}
+    .small{font-size:16px}
+  </style>
+  <defs><marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#243b53"/></marker></defs>
+  <text x="36" y="45" class="title">CAN 错误状态：由 TEC / REC 错误计数器决定</text>
+  <rect x="60" y="115" width="230" height="110" rx="12" class="ok"/><text x="100" y="155" class="label">主动错误状态</text><text x="94" y="188" class="small">正常参与通信</text><text x="86" y="212" class="small">检测错误时发主动错误帧</text>
+  <rect x="410" y="115" width="230" height="110" rx="12" class="warn"/><text x="450" y="155" class="label">被动错误状态</text><text x="444" y="188" class="small">仍可参与通信</text><text x="434" y="212" class="small">只能发被动错误帧</text>
+  <rect x="760" y="115" width="230" height="110" rx="12" class="bad"/><text x="820" y="155" class="label">总线关闭</text><text x="805" y="188" class="small">不能参与通信</text><text x="794" y="212" class="small">需要恢复流程重新上线</text>
+  <line x1="290" y1="170" x2="410" y2="170" class="arrow"/><line x1="640" y1="170" x2="760" y2="170" class="arrow"/>
+  <text x="322" y="150" class="small">错误计数增加</text><text x="672" y="150" class="small">错误持续增加</text>
+  <rect x="200" y="275" width="650" height="55" rx="10" class="box"/><text x="248" y="310" class="small">发送错误计数器 TEC 与接收错误计数器 REC 根据错误/成功通信动态增减</text>
+</svg>

@@ -1,0 +1,32 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+abstract class Person
+class NaturalPerson {
+- socialSecurityNumber : String {id}
+}
+class LegalPerson
+class Car {
+- registration : String {id}
+}
+class Bank
+class Loan {
+- amount : Money
+- status : LoanStatus
+}
+NaturalPerson --|> Person
+LegalPerson --|> Person
+LegalPerson "0..3" -- "0..*" NaturalPerson : employs
+Person "1" -- "0..*" Car : owns
+Person "1" -- "0..*" Loan : requests
+Bank "1" -- "0..*" Loan : lender
+Car "1" -- "0..*" Loan : purchaseFinancing
+note bottom of Loan
+0..* 是允许申请历史的假设
+并非每辆车必须贷款或每笔申请获批
+
+end note
+@enduml

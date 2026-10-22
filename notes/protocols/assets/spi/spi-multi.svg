@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1050" height="460" viewBox="0 0 1050 460" role="img" aria-label="SPI master with multiple slaves">
+  <rect width="1050" height="460" fill="#fff"/>
+  <style>
+    text{font-family:Arial,"Microsoft YaHei",sans-serif;fill:#123}
+    .title{font-size:26px;font-weight:700}
+    .master{fill:#dbeafe;stroke:#2563eb;stroke-width:2}
+    .slave{fill:#ffedd5;stroke:#f97316;stroke-width:2}
+    .bus{stroke:#243b53;stroke-width:4}
+    .cs{stroke:#ef4444;stroke-width:3}
+    .small{font-size:17px}
+    .label{font-size:20px;font-weight:700}
+  </style>
+  <text x="40" y="45" class="title">SPI 多从机连接：时钟/数据共线，每个从机独立片选</text>
+  <rect x="60" y="130" width="170" height="190" rx="10" class="master"/><text x="104" y="225" class="label">Master</text>
+  <rect x="760" y="80" width="180" height="85" rx="10" class="slave"/><text x="808" y="130" class="label">Slave 1</text>
+  <rect x="760" y="190" width="180" height="85" rx="10" class="slave"/><text x="808" y="240" class="label">Slave 2</text>
+  <rect x="760" y="300" width="180" height="85" rx="10" class="slave"/><text x="808" y="350" class="label">Slave 3</text>
+  <line x1="230" y1="170" x2="730" y2="170" class="bus"/><text x="420" y="158" class="small">SCK shared</text>
+  <line x1="230" y1="220" x2="730" y2="220" class="bus"/><text x="420" y="208" class="small">MOSI shared</text>
+  <line x1="230" y1="270" x2="730" y2="270" class="bus"/><text x="420" y="258" class="small">MISO shared</text>
+  <line x1="730" y1="170" x2="760" y2="122" class="bus"/><line x1="730" y1="220" x2="760" y2="232" class="bus"/><line x1="730" y1="270" x2="760" y2="342" class="bus"/>
+  <line x1="230" y1="315" x2="760" y2="105" class="cs"/><text x="450" y="95" class="small">CS1</text>
+  <line x1="230" y1="335" x2="760" y2="215" class="cs"/><text x="450" y="185" class="small">CS2</text>
+  <line x1="230" y1="355" x2="760" y2="325" class="cs"/><text x="450" y="320" class="small">CS3</text>
+</svg>

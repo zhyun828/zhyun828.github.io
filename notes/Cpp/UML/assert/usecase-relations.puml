@@ -1,0 +1,22 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+left to right direction
+actor Visitor
+actor RegisteredCustomer
+RegisteredCustomer --|> Visitor
+rectangle Shop {
+ usecase Browse
+ usecase Checkout
+ usecase Payment
+ usecase Help
+ Checkout ..> Payment : <<include>>
+ Help ..> Checkout : <<extend>>
+note right of Help : 条件：需要帮助
+}
+Visitor -- Browse
+RegisteredCustomer -- Checkout
+@enduml

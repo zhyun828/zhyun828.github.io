@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1050" height="420" viewBox="0 0 1050 420" role="img" aria-label="CAN five frame types">
+  <rect width="1050" height="420" fill="#fff"/>
+  <style>
+    text{font-family:Arial,"Microsoft YaHei",sans-serif;fill:#1f2933}
+    .title{font-size:26px;font-weight:700}
+    .cell{fill:#f8fafc;stroke:#94a3b8;stroke-width:1.5}
+    .head{fill:#dbeafe;stroke:#2563eb;stroke-width:1.5}
+    .name{font-size:20px;font-weight:700}
+    .small{font-size:17px}
+  </style>
+  <text x="36" y="45" class="title">CAN 协议的 5 种帧类型</text>
+  <g transform="translate(55,85)">
+    <rect x="0" y="0" width="180" height="55" class="head"/><text x="55" y="35" class="name">帧类型</text>
+    <rect x="180" y="0" width="760" height="55" class="head"/><text x="520" y="35" class="name">用途</text>
+    <rect x="0" y="55" width="180" height="55" class="cell"/><text x="58" y="90" class="small">数据帧</text>
+    <rect x="180" y="55" width="760" height="55" class="cell"/><text x="205" y="90" class="small">发送设备主动发送数据，广播式通信最常用</text>
+    <rect x="0" y="110" width="180" height="55" class="cell"/><text x="58" y="145" class="small">遥控帧</text>
+    <rect x="180" y="110" width="760" height="55" class="cell"/><text x="205" y="145" class="small">接收设备主动请求某个 ID 的数据，无数据段，RTR 为隐性</text>
+    <rect x="0" y="165" width="180" height="55" class="cell"/><text x="58" y="200" class="small">错误帧</text>
+    <rect x="180" y="165" width="760" height="55" class="cell"/><text x="205" y="200" class="small">节点检测到位、填充、CRC、格式或 ACK 错误时通知总线</text>
+    <rect x="0" y="220" width="180" height="55" class="cell"/><text x="58" y="255" class="small">过载帧</text>
+    <rect x="180" y="220" width="760" height="55" class="cell"/><text x="205" y="255" class="small">接收设备暂时无法处理更多数据时延缓发送方</text>
+    <rect x="0" y="275" width="180" height="55" class="cell"/><text x="58" y="310" class="small">帧间隔</text>
+    <rect x="180" y="275" width="760" height="55" class="cell"/><text x="205" y="310" class="small">将数据帧/遥控帧与前一帧分离，连续 11 个隐性位表示空闲</text>
+  </g>
+</svg>

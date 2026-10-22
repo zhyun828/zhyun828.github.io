@@ -1,0 +1,26 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+left to right direction
+actor "柜员" as E
+actor "终端软件" as T
+actor "跨银行路由机" as R
+rectangle "某银行 SIC" {
+ usecase "管理账户" as Manage
+ usecase "处理账户交易" as Tx
+}
+E -- Manage
+T -- Tx
+R -- Tx
+rectangle "某银行终端软件" {
+ usecase "输入账户号与交易" as Entry
+ usecase "提交交易至 SIC" as Submit
+ Entry ..> Submit : <<include>>
+}
+E -- Entry
+actor "银行 SIC" as S
+S -- Submit
+@enduml

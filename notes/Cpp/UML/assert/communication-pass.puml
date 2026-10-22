@@ -1,0 +1,14 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+object "<u>pass:PASS</u>" as P
+object "<u>directory:StudentDirectory</u>" as D
+object "<u>marks:MarksDataStorage</u>" as M
+object "<u>staff:Staff</u>" as S
+S --> P : 1: query(name, course)
+P --> D : 1.1: findIds(name)
+P --> M : 1.2: getMarks(id, course)
+@enduml

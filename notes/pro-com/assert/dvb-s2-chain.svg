@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 330" width="1200" height="330" role="img">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#405e76"/></marker></defs>
+<text x="600" y="31" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="22" font-weight="700" fill="#203044">DVB-S2 主数据路径（省略部分同步、成形和物理层细节）</text>
+<rect x="35" y="76" width="150" height="58" rx="11" fill="#e4f2fa" stroke="#456078" stroke-width="1.3"/>
+<text x="110.0" y="111.0" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="18" font-weight="600" fill="#203044">BBFRAME</text>
+<line x1="185" y1="105" x2="220" y2="105" stroke="#405e76" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="233" y="76" width="150" height="58" rx="11" fill="#e4f2fa" stroke="#456078" stroke-width="1.3"/>
+<text x="308.0" y="111.0" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="18" font-weight="600" fill="#203044">BCH 编码</text>
+<line x1="383" y1="105" x2="418" y2="105" stroke="#405e76" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="431" y="76" width="150" height="58" rx="11" fill="#e4f2fa" stroke="#456078" stroke-width="1.3"/>
+<text x="506.0" y="111.0" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="18" font-weight="600" fill="#203044">LDPC 编码</text>
+<line x1="581" y1="105" x2="616" y2="105" stroke="#405e76" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="629" y="76" width="150" height="58" rx="11" fill="#e8f6ed" stroke="#456078" stroke-width="1.3"/>
+<text x="704.0" y="111.0" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="18" font-weight="600" fill="#203044">比特交织</text>
+<line x1="779" y1="105" x2="814" y2="105" stroke="#405e76" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="827" y="76" width="150" height="58" rx="11" fill="#fff0d8" stroke="#456078" stroke-width="1.3"/>
+<text x="902.0" y="111.0" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="18" font-weight="600" fill="#203044">Mapper</text>
+<line x1="977" y1="105" x2="1012" y2="105" stroke="#405e76" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="1025" y="76" width="150" height="58" rx="11" fill="#fce5e5" stroke="#456078" stroke-width="1.3"/>
+<text x="1100.0" y="111.0" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="18" font-weight="600" fill="#203044">信道</text>
+<rect x="35" y="210" width="150" height="58" rx="11" fill="#e4f2fa" stroke="#456078" stroke-width="1.3"/>
+<text x="110.0" y="245.0" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="18" font-weight="600" fill="#203044">BBFRAME</text>
+<rect x="233" y="210" width="150" height="58" rx="11" fill="#e4f2fa" stroke="#456078" stroke-width="1.3"/>
+<text x="308.0" y="245.0" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="18" font-weight="600" fill="#203044">BCH 译码</text>
+<line x1="233" y1="239" x2="198" y2="239" stroke="#405e76" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="431" y="210" width="150" height="58" rx="11" fill="#e4f2fa" stroke="#456078" stroke-width="1.3"/>
+<text x="506.0" y="245.0" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="18" font-weight="600" fill="#203044">LDPC 译码</text>
+<line x1="431" y1="239" x2="396" y2="239" stroke="#405e76" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="629" y="210" width="150" height="58" rx="11" fill="#e8f6ed" stroke="#456078" stroke-width="1.3"/>
+<text x="704.0" y="245.0" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="18" font-weight="600" fill="#203044">反交织</text>
+<line x1="629" y1="239" x2="594" y2="239" stroke="#405e76" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="827" y="210" width="150" height="58" rx="11" fill="#fff0d8" stroke="#456078" stroke-width="1.3"/>
+<text x="902.0" y="245.0" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="18" font-weight="600" fill="#203044">Demapper</text>
+<line x1="827" y1="239" x2="792" y2="239" stroke="#405e76" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="1025" y="210" width="150" height="58" rx="11" fill="#fce5e5" stroke="#456078" stroke-width="1.3"/>
+<text x="1100.0" y="245.0" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="18" font-weight="600" fill="#203044">接收/同步</text>
+<line x1="1025" y1="239" x2="990" y2="239" stroke="#405e76" stroke-width="2" marker-end="url(#arr)"/>
+<path d="M 1175 134 L 1175 185 L 1140 185 L 1140 206" fill="none" stroke="#405e76" stroke-width="2" marker-end="url(#arr)"/>
+<text x="600" y="177" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="16" font-weight="normal" fill="#526273">发送：比特 → 符号                                      接收：符号 → LLR → 比特</text>
+<text x="600" y="309" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="normal" fill="#526273">QPSK 跳过“比特交织/反交织”；其他三种数据调制按标准规则处理。</text>
+</svg>

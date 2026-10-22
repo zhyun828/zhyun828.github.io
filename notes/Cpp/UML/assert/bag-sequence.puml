@@ -1,0 +1,15 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+actor User
+participant "bag:Bag" as B
+participant "item:Item" as I
+User -> B : applyPromotion(-0.20)
+loop 对 B.items 中每个 item
+ B -> I : setPromotion(-0.20)
+end
+B --> User : completed
+@enduml

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="520" viewBox="0 0 1040 520" role="img" aria-labelledby="title desc">
+  <title id="title">LIN position in vehicle network</title>
+  <desc id="desc">CAN backbone with ECU as LIN master connecting several low speed LIN slave nodes.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.can{stroke:#2563eb;stroke-width:8;stroke-linecap:round}.lin{stroke:#16a34a;stroke-width:5;stroke-linecap:round}
+      .ecu{fill:#dbeafe;stroke:#1d4ed8;stroke-width:2;rx:12}.slave{fill:#dcfce7;stroke:#15803d;stroke-width:2;rx:12}
+      .other{fill:#fff7ed;stroke:#c2410c;stroke-width:2;rx:12}.text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:19px;fill:#0f172a}
+      .title{font-size:25px;font-weight:700}.small{font-size:16px;fill:#475569}
+    </style>
+  </defs>
+  <rect class="bg" width="1040" height="520"/>
+  <text class="text title" x="520" y="48" text-anchor="middle">LIN 在车载网络中的位置</text>
+  <line class="can" x1="100" y1="125" x2="940" y2="125"/>
+  <text class="text" x="520" y="102" text-anchor="middle">CAN / CAN FD 主干网络</text>
+
+  <rect class="other" x="120" y="165" width="150" height="70"/><text class="text" x="195" y="206" text-anchor="middle">动力 ECU</text>
+  <rect class="ecu" x="445" y="165" width="150" height="70"/><text class="text" x="520" y="194" text-anchor="middle">车身 ECU</text><text class="small" x="520" y="218" text-anchor="middle">CAN 节点 + LIN Master</text>
+  <rect class="other" x="765" y="165" width="150" height="70"/><text class="text" x="840" y="206" text-anchor="middle">网关 ECU</text>
+
+  <line class="lin" x1="520" y1="235" x2="520" y2="330"/>
+  <line class="lin" x1="170" y1="330" x2="870" y2="330"/>
+  <text class="text" x="520" y="312" text-anchor="middle">LIN 局部低速子网</text>
+
+  <rect class="slave" x="105" y="370" width="150" height="70"/><text class="text" x="180" y="398" text-anchor="middle">车窗电机</text><text class="small" x="180" y="421" text-anchor="middle">LIN Slave</text>
+  <rect class="slave" x="305" y="370" width="150" height="70"/><text class="text" x="380" y="398" text-anchor="middle">按键面板</text><text class="small" x="380" y="421" text-anchor="middle">LIN Slave</text>
+  <rect class="slave" x="505" y="370" width="150" height="70"/><text class="text" x="580" y="398" text-anchor="middle">风门执行器</text><text class="small" x="580" y="421" text-anchor="middle">LIN Slave</text>
+  <rect class="slave" x="705" y="370" width="150" height="70"/><text class="text" x="780" y="398" text-anchor="middle">传感器</text><text class="small" x="780" y="421" text-anchor="middle">LIN Slave</text>
+
+  <text class="small" x="520" y="486" text-anchor="middle">CAN 负责主干通信，LIN 负责低速、低成本的局部从属网络。</text>
+</svg>

@@ -1,0 +1,14 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+rectangle UML {
+ rectangle "结构图（7）\nClass / Object / Package\nComponent / Composite Structure\nDeployment / Profile" as S
+ rectangle "行为图（7）" as B {
+  rectangle "Use Case / Activity / State Machine" as Basic
+  rectangle "交互图（4）\nSequence / Communication\nInteraction Overview / Timing" as I
+ }
+}
+@enduml

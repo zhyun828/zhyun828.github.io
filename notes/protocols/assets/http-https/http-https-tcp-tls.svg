@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="470" viewBox="0 0 1040 470" role="img" aria-labelledby="title desc">
+  <title id="title">HTTP HTTPS TCP TLS relationship</title>
+  <desc id="desc">HTTP over TCP versus HTTPS as HTTP over TLS over TCP.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.box{fill:#fff;stroke:#334155;stroke-width:2;rx:12}.http{fill:#dbeafe}.tls{fill:#ede9fe}.tcp{fill:#dcfce7}.ip{fill:#fef3c7}
+      .text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:20px;fill:#0f172a}.title{font-size:25px;font-weight:700}.small{font-size:15px;fill:#475569}
+    </style>
+  </defs>
+  <rect class="bg" width="1040" height="470"/>
+  <text class="text title" x="520" y="45" text-anchor="middle">HTTP、HTTPS、TCP、TLS 的关系</text>
+  <text class="text title" x="285" y="95" text-anchor="middle">HTTP</text>
+  <rect class="box http" x="135" y="125" width="300" height="58"/><text class="text" x="285" y="161" text-anchor="middle">HTTP</text>
+  <rect class="box tcp" x="135" y="195" width="300" height="58"/><text class="text" x="285" y="231" text-anchor="middle">TCP</text>
+  <rect class="box ip" x="135" y="265" width="300" height="58"/><text class="text" x="285" y="301" text-anchor="middle">IP / Ethernet</text>
+  <text class="small" x="285" y="355" text-anchor="middle">明文 HTTP 内容可被直接观察</text>
+
+  <text class="text title" x="755" y="95" text-anchor="middle">HTTPS</text>
+  <rect class="box http" x="605" y="125" width="300" height="58"/><text class="text" x="755" y="161" text-anchor="middle">HTTP</text>
+  <rect class="box tls" x="605" y="195" width="300" height="58"/><text class="text" x="755" y="231" text-anchor="middle">TLS</text>
+  <rect class="box tcp" x="605" y="265" width="300" height="58"/><text class="text" x="755" y="301" text-anchor="middle">TCP</text>
+  <rect class="box ip" x="605" y="335" width="300" height="58"/><text class="text" x="755" y="371" text-anchor="middle">IP / Ethernet</text>
+  <text class="small" x="755" y="425" text-anchor="middle">HTTP 内容在 TLS 通道内加密传输</text>
+</svg>

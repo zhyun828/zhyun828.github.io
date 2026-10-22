@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="430" viewBox="0 0 1120 430" role="img" aria-label="STM32 bxCAN basic structure">
+  <rect width="1120" height="430" fill="#fff"/>
+  <style>
+    text{font-family:Arial,"Microsoft YaHei",sans-serif;fill:#1f2933}
+    .title{font-size:26px;font-weight:700}
+    .box{fill:#eff6ff;stroke:#2563eb;stroke-width:2}
+    .mail{fill:#fef9c3;stroke:#ca8a04;stroke-width:2}
+    .fifo{fill:#dcfce7;stroke:#16a34a;stroke-width:2}
+    .filter{fill:#ede9fe;stroke:#7c3aed;stroke-width:2}
+    .arrow{stroke:#243b53;stroke-width:3;marker-end:url(#arr)}
+    .small{font-size:16px}
+    .label{font-size:19px;font-weight:700}
+  </style>
+  <defs><marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#243b53"/></marker></defs>
+  <text x="36" y="45" class="title">STM32 bxCAN 基本结构</text>
+  <rect x="45" y="160" width="120" height="85" rx="10" class="box"/><text x="88" y="210" class="label">CPU</text>
+  <rect x="240" y="90" width="150" height="55" rx="8" class="mail"/><text x="270" y="124" class="small">发送邮箱 0</text>
+  <rect x="240" y="155" width="150" height="55" rx="8" class="mail"/><text x="270" y="189" class="small">发送邮箱 1</text>
+  <rect x="240" y="220" width="150" height="55" rx="8" class="mail"/><text x="270" y="254" class="small">发送邮箱 2</text>
+  <rect x="455" y="140" width="165" height="100" rx="10" class="box"/><text x="495" y="185" class="label">发送/接收</text><text x="507" y="212" class="label">控制器</text>
+  <rect x="685" y="80" width="145" height="70" rx="8" class="filter"/><text x="725" y="122" class="small">过滤器组</text>
+  <rect x="890" y="70" width="150" height="60" rx="8" class="fifo"/><text x="925" y="107" class="small">接收 FIFO0</text>
+  <rect x="890" y="155" width="150" height="60" rx="8" class="fifo"/><text x="925" y="192" class="small">接收 FIFO1</text>
+  <text x="700" y="285" class="small">CAN_TX / CAN_RX</text>
+  <line x1="165" y1="180" x2="240" y2="117" class="arrow"/><line x1="165" y1="202" x2="240" y2="182" class="arrow"/><line x1="165" y1="224" x2="240" y2="247" class="arrow"/>
+  <line x1="390" y1="182" x2="455" y2="190" class="arrow"/>
+  <line x1="620" y1="190" x2="765" y2="270" class="arrow"/>
+  <line x1="765" y1="270" x2="620" y2="210" class="arrow"/>
+  <line x1="620" y1="160" x2="685" y2="115" class="arrow"/>
+  <line x1="830" y1="115" x2="890" y2="100" class="arrow"/>
+  <line x1="830" y1="130" x2="890" y2="185" class="arrow"/>
+  <line x1="890" y1="185" x2="165" y2="230" class="arrow"/>
+  <line x1="890" y1="100" x2="165" y2="190" class="arrow"/>
+</svg>

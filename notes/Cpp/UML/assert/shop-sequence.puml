@@ -1,0 +1,36 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+actor "已注册客户" as C
+participant Site
+participant Basket
+participant PaymentService as P
+loop 查找直到决定购买
+ C -> Site : search(query)
+ Site --> C : availableArticles
+ opt 查看详情
+  C -> Site : details(id)
+  Site --> C : description
+ end
+ opt 选择商品
+  C -> Site : addToBasket(id, quantity)
+  Site -> Basket : add(id, quantity)
+  Basket --> Site : updated
+  Site --> C : confirmation
+ end
+end
+C -> Site : checkout()
+Site -> Basket : total()
+Basket --> Site : amount
+Site -> P : pay(amount)
+alt 支付成功
+ P --> Site : accepted
+ Site --> C : purchaseConfirmed
+else 支付失败
+ P --> Site : rejected
+ Site --> C : paymentFailure
+end
+@enduml

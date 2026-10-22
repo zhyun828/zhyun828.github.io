@@ -1,0 +1,23 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+actor "教务人员" as S
+participant "pass:PASS" as P
+participant "directory:StudentDirectory" as D
+participant "storage:MarksDataStorage" as M
+S -> P : query("Bjarne Stroustrup",\n"Advanced C++ Programming")
+P -> D : findIds("Bjarne Stroustrup")
+D --> P : ids
+alt 恰好一个 ID
+ P -> M : getMarks(id, "Advanced C++ Programming")
+ M --> P : marks
+ P --> S : marks
+else 零匹配
+ P --> S : studentNotFound
+else 多个匹配
+ P --> S : ambiguousName
+end
+@enduml

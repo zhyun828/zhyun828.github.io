@@ -1,0 +1,23 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+class MediaLibrary
+class Media
+class Subscriber
+class Loan {
+- borrowedAt : Date
+- returnedAt : Date [0..1]
+}
+MediaLibrary "1" -- "0..*" Media : inventory
+MediaLibrary "1" -- "0..*" Subscriber : subscriptions
+Subscriber "1" -- "0..*" Loan
+Media "1" -- "0..*" Loan
+note bottom of Loan
+同一 Media 同时最多一笔未归还借阅
+Loan 保留历史；Media 指可借实体副本
+
+end note
+@enduml

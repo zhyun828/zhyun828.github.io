@@ -1,0 +1,37 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+class Client {
+ - lastName : String
+ - firstName : String
+ - address : String
+}
+class Account {
+- id : String {id}
+}
+class Basket {
++ total() : Money
+}
+class BasketLine {
+- quantity : Integer = 1
+}
+class Article {
+ - id : String {id}
+ - name : String
+ - price : Money
+ - photo : File
+ - description : String
+}
+Client "1" -- "1" Account
+Account "1" *-- "1" Basket
+Basket "1" *-- "0..*" BasketLine : lines {ordered}
+BasketLine "0..*" --> "1" Article
+note bottom of BasketLine
+{quantity >= 1}
+同商品一行，quantity 表达重复
+
+end note
+@enduml

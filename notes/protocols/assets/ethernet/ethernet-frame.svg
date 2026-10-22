@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="420" viewBox="0 0 1120 420" role="img" aria-labelledby="title desc">
+  <title id="title">Ethernet frame structure</title>
+  <desc id="desc">Ethernet frame fields including preamble SFD destination MAC source MAC type length payload and FCS.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.sync{fill:#e0f2fe;stroke:#0369a1;stroke-width:2}.mac{fill:#dcfce7;stroke:#16a34a;stroke-width:2}.type{fill:#fef3c7;stroke:#d97706;stroke-width:2}.data{fill:#fff;stroke:#334155;stroke-width:2}.fcs{fill:#fee2e2;stroke:#dc2626;stroke-width:2}
+      .text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:18px;fill:#0f172a}.title{font-size:25px;font-weight:700}.small{font-size:14px;fill:#475569}
+    </style>
+  </defs>
+  <rect class="bg" width="1120" height="420"/>
+  <text class="text title" x="560" y="46" text-anchor="middle">Ethernet II 帧结构</text>
+  <rect class="sync" x="50" y="125" width="110" height="75"/><text class="text" x="105" y="155" text-anchor="middle">Preamble</text><text class="small" x="105" y="181" text-anchor="middle">7B</text>
+  <rect class="sync" x="160" y="125" width="70" height="75"/><text class="text" x="195" y="155" text-anchor="middle">SFD</text><text class="small" x="195" y="181" text-anchor="middle">1B</text>
+  <rect class="mac" x="230" y="125" width="160" height="75"/><text class="text" x="310" y="155" text-anchor="middle">目的 MAC</text><text class="small" x="310" y="181" text-anchor="middle">6B</text>
+  <rect class="mac" x="390" y="125" width="160" height="75"/><text class="text" x="470" y="155" text-anchor="middle">源 MAC</text><text class="small" x="470" y="181" text-anchor="middle">6B</text>
+  <rect class="type" x="550" y="125" width="130" height="75"/><text class="text" x="615" y="155" text-anchor="middle">Type/Len</text><text class="small" x="615" y="181" text-anchor="middle">2B</text>
+  <rect class="data" x="680" y="125" width="300" height="75"/><text class="text" x="830" y="155" text-anchor="middle">Payload</text><text class="small" x="830" y="181" text-anchor="middle">46..1500B 常见</text>
+  <rect class="fcs" x="980" y="125" width="90" height="75"/><text class="text" x="1025" y="155" text-anchor="middle">FCS</text><text class="small" x="1025" y="181" text-anchor="middle">4B</text>
+  <text class="small" x="560" y="255" text-anchor="middle">Preamble/SFD 和帧间隙属于线上传输开销；普通抓包通常从目的 MAC 开始显示，FCS 也常被网卡剥离。</text>
+  <text class="small" x="560" y="290" text-anchor="middle">EtherType 0x0800=IPv4，0x0806=ARP，0x86DD=IPv6。</text>
+</svg>

@@ -1,0 +1,25 @@
+UML 教材图源及再生成说明
+
+课程资料（只使用这三份 PDF）：
+GL - cours1- 2020 - taf.pdf：Introduction au Génie Logiciel，148 页。
+GL - cours2 - taf.pdf：Modélisation objet，96 页。
+pc_uml.pdf：Exemples de modélisation via UML，2025 年春季，7 页。
+source-cours1-pNNN.png / source-cours2-pNNN.png：PDF 文件第 NNN 页的课程图示截取。
+source-pc-pNNN.png：练习册完整第 NNN 页，保留原始 SOLID 图和图内代码。
+页码范围、排除项和解释位置见 UML.md 第 16、18 章。
+原图中的 Design patterns 页眉是课件装饰栏目，不表示纳入设计模式教学。
+
+新绘图：50 个同名 .puml + .svg + .png，用 PlantUML 1.2025.2、UTF-8、Microsoft YaHei。
+profile.svg 和 interaction-overview.svg 自身就是可编辑矢量源，PNG 用 @resvg/resvg-js 渲染。
+新图 52 张，课程原图 68 张。SVG 用于 Markdown，PNG 用于预览及导出。
+
+在仓库根目录使用自行安装的 PlantUML jar 再生成：
+java -jar <plantuml.jar路径> -charset UTF-8 -tsvg docs/notes/Cpp/UML/assert/*.puml
+java -jar <plantuml.jar路径> -charset UTF-8 -tpng docs/notes/Cpp/UML/assert/*.puml
+编辑手工 SVG 后用 SVG 渲染工具导出同名 PNG。
+绘图经过视觉检查；不要删去复杂类图中的方向限定或时序片段条件标签。
+
+验证：所有本地图片、内部锚点、SVG XML / PNG 完整性及新图视觉检查通过。
+教材全部 10 个 C++ 代码块以 g++ -std=c++17 -Wall -Wextra -pedantic 编译，添加边界断言运行通过。
+运行断言涵盖余额不足、折扣范围、组最小元素数、姓名不存在/重名、未知国家/负年龄、连续开关、非法邮箱。
+mkdocs build --strict 成功。详细统计见 validation.json。

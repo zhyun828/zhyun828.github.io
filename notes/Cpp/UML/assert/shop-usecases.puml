@@ -1,0 +1,34 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+left to right direction
+actor "访客 Visitor" as V
+actor "注册客户 Client" as C
+actor "支付服务" as Bank
+C --|> V
+rectangle "购物网站" {
+ usecase "浏览商品" as Browse
+ usecase "搜索商品" as Search
+ usecase "查看详情" as Detail
+ usecase "注册账户" as Register
+ usecase "加入购物车" as Add
+ usecase "购买/结账" as Buy
+ usecase "支付" as Pay
+}
+V -- Browse
+V -- Search
+V -- Detail
+V -- Register
+C -- Add
+C -- Buy
+Buy ..> Pay : <<include>>
+Bank -- Pay
+note bottom of Buy
+前置：拥有账户；购物车非空
+展示的商品均可用
+
+end note
+@enduml

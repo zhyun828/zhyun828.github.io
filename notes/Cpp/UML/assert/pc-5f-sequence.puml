@@ -1,0 +1,15 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+participant "teacher:MathTeacher" as T
+participant "student:MathLearner" as S
+T -> S : learnMath("exo1")
+S --> T : completed
+T -> S : learnMath("exo2")
+S --> T : completed
+T -> S : learnMath("exo3")
+S --> T : completed
+@enduml

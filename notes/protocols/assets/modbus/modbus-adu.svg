@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="430" viewBox="0 0 1040 430" role="img" aria-labelledby="title desc">
+  <title id="title">Modbus ADU structures</title>
+  <desc id="desc">Comparison of Modbus RTU ASCII and TCP application data units.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.label{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:22px;font-weight:700;fill:#0f172a}
+      .text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:18px;fill:#0f172a}.tiny{font-size:15px;fill:#475569}
+      .addr{fill:#dbeafe;stroke:#2563eb;stroke-width:2}.func{fill:#dcfce7;stroke:#16a34a;stroke-width:2}
+      .data{fill:#fef3c7;stroke:#d97706;stroke-width:2}.check{fill:#fee2e2;stroke:#dc2626;stroke-width:2}
+      .mbap{fill:#ede9fe;stroke:#7c3aed;stroke-width:2}.frame{fill:none;stroke:#334155;stroke-width:2;rx:8}
+    </style>
+  </defs>
+  <rect class="bg" width="1040" height="430"/>
+  <text class="label" x="50" y="58">Modbus RTU</text>
+  <rect class="frame" x="190" y="30" width="760" height="58"/>
+  <rect class="addr" x="190" y="30" width="130" height="58"/><text class="text" x="255" y="64" text-anchor="middle">地址</text>
+  <rect class="func" x="320" y="30" width="140" height="58"/><text class="text" x="390" y="64" text-anchor="middle">功能码</text>
+  <rect class="data" x="460" y="30" width="310" height="58"/><text class="text" x="615" y="64" text-anchor="middle">数据</text>
+  <rect class="check" x="770" y="30" width="180" height="58"/><text class="text" x="860" y="64" text-anchor="middle">CRC 低/高</text>
+
+  <text class="label" x="50" y="178">Modbus ASCII</text>
+  <rect class="frame" x="190" y="150" width="760" height="58"/>
+  <rect class="check" x="190" y="150" width="85" height="58"/><text class="text" x="232" y="185" text-anchor="middle">:</text>
+  <rect class="addr" x="275" y="150" width="120" height="58"/><text class="text" x="335" y="185" text-anchor="middle">地址</text>
+  <rect class="func" x="395" y="150" width="130" height="58"/><text class="text" x="460" y="185" text-anchor="middle">功能码</text>
+  <rect class="data" x="525" y="150" width="240" height="58"/><text class="text" x="645" y="185" text-anchor="middle">数据</text>
+  <rect class="check" x="765" y="150" width="95" height="58"/><text class="text" x="812" y="185" text-anchor="middle">LRC</text>
+  <rect class="check" x="860" y="150" width="90" height="58"/><text class="text" x="905" y="185" text-anchor="middle">CRLF</text>
+  <text class="tiny" x="570" y="233" text-anchor="middle">地址、功能码、数据、LRC 都以 ASCII 十六进制字符发送</text>
+
+  <text class="label" x="50" y="310">Modbus TCP</text>
+  <rect class="frame" x="190" y="282" width="760" height="58"/>
+  <rect class="mbap" x="190" y="282" width="360" height="58"/><text class="text" x="370" y="316" text-anchor="middle">MBAP Header，7 bytes</text>
+  <rect class="func" x="550" y="282" width="140" height="58"/><text class="text" x="620" y="316" text-anchor="middle">功能码</text>
+  <rect class="data" x="690" y="282" width="260" height="58"/><text class="text" x="820" y="316" text-anchor="middle">数据</text>
+  <text class="tiny" x="570" y="366" text-anchor="middle">TCP 不再追加 Modbus CRC/LRC，靠 MBAP Length 从 TCP 字节流中取完整报文</text>
+</svg>
