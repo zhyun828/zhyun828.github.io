@@ -4847,57 +4847,6 @@ b = r;
 g++ test.cpp -o test -std=c++17 -Wall -Wextra
 ```
 
-### Makefile
-
-```makefile
-CXX = g++ # 定义编译器CXX 是 make 的惯例变量名（C++ compiler）
-CXXFLAGS = -Wall -Wextra -g -MMD -MP 
-#编译选项
-# | 参数      | 作用              |
-# | -Wall   | 打开常见警告          |
-# | -Wextra | 打开更多警告          |
-# | -g      | 生成调试信息（给 gdb 用） |
-# | -MMD    | 自动生成 .d 依赖文件    |
-# | -MP     | 避免删除头文件时报错      |
-TARGET = test # 最终生成的可执行文件名最终会生成：./test
-SRCS = main.cpp Surcharge.cpp # 所有源文件如果你再加一个文件：SRCS = main.cpp Surcharge.cpp utils.cpp 后面会自动适配。
-OBJS = $(SRCS:.cpp=.o) # 变量替换意思是：main.cpp → main.o Surcharge.cpp → Surcharge.o
-# $(变量:旧后缀=新后缀)
-DEPS = $(SRCS:.cpp=.d) # 生成依赖文件名main.d Surcharge.d .d 文件是 -MMD 自动生成的依赖文件。
-$(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $(OBJS)
-# 等价于g++ -Wall -Wextra -g -MMD -MP -o test main.o Surcharge.o
-# | 符号 | 意义              |
-# | -- | --------------- |
-# | $@ | 当前目标名（这里是 test） |
-# | $< | 第一个依赖文件         |
-# | $^ | 所有依赖文件          |
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@  
-# 模式匹配规则 意思是：任何 .o 文件 都可以由 对应的 .cpp 文件 生成
-# 等价于g++ -Wall -Wextra -g -MMD -MP -c main.cpp -o main.o  其中 -c 表示只编译，不链接
-
--include $(DEPS) # 自动包含依赖，意思是：包含所有 .d 文件。前面的 - 表示：如果 .d 文件不存在，不报错
-
-.PHONY: clean
-# 伪目标 clean 的意思是：告诉 make clean 不是一个文件名，而是一个命令。否则如果目录里有个叫 clean 的文件就会冲突。
-clean:
-	rm -f $(OBJS) $(DEPS) $(TARGET)
-```
-
-补充说明：
-
-- `-Wall`：打开常见警告
-- `-Wextra`：打开更多警告
-- `-g`：生成调试信息，给 `gdb` 用
-- `-MMD`：自动生成 `.d` 依赖文件
-- `-MP`：避免删除头文件时报错
-- `$@`：当前目标名
-- `$<`：第一个依赖文件
-- `$^`：所有依赖文件
-- `-include $(DEPS)`：自动包含依赖文件；前面的 `-` 表示即使文件不存在也不报错
-- `.PHONY: clean`：声明伪目标，避免和同名文件冲突
-
 ### Attributes、annotations 与编译器扩展
 
 C++ 标准属性使用 `[[attr]]` 语法，为编译器提供额外信息，但不改变普通类型语法。属性可以带参数，也可以放在函数、类型或变量等特定位置：

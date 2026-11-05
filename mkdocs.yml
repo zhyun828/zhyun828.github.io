@@ -98,6 +98,7 @@ nav:
               - thoughts: notes/Arduino/projet/thoughts.md
       - Cpp:
           - basics: notes/Cpp/basics.md
+          - Makefile 与 GNU Make: notes/Cpp/Makefile.md
           - code: notes/Cpp/code.md
           - CMake 与 CMakeLists.txt: notes/Cpp/cmake教程.md
           - UML:
