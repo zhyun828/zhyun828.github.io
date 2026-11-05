@@ -205,6 +205,8 @@ try {
 
 > `floor`、`ceil` 和 `round` 是取整运算，但返回值仍是浮点类型；需要整数时还要进行范围检查并显式转换。
 
+例如 `std::ceil(nums.size() / 2.0)` 得到元素数量一半的向上取整值；直接写 `nums.size() / 2` 则先做整数除法，丢弃余数。若只需要非负数量的整数结果，可写 `nums.size() / 2 + nums.size() % 2`，避免转为浮点数。这是数量或分界位置，不能直接当作一定有效的元素下标，访问前仍需检查范围。
+
 ### 引用
 
 引用可以理解成“别名”。
@@ -501,6 +503,39 @@ auto multiply(int a, int b) {
 
 ## 字符串与输入输出
 
+### `<cctype>`：字符判断与转换
+
+C++ 使用 `<cctype>`，C 中对应头文件是 `<ctype.h>`，没有标准头文件 `<cctype.h>`。常用函数如下：
+
+| 函数 | 作用 |
+| --- | --- |
+| `std::isdigit(c)` | 判断是否为十进制数字字符 |
+| `std::isalpha(c)` | 判断是否为字母字符 |
+| `std::isspace(c)` | 判断是否为空白字符，例如空格、制表符或换行符 |
+| `std::tolower(c)` | 转成小写，无法转换时保持原值 |
+| `std::toupper(c)` | 转成大写，无法转换时保持原值 |
+
+判断函数返回非零表示成立，不保证恰好返回 `1`；转换函数返回 `int`。这些函数的参数必须是 `EOF` 或可表示为 `unsigned char` 的值；从普通 `char` 读取时，先转为 `unsigned char`，避免负值导致未定义行为。
+
+```cpp
+#include <cctype>
+#include <string>
+
+void inspectCharacters() {
+    std::string s = "A3 ";
+    unsigned char c = static_cast<unsigned char>(s[1]);
+    if (std::isdigit(c)) {
+        int digit = s[1] - '0'; // 数字字符 '3' 转成整数 3
+        (void)digit;
+    }
+    char lower = static_cast<char>(
+        std::tolower(static_cast<unsigned char>(s[0]))); // 'a'
+    (void)lower;
+}
+```
+
+`c - '0'` 用于已确认的 `'0'` 到 `'9'` 单个数字字符，不是任意字符串转整数的方法。字符分类和大小写转换中的部分行为受当前 C locale 影响；它们也不是逐字节处理 UTF-8 中文等多字节字符的通用方案。
+
 ### 字符串
 
 以下是接口知识点片段，不是独立完整程序。示例假定已包含相关头文件并使用相应命名空间；`words` 是已声明的 `vector<string>`，`n`、`pos`、`count` 是按操作需要给定的有效位置或数量。下面先声明 `s`，再使用 `sizeof(s)`；其余操作用于分别查阅接口，不要求连续执行。
@@ -529,6 +564,8 @@ std::string::iterator it2;                   // 等价写法
 s.insert(it, 'X');                           // 在字符串开头插入字符 'X'
 s.insert(pos, count, 'c');                   // 在 pos 位置插入 count 个字符 c
 s.find('o', pos);                            // 从 pos 开始查找字符 'o'
+s.append(count, 'c');                        // 末尾追加 count 个字符 c
+s.back();                                   // 访问最后一个字符，要求非空
 ```
 
 补充说明：
@@ -536,6 +573,8 @@ s.find('o', pos);                            // 从 pos 开始查找字符 'o'
 - `for (char c : s)` 可以逐个遍历字符串里的字符。
 - `insert(pos, count, 'c')` 这种重载是 `string` 自带的，其他容器不一定有。
 - `find()` 没找到时会返回 `string::npos`。
+- 数字转字符串可用 `std::string s3 = std::to_string(123);`，得到 `"123"`。
+- `sizeof(s)` 是字符串对象本身的大小，内容长度应使用 `s.size()`；`reserve()` 预留容量但不增加字符串长度。
 
 ### 输入输出控制
 
@@ -3939,6 +3978,7 @@ void initializeContainers() {
 | 操作 | 含义与前提 | 常见支持范围 |
 | --- | --- | --- |
 | `size()` / `empty()` | 元素数量 / 是否为空 | 通常都有；`forward_list` 没有 `size()` |
+| `capacity()` | 不重新分配时可容纳的元素数量 | `vector`、`string` 提供，`deque` 不提供 |
 | `clear()` | 销毁全部元素，使可变长容器为空 | 普通动态容器；`array` 和三种适配器不提供 |
 | `front()` / `back()` | 首元素 / 尾元素的引用，需要非空 | 顺序容器；`forward_list` 只有 `front()` |
 | `push_back()` / `pop_back()` | 尾部添加 / 删除，删除需要非空 | `vector`、`deque`、`list` |
@@ -4091,6 +4131,27 @@ void eraseNegativeNodes() {
 ```
 
 `erase_after(before, last)` 删除的是**开区间 `(before, last)`**，这是普通 `erase(first, last)` 半开区间规则的一个重要区别。`forward_list` 没有 `back()`、`push_back()`、`pop_back()` 或 `size()`，可用 `std::distance(begin(), end())` 统计长度，但需 `O(n)`；支持成员 `remove`、`remove_if` 和 `sort`。
+
+### `std::bitset<N>`：固定大小位集合
+
+`std::bitset<N>` 在 `<bitset>` 中声明，`N` 是编译期确定的位数，属于非类型模板参数。它不能动态扩容，也不提供普通容器的迭代器接口，适合固定数量的布尔标记与位运算。
+
+```cpp
+#include <bitset>
+
+void useBitset() {
+    std::bitset<8> bits("10101010");
+    bool lowBit = bits.test(0); // false；下标 0 对应最右边的最低位
+    bits.set();                // 所有位设为 1：11111111
+    bits.reset();              // 所有位清零：00000000
+    bits.set(2);               // 只将第 2 位设为 1：00000100
+    bool enabled = bits.test(2); // true
+    (void)lowBit;
+    (void)enabled;
+}
+```
+
+`set(i)` / `reset(i)` 操作指定位，`test(i)` 读取指定位；这些带位置参数的接口在 `i >= N` 时抛出 `std::out_of_range`。`size()` 返回固定的 `N`，`count()` 返回值为 1 的位数，不是动态容器中的元素查找计数。
 
 ### 容器适配器：FIFO、LIFO 与优先级
 
@@ -4392,6 +4453,9 @@ void eraseWhileIterating() {
 | --- | --- | --- |
 | `std::swap(a, b)` | 交换两个对象，在 `<utility>` 中声明 | 普通泛型版本常通过移动；成本取决于类型，容器可有专门重载 |
 | `std::reverse(first, last)` | 反转范围内的值 | 双向迭代器；`O(n)` |
+| `std::find(first, last, value)` | 返回第一个相等元素的位置，未找到返回 `last` | 输入迭代器；`O(n)` |
+| `std::count(first, last, value)` | 返回相等元素的数量 | 输入迭代器；`O(n)` |
+| `std::max_element(first, last)` | 返回第一个最大元素的位置，空区间返回 `last` | 前向迭代器；`O(n)` |
 | `std::remove(first, last, value)` | 将不等于 value 的元素压到前面 | 可写前向迭代器与赋值；`O(n)`，不真正删容器元素 |
 | `std::remove_if(first, last, pred)` | 按谓词压缩保留元素 | 同上；`O(n)` |
 | `std::replace(first, last, old, replacement)` | 将匹配的值赋为新值 | 可写前向迭代器；`O(n)` |
@@ -4401,6 +4465,29 @@ void eraseWhileIterating() {
 | `std::count_if(first, last, pred)` | 统计满足谓词的元素数 | 输入迭代器；`O(n)` |
 
 `std::sort` 不适用于 list / forward_list，应调用其成员 `sort()`。set / map 的键不能赋值，不能通过 `std::remove` 压缩或 `std::sort` 改变键排列；需要它们自己的查询与删除接口。算法能力取决于迭代器和元素操作，不能只看“容器有 begin/end”。
+
+`vector` 没有成员版 `find()` 或 `count()`，需要使用上述通用算法；关联容器则优先使用自己的按键查询接口。
+
+```cpp
+#include <algorithm>
+#include <functional>
+#include <vector>
+
+void findCountAndSort() {
+    std::vector<int> nums{3, 1, 3, 2};
+    auto found = std::find(nums.begin(), nums.end(), 3);
+    auto count = std::count(nums.begin(), nums.end(), 3); // 2
+    std::sort(nums.begin(), nums.end());                 // {1, 2, 3, 3}
+    std::sort(nums.begin(), nums.end(), std::greater<int>()); // {3, 3, 2, 1}
+    auto largest = std::max_element(nums.begin(), nums.end());
+    if (largest != nums.end()) {
+        int value = *largest; // 3；先检查，再解引用
+        (void)value;
+    }
+    (void)found;
+    (void)count;
+}
+```
 
 #### Function Pointer、Functor、Lambda 与 Predicate
 
@@ -4486,6 +4573,8 @@ void eraseRemoveExamples() {
 #include <vector>
 
 void chooseKeyContainers() {
+    std::vector<int> nums{1, 2, 2, 3};
+    std::unordered_set<int> uniqueNumbers(nums.begin(), nums.end()); // 区间构造并去重
     std::unordered_set<char> vowels{'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
     std::unordered_map<std::string, int> counts{{"apple", 2}, {"banana", 3}};
     std::unordered_map<int, int> numbers{{1, 10}, {2, 20}, {5, 50}};
@@ -4500,6 +4589,8 @@ void chooseKeyContainers() {
     auto found = numbers.find(5);
     if (found != numbers.end()) found->second += 1;
     if (vowels.count('a')) vowels.insert('b');
+    auto vowel = vowels.find('a'); // 未找到时等于 vowels.end()
+    (void)vowel;
     vowels.erase('a');
 }
 ```

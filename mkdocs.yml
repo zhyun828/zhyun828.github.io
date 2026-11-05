@@ -99,7 +99,6 @@ nav:
       - Cpp:
           - basics: notes/Cpp/basics.md
           - Makefile 与 GNU Make: notes/Cpp/Makefile.md
-          - code: notes/Cpp/code.md
           - CMake 与 CMakeLists.txt: notes/Cpp/cmake教程.md
           - UML:
               - 系统学习教材: notes/Cpp/UML/UML.md
