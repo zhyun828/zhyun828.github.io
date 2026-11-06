@@ -27,9 +27,17 @@ Examples:
 
 `$add-knowledge docs\notes\Cpp\basics.md 构造函数`
 
-If the target document is already clear from the current task or conversation, use it.
+### Choose the target document
 
-If several documents are plausible and the target cannot be determined reliably, ask the user which document should be modified.
+Resolve the destination in this order:
+
+1. **Explicit destination:** Use the file or location specified in the current request.
+2. **Most recently requested note:** If no destination is specified, use the most recent existing note the user asked to modify in the current conversation. This includes a note selected automatically for a prior knowledge-addition request and reported to the user. Use conversation intent, not filesystem modification times or unrelated Git changes; merely read files, skill files, generated output, and deleted notes are not eligible destinations.
+3. **Automatic placement:** If there is no eligible recent note, search the current project's note tree, titles, headings, and navigation for the topic and its aliases. Prefer the existing note whose subject and section structure best fit the knowledge point; reuse existing coverage instead of creating duplicates. If several notes fit, choose the most specific subject match, using the current project context to break ties. If no existing note fits, create a focused Markdown note in the most appropriate existing subject directory and add a navigation or index entry if the site's convention requires it.
+
+Do not ask the user to choose a file merely because none was supplied or several plausible notes exist. Proceed with the best-supported placement, then follow the normal coverage and minimal-edit workflow. Ask only when the project or subject itself is too unclear to choose a meaningful destination.
+
+When selecting a destination automatically, briefly state the chosen file and the basis for the choice (recent user request or topic fit), and report the final file and section in the response. This also applies when existing coverage means no edit is needed.
 
 ### Additional requirements
 
@@ -246,6 +254,8 @@ If an edit was made, respond briefly with:
 - which file was modified
 - whether an existing section was supplemented or a new section was inserted
 - where it was placed
+
+If the user omitted a destination, also explain briefly why that file was selected, whether or not an edit was needed.
 
 Do not provide a long summary of the knowledge point unless the user asks for one.
 

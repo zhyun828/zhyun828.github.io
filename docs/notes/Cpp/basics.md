@@ -3986,6 +3986,53 @@ void sortNumbers() {
 | `std::queue<T>` | `<queue>` | FIFO，先进先出 | `std::deque<T>` |
 | `std::priority_queue<T>` | `<queue>` | 每次访问优先级最高的元素 | `std::vector<T>` |
 
+#### 容器模板参数速查与说明
+
+下表按声明顺序列出模板参数；使用时应加上 `std::`。除 array 的 `N` 是编译期常量参数外，其余列出的参数都是类型参数。比较器、哈希器、分配器等通常有默认类型，因此日常使用时可以省略。
+
+| 容器 | 模板参数 | 参数用途（按顺序） |
+| --- | --- | --- |
+| `vector` | `<T, Allocator>` | `T`：元素类型；`Allocator`：管理元素存储的分配器类型 |
+| `deque` | `<T, Allocator>` | `T`：元素类型；`Allocator`：管理元素存储的分配器类型 |
+| `list` | `<T, Allocator>` | `T`：元素类型；`Allocator`：管理元素存储的分配器类型，容器内部用于节点分配 |
+| `forward_list` | `<T, Allocator>` | `T`：元素类型；`Allocator`：管理元素存储的分配器类型，容器内部用于节点分配 |
+| `array` | `<T, N>` | `T`：元素类型；`N`：编译期确定的元素数量，属于类型的一部分，无默认值 |
+| `set` | `<Key, Compare, Allocator>` | `Key`：键类型，也是元素类型；`Compare`：键的排序与等价规则；`Allocator`：元素存储分配器类型 |
+| `multiset` | `<Key, Compare, Allocator>` | `Key`：键类型，也是元素类型；`Compare`：键的排序与等价规则；`Allocator`：元素存储分配器类型 |
+| `map` | `<Key, T, Compare, Allocator>` | `Key`：键类型；`T`：映射值类型；`Compare`：键的排序与等价规则；`Allocator`：键值对存储分配器类型 |
+| `multimap` | `<Key, T, Compare, Allocator>` | `Key`：键类型；`T`：映射值类型；`Compare`：键的排序与等价规则；`Allocator`：键值对存储分配器类型 |
+| `unordered_set` | `<Key, Hash, KeyEqual, Allocator>` | `Key`：键类型，也是元素类型；`Hash`：计算键哈希值的函数对象类型；`KeyEqual`：判断键等价的函数对象类型；`Allocator`：元素存储分配器类型 |
+| `unordered_multiset` | `<Key, Hash, KeyEqual, Allocator>` | `Key`：键类型，也是元素类型；`Hash`：计算键哈希值的函数对象类型；`KeyEqual`：判断键等价的函数对象类型；`Allocator`：元素存储分配器类型 |
+| `unordered_map` | `<Key, T, Hash, KeyEqual, Allocator>` | `Key`：键类型；`T`：映射值类型；`Hash`：计算键哈希值的函数对象类型；`KeyEqual`：判断键等价的函数对象类型；`Allocator`：键值对存储分配器类型 |
+| `unordered_multimap` | `<Key, T, Hash, KeyEqual, Allocator>` | `Key`：键类型；`T`：映射值类型；`Hash`：计算键哈希值的函数对象类型；`KeyEqual`：判断键等价的函数对象类型；`Allocator`：键值对存储分配器类型 |
+| `stack` | `<T, Container>` | `T`：元素类型；`Container`：实际保存元素的底层容器类型，默认 `std::deque<T>` |
+| `queue` | `<T, Container>` | `T`：元素类型；`Container`：实际保存元素的底层容器类型，默认 `std::deque<T>` |
+| `priority_queue` | `<T, Container, Compare>` | `T`：元素类型；`Container`：支持随机访问的底层容器类型，默认 `std::vector<T>`；`Compare`：决定堆中优先级关系的比较器类型，默认 `std::less<T>` |
+| `basic_string` | `<CharT, Traits, Allocator>` | `CharT`：字符类型；`Traits`：字符操作策略类型，提供字符比较、长度计算、复制等操作；`Allocator`：字符存储分配器类型 |
+
+**常见默认类型：**有序关联容器的 `Compare` 默认为 `std::less<Key>`；无序关联容器的 `Hash`、`KeyEqual` 分别默认为 `std::hash<Key>`、`std::equal_to<Key>`。有序容器的比较器必须形成严格弱序；哈希容器中等价键必须具有相同哈希值，具体规则见后文关联容器部分。
+
+`Allocator` 通常默认为 `std::allocator<元素类型>`：顺序容器使用 `std::allocator<T>`，集合使用 `std::allocator<Key>`，映射使用 `std::allocator<std::pair<const Key, T>>`。它管理的是容器自身元素所需的存储，不会自动管理裸指针元素指向的对象。array 不使用分配器参数；适配器通过底层 `Container` 管理存储，底层容器的元素类型必须与适配器的 `T` 一致，并满足相应接口要求。
+
+`basic_string` 的 `Traits`、`Allocator` 默认分别为 `std::char_traits<CharT>`、`std::allocator<CharT>`；`std::string` 就是采用默认策略的 `std::basic_string<char>` 的别名。这里的 Traits 控制字符操作，不负责字符编码转换或按语言区域进行排序。
+
+```cpp
+// int 是元素类型；省略的分配器默认为 std::allocator<int>。
+std::vector<int> values;
+
+// int 是键类型，std::string 是映射值类型；std::greater<int> 使键按降序排列。
+std::map<int, std::string, std::greater<int>> names;
+
+// int 是元素类型，vector<int> 是底层容器，greater<int> 使最小元素位于堆顶。
+// priority_queue 的比较器方向要结合堆顶语义理解，不能照搬 map 的遍历顺序。
+std::priority_queue<int, std::vector<int>, std::greater<int>> smallestFirst;
+
+// char 是字符类型；char_traits<char> 和 allocator<char> 均使用默认类型。
+std::basic_string<char> text; // 等价于 std::string text;
+```
+
+以上示例需包含 `<vector>`、`<map>`、`<string>`、`<queue>` 和 `<functional>`。尖括号里传入的是策略**类型**，例如 `std::greater<int>`；若需要传入有状态的策略对象，应使用容器相应的构造函数。
+
 ### 迭代器入门与基本遍历
 
 #### begin/end、半开区间与 const_iterator
