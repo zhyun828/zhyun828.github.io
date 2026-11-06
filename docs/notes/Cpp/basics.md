@@ -646,6 +646,52 @@ s.push_back('!');
 
 这里 `s` 是对象，`erase` 和 `push_back` 是操作这个对象的方法。
 
+### `public`、`protected` 与 `private`：成员访问权限
+
+这三个访问说明符决定“哪些代码可以直接使用类的成员”，对数据成员和成员函数都适用。它们后面的 `:` 开始一个访问区域，直到下一个访问说明符或类定义结束；同一种访问区域可以出现多次。
+
+| 成员权限 | 本类的成员函数与友元 | 派生类的成员函数 | 普通类外代码 |
+| --- | --- | --- | --- |
+| `public` | 可以访问 | 可以访问，受继承方式影响 | 可以通过对象访问，受继承方式影响 |
+| `protected` | 可以访问 | 可以访问，但有对象类型限制 | 不能直接访问 |
+| `private` | 可以访问 | 不能直接访问基类的私有成员 | 不能直接访问 |
+
+`public` 通常用于对外接口；`private` 用于隐藏内部状态、保证对象约束；`protected` 用于向派生类提供内部接口。派生类不能直接访问基类的 `private` 成员，但可以通过基类提供的可访问成员函数间接操作它们。被基类单独授权的友元是另一种访问途径，友元关系不会自动继承。
+
+```cpp
+class Account {
+public:
+    int balance() const { return balance_; } // 对外只读接口
+
+protected:
+    void add(int amount) { balance_ += amount; } // 供本类与派生类使用
+
+private:
+    int balance_ = 0; // 调用者不能绕过接口随意修改
+};
+
+class SavingsAccount : public Account {
+public:
+    void reward() {
+        add(10);        // 正确：访问继承的 protected 成员
+        // balance_ = 10; // 错误：不能直接访问基类的 private 成员
+    }
+};
+
+void useAccount() {
+    SavingsAccount account;
+    account.reward();
+    int value = account.balance(); // 正确：public 接口
+    // account.add(10);           // 错误：类外不能直接访问 protected
+    // account.balance_ = 10;     // 错误：类外不能直接访问 private
+    (void)value;
+}
+```
+
+`protected` 不等于“派生类可以通过任意基类对象访问”。例如在 `SavingsAccount` 的成员函数中，`this->add(10)` 合法；若参数是 `Account& other`，则不能写 `other.add(10)`。访问基类的非静态受保护成员时，对象表达式的类型须为当前派生类或它的派生类。
+
+`class` 中未写访问说明符的成员默认是 `private`，`struct` 中默认是 `public`；两者都能显式使用上述三种权限。访问控制是编译期的接口约束，不是对内存内容加密。
+
 ### 成员函数、`this` 与友元
 
 成员函数就是“属于这个类的函数”；友元函数不是这个类的成员，但被这个类授权，可以访问它的 private / protected。
@@ -1344,17 +1390,19 @@ class Student : public Person
 class C : public A
 ```
 
-意思是：`C` 继承 `A`，`C` 会自动拥有 `A` 的所有 `public` 成员。
+意思是：`C` 继承 `A`。基类子对象包含在派生类对象中；哪些基类成员能被直接访问，取决于成员原有权限和继承方式。
 
-这里的 `public` 表示继承方式：
+这里的 `public` 表示继承方式，写在类体内的 `public:` 则表示成员访问权限，两者位置和作用不同：
 
-| 写法        | 意义                      |
-| --------- | ----------------------- |
-| public    | 保持父类的 public 仍然是 public |
-| protected | 父类 public 变成 protected  |
-| private   | 父类 public 变成 private    |
+| 继承方式 | 基类 public 成员在派生类中的访问级别 | 基类 protected 成员在派生类中的访问级别 | 派生类能否直接访问基类 private 成员 |
+| --- | --- | --- | --- |
+| `public` | `public` | `protected` | 不能 |
+| `protected` | `protected` | `protected` | 不能 |
+| `private` | `private` | `private` | 不能 |
 
-如果不写，默认是 `private` 继承。
+不写继承方式时，`class C : A` 默认是 `private` 继承，`struct C : A` 默认是 `public` 继承。继承方式不改变基类自身的成员声明，只影响经由派生类的访问。
+
+`public` 继承通常表达“派生类是一种基类”，允许普通类外代码把派生类指针或引用隐式转换为可访问、无歧义的基类指针或引用；`protected`、`private` 继承会限制这种转换的可访问位置。
 
 好，这个是 C++ 面向对象三大特性之一：
 
@@ -3881,9 +3929,9 @@ int main() {
 
 ## STL：容器、迭代器与算法
 
+### STL 概览与容器分类
 
-
-### STL、泛型编程与 `namespace std`
+#### STL、泛型编程与 `namespace std`
 
 STL（Standard Template Library，标准模板库）是一套以**泛型编程**为核心的数据结构与算法体系，通常用来指 C++ 标准库中的容器、迭代器、算法及相关函数对象、适配器。C++ 标准库还包含输入输出、线程、智能指针等内容，不能把整个标准库都等同于 STL。
 
@@ -3903,7 +3951,7 @@ void sortNumbers() {
 
 模板、`auto`、引用、构造函数、Lambda 等是语言能力，STL 利用它们实现泛型接口。本章侧重这些能力在容器和算法中的作用；通用规则仍保留在本笔记对应章节。
 
-### 容器分类与头文件
+#### 容器分类与头文件
 
 **顺序容器（Sequence Containers）**按位置保存元素；“顺序”不表示元素已按值排序。
 
@@ -3938,7 +3986,69 @@ void sortNumbers() {
 | `std::queue<T>` | `<queue>` | FIFO，先进先出 | `std::deque<T>` |
 | `std::priority_queue<T>` | `<queue>` | 每次访问优先级最高的元素 | `std::vector<T>` |
 
-### 容器初始化与构造函数
+### 迭代器入门与基本遍历
+
+#### begin/end、半开区间与 const_iterator
+
+迭代器可以先理解成“位置”，`*it` 解引用取得该位置元素，`++it` 前进到下一位置，`it->member` 访问元素的成员。具体实现可能是指针，也可能是包装节点、存储块或调试状态的对象；不能认定 `vector::iterator` 在所有实现中就是裸指针。
+
+`begin()` 指向首元素，`end()` 指向末元素之后；`[first, last)` 包含 `first`、不包含 `last`。空容器中 `begin() == end()`；`end()` 不能解引用，`++end()` 也不是合法的通用操作。
+
+```cpp
+#include <string>
+#include <vector>
+
+void visitElements() {
+    std::string text = "abc";
+    for (auto it = text.begin(); it != text.end(); ++it) {
+        *it = static_cast<char>(*it + 1);
+    } // 对这个字符串也可用下标循环访问相同元素
+
+    std::vector<int> values{1, 2, 3};
+    std::vector<int>::const_iterator reader = values.cbegin();
+    int first = *reader;
+    ++reader; // 迭代器可移动，但不能写 *reader = 9
+    (void)first;
+}
+```
+
+`cbegin()` / `cend()` 明确获得只读元素迭代器；对 const 容器调用 `begin()` 也会获得相应 const_iterator。**const_iterator** 限制通过迭代器修改元素；`const auto it = values.begin()` 则限制迭代器对象本身，元素可能仍可修改，两者不同。
+
+#### 范围 for：`auto`、`auto&` 与 `const auto&`
+
+| 声明 | 含义 | 典型用途 |
+| --- | --- | --- |
+| `for (auto x : values)` | 按值接收元素，通常复制 | 小标量值，或明确需要副本 |
+| `for (auto& x : values)` | 引用原元素，可在允许时修改 | 原地更新、避免复制 |
+| `for (const auto& x : values)` | 只读引用 | 读取大对象或不可复制对象 |
+
+```cpp
+#include <map>
+#include <string>
+#include <vector>
+
+void rangeForExamples() {
+    std::vector<int> values{1, 2, 3};
+    for (auto& value : values) value *= 2;
+    for (auto value : values) {
+        value = 0; // 只改副本
+        (void)value;
+    }
+    std::map<int, std::string> names{{1, "one"}, {2, "two"}};
+    for (const auto& [key, name] : names) {
+        (void)key;
+        (void)name;
+    }
+}
+```
+
+set 的键通过迭代器是只读的，因此写 `auto&` 也不代表一定能改元素；`vector<bool>` 的代理引用等特殊类型宜按接口选择 `auto&&`。范围 for 隐藏了迭代器与终点，遍历过程中使它们失效同样危险；不能一边遍历 vector 一边随意 `push_back` 或 `erase`。
+
+### 容器的基本操作
+
+#### 初始化与构造
+
+##### `array` 与 `vector`：基本形式与列表初始化
 
 `std::vector<T> v(n, value)` 表示创建 `n` 个元素，每个元素用 `value` 初始化；它与花括号的元素列表不同。
 
@@ -3973,7 +4083,98 @@ void initializeContainers() {
 
 `std::vector<int> nums;` 明确指定元素类型；`std::vector nums;` 无法推导元素类型。C++17 起 `std::vector nums{1, 2, 3};` 可通过 CTAD 得到 `std::vector<int>`，但 CTAD 不会使所有省略模板实参的写法都合法。
 
-### 常用接口：不要把某个容器的方法套到所有容器
+##### 其他顺序容器：`deque`、`list` 与 `forward_list`
+
+这些容器也支持默认构造、元素列表、数量与初值、迭代器区间以及拷贝构造。区间构造可以从另一种容器读取元素，不要求源容器与目标容器类型相同。
+
+```cpp
+#include <deque>
+#include <forward_list>
+#include <list>
+#include <vector>
+
+void initializeOtherSequences() {
+    std::deque<int> empty;                         // 空 deque
+    std::deque<int> ends{1, 2, 3};                  // 元素列表
+    std::deque<int> repeated(3, 7);                // {7, 7, 7}
+    std::list<int> nodes{4, 5, 6};                 // 元素列表
+    std::list<int> zeros(3);                       // {0, 0, 0}
+    std::list<int> copied(nodes);                  // 拷贝构造
+    std::forward_list<int> chain{8, 9, 10};        // 元素列表
+    std::forward_list<int> sameValues(3, 2);        // {2, 2, 2}
+
+    std::vector<int> source{3, 1, 3, 2};
+    std::deque<int> fromRange(source.begin(), source.end());
+    std::list<int> fromDeque(ends.begin(), ends.end());
+    std::forward_list<int> fromList(nodes.begin(), nodes.end());
+}
+```
+
+与 vector 一样，`std::list<int>(3, 7)` 创建三个 7，而 `std::list<int>{3, 7}` 只创建两个元素；deque、forward_list 也要区分这两种形式。`std::array` 大小固定，不能照搬这些动态容器的数量构造或迭代器区间构造。
+
+##### 关联容器：集合与键值对
+
+集合的初始化列表直接写键；映射的初始化列表写成 `{{键, 值}, {键, 值}}`。唯一键容器不会为等价键创建多个元素，`multi` 家族则保留重复键。
+
+```cpp
+#include <map>
+#include <set>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
+
+void initializeAssociativeContainers() {
+    std::set<int> empty;                           // 空集合
+    std::set<int> unique{3, 1, 3, 2};               // 有序：{1, 2, 3}
+    std::multiset<int> repeated{3, 1, 3, 2};        // 有序：{1, 2, 3, 3}
+    std::map<std::string, int> scores{{"Alice", 90}, {"Bob", 85}};
+    std::multimap<std::string, int> attempts{{"Alice", 90}, {"Alice", 95}};
+
+    std::unordered_set<int> hashed{3, 1, 3, 2};     // 去重，遍历顺序不保证
+    std::unordered_multiset<int> hashRepeated{3, 1, 3, 2};
+    std::unordered_map<std::string, int> counts{{"apple", 2}, {"banana", 3}};
+    std::unordered_multimap<std::string, int> records{{"apple", 2}, {"apple", 3}};
+
+    std::vector<int> source{4, 2, 4, 1};
+    std::set<int> orderedRange(source.begin(), source.end()); // {1, 2, 4}
+    std::unordered_set<int> hashedRange(source.begin(), source.end());
+    std::map<std::string, int> copied(scores);      // 拷贝构造
+    std::unordered_map<std::string, int> fromMap(scores.begin(), scores.end());
+}
+```
+
+关联容器不提供顺序容器那样的 `(数量, 初值)` 构造。特别是 `std::unordered_set<int> values(16);` 中的 16 是初始桶数请求，不是创建 16 个整数，构造后仍为空；已知预计元素数时也可先默认构造，再调用 `reserve(n)`。
+
+##### 容器适配器：从底层容器或区间构造
+
+以本章的 C++17 为准，stack、queue 不直接提供元素列表或迭代器区间构造，可以先准备符合要求的底层容器，再用它构造适配器；priority_queue 则支持迭代器区间构造，并在构造过程中建立堆。
+
+```cpp
+#include <deque>
+#include <functional>
+#include <queue>
+#include <stack>
+#include <vector>
+
+void initializeAdapters() {
+    std::stack<int> emptyStack;                    // 默认空栈
+    std::queue<int> emptyQueue;                    // 默认空队列
+    std::deque<int> source{1, 2, 3};
+    std::stack<int> history(source);               // 复制底层 deque，top() 为 3
+    std::queue<int> tasks(source);                 // front() 为 1，back() 为 3
+
+    std::vector<int> values{3, 1, 4, 2};
+    std::priority_queue<int> largest(values.begin(), values.end()); // top() 为 4
+    std::priority_queue<int, std::vector<int>, std::greater<int>> smallest(
+        values.begin(), values.end(), std::greater<int>{});        // top() 为 1
+    std::stack<int, std::vector<int>> vectorStack(values); // 显式指定底层 vector
+}
+```
+
+`std::stack<int> history(source)` 这里要求 source 是其底层容器类型 `std::deque<int>`；若使用 vector，就要像上例一样在适配器模板参数中指定。上面的底层容器均以左值传入，因此复制其内容；传入 `std::move(source)` 可以选择相应的移动构造形式，移动后源容器的状态仍应按移动语义规则理解。
+
+#### 常用接口及适用范围
 
 | 操作 | 含义与前提 | 常见支持范围 |
 | --- | --- | --- |
@@ -4006,9 +4207,22 @@ void insertAndEraseRange() {
 }
 ```
 
-### 顺序容器的结构与使用
+#### 复制、移动与元素所有权
 
+| 操作 | 例子 | 主要含义 |
+| --- | --- | --- |
+| 拷贝构造（Copy Constructor） | `auto b = a;` | 创建新容器，复制元素 |
+| 移动构造（Move Constructor） | `auto b = std::move(a);` | 创建新容器，利用源对象资源或移动元素 |
+| 拷贝赋值 | `b = a;` | 用源内容替换既有目标内容，可能复用目标存储 |
+| 移动赋值 | `b = std::move(a);` | 替换既有目标内容，资源接管受分配器条件影响 |
 
+普通 `vector` 的不带额外分配器的移动构造可以接管存储；带分配器的构造或某些移动赋值可能仍需逐元素移动，不能断言所有移动都为 `O(1)`。标准库对象移动后通常处于**有效但未指定的状态**：能析构，能执行满足前提的操作；不应假定它保留原内容或一定为空。
+
+`std::move` 只是转换表达式值类别，不直接转移资源。从 `const` 对象 `std::move` 通常不能匹配普通的非 const 移动构造，可能仍复制。
+
+容器按值保存 `T`，并负责销毁它保存的对象；`vector<T*>` 保存的是裸地址，删除或销毁容器不会自动 `delete` 指针所指对象。通用拷贝、移动及资源管理规则见本笔记的构造函数与移动语义章节。
+
+### 顺序容器
 
 #### `std::array`：固定大小与连续存储
 
@@ -4051,22 +4265,9 @@ void manageVectorStorage() {
 
 预先知道数量时，`reserve(n)` 能减少扩容；不宜每插入一个元素都调用 `reserve(size() + 1)`，这种做法可能破坏高效增长策略。`reserve()` 只在请求超过现有容量时重新分配，不是缩容操作；`resize()` 才改变元素数量。
 
-#### 容器复制、移动与 `noexcept`
-
-| 操作 | 例子 | 主要含义 |
-| --- | --- | --- |
-| 拷贝构造（Copy Constructor） | `auto b = a;` | 创建新容器，复制元素 |
-| 移动构造（Move Constructor） | `auto b = std::move(a);` | 创建新容器，利用源对象资源或移动元素 |
-| 拷贝赋值 | `b = a;` | 用源内容替换既有目标内容，可能复用目标存储 |
-| 移动赋值 | `b = std::move(a);` | 替换既有目标内容，资源接管受分配器条件影响 |
-
-普通 `vector` 的不带额外分配器的移动构造可以接管存储；带分配器的构造或某些移动赋值可能仍需逐元素移动，不能断言所有移动都为 `O(1)`。标准库对象移动后通常处于**有效但未指定的状态**：能析构，能执行满足前提的操作；不应假定它保留原内容或一定为空。
-
-`std::move` 只是转换表达式值类别，不直接转移资源。从 `const` 对象 `std::move` 通常不能匹配普通的非 const 移动构造，可能仍复制。
+##### 进阶说明：扩容、元素移动与 `noexcept`
 
 扩容时如何转移元素还取决于 `T`：有不抛异常的移动构造时适合移动；若移动可能抛异常且元素可复制，实现常采用复制来维护异常保证。对于不可复制且移动可能抛异常的类型，某些操作的异常保证会减弱。应在确实不抛异常时把移动构造标记为 `noexcept`，不能为了“让 vector 更快”而作虚假承诺。
-
-容器按值保存 `T`，并负责销毁它保存的对象；`vector<T*>` 保存的是裸地址，删除或销毁容器不会自动 `delete` 指针所指对象。通用拷贝、移动及资源管理规则见本笔记的构造函数与移动语义章节。
 
 #### `std::deque`：分块存储与两端操作
 
@@ -4085,7 +4286,9 @@ void useDeque() {
 }
 ```
 
-#### `std::list`：双向链表
+#### 链表：`list` 与 `forward_list`
+
+##### `std::list`：双向链表
 
 `list` 通常每个节点保存值、前驱与后继，节点不连续。已取得有效位置迭代器时，单元素插入与删除为 `O(1)`；**寻找位置**仍可能需要 `O(n)`，因此不应笼统说“链表中间插入总比 vector 快”。额外指针、逐节点分配和缓存局部性也会影响实际性能。
 
@@ -4106,7 +4309,7 @@ void useList() {
 }
 ```
 
-#### `std::forward_list`：单向链表与前驱位置
+##### `std::forward_list`：单向链表与前驱位置
 
 单链表删除节点需要知道前驱，接口因此提供 `before_begin()`、`insert_after()` 与 `erase_after()`。`before_begin()` 是首节点之前的位置，不能解引用；`erase_after(prev)` 删除 `prev` 的后继，要求这个后继存在。
 
@@ -4132,72 +4335,66 @@ void eraseNegativeNodes() {
 
 `erase_after(before, last)` 删除的是**开区间 `(before, last)`**，这是普通 `erase(first, last)` 半开区间规则的一个重要区别。`forward_list` 没有 `back()`、`push_back()`、`pop_back()` 或 `size()`，可用 `std::distance(begin(), end())` 统计长度，但需 `O(n)`；支持成员 `remove`、`remove_if` 和 `sort`。
 
-### `std::bitset<N>`：固定大小位集合
+### 有序关联容器
 
-`std::bitset<N>` 在 `<bitset>` 中声明，`N` 是编译期确定的位数，属于非类型模板参数。它不能动态扩容，也不提供普通容器的迭代器接口，适合固定数量的布尔标记与位运算。
+#### `set` 与 `multiset`：基本使用
+
+`set` 保存键本身，`multiset` 允许等价键重复。先用整数键熟悉插入、查找、删除与有序遍历，再看后面的自定义比较器。
 
 ```cpp
-#include <bitset>
+#include <set>
 
-void useBitset() {
-    std::bitset<8> bits("10101010");
-    bool lowBit = bits.test(0); // false；下标 0 对应最右边的最低位
-    bits.set();                // 所有位设为 1：11111111
-    bits.reset();              // 所有位清零：00000000
-    bits.set(2);               // 只将第 2 位设为 1：00000100
-    bool enabled = bits.test(2); // true
-    (void)lowBit;
-    (void)enabled;
+void useOrderedSet() {
+    std::set<int> values{3, 1, 2, 2}; // 保留 {1, 2, 3}
+    values.insert(4);
+    auto found = values.find(2);
+    if (found != values.end()) values.erase(found);
+    for (int value : values) {
+        (void)value; // 依次为 1、3、4
+    }
+    std::multiset<int> repeated{1, 2, 2};
+    auto [first, last] = repeated.equal_range(2);
+    for (auto it = first; it != last; ++it) {
+        (void)*it; // 遍历两个值为 2 的元素
+    }
 }
 ```
 
-`set(i)` / `reset(i)` 操作指定位，`test(i)` 读取指定位；这些带位置参数的接口在 `i >= N` 时抛出 `std::out_of_range`。`size()` 返回固定的 `N`，`count()` 返回值为 1 的位数，不是动态容器中的元素查找计数。
+#### `map` 与 `multimap`：键值对与查询
 
-### 容器适配器：FIFO、LIFO 与优先级
+`std::pair<A, B>` 在 `<utility>` 中声明，成员 `first`、`second` 分别保存两个值。`map<K, T>` 和 `unordered_map<K, T>` 的元素类型是 `std::pair<const K, T>`：`first` 为只读键，`second` 为映射值。
 
 ```cpp
-#include <functional>
-#include <queue>
-#include <stack>
-#include <vector>
+#include <map>
+#include <string>
+#include <utility>
 
-void useAdapters() {
-    std::stack<int> history;
-    history.push(1);
-    history.push(2);
-    int newest = history.top(); // 2，LIFO
-    history.pop();
-
-    std::queue<int> tasks;
-    tasks.push(1);
-    tasks.push(2);
-    int oldest = tasks.front(); // 1，FIFO；back() 是 2
-    tasks.pop();
-
-    std::priority_queue<int> largestFirst;
-    largestFirst.push(2);
-    largestFirst.push(7);
-    int largest = largestFirst.top(); // 7，默认最大堆
-    std::priority_queue<int, std::vector<int>, std::greater<int>> smallestFirst;
-    smallestFirst.push(2);
-    smallestFirst.push(7);
-    int smallest = smallestFirst.top(); // 2，最小堆
-    (void)newest;
-    (void)oldest;
-    (void)largest;
-    (void)smallest;
+void queryMap() {
+    std::pair<int, std::string> item{1, "one"};
+    std::map<std::string, int> counts{{"apple", 2}, {"banana", 3}};
+    auto found = counts.find("apple");
+    if (found != counts.end()) {
+        found->second += 1;
+    }
+    int created = counts["pear"]; // 缺键：插入 pear，int 值初始化为 0
+    counts["pear"] = 5;
+    int checked = counts.at("pear"); // 缺键时抛 out_of_range，不插入
+    (void)item;
+    (void)created;
+    (void)checked;
 }
 ```
 
-这些适配器提供 `size()`、`empty()`、`push()`、`pop()`，但没有公开的 `begin()` / `end()`，不能直接用范围 for 遍历，也不能直接交给 `std::sort`。访问 `top()` / `front()` 或 `pop()` 前须确保非空。适配器可配置底层容器，但该容器必须支持所需接口，例如不能把 `list` 作为 `priority_queue` 的底层随机访问序列。
+| 操作 | 键存在 | 键不存在 | 能否对 const map 调用 |
+| --- | --- | --- | --- |
+| `operator[](key)` | 返回值的引用 | 插入键与初始化的值 | 不能 |
+| `find(key)` | 返回元素迭代器 | 返回 `end()` | 能 |
+| `at(key)` | 返回值的引用 | 抛 `std::out_of_range` | 能，得到只读引用 |
+| `count(key)` | 唯一键为 1；multi 可大于 1 | 返回 0 | 能 |
 
-`priority_queue` 不是 FIFO，它只维护堆结构而不是完整排序：`top()` 为 `O(1)`，堆调整为 `O(log n)`，底层 vector 的某次扩容还可能带来 `O(n)` 开销。`std::stack` 的“栈”是数据结构，与本笔记“堆和栈的区别”里的内存区域概念应分开理解。
+仅想查询时优先 `find()`，不要用 `operator[]` 意外添加数据。`map` / `unordered_map` 的 `find` 按键查找，不能直接按映射值查找；按值搜索一般要遍历。`multimap` / `unordered_multimap` 不提供 `operator[]` 或 `at()`，可用 `equal_range(key)` 遍历同键的范围。
 
-### 关联容器：键、比较器与哈希
-
-
-
-#### 有序关联容器与平衡搜索树
+#### 比较器、键等价与平衡搜索树
 
 `set` / `map` 家族通常用平衡搜索树实现，常见实现采用红黑树。红黑树是一种自平衡二叉搜索树，使按键查找、插入及删除的主要搜索过程为 `O(log n)`；**标准要求的是接口、顺序与复杂度，不强制规定必须用红黑树**。
 
@@ -4236,41 +4433,44 @@ void insertEmployees() {
 
 `set` 元素不能通过迭代器随意修改，因为修改键可能破坏顺序；`map` 的键同样只读，映射值可以修改。需要更改键时可删除再插入，或使用 C++17 节点句柄并遵守相关接口。
 
-#### `std::pair`、map 键值对与查询
+### 无序关联容器
 
-`std::pair<A, B>` 在 `<utility>` 中声明，成员 `first`、`second` 分别保存两个值。`map<K, T>` 和 `unordered_map<K, T>` 的元素类型是 `std::pair<const K, T>`：`first` 为只读键，`second` 为映射值。
+#### 基本使用：去重、映射与按键查询
+
+下面以无序容器演示基本操作，同时保留 `set`、`map` 的有序对照；映射值也可以是另一个容器。
 
 ```cpp
 #include <map>
+#include <set>
 #include <string>
-#include <utility>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 
-void queryMap() {
-    std::pair<int, std::string> item{1, "one"};
-    std::map<std::string, int> counts{{"apple", 2}, {"banana", 3}};
-    auto found = counts.find("apple");
-    if (found != counts.end()) {
-        found->second += 1;
+void chooseKeyContainers() {
+    std::vector<int> nums{1, 2, 2, 3};
+    std::unordered_set<int> uniqueNumbers(nums.begin(), nums.end()); // 区间构造并去重
+    std::unordered_set<char> vowels{'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
+    std::unordered_map<std::string, int> counts{{"apple", 2}, {"banana", 3}};
+    std::unordered_map<int, int> numbers{{1, 10}, {2, 20}, {5, 50}};
+    std::unordered_map<int, std::vector<int>> groups; // 值无须可哈希
+    std::set<int> ordered{5, 1, 3, 2}; // 遍历顺序为 1、2、3、5
+    std::map<int, std::string> names{{1, "one"}, {3, "three"}, {2, "two"}};
+    numbers[5] = 10;
+    for (const auto& pair : numbers) {
+        (void)pair.first; // key
+        (void)pair.second; // value
     }
-    int created = counts["pear"]; // 缺键：插入 pear，int 值初始化为 0
-    counts["pear"] = 5;
-    int checked = counts.at("pear"); // 缺键时抛 out_of_range，不插入
-    (void)item;
-    (void)created;
-    (void)checked;
+    auto found = numbers.find(5);
+    if (found != numbers.end()) found->second += 1;
+    if (vowels.count('a')) vowels.insert('b');
+    auto vowel = vowels.find('a'); // 未找到时等于 vowels.end()
+    (void)vowel;
+    vowels.erase('a');
 }
 ```
 
-| 操作 | 键存在 | 键不存在 | 能否对 const map 调用 |
-| --- | --- | --- | --- |
-| `operator[](key)` | 返回值的引用 | 插入键与初始化的值 | 不能 |
-| `find(key)` | 返回元素迭代器 | 返回 `end()` | 能 |
-| `at(key)` | 返回值的引用 | 抛 `std::out_of_range` | 能，得到只读引用 |
-| `count(key)` | 唯一键为 1；multi 可大于 1 | 返回 0 | 能 |
-
-仅想查询时优先 `find()`，不要用 `operator[]` 意外添加数据。`map` / `unordered_map` 的 `find` 按键查找，不能直接按映射值查找；按值搜索一般要遍历。`multimap` / `unordered_multimap` 不提供 `operator[]` 或 `at()`，可用 `equal_range(key)` 遍历同键的范围。
-
-#### 无序关联容器、Hash Table 与 Bucket
+#### 哈希、桶与负载因子
 
 哈希表（Hash Table）根据哈希函数（Hash Function）计算键的哈希值，再映射到哈希桶（Bucket）。不同键可能落入同一桶或产生相同哈希值，称为碰撞，因此还需要相等判断；哈希相等不代表键相等。
 
@@ -4312,9 +4512,49 @@ void useCustomHash() {
 
 `std::unordered_map<int, std::vector<int>>` 合法：被哈希的是键 `int`，映射值 `vector<int>` 无须可哈希。若把 `vector<int>` 用作键，默认哈希器通常不满足要求，需设计合适的哈希与相等语义。`unordered_map` 前两个模板参数是键与值，后续还可配置哈希器、相等比较器及分配器；`unordered_set` 除键类型外同样有这些策略参数。
 
-### 迭代器、半开区间与遍历
+### 容器适配器：FIFO、LIFO 与优先级
 
-迭代器可以先理解成“位置”，`*it` 解引用取得该位置元素，`++it` 前进到下一位置，`it->member` 访问元素的成员。具体实现可能是指针，也可能是包装节点、存储块或调试状态的对象；不能认定 `vector::iterator` 在所有实现中就是裸指针。
+```cpp
+#include <functional>
+#include <queue>
+#include <stack>
+#include <vector>
+
+void useAdapters() {
+    std::stack<int> history;
+    history.push(1);
+    history.push(2);
+    int newest = history.top(); // 2，LIFO
+    history.pop();
+
+    std::queue<int> tasks;
+    tasks.push(1);
+    tasks.push(2);
+    int oldest = tasks.front(); // 1，FIFO；back() 是 2
+    tasks.pop();
+
+    std::priority_queue<int> largestFirst;
+    largestFirst.push(2);
+    largestFirst.push(7);
+    int largest = largestFirst.top(); // 7，默认最大堆
+    std::priority_queue<int, std::vector<int>, std::greater<int>> smallestFirst;
+    smallestFirst.push(2);
+    smallestFirst.push(7);
+    int smallest = smallestFirst.top(); // 2，最小堆
+    (void)newest;
+    (void)oldest;
+    (void)largest;
+    (void)smallest;
+}
+```
+
+这些适配器提供 `size()`、`empty()`、`push()`、`pop()`，但没有公开的 `begin()` / `end()`，不能直接用范围 for 遍历，也不能直接交给 `std::sort`。访问 `top()` / `front()` 或 `pop()` 前须确保非空。适配器可配置底层容器，但该容器必须支持所需接口，例如不能把 `list` 作为 `priority_queue` 的底层随机访问序列。
+
+`priority_queue` 不是 FIFO，它只维护堆结构而不是完整排序：`top()` 为 `O(1)`，堆调整为 `O(log n)`，底层 vector 的某次扩容还可能带来 `O(n)` 开销。`std::stack` 的“栈”是数据结构，与本笔记“堆和栈的区别”里的内存区域概念应分开理解。
+
+### 迭代器能力与失效规则
+
+#### 迭代器与存储结构
 
 | 容器 | 常见迭代器实现思路 |
 | --- | --- |
@@ -4322,28 +4562,6 @@ void useCustomHash() {
 | `deque` | 存储块与块内位置的组合 |
 | `list` / `forward_list` | 包装链表节点的位置 |
 | `map` / `unordered_map` | 包装树节点或哈希节点的位置 |
-
-`begin()` 指向首元素，`end()` 指向末元素之后；`[first, last)` 包含 `first`、不包含 `last`。空容器中 `begin() == end()`；`end()` 不能解引用，`++end()` 也不是合法的通用操作。
-
-```cpp
-#include <string>
-#include <vector>
-
-void visitElements() {
-    std::string text = "abc";
-    for (auto it = text.begin(); it != text.end(); ++it) {
-        *it = static_cast<char>(*it + 1);
-    } // 对这个字符串也可用下标循环访问相同元素
-
-    std::vector<int> values{1, 2, 3};
-    std::vector<int>::const_iterator reader = values.cbegin();
-    int first = *reader;
-    ++reader; // 迭代器可移动，但不能写 *reader = 9
-    (void)first;
-}
-```
-
-`cbegin()` / `cend()` 明确获得只读元素迭代器；对 const 容器调用 `begin()` 也会获得相应 const_iterator。**const_iterator** 限制通过迭代器修改元素；`const auto it = values.begin()` 则限制迭代器对象本身，元素可能仍可修改，两者不同。
 
 #### 五类经典迭代器与能力要求
 
@@ -4378,36 +4596,6 @@ void moveIterator() {
 ```
 
 负数步长要求双向或更强迭代器；前向迭代器不能倒退。任何移动都必须在有效范围内，`next` / `advance` 不会自动检查越界。`std::distance(first, last)` 同样在随机访问范围中为 `O(1)`，对一般链表范围为 `O(n)`。
-
-#### 范围 for：`auto`、`auto&` 与 `const auto&`
-
-| 声明 | 含义 | 典型用途 |
-| --- | --- | --- |
-| `for (auto x : values)` | 按值接收元素，通常复制 | 小标量值，或明确需要副本 |
-| `for (auto& x : values)` | 引用原元素，可在允许时修改 | 原地更新、避免复制 |
-| `for (const auto& x : values)` | 只读引用 | 读取大对象或不可复制对象 |
-
-```cpp
-#include <map>
-#include <string>
-#include <vector>
-
-void rangeForExamples() {
-    std::vector<int> values{1, 2, 3};
-    for (auto& value : values) value *= 2;
-    for (auto value : values) {
-        value = 0; // 只改副本
-        (void)value;
-    }
-    std::map<int, std::string> names{{1, "one"}, {2, "two"}};
-    for (const auto& [key, name] : names) {
-        (void)key;
-        (void)name;
-    }
-}
-```
-
-set 的键通过迭代器是只读的，因此写 `auto&` 也不代表一定能改元素；`vector<bool>` 的代理引用等特殊类型宜按接口选择 `auto&&`。范围 for 隐藏了迭代器与终点，遍历过程中使它们失效同样危险；不能一边遍历 vector 一边随意 `push_back` 或 `erase`。
 
 #### Iterator Invalidation：迭代器失效
 
@@ -4445,7 +4633,9 @@ void eraseWhileIterating() {
 
 这一用法不能不加区别地套到 `forward_list`，它需要保留前驱并用 `erase_after`。
 
-### STL 算法与可调用对象
+### 常用算法
+
+#### 查找、统计、排序与修改
 
 通用算法主要在 `<algorithm>` 中声明，处理迭代器给出的半开区间，不直接决定容器的存储布局，也通常不会自动改变容器 `size()`。
 
@@ -4489,7 +4679,7 @@ void findCountAndSort() {
 }
 ```
 
-#### Function Pointer、Functor、Lambda 与 Predicate
+#### 谓词与比较器：Function Pointer、Functor、Lambda
 
 算法可接收函数指针（Function Pointer）、函数对象（Functor，定义 `operator()` 的类实例）或 Lambda。返回可用于条件判断结果的可调用对象称为谓词（Predicate）；比较器通常是接收两个参数的谓词，并有额外的严格弱序要求。
 
@@ -4547,7 +4737,7 @@ void eraseRemoveExamples() {
 
 链表可直接用成员 `remove` / `remove_if` 删除节点，避免通用算法逐项赋值。C++20 对部分容器提供 `std::erase` / `std::erase_if` 简化接口；本例使用 C++17 写法。删除相同数值时也要避免把容器内一个随后可能被移动赋值的元素引用作为待删值，可先复制所需值。
 
-### 时间复杂度、内存布局与容器选择
+### 复杂度与容器选择
 
 `O(1)` 表示操作次数不随元素数量线性增长，并不保证实际耗时恒定或更快；`O(log n)`、`O(n)` 描述规模变化的趋势。比较、哈希、元素复制等自身开销还要单独考虑。
 
@@ -4564,40 +4754,32 @@ void eraseRemoveExamples() {
 
 一般先考虑 `vector`，再根据真正需求选择：固定大小用 array，两端操作多用 deque，只需栈 / 队列语义用适配器，必须保持节点位置并已有位置时才考虑链表；按键查找用关联容器，需有序遍历或范围查询选树型，主要等值查询且不需顺序时考虑哈希型。
 
-```cpp
-#include <map>
-#include <set>
-#include <string>
-#include <unordered_map>
-#include <unordered_set>
-#include <vector>
+容量、随机访问与顺序访问、插入删除的真实位置、元素大小、内存布局和迭代器稳定性应一起考虑。不能只看复杂度表：短序列中连续存储的 vector 可能比频繁分配节点的 list 更快，具体工作负载仍需测量。
 
-void chooseKeyContainers() {
-    std::vector<int> nums{1, 2, 2, 3};
-    std::unordered_set<int> uniqueNumbers(nums.begin(), nums.end()); // 区间构造并去重
-    std::unordered_set<char> vowels{'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
-    std::unordered_map<std::string, int> counts{{"apple", 2}, {"banana", 3}};
-    std::unordered_map<int, int> numbers{{1, 10}, {2, 20}, {5, 50}};
-    std::unordered_map<int, std::vector<int>> groups; // 值无须可哈希
-    std::set<int> ordered{5, 1, 3, 2}; // 遍历顺序为 1、2、3、5
-    std::map<int, std::string> names{{1, "one"}, {3, "three"}, {2, "two"}};
-    numbers[5] = 10;
-    for (const auto& pair : numbers) {
-        (void)pair.first; // key
-        (void)pair.second; // value
-    }
-    auto found = numbers.find(5);
-    if (found != numbers.end()) found->second += 1;
-    if (vowels.count('a')) vowels.insert('b');
-    auto vowel = vowels.find('a'); // 未找到时等于 vowels.end()
-    (void)vowel;
-    vowels.erase('a');
+### 补充：bitset、容器与多态对象
+
+#### `std::bitset<N>`：固定大小位集合
+
+`std::bitset<N>` 在 `<bitset>` 中声明，`N` 是编译期确定的位数，属于非类型模板参数。它不能动态扩容，也不提供普通容器的迭代器接口，适合固定数量的布尔标记与位运算。
+
+```cpp
+#include <bitset>
+
+void useBitset() {
+    std::bitset<8> bits("10101010");
+    bool lowBit = bits.test(0); // false；下标 0 对应最右边的最低位
+    bits.set();                // 所有位设为 1：11111111
+    bits.reset();              // 所有位清零：00000000
+    bits.set(2);               // 只将第 2 位设为 1：00000100
+    bool enabled = bits.test(2); // true
+    (void)lowBit;
+    (void)enabled;
 }
 ```
 
-容量、随机访问与顺序访问、插入删除的真实位置、元素大小、内存布局和迭代器稳定性应一起考虑。不能只看复杂度表：短序列中连续存储的 vector 可能比频繁分配节点的 list 更快，具体工作负载仍需测量。
+`set(i)` / `reset(i)` 操作指定位，`test(i)` 读取指定位；这些带位置参数的接口在 `i >= N` 时抛出 `std::out_of_range`。`size()` 返回固定的 `N`，`count()` 返回值为 1 的位数，不是动态容器中的元素查找计数。
 
-### STL 与运行时多态：避免对象切片
+#### 容器与运行时多态：避免对象切片
 
 模板按静态类型生成代码，运行时多态则通过虚函数根据实际对象选择实现。两者可以组合：`vector<std::unique_ptr<Base>>` 是一个静态确定的容器类型，元素指针可以指向不同派生类，并通过虚函数运行时分派。
 
@@ -4638,7 +4820,7 @@ int main() {
 
 智能指针管理多态对象还有一个稳定性区别：vector 扩容会移动 unique_ptr 元素，使指向这些指针槽位的引用失效，但所拥有的堆上对象通常没有因此搬迁；当其所有者被删除或重置时，指向实际对象的裸指针才也会悬空。析构函数、虚函数及智能指针的通用机制继续参见本笔记对应章节。
 
-### 原始参考与版本范围
+### 版本说明与参考资料
 
 本章代码以 C++17 为主；标注的连续迭代器概念与 `std::erase_if` 等属于 C++20。完整规则应以对应标准版本与后续缺陷修正为准。
 
