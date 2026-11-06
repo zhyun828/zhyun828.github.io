@@ -1,0 +1,55 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+skinparam nodesep 130
+skinparam ranksep 85
+class Editor
+class Document
+class Sheet
+abstract class GraphicObject {
+{abstract} + draw()
+}
+class Text
+class Group
+abstract class GeometricShape
+class Circle {
+- radius : Real
+}
+class Ellipse {
+- rx : Real
+- ry : Real
+}
+class Rectangle {
+- width : Real
+- height : Real
+}
+class Square {
+- side : Real
+}
+class Line
+class Point {
+- x : Real
+- y : Real
+}
+Editor "1" -- "0..*" Document : edits
+Document "1" *-- "1..*" Sheet
+Sheet "0..1" *-- "0..*" GraphicObject : topLevel
+GraphicObject "2..*" -right-* "0..1" Group : children {ordered}
+Text --|> GraphicObject
+Group --|> GraphicObject
+GeometricShape --|> GraphicObject
+Circle --|> GeometricShape
+Ellipse --|> GeometricShape
+Rectangle --|> GeometricShape
+Square --|> GeometricShape
+Line --|> GeometricShape
+Point --|> GeometricShape
+note bottom of GraphicObject
+{每个对象恰归属一 Sheet 或一 Group，xor}
+{组包含无环；同一文档中不可有两个组合所有者}
+
+end note
+@enduml

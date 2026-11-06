@@ -1,0 +1,16 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+class Hotel
+class Person
+Hotel "0..*" -- "0..*" Person : staff / employs
+Hotel "0..*" -- "0..*" Person : guest / accommodates
+note bottom of Person
+同一人可承担员工与客人角色
+未额外假设两角色互斥
+
+end note
+@enduml

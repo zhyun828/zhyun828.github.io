@@ -1,0 +1,29 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+actor User
+participant Controller as C
+participant Service as S
+User -> C : start()
+activate C
+C -> C : validate()
+activate C
+deactivate C
+C -> S : query()
+activate S
+S --> C : result
+deactivate S
+C ->> S : notify()
+create participant Task
+C -> Task : <<create>>
+opt 可执行
+ C -> Task : run()
+end
+C -> Task : close()
+destroy Task
+C --> User : result
+deactivate C
+@enduml

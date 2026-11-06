@@ -1,0 +1,32 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam ArrowColor #334155
+skinparam classBorderColor #334155
+skinparam classBackgroundColor #FFEDD5
+skinparam packageBackgroundColor #F8FAFC
+skinparam packageBorderColor #94A3B8
+skinparam nodesep 55
+skinparam ranksep 55
+hide empty members
+title Decorator
+interface Component {
+ +operation()
+}
+class ConcreteComponent
+abstract class Decorator {
+ +operation()
+}
+class ConcreteDecorator {
+ -addedState
+ +operation()
+ +addedBehavior()
+}
+Component <|.. ConcreteComponent
+Component <|.. Decorator
+Decorator <|-- ConcreteDecorator
+Decorator *-right- Component : wrapped [1]
+@enduml

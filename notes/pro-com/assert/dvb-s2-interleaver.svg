@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 390" width="900" height="390" role="img">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#405e76"/></marker></defs>
+<text x="450" y="31" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="22" font-weight="700" fill="#203044">12 位示意：按列写入，按行读出</text>
+<text x="130" y="102" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="17" font-weight="600" fill="#203044">输入下标</text>
+<text x="130" y="139" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="16" font-weight="normal" fill="#203044">0, 1, 2, …, 11</text>
+<line x1="250" y1="132" x2="328" y2="132" stroke="#405e76" stroke-width="2" marker-end="url(#arr)"/>
+<text x="292" y="111" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="14" font-weight="normal" fill="#526273">按列写</text>
+<text x="397.5" y="79" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="600" fill="#203044">列 0</text>
+<text x="488.5" y="79" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="600" fill="#203044">列 1</text>
+<text x="579.5" y="79" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="600" fill="#203044">列 2</text>
+<text x="330" y="122" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="normal" fill="#526273">0</text>
+<rect x="352" y="92" width="91" height="47" fill="#e1f1fb" stroke="#8599a9"/>
+<text x="397.5" y="121" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="17" font-weight="600" fill="#203044">x0</text>
+<rect x="443" y="92" width="91" height="47" fill="#e7f7ed" stroke="#8599a9"/>
+<text x="488.5" y="121" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="17" font-weight="600" fill="#203044">x4</text>
+<rect x="534" y="92" width="91" height="47" fill="#fff0dd" stroke="#8599a9"/>
+<text x="579.5" y="121" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="17" font-weight="600" fill="#203044">x8</text>
+<text x="330" y="169" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="normal" fill="#526273">1</text>
+<rect x="352" y="139" width="91" height="47" fill="#e1f1fb" stroke="#8599a9"/>
+<text x="397.5" y="168" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="17" font-weight="600" fill="#203044">x1</text>
+<rect x="443" y="139" width="91" height="47" fill="#e7f7ed" stroke="#8599a9"/>
+<text x="488.5" y="168" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="17" font-weight="600" fill="#203044">x5</text>
+<rect x="534" y="139" width="91" height="47" fill="#fff0dd" stroke="#8599a9"/>
+<text x="579.5" y="168" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="17" font-weight="600" fill="#203044">x9</text>
+<text x="330" y="216" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="normal" fill="#526273">2</text>
+<rect x="352" y="186" width="91" height="47" fill="#e1f1fb" stroke="#8599a9"/>
+<text x="397.5" y="215" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="17" font-weight="600" fill="#203044">x2</text>
+<rect x="443" y="186" width="91" height="47" fill="#e7f7ed" stroke="#8599a9"/>
+<text x="488.5" y="215" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="17" font-weight="600" fill="#203044">x6</text>
+<rect x="534" y="186" width="91" height="47" fill="#fff0dd" stroke="#8599a9"/>
+<text x="579.5" y="215" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="17" font-weight="600" fill="#203044">x10</text>
+<text x="330" y="263" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="normal" fill="#526273">3</text>
+<rect x="352" y="233" width="91" height="47" fill="#e1f1fb" stroke="#8599a9"/>
+<text x="397.5" y="262" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="17" font-weight="600" fill="#203044">x3</text>
+<rect x="443" y="233" width="91" height="47" fill="#e7f7ed" stroke="#8599a9"/>
+<text x="488.5" y="262" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="17" font-weight="600" fill="#203044">x7</text>
+<rect x="534" y="233" width="91" height="47" fill="#fff0dd" stroke="#8599a9"/>
+<text x="579.5" y="262" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="17" font-weight="600" fill="#203044">x11</text>
+<text x="490" y="303" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="normal" fill="#203044">按行读出： (x0,x4,x8)  (x1,x5,x9)  (x2,x6,x10)  (x3,x7,x11)</text>
+<text x="450" y="344" text-anchor="middle" font-family="Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="normal" fill="#526273">反交织：每 3 个 LLR 填一行，再按列恢复 x0 … x11 的顺序。</text>
+</svg>

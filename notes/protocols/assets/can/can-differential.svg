@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="360" viewBox="0 0 980 360" role="img" aria-label="CAN differential dominant and recessive levels">
+  <rect width="980" height="360" fill="#fff"/>
+  <style>
+    text{font-family:Arial,"Microsoft YaHei",sans-serif;fill:#1f2933}
+    .title{font-size:24px;font-weight:700}
+    .small{font-size:17px}
+    .h{stroke:#ef4444;stroke-width:4;fill:none}
+    .l{stroke:#2563eb;stroke-width:4;fill:none}
+    .grid{stroke:#d0d7de;stroke-width:1}
+    .label{font-size:18px;font-weight:700}
+  </style>
+  <text x="40" y="42" class="title">高速 CAN 差分电平：隐性 1 与显性 0</text>
+  <text x="40" y="72" class="small">典型高速 CAN：隐性时 CAN_H 和 CAN_L 接近 2.5 V；显性时 CAN_H 上升、CAN_L 下降，差分约 2 V</text>
+  <g transform="translate(80,110)">
+    <line class="grid" x1="0" y1="0" x2="820" y2="0"/><line class="grid" x1="0" y1="70" x2="820" y2="70"/><line class="grid" x1="0" y1="140" x2="820" y2="140"/>
+    <text x="-55" y="5" class="small">3.5V</text><text x="-55" y="75" class="small">2.5V</text><text x="-55" y="145" class="small">1.5V</text>
+    <path class="h" d="M0 70 H180 V0 H430 V70 H820"/>
+    <path class="l" d="M0 70 H180 V140 H430 V70 H820"/>
+    <text x="40" y="205" class="label">Recessive 1</text>
+    <text x="250" y="205" class="label">Dominant 0</text>
+    <text x="560" y="205" class="label">Recessive 1</text>
+    <text x="690" y="12" class="small" fill="#ef4444">CAN_H</text>
+    <text x="690" y="132" class="small" fill="#2563eb">CAN_L</text>
+  </g>
+</svg>

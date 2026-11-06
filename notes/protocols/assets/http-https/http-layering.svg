@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="540" viewBox="0 0 1040 540" role="img" aria-labelledby="title desc">
+  <title id="title">HTTP and HTTPS in network stack</title>
+  <desc id="desc">HTTP is application layer; HTTPS adds TLS between HTTP and TCP.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.box{fill:#fff;stroke:#334155;stroke-width:2;rx:12}.app{fill:#dbeafe}.tls{fill:#ede9fe}.tcp{fill:#dcfce7}.ip{fill:#fef3c7}.link{fill:#fee2e2}
+      .text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:21px;fill:#0f172a}.title{font-size:26px;font-weight:700}.small{font-size:16px;fill:#475569}
+      .arrow{stroke:#64748b;stroke-width:3;marker-end:url(#arrow)}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#64748b"/></marker>
+  </defs>
+  <rect class="bg" width="1040" height="540"/>
+  <text class="text title" x="520" y="45" text-anchor="middle">HTTP / HTTPS 在协议栈中的位置</text>
+  <rect class="box app" x="210" y="80" width="620" height="62"/><text class="text" x="520" y="118" text-anchor="middle">应用层：HTTP，请求 / 响应语义</text>
+  <rect class="box tls" x="210" y="165" width="620" height="62"/><text class="text" x="520" y="203" text-anchor="middle">安全层：TLS，HTTPS 才有</text>
+  <rect class="box tcp" x="210" y="250" width="620" height="62"/><text class="text" x="520" y="288" text-anchor="middle">传输层：TCP，端口和可靠字节流</text>
+  <rect class="box ip" x="210" y="335" width="620" height="62"/><text class="text" x="520" y="373" text-anchor="middle">网络层：IP，寻址和路由</text>
+  <rect class="box link" x="210" y="420" width="620" height="62"/><text class="text" x="520" y="458" text-anchor="middle">链路层：Ethernet / Wi-Fi</text>
+  <line class="arrow" x1="520" y1="142" x2="520" y2="162"/>
+  <line class="arrow" x1="520" y1="227" x2="520" y2="247"/>
+  <line class="arrow" x1="520" y1="312" x2="520" y2="332"/>
+  <line class="arrow" x1="520" y1="397" x2="520" y2="417"/>
+  <text class="small" x="520" y="515" text-anchor="middle">HTTP/1.1 和 HTTP/2 常基于 TCP；HTTP/3 基于 QUIC/UDP。</text>
+</svg>

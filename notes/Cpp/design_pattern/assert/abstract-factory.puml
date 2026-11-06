@@ -1,0 +1,34 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam ArrowColor #334155
+skinparam classBorderColor #334155
+skinparam classBackgroundColor #DBEAFE
+skinparam packageBackgroundColor #F8FAFC
+skinparam packageBorderColor #94A3B8
+skinparam nodesep 55
+skinparam ranksep 55
+hide empty members
+title Abstract Factory
+interface AbstractFactory {
+ +createProductA(): AbstractProductA
+ +createProductB(): AbstractProductB
+}
+class ConcreteFactory
+interface AbstractProductA
+interface AbstractProductB
+class ConcreteProductA
+class ConcreteProductB
+class Client
+AbstractFactory <|.. ConcreteFactory
+AbstractProductA <|.. ConcreteProductA
+AbstractProductB <|.. ConcreteProductB
+ConcreteFactory ..> ConcreteProductA : creates
+ConcreteFactory ..> ConcreteProductB : creates
+Client --> AbstractFactory
+Client --> AbstractProductA
+Client --> AbstractProductB
+@enduml

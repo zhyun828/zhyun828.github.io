@@ -1,0 +1,19 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+class Application {
++ Application(logger : ILogger)
++ run()
+}
+interface ILogger {
++ log(message : String)
+}
+class FileLogger
+class MemoryLogger
+Application "0..*" --> "1" ILogger : injected
+FileLogger ..|> ILogger
+MemoryLogger ..|> ILogger
+@enduml

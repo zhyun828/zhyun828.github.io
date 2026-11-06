@@ -1,0 +1,16 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+class Rectangle {
+- width : double
+- height : double
++ setSize(width : double, height : double)
+}
+class Square {
++ setSize(size : double)
+}
+Square --|> Rectangle
+@enduml

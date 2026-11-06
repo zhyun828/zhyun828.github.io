@@ -1,0 +1,21 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+interface Shape {
++ area() : Real {query}
+}
+class Rectangle {
+- width : Real
+- height : Real
++ setSize(width : Real, height : Real)
+}
+class Square {
+- side : Real
++ setSide(side : Real)
+}
+Rectangle ..|> Shape
+Square ..|> Shape
+@enduml

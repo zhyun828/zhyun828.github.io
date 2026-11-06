@@ -1,0 +1,27 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam ArrowColor #334155
+skinparam classBorderColor #334155
+skinparam classBackgroundColor #DCFCE7
+skinparam packageBackgroundColor #F8FAFC
+skinparam packageBorderColor #94A3B8
+skinparam nodesep 55
+skinparam ranksep 55
+hide empty members
+title Memento
+class Originator {
+ -state
+ +createMemento(): Memento
+ +setMemento(m)
+}
+class Memento {
+ -state
+}
+class Caretaker
+Originator ..> Memento : creates / restores
+Caretaker *-- "0..*" Memento : opaque snapshots
+@enduml
