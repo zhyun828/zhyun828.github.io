@@ -1,0 +1,16 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+rectangle "ATM（结构化分类器）" {
+ portin userPort
+ rectangle "controller:ATMController [1]" as C
+ rectangle "reader:CardReader [1]" as R
+ rectangle "dispenser:CashDispenser [1]" as D
+ userPort -- C : 委派
+ C -- R : 连接器
+ C -- D : 连接器
+}
+@enduml

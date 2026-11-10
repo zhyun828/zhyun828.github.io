@@ -1,0 +1,14 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+class AgeChecking {
++ isOldEnough(age : int) : bool
+}
+note bottom of AgeChecking
+原始实现只判断 age >= 18
+
+end note
+@enduml

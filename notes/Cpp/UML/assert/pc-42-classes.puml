@@ -1,0 +1,35 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+class PASS {
+ + query(name : String, course : String) : Marks
+}
+class StudentDirectory {
+ - students : StudentRecord [0..*]
+ + findIds(name : String) : Integer [0..*]
+}
+class StudentRecord {
+- name : String
+- id : Integer {id}
+}
+class MarksDataStorage {
+ - entries : MarkRecord [0..*]
+ + getMarks(id : Integer, course : String) : Real [0..*]
+}
+class MarkRecord {
+- studentId : Integer
+- course : String
+- value : Real
+}
+PASS "0..*" --> "1" StudentDirectory
+PASS "0..*" --> "1" MarksDataStorage
+StudentDirectory "1" *-- "0..*" StudentRecord
+MarksDataStorage "1" *-- "0..*" MarkRecord
+note bottom of MarkRecord
+不保存姓名；studentId 对应目录 ID
+
+end note
+@enduml

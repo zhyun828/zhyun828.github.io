@@ -1,0 +1,4339 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Notes on embedded systems, robotics, C++, FPGA, and interview preparation.">
+      
+      
+      
+        <link rel="canonical" href="https://zhyun828.github.io/notes/Cpp/Makefile/">
+      
+      
+        <link rel="prev" href="../basics/">
+      
+      
+        <link rel="next" href="../cmake%E6%95%99%E7%A8%8B/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+    
+    
+      
+        <title>Makefile 与 GNU Make - ZY Engineering Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/home.css">
+    
+      <link rel="stylesheet" href="../../../stylesheets/toc-collapse.css?v=1">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#makefile-gnu-make" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="ZY Engineering Notes" class="md-header__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ZY Engineering Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Makefile 与 GNU Make
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="teal"  aria-label="深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="cyan"  aria-label="浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m3.55 19.09 1.41 1.41 1.8-1.79-1.42-1.42M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6c0-3.32-2.69-6-6-6m8 7h3v-2h-3m-2.76 7.71 1.8 1.79 1.41-1.41-1.79-1.8M20.45 5l-1.41-1.4-1.8 1.79 1.42 1.42M13 1h-2v3h2M6.76 5.39 4.96 3.6 3.55 5l1.79 1.81zM1 13h3v-2H1m12 9h-2v3h2"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="ZY Engineering Notes" class="md-nav__button md-logo" aria-label="ZY Engineering Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ZY Engineering Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../protocols/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通信协议
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    通信协议
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/usart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    USART
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/i2c/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I2C
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/spi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SPI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/can/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/tcp-udp-ip/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TCP / UDP / IP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/modbus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modbus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/ethernet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ethernet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/lin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LIN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocols/http-https/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP / HTTPS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    专业通信
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    专业通信
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_1" id="__nav_2_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DVB-S2
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    DVB-S2
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pro-com/dvb-s2/Communication-System/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通信系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pro-com/dvb-s2/Demapper-and-Interleaver/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    解映射与交织
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_2" id="__nav_2_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    前向纠错
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    前向纠错
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pro-com/fec/Forward-Error-Correction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FEC 基础
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pro-com/fec/BCH/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BCH
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pro-com/fec/LDPC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LDPC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pro-com/versal/Versal-AIE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Versal AI Engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pro-com/acceleration/High-Throughput-Architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高吞吐架构
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    面试
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    面试
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E5%BF%AB%E9%80%9F%E6%A3%80%E7%B4%A2%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    快速检索表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E5%B5%8C%E5%85%A5%E5%BC%8F%E9%9D%A2%E8%AF%95%E6%B1%87%E6%80%BB%E8%A1%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    嵌入式面试汇总表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E9%AB%98%E9%A2%91%E9%A2%98%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    高频题深度解析
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%9D%A2%E8%AF%95/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E9%97%AE%E7%AD%94%E9%9D%A2%E8%AF%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    项目经历问答面试
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    嵌入式
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    嵌入式
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5_1" id="__nav_2_5_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arduino
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Arduino
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%B5%8C%E5%85%A5%E5%BC%8F/Arduino/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5_1_2" id="__nav_2_5_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_5_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    projet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%B5%8C%E5%85%A5%E5%BC%8F/Arduino/projet/projet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%B5%8C%E5%85%A5%E5%BC%8F/Arduino/projet/pre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    pre
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%B5%8C%E5%85%A5%E5%BC%8F/Arduino/projet/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%B5%8C%E5%85%A5%E5%BC%8F/Arduino/projet/thoughts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    thoughts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5_2" id="__nav_2_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BeagleBone
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    BeagleBone
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%B5%8C%E5%85%A5%E5%BC%8F/beaglebone/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../%E5%B5%8C%E5%85%A5%E5%BC%8F/beaglebone/TP/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TP
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_5_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    TP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5_3" id="__nav_2_5_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    stm32
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%B5%8C%E5%85%A5%E5%BC%8F/stm32/stm32_knowledge_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    stm32_knowledge_notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%B5%8C%E5%85%A5%E5%BC%8F/stm32/rtos_freertos_notes_compact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RTOS / FreeRTOS 知识整理
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%B5%8C%E5%85%A5%E5%BC%8F/stm32/%E5%A4%96%E8%AE%BE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    外设
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%B5%8C%E5%85%A5%E5%BC%8F/stm32/%E5%AF%84%E5%AD%98%E5%99%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    寄存器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5_4" id="__nav_2_5_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FPGA
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    FPGA
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%B5%8C%E5%85%A5%E5%BC%8F/FPGA/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%B5%8C%E5%85%A5%E5%BC%8F/FPGA/zynq-hardware-acceleration-intro/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zynq 硬件乘法加速器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%B5%8C%E5%85%A5%E5%BC%8F/FPGA/Zynq/embedded-linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zynq 嵌入式 Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5_5" id="__nav_2_5_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%B5%8C%E5%85%A5%E5%BC%8F/linux/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5_5_2" id="__nav_2_5_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    linux驱动
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_5_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    linux驱动
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%B5%8C%E5%85%A5%E5%BC%8F/linux/linux%E9%A9%B1%E5%8A%A8/00_%E4%B8%8B%E8%BD%BD%E8%B5%84%E6%96%99/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    下载资料
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%B5%8C%E5%85%A5%E5%BC%8F/linux/linux%E9%A9%B1%E5%8A%A8/01_%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    搭建开发环境
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%B5%8C%E5%85%A5%E5%BC%8F/linux/linux%E9%A9%B1%E5%8A%A8/02_%E9%80%9A%E7%94%A8%E7%9A%84%E9%A9%B1%E5%8A%A8%E6%A1%86%E6%9E%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    通用的驱动框架
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%B5%8C%E5%85%A5%E5%BC%8F/linux/linux%E9%A9%B1%E5%8A%A8/03_%E4%BD%BF%E7%94%A8%E6%A8%A1%E6%9D%BF%E6%93%8D%E4%BD%9C%E7%A1%AC%E4%BB%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    使用模板操作硬件
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%B5%8C%E5%85%A5%E5%BC%8F/linux/linux%E9%A9%B1%E5%8A%A8/04_%E5%B9%B3%E5%8F%B0%E6%80%BB%E7%BA%BF%E8%AE%BE%E5%A4%87%E6%A8%A1%E5%9E%8B%E5%92%8C%E8%AE%BE%E5%A4%87%E6%A0%91/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    平台总线设备模型和设备树
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%B5%8C%E5%85%A5%E5%BC%8F/linux/linux%E9%A9%B1%E5%8A%A8/05_I2C%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F%E6%A8%A1%E6%9D%BF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    I2C驱动程序模板
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cpp
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cpp
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Makefile 与 GNU Make
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Makefile 与 GNU Make
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#makefile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Makefile 的作用与规则结构
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Makefile 的作用与规则结构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tab、注释、续行与路径引用
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        默认目标与伪目标
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        变量与赋值方式
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="变量与赋值方式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gnu-make" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GNU Make 内置变量与命令行覆盖
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gcc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GCC：编译与链接
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        综合示例：源码与构建目录分离
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="综合示例：源码与构建目录分离">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        自定义变量与路径替换
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        模式规则与自动变量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        创建目录与清理文件
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        增量构建与自动头文件依赖
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常用命令与构建配置
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C++ 项目的写法
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#makefile-cmakeliststxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Makefile 与 CMakeLists.txt
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        官方参考
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cmake%E6%95%99%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CMake 与 CMakeLists.txt
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6_4" id="__nav_2_6_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UML
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    UML
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../UML/UML/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    系统学习教材
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../UML/UML-Cheatsheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    分类与图解速查
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design_pattern/Design-Patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    设计模式详解
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design_pattern/Design-Patterns-Cheatsheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    设计模式速查
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    gazebo
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    gazebo
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ros/gazebo/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_8" id="__nav_2_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVGL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LVGL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LVGL/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_9" id="__nav_2_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ros
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ros
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ros/basic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    basic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ros/code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    code
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#makefile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Makefile 的作用与规则结构
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Makefile 的作用与规则结构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tab、注释、续行与路径引用
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        默认目标与伪目标
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        变量与赋值方式
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="变量与赋值方式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gnu-make" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GNU Make 内置变量与命令行覆盖
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gcc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GCC：编译与链接
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        综合示例：源码与构建目录分离
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="综合示例：源码与构建目录分离">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        自定义变量与路径替换
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        模式规则与自动变量
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        创建目录与清理文件
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        增量构建与自动头文件依赖
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        常用命令与构建配置
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C++ 项目的写法
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#makefile-cmakeliststxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Makefile 与 CMakeLists.txt
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        官方参考
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="导航栏" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Notes
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../basics/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Cpp
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="makefile-gnu-make">Makefile 与 GNU Make<a class="headerlink" href="#makefile-gnu-make" title="Permanent link">&para;</a></h1>
+<h2 id="makefile">Makefile 的作用与规则结构<a class="headerlink" href="#makefile" title="Permanent link">&para;</a></h2>
+<p>Makefile 用来描述“要生成什么、依赖什么、怎样生成”。GNU Make 是读取这些规则、判断执行顺序的构建工具，通常通过 <code>make</code> 命令调用；Makefile 本身不是编译器，真正的编译工作由规则中的 GCC、G++ 等命令完成。其他 Make 实现的语法可能不同，本文使用 GNU Make。</p>
+<p>在项目根目录保存名为 <code>Makefile</code> 的构建文件后，运行 <code>make</code> 即可读取它。规则的基本结构是：</p>
+<div class="highlight"><pre><span></span><code><span class="nf">目标</span><span class="o">:</span><span class="w"> </span>依赖文件列表
+<span class="w">    </span>命令
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>部分</th>
+<th>英文名称</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目标</td>
+<td>Target</td>
+<td>要生成的文件，或要执行的操作名称</td>
+</tr>
+<tr>
+<td>依赖</td>
+<td>Prerequisites</td>
+<td>构建目标前需要准备好的文件或其他目标</td>
+</tr>
+<tr>
+<td>命令</td>
+<td>Recipe</td>
+<td>更新目标时交给 Shell 执行的命令</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="nf">app</span><span class="o">:</span><span class="w"> </span><span class="n">main</span>.<span class="n">o</span> <span class="n">math</span>.<span class="n">o</span>
+<span class="w">    </span>gcc<span class="w"> </span>main.o<span class="w"> </span>math.o<span class="w"> </span>-o<span class="w"> </span>app
+</code></pre></div>
+<p>这是一条<strong>显式规则（Explicit Rule）</strong>：明确列出 <code>app</code> 依赖 <code>main.o</code> 和 <code>math.o</code>，两者准备好后才链接。依赖列表表达构建关系；如果使用并行构建，彼此独立的依赖可以同时生成，列表顺序不表示必须依次执行。</p>
+<h3 id="tab">Tab、注释、续行与路径引用<a class="headerlink" href="#tab" title="Permanent link">&para;</a></h3>
+<ul>
+<li>默认情况下，Recipe 的每条命令行必须以一个真正的 <strong>Tab</strong> 开头，不能用几个空格代替，否则常见错误是 <code>missing separator</code>。变量定义和规则头通常顶格写。本文代码块中的命令行使用 Tab。</li>
+<li><code>#</code> 在 Makefile 普通语法中开始注释；Recipe 中则由 Shell 解释。变量行尾注释前的空格可能成为变量值的一部分，路径变量的说明适合单独写一行。</li>
+<li><code>\</code> 放在行尾表示续行，后面不要再加空格。在普通变量定义中通常合并为空格；Recipe 的续行会交给 Shell，行为与普通变量行不同。</li>
+<li><code>"路径"</code> 是 Shell 的路径引用方式，用于把展开后的单个路径作为一个参数。它不能解决 Make 自身以空白分隔文件列表的问题；下面示例假设项目路径和文件名不含空格。</li>
+<li>Make 通常为每条 Recipe 命令行启动独立 Shell；某一行的 <code>cd</code> 不会自动影响下一行，需要时在同一行写 <code>cd 目录 &amp;&amp; 命令</code>。</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nv">SOURCES</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>src/main.c<span class="w"> </span><span class="se">\</span>
+<span class="w">           </span>src/math.c
+</code></pre></div>
+<h3 id="_1">默认目标与伪目标<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nv">.DEFAULT_GOAL</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>all
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">all</span> <span class="n">run</span> <span class="n">clean</span>
+
+<span class="nf">all</span><span class="o">:</span><span class="w"> </span><span class="n">app</span>
+
+<span class="nf">run</span><span class="o">:</span><span class="w"> </span><span class="n">app</span>
+<span class="w">    </span>./app
+
+<span class="nf">clean</span><span class="o">:</span>
+<span class="w">    </span>rm<span class="w"> </span>-f<span class="w"> </span>main.o<span class="w"> </span>math.o<span class="w"> </span>app
+</code></pre></div>
+<p><code>.DEFAULT_GOAL := all</code> 明确指定不带目标执行 <code>make</code> 时构建 <code>all</code>。未指定时，通常选择第一条普通规则的第一个目标，因此将默认目标写清楚也能避免包含依赖文件后默认目标意外改变。</p>
+<p><code>all</code>、<code>run</code>、<code>clean</code> 都是约定名称，没有自动附带的行为。这里 <code>all</code> 汇总构建任务；<code>run</code> 先确保 <code>app</code> 最新再运行；<code>clean</code> 删除产物。</p>
+<p><code>.PHONY</code> 声明这些名称是伪目标，不用同名文件的修改时间判断是否执行。否则目录中若已有名为 <code>clean</code> 的文件，<code>make clean</code> 可能不运行清理命令。<code>all</code> 本身没有 Recipe，构建动作来自它的依赖；真实产物 <code>app</code>、<code>.o</code> 不应声明为伪目标，以免失去增量构建效果。</p>
+<h2 id="_2">变量与赋值方式<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>变量引用写作 <code>$(VAR)</code>，例如 <code>$(CC)</code> 展开为编译器命令。<code>BUILD_DIR</code>、<code>TARGET</code>、<code>SOURCES</code> 等是用户自定义变量，名称可以自行约定；GNU Make 不会自动理解它们的用途，必须在规则中引用才生效。</p>
+<table>
+<thead>
+<tr>
+<th>写法</th>
+<th>名称</th>
+<th>展开时机与行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>VAR = 内容</code></td>
+<td>递归展开赋值</td>
+<td>保存右侧文本，引用 <code>VAR</code> 时再展开其中的变量</td>
+</tr>
+<tr>
+<td><code>VAR := 内容</code></td>
+<td>立即展开赋值</td>
+<td>定义时就展开右侧内容，保存结果</td>
+</tr>
+<tr>
+<td><code>VAR += 内容</code></td>
+<td>追加赋值</td>
+<td>以空格分隔追加；已有 <code>:=</code> 变量立即展开追加内容，已有 <code>=</code> 变量延迟展开；未定义时按 <code>=</code> 处理</td>
+</tr>
+<tr>
+<td><code>VAR ?= 内容</code></td>
+<td>条件赋值</td>
+<td>仅在变量尚未定义时赋值；已经定义为空字符串也算已定义</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="nv">NAME</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>first
+<span class="nv">LATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">$(</span>NAME<span class="k">)</span>
+<span class="nv">EARLY</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">$(</span>NAME<span class="k">)</span>
+<span class="nv">NAME</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>second
+<span class="c"># $(LATE) 为 second，$(EARLY) 为 first</span>
+
+<span class="nv">CFLAGS</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>-O0<span class="w"> </span>-g
+<span class="nv">CFLAGS</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span>-Wall<span class="w"> </span>-Wextra
+<span class="nv">BUILD_DIR</span><span class="w"> </span><span class="o">?=</span><span class="w"> </span>build/make
+</code></pre></div>
+<h3 id="gnu-make">GNU Make 内置变量与命令行覆盖<a class="headerlink" href="#gnu-make" title="Permanent link">&para;</a></h3>
+<p>GNU Make 预定义了一些变量，并在内置隐式规则中按惯例使用。手写 Recipe 时也应该引用这些变量，便于统一配置；变量不会自动加到任意手写命令中。</p>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>用途</th>
+<th>常见值或内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CC</code></td>
+<td>C 编译器</td>
+<td>GNU Make 通常内置为 <code>cc</code>，示例显式设为 <code>gcc</code></td>
+</tr>
+<tr>
+<td><code>CXX</code></td>
+<td>C++ 编译器</td>
+<td>通常为 <code>g++</code></td>
+</tr>
+<tr>
+<td><code>CPPFLAGS</code></td>
+<td>预处理选项，C/C++ 都可使用</td>
+<td><code>-Isrc</code>、<code>-DDEBUG</code>；名字中的 CPP 指预处理器</td>
+</tr>
+<tr>
+<td><code>CFLAGS</code></td>
+<td>C 编译选项</td>
+<td><code>-std=gnu11 -O0 -g -Wall -Wextra</code></td>
+</tr>
+<tr>
+<td><code>CXXFLAGS</code></td>
+<td>C++ 编译选项</td>
+<td><code>-std=c++17 -g -Wall -Wextra</code></td>
+</tr>
+<tr>
+<td><code>LDFLAGS</code></td>
+<td>链接器选项</td>
+<td>库搜索路径 <code>-Llib</code> 等</td>
+</tr>
+<tr>
+<td><code>LDLIBS</code></td>
+<td>链接库选项</td>
+<td><code>-lm</code> 等，通常放在目标文件之后</td>
+</tr>
+<tr>
+<td><code>RM</code></td>
+<td>删除文件的命令</td>
+<td>GNU Make 默认是 <code>rm -f</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>CC</code>、<code>CXX</code>、<code>RM</code> 有常见内置默认值；其他选项变量默认通常为空。由于 <code>CC</code> 已经内置为 <code>cc</code>，<code>CC ?= gcc</code> 通常不会把它改成 <code>gcc</code>。想明确使用 GCC，可以写 <code>CC = gcc</code>。</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span><span class="nv">CC</span><span class="o">=</span>clang
+make<span class="w"> </span><span class="nv">CFLAGS</span><span class="o">=</span><span class="s2">"-std=gnu11 -O2 -Wall -Wextra"</span>
+make<span class="w"> </span><span class="nv">BUILD_DIR</span><span class="o">=</span>build/make-release
+</code></pre></div>
+<p>命令行赋值通常覆盖 Makefile 中的普通赋值，包括普通 <code>+=</code>；环境变量通常可被 Makefile 普通赋值覆盖，除非使用 <code>make -e</code>。Makefile 的 <code>override</code> 指令是命令行覆盖规则的显式例外。上面的第二条命令替换整个 <code>CFLAGS</code>，需要的标准和警告选项应一起给出。</p>
+<h2 id="gcc">GCC：编译与链接<a class="headerlink" href="#gcc" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>main.c → 预处理 → 编译为汇编 → 汇编为 main.o ─┐
+                                              ├→ 链接 → app
+math.c → 预处理 → 编译为汇编 → 汇编为 math.o ─┘
+</code></pre></div>
+<p>日常说“编译为 <code>.o</code>”通常合指预处理、编译、汇编三个阶段。<code>-c</code> 让 GCC 在生成目标文件后停止，不执行链接；<code>.o</code> 中可能存在尚未解析的外部符号，通常不能单独运行。链接把多个目标文件及需要的库组合成可执行文件。</p>
+<div class="highlight"><pre><span></span><code>gcc<span class="w"> </span>-std<span class="o">=</span>gnu11<span class="w"> </span>-Isrc<span class="w"> </span>-O0<span class="w"> </span>-g<span class="w"> </span>-MMD<span class="w"> </span>-MP<span class="w"> </span>-c<span class="w"> </span>src/main.c<span class="w"> </span>-o<span class="w"> </span>build/make/src/main.o
+gcc<span class="w"> </span>-std<span class="o">=</span>gnu11<span class="w"> </span>-Isrc<span class="w"> </span>-O0<span class="w"> </span>-g<span class="w"> </span>-MMD<span class="w"> </span>-MP<span class="w"> </span>-c<span class="w"> </span>src/math.c<span class="w"> </span>-o<span class="w"> </span>build/make/src/math.o
+gcc<span class="w"> </span>build/make/src/main.o<span class="w"> </span>build/make/src/math.o<span class="w"> </span>-o<span class="w"> </span>build/make/app<span class="w"> </span>-lm
+</code></pre></div>
+<p>执行前需创建输出目录。上面的流程就是 <code>.c → .o → 可执行文件</code>，每个源文件可独立编译，最后统一链接。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-std=gnu11</code></td>
+<td>使用带 GNU 扩展的 C11 方言；它是 C 选项，不能作为 C++ 标准选项</td>
+</tr>
+<tr>
+<td><code>-Isrc</code></td>
+<td>将 <code>src</code> 加入头文件搜索路径；相对路径从编译命令的工作目录计算</td>
+</tr>
+<tr>
+<td><code>-O0</code></td>
+<td>关闭常规优化，方便观察源码与执行步骤的对应关系</td>
+</tr>
+<tr>
+<td><code>-g</code></td>
+<td>生成调试信息，供 GDB 等调试器使用；它本身不表示关闭优化</td>
+</tr>
+<tr>
+<td><code>-Wall</code>、<code>-Wextra</code></td>
+<td>启用常见警告和额外警告，并不表示所有警告</td>
+</tr>
+<tr>
+<td><code>-c</code></td>
+<td>编译为目标文件，不链接</td>
+</tr>
+<tr>
+<td><code>-o 文件</code></td>
+<td>指定输出文件，可用于编译和链接阶段</td>
+</tr>
+<tr>
+<td><code>-MMD</code></td>
+<td>编译时生成 <code>.d</code> 文件，记录源文件及非系统头文件依赖</td>
+</tr>
+<tr>
+<td><code>-MP</code></td>
+<td>为依赖中的头文件生成无 Recipe 的空规则，缓解旧 <code>.d</code> 引用已删除头文件时的 Make 错误</td>
+</tr>
+<tr>
+<td><code>-lm</code></td>
+<td>链接数学库 <code>libm</code>，某些平台需要显式指定</td>
+</tr>
+</tbody>
+</table>
+<p>链接时通常使用 <code>$(CC) $(LDFLAGS) 目标文件列表 -o 输出 $(LDLIBS)</code>。库参数的位置有意义，尤其是静态库：通常先放引用符号的目标文件，再放提供符号的库，例如 <code>main.o -lm</code>。库之间也可能存在顺序依赖，不能认为所有链接参数都可以任意交换位置。</p>
+<h2 id="_3">综合示例：源码与构建目录分离<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>下面以 C 项目为例，使用 GNU Make、GCC 和 POSIX 风格 Shell 命令。Linux、WSL 或配置了这些工具的 MSYS2 等环境可使用；原生 Windows <code>cmd</code> / PowerShell 不直接兼容 <code>mkdir -p</code>、<code>rm -f</code> 的全部语法。</p>
+<div class="highlight"><pre><span></span><code>项目根目录/
+├── Makefile
+├── CMakeLists.txt       # 若同时使用 CMake
+├── src/
+│   ├── main.c
+│   ├── math.c
+│   └── math.h
+└── build/
+    ├── make/           # 手写 Makefile 的产物
+    └── cmake/          # CMake 生成文件与产物
+</code></pre></div>
+<p>将下面内容保存为项目根目录中的 <code>Makefile</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="nv">.DEFAULT_GOAL</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>all
+
+<span class="nv">CC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>gcc
+<span class="nv">CPPFLAGS</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>-Isrc
+<span class="nv">CFLAGS</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>-std<span class="o">=</span>gnu11<span class="w"> </span>-O0<span class="w"> </span>-g<span class="w"> </span>-Wall<span class="w"> </span>-Wextra
+<span class="nv">LDFLAGS</span><span class="w"> </span><span class="o">:=</span>
+<span class="nv">LDLIBS</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>-lm
+
+<span class="nv">BUILD_DIR</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>build/make
+<span class="nv">TARGET</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/app
+<span class="nv">SOURCES</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>src/main.c<span class="w"> </span><span class="se">\</span>
+<span class="w">           </span>src/math.c
+<span class="nv">OBJECTS</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">$(</span>SOURCES:%.c<span class="o">=</span><span class="k">$(</span>BUILD_DIR<span class="k">)</span>/%.o<span class="k">)</span>
+<span class="nv">DEPS</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">$(</span>OBJECTS:.o<span class="o">=</span>.d<span class="k">)</span>
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">all</span> <span class="n">run</span> <span class="n">clean</span>
+
+<span class="nf">all</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">TARGET</span><span class="k">)</span>
+
+<span class="nf">$(TARGET)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">OBJECTS</span><span class="k">)</span>
+<span class="w">    </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>dir<span class="w"> </span><span class="nv">$@</span><span class="k">)</span><span class="s2">"</span>
+<span class="w">    </span><span class="k">$(</span>CC<span class="k">)</span><span class="w"> </span><span class="k">$(</span>LDFLAGS<span class="k">)</span><span class="w"> </span>$^<span class="w"> </span>-o<span class="w"> </span><span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span><span class="w"> </span><span class="k">$(</span>LDLIBS<span class="k">)</span>
+
+<span class="nf">$(BUILD_DIR)/%.o</span><span class="o">:</span><span class="w"> </span>%.<span class="n">c</span>
+<span class="w">    </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>dir<span class="w"> </span><span class="nv">$@</span><span class="k">)</span><span class="s2">"</span>
+<span class="w">    </span><span class="k">$(</span>CC<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CPPFLAGS<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CFLAGS<span class="k">)</span><span class="w"> </span>-MMD<span class="w"> </span>-MP<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span>$<span class="s2">&lt;"</span><span class="w"> </span>-o<span class="w"> </span><span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span>
+
+<span class="nf">run</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">TARGET</span><span class="k">)</span>
+<span class="w">    </span><span class="s2">"./</span><span class="k">$(</span>TARGET<span class="k">)</span><span class="s2">"</span>
+
+<span class="nf">clean</span><span class="o">:</span>
+<span class="w">    </span><span class="k">$(</span>RM<span class="k">)</span><span class="w"> </span><span class="k">$(</span>OBJECTS<span class="k">)</span><span class="w"> </span><span class="k">$(</span>DEPS<span class="k">)</span><span class="w"> </span><span class="s2">"</span><span class="k">$(</span>TARGET<span class="k">)</span><span class="s2">"</span>
+
+<span class="cp">-include $(DEPS)</span>
+</code></pre></div>
+<h3 id="_4">自定义变量与路径替换<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>在示例中的含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BUILD_DIR</code></td>
+<td>构建目录，默认是 <code>build/make</code></td>
+</tr>
+<tr>
+<td><code>TARGET</code></td>
+<td>最终目标可执行文件路径，默认是 <code>build/make/app</code></td>
+</tr>
+<tr>
+<td><code>SOURCES</code></td>
+<td>需要编译的源文件列表，新源文件应加入这里</td>
+</tr>
+<tr>
+<td><code>OBJECTS</code></td>
+<td>根据源文件列表推导出的目标文件列表</td>
+</tr>
+<tr>
+<td><code>DEPS</code></td>
+<td>与目标文件对应的 <code>.d</code> 依赖文件列表</td>
+</tr>
+</tbody>
+</table>
+<p><code>$(SOURCES:%.c=$(BUILD_DIR)/%.o)</code> 是<strong>模式替换</strong>：对每个匹配 <code>%.c</code> 的单词，保留 <code>%</code> 匹配的部分再生成新路径。</p>
+<div class="highlight"><pre><span></span><code>src/main.c → build/make/src/main.o
+src/math.c → build/make/src/math.o
+</code></pre></div>
+<p>保留源目录层级，可以避免不同目录中同名源文件的 <code>.o</code> 冲突。<code>$(OBJECTS:.o=.d)</code> 是<strong>后缀替换</strong>，将每个 <code>.o</code> 后缀改成 <code>.d</code>，例如 <code>build/make/src/main.d</code>。</p>
+<p><code>$(dir 路径列表)</code> 提取每个文件的目录部分，并保留末尾 <code>/</code>。例如 <code>$(dir build/make/src/main.o)</code> 得到 <code>build/make/src/</code>；没有目录部分时得到 <code>./</code>。</p>
+<h3 id="_5">模式规则与自动变量<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p><code>$(BUILD_DIR)/%.o: %.c</code> 是<strong>模式规则（Pattern Rule）</strong>。在模式规则中，<code>%</code> 匹配主干部分，并用同一主干构造依赖；它不是 Shell 的 <code>*</code> 通配符。目标为 <code>build/make/src/main.o</code> 时，主干是 <code>src/main</code>，第一个依赖是 <code>src/main.c</code>。</p>
+<p>自动变量由 Make 在每次执行规则的 Recipe 时根据当前目标提供，不能把它们当作普通全局变量使用：</p>
+<table>
+<thead>
+<tr>
+<th>自动变量</th>
+<th>含义</th>
+<th>上面编译规则中的例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$@</code></td>
+<td>当前规则的目标文件</td>
+<td><code>build/make/src/main.o</code></td>
+</tr>
+<tr>
+<td><code>$&lt;</code></td>
+<td>第一个依赖文件</td>
+<td><code>src/main.c</code></td>
+</tr>
+<tr>
+<td><code>$^</code></td>
+<td>所有普通依赖文件，去重</td>
+<td>还可能包含从 <code>.d</code> 读入的头文件</td>
+</tr>
+<tr>
+<td><code>$?</code></td>
+<td>比目标更新的普通依赖文件；目标不存在时为所有普通依赖</td>
+<td>此次触发更新的源文件或头文件</td>
+</tr>
+<tr>
+<td><code>$*</code></td>
+<td>模式规则匹配的主干部分</td>
+<td><code>src/main</code></td>
+</tr>
+</tbody>
+</table>
+<p>因此编译 Recipe 用 <code>$&lt;</code> 取得源文件，而不是用 <code>$^</code> 把头文件也作为独立输入交给 GCC；链接规则用 <code>$^</code> 取得所有 <code>.o</code>。<code>$?</code> 常用于只处理有变化的输入，但重新链接可执行文件通常仍需要完整目标文件列表。<code>$*</code> 主要用于模式规则，不建议在普通显式规则中依赖它的历史后缀推导行为。</p>
+<h3 id="_6">创建目录与清理文件<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p><code>mkdir -p "$(dir $@)"</code> 递归创建目标文件的父目录；目录已存在时不报错，因此独立编译任务并行执行时也可以各自准备目录。</p>
+<p><code>rm -f</code> 删除文件，文件不存在时不报错；<code>-f</code> 不表示递归删除目录。<code>$(RM)</code> 默认展开为 <code>rm -f</code>，因此示例的 <code>clean</code> 删除 <code>.o</code>、<code>.d</code> 与可执行文件，保留空目录和 <code>build/cmake</code>。它只清理当前变量列表中的产物；删除或改名源文件后遗留的旧产物可能需要另行清理。</p>
+<h2 id="_7">增量构建与自动头文件依赖<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<p>Make 会先更新依赖，再比较文件修改时间：目标不存在，或者某个普通依赖比目标新时，通常需要执行目标的 Recipe；目标已存在且没有较新的依赖时，跳过更新。这就是<strong>增量编译（Incremental Build）</strong>的基础，Make 默认不比较文件内容。</p>
+<ul>
+<li>第一次构建：生成全部 <code>.o</code>，再链接可执行文件。</li>
+<li>修改 <code>src/main.c</code>：只重编译对应的 <code>.o</code>，然后重新链接。</li>
+<li>修改多个源文件共同包含的头文件：重编译依赖该头文件的各个 <code>.o</code>，然后重新链接。</li>
+<li>没有修改：不重新编译和链接；<code>make run</code> 仍执行运行命令，因为 <code>run</code> 是伪目标。</li>
+</ul>
+<p>仅写 <code>%.o: %.c</code> 无法告诉 Make 源文件包含了哪些头文件。示例用 GCC 的 <code>-MMD -MP</code> 在编译时生成依赖文件，使用 <code>-o build/make/src/main.o</code> 时，通常得到同目录的 <code>main.d</code>，内容类似：</p>
+<div class="highlight"><pre><span></span><code><span class="nf">build/make/src/main.o</span><span class="o">:</span><span class="w"> </span><span class="n">src</span>/<span class="n">main</span>.<span class="n">c</span> <span class="n">src</span>/<span class="n">math</span>.<span class="n">h</span>
+<span class="nf">src/math.h</span><span class="o">:</span>
+</code></pre></div>
+<p><code>-include $(DEPS)</code> 在读取 Makefile 时将这些规则合并到依赖图中，前面的 <code>-</code> 允许首次构建时 <code>.d</code> 尚不存在。它不是“忽略所有语法错误”；损坏的依赖文件仍可能报错。<code>-MP</code> 生成的头文件空规则也不同于显式 <code>.PHONY</code> 声明，不会让所有目标每次都重编译；若源码仍包含已经删除的头文件，编译器依然会报错。</p>
+<p>Make 通常不会仅因为修改了 <code>CFLAGS</code> 或编译命令就自动重编译。切换标准、编译器或优化选项后，应清理重建，或者为不同配置使用不同构建目录。系统时钟和文件时间戳异常也可能干扰增量判断。</p>
+<h2 id="_8">常用命令与构建配置<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<p>在示例项目的根目录执行：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>make</code></td>
+<td>执行 <code>.DEFAULT_GOAL</code> 指定的 <code>all</code></td>
+</tr>
+<tr>
+<td><code>make all</code></td>
+<td>构建程序，复用未过期的产物</td>
+</tr>
+<tr>
+<td><code>make run</code></td>
+<td>先构建或更新程序，再运行</td>
+</tr>
+<tr>
+<td><code>make clean</code></td>
+<td>清理当前配置的目标文件、依赖文件和可执行文件</td>
+</tr>
+<tr>
+<td><code>make -j</code></td>
+<td>并行执行独立任务；不带数字时不限制任务数</td>
+</tr>
+<tr>
+<td><code>make -j4</code></td>
+<td>最多同时执行 4 个任务</td>
+</tr>
+</tbody>
+</table>
+<p>并行是否正确取决于依赖关系是否完整。不要用 <code>make -j clean all</code> 表达“清理后构建”，两者可能同时执行；应依次运行 <code>make clean</code> 和 <code>make all</code>。</p>
+<p>调试构建通常用 <code>-O0 -g</code>，更容易单步调试；优化构建可用 <code>-O2</code>，需要时仍可保留 <code>-g</code>，但优化可能改变变量和执行顺序的可观察性。可以使用两个独立目录：</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span><span class="nv">BUILD_DIR</span><span class="o">=</span>build/make-debug<span class="w"> </span><span class="nv">CFLAGS</span><span class="o">=</span><span class="s2">"-std=gnu11 -O0 -g -Wall -Wextra"</span>
+make<span class="w"> </span><span class="nv">BUILD_DIR</span><span class="o">=</span>build/make-release<span class="w"> </span><span class="nv">CFLAGS</span><span class="o">=</span><span class="s2">"-std=gnu11 -O2 -Wall -Wextra"</span>
+</code></pre></div>
+<p><strong>增量构建</strong>复用当前配置仍有效的产物；<strong>完全重新构建</strong>先清除该配置的产物，再重新编译和链接。例如依次执行 <code>make clean</code>、<code>make all</code>。使用自定义 <code>BUILD_DIR</code> 时，清理和构建必须传入同一目录；同一目录内切换编译选项也需要清理。</p>
+<h2 id="c">C++ 项目的写法<a class="headerlink" href="#c" title="Permanent link">&para;</a></h2>
+<p>原基础笔记中的 C++ 示例使用 <code>main.cpp</code> 与 <code>Surcharge.cpp</code> 生成 <code>test</code>。规则结构不变，将编译器换为 <code>CXX</code>、编译选项换为 <code>CXXFLAGS</code>，源文件后缀换为 <code>.cpp</code> 即可：</p>
+<div class="highlight"><pre><span></span><code><span class="nv">.DEFAULT_GOAL</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>all
+<span class="nv">CXX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>g++
+<span class="nv">CPPFLAGS</span><span class="w"> </span><span class="o">:=</span>
+<span class="nv">CXXFLAGS</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>-std<span class="o">=</span>c++17<span class="w"> </span>-Wall<span class="w"> </span>-Wextra<span class="w"> </span>-g
+<span class="nv">LDFLAGS</span><span class="w"> </span><span class="o">:=</span>
+<span class="nv">LDLIBS</span><span class="w"> </span><span class="o">:=</span>
+<span class="nv">TARGET</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">test</span>
+<span class="nv">SRCS</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>main.cpp<span class="w"> </span>Surcharge.cpp
+<span class="nv">OBJS</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">$(</span>SRCS:.cpp<span class="o">=</span>.o<span class="k">)</span>
+<span class="nv">DEPS</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">$(</span>OBJS:.o<span class="o">=</span>.d<span class="k">)</span>
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">all</span> <span class="n">clean</span>
+<span class="nf">all</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">TARGET</span><span class="k">)</span>
+
+<span class="nf">$(TARGET)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">OBJS</span><span class="k">)</span>
+<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>LDFLAGS<span class="k">)</span><span class="w"> </span>$^<span class="w"> </span>-o<span class="w"> </span><span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span><span class="w"> </span><span class="k">$(</span>LDLIBS<span class="k">)</span>
+
+<span class="nf">%.o</span><span class="o">:</span><span class="w"> </span>%.<span class="n">cpp</span>
+<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CPPFLAGS<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAGS<span class="k">)</span><span class="w"> </span>-MMD<span class="w"> </span>-MP<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span>$<span class="s2">&lt;"</span><span class="w"> </span>-o<span class="w"> </span><span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span>
+
+<span class="cp">-include $(DEPS)</span>
+
+<span class="nf">clean</span><span class="o">:</span>
+<span class="w">    </span><span class="k">$(</span>RM<span class="k">)</span><span class="w"> </span><span class="k">$(</span>OBJS<span class="k">)</span><span class="w"> </span><span class="k">$(</span>DEPS<span class="k">)</span><span class="w"> </span><span class="s2">"</span><span class="k">$(</span>TARGET<span class="k">)</span><span class="s2">"</span>
+</code></pre></div>
+<p>这里 <code>SRCS</code> / <code>OBJS</code> 与前面的 <code>SOURCES</code> / <code>OBJECTS</code> 都是自定义名称。<code>main.cpp → main.o</code>、<code>Surcharge.cpp → Surcharge.o</code>，依赖文件为 <code>main.d</code>、<code>Surcharge.d</code>，链接得到 <code>./test</code>。增加源文件时只需扩展 <code>SRCS</code>。这个简短示例在源码旁生成产物，项目变大后可采用前面的构建目录分离方式。</p>
+<p>编译和链接 C++ 通常都用 <code>g++</code> 驱动，以便链接时自动加入 C++ 标准库；<code>-std=gnu11</code> 应替换成 <code>-std=c++17</code> 等 C++ 标准选项。</p>
+<h2 id="makefile-cmakeliststxt">Makefile 与 CMakeLists.txt<a class="headerlink" href="#makefile-cmakeliststxt" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>对比</th>
+<th>手写 Makefile</th>
+<th>CMakeLists.txt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>读取工具</td>
+<td>GNU Make 等 Make 实现</td>
+<td>CMake</td>
+</tr>
+<tr>
+<td>描述内容</td>
+<td>具体目标、文件依赖和命令规则</td>
+<td>项目目标、源文件、库与构建要求</td>
+</tr>
+<tr>
+<td>后续执行</td>
+<td><code>make</code> 按规则调用编译器等工具</td>
+<td>CMake 生成 Makefile、Ninja 或 IDE 工程，再由对应工具构建</td>
+</tr>
+<tr>
+<td>产物目录</td>
+<td>本文约定 <code>build/make</code></td>
+<td>本文约定 <code>build/cmake</code></td>
+</tr>
+</tbody>
+</table>
+<p>CMake 也可能生成名为 <code>Makefile</code> 的文件，但它属于生成的构建系统，应通过 <code>CMakeLists.txt</code> 修改项目要求。手写 Makefile 与 CMake 可以使用同一份源码，构建文件和产物则分别存放：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 手写 Makefile 的构建</span>
+make
+
+<span class="c1"># CMake 的配置与构建；要求项目已有 CMakeLists.txt</span>
+cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build/cmake<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Debug
+cmake<span class="w"> </span>--build<span class="w"> </span>build/cmake
+</code></pre></div>
+<p><code>CMAKE_BUILD_TYPE</code> 主要用于 Makefiles、Ninja 等单配置生成器；Visual Studio 等多配置生成器应在构建时使用 <code>--config Debug</code>。保持 <code>build/make</code> 与 <code>build/cmake</code> 隔离，可以避免 <code>.o</code>、依赖文件和配置缓存混用，也便于分别清理。更多 CMake 内容见 <a href="../cmake%E6%95%99%E7%A8%8B/">CMake 与 CMakeLists.txt 教程</a>。</p>
+<h2 id="_9">官方参考<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://www.gnu.org/software/make/manual/make.html">GNU Make 手册</a>：规则、变量、自动变量、伪目标与并行构建。</li>
+<li><a href="https://gcc.gnu.org/onlinedocs/gcc/Overall-Options.html">GCC 编译阶段与输出选项</a>：编译流程、<code>-c</code> 与 <code>-o</code>。</li>
+<li><a href="https://gcc.gnu.org/onlinedocs/gcc/Preprocessor-Options.html">GCC 预处理与依赖生成选项</a>：<code>-MMD</code>、<code>-MP</code> 与依赖文件。</li>
+<li><a href="https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html">GCC 链接选项</a>：<code>-l</code> 与库顺序。</li>
+<li><a href="https://cmake.org/cmake/help/latest/manual/cmake.1.html">CMake 命令行手册</a>：源码目录、构建目录及 <code>--build</code>。</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../basics/" class="md-footer__link md-footer__link--prev" aria-label="上一页: basics">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                basics
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../cmake%E6%95%99%E7%A8%8B/" class="md-footer__link md-footer__link--next" aria-label="下一页: CMake 与 CMakeLists.txt">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                CMake 与 CMakeLists.txt
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tabs", "navigation.indexes", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "navigation.footer", "navigation.tracking", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+        <script src="../../../javascripts/toc-collapse.js?v=1"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="520" viewBox="0 0 980 520" role="img" aria-labelledby="title desc">
+  <title id="title">TCP three way handshake</title>
+  <desc id="desc">Client sends SYN, server replies SYN ACK, client replies ACK.</desc>
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}.line{stroke:#334155;stroke-width:3}.msg{stroke:#2563eb;stroke-width:3;marker-end:url(#arrow)}
+      .text{font-family:Arial,'Microsoft YaHei',sans-serif;font-size:20px;fill:#0f172a}.title{font-size:26px;font-weight:700}.small{font-size:16px;fill:#475569}
+      .host{fill:#dbeafe;stroke:#1d4ed8;stroke-width:2;rx:12}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#2563eb"/></marker>
+  </defs>
+  <rect class="bg" width="980" height="520"/>
+  <text class="text title" x="490" y="45" text-anchor="middle">TCP 三次握手</text>
+  <rect class="host" x="105" y="80" width="180" height="58"/><text class="text" x="195" y="116" text-anchor="middle">Client</text>
+  <rect class="host" x="695" y="80" width="180" height="58"/><text class="text" x="785" y="116" text-anchor="middle">Server</text>
+  <line class="line" x1="195" y1="138" x2="195" y2="455"/>
+  <line class="line" x1="785" y1="138" x2="785" y2="455"/>
+
+  <line class="msg" x1="205" y1="190" x2="775" y2="250"/>
+  <text class="text" x="490" y="205" text-anchor="middle">1. SYN, seq = x</text>
+  <line class="msg" x1="775" y1="295" x2="205" y2="355"/>
+  <text class="text" x="490" y="310" text-anchor="middle">2. SYN + ACK, seq = y, ack = x + 1</text>
+  <line class="msg" x1="205" y1="395" x2="775" y2="435"/>
+  <text class="text" x="490" y="405" text-anchor="middle">3. ACK, ack = y + 1</text>
+
+  <text class="small" x="490" y="485" text-anchor="middle">握手用于确认双方收发能力并交换初始序号。</text>
+</svg>

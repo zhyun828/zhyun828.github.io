@@ -1,0 +1,21 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+object "<u>france:Country</u>" as F {
+name = "France"
+}
+object "<u>spain:Country</u>" as S {
+name = "Espagne"
+}
+object "<u>algeria:Country</u>" as A {
+name = "Algérie"
+}
+object "<u>morocco:Country</u>" as M {
+name = "Maroc"
+}
+F -- S : 邻接
+A -- M : 邻接
+@enduml

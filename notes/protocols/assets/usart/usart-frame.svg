@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="300" viewBox="0 0 980 300" role="img" aria-label="USART asynchronous frame format">
+  <rect width="980" height="300" fill="#ffffff"/>
+  <style>
+    text{font-family:Arial,"Microsoft YaHei",sans-serif;fill:#1f2933}
+    .label{font-size:22px;font-weight:700}
+    .small{font-size:17px}
+    .bit{stroke:#243b53;stroke-width:2;fill:#f5f7fa}
+    .start{fill:#ffd9d9}
+    .data{fill:#dbeafe}
+    .parity{fill:#ede9fe}
+    .stop{fill:#dcfce7}
+    .line{stroke:#243b53;stroke-width:4;fill:none}
+    .dash{stroke:#6b7280;stroke-width:2;stroke-dasharray:8 8}
+  </style>
+  <text x="40" y="42" class="label">USART / UART 异步数据帧</text>
+  <text x="40" y="72" class="small">空闲为高电平，Start 为低电平，随后发送数据位、可选校验位和 Stop 位</text>
+
+  <path class="line" d="M40 125 H130 V205 H210 V125 H690 V165 H770 V125 H940"/>
+  <line class="dash" x1="130" y1="92" x2="130" y2="230"/>
+  <line class="dash" x1="210" y1="92" x2="210" y2="230"/>
+  <line class="dash" x1="690" y1="92" x2="690" y2="230"/>
+  <line class="dash" x1="770" y1="92" x2="770" y2="230"/>
+
+  <rect x="40" y="235" width="90" height="38" rx="6" class="bit"/>
+  <text x="63" y="260" class="small">IDLE</text>
+  <rect x="130" y="235" width="80" height="38" rx="6" class="bit start"/>
+  <text x="146" y="260" class="small">Start</text>
+  <rect x="210" y="235" width="480" height="38" rx="6" class="bit data"/>
+  <text x="372" y="260" class="small">Data bits D0...D7 / D8</text>
+  <rect x="690" y="235" width="80" height="38" rx="6" class="bit parity"/>
+  <text x="706" y="260" class="small">Parity</text>
+  <rect x="770" y="235" width="170" height="38" rx="6" class="bit stop"/>
+  <text x="815" y="260" class="small">Stop bit(s)</text>
+
+  <text x="58" y="115" class="small">1</text>
+  <text x="158" y="218" class="small">0</text>
+  <text x="820" y="115" class="small">1</text>
+</svg>

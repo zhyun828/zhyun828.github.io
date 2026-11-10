@@ -1,0 +1,28 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam ArrowColor #334155
+skinparam classBorderColor #334155
+skinparam classBackgroundColor #FFEDD5
+skinparam packageBackgroundColor #F8FAFC
+skinparam packageBorderColor #94A3B8
+skinparam nodesep 55
+skinparam ranksep 55
+hide empty members
+title Proxy
+interface Subject {
+ +request()
+}
+class RealSubject
+class Proxy {
+ +request()
+}
+class Client
+Subject <|.. RealSubject
+Subject <|.. Proxy
+Proxy --> "0..1" RealSubject : represents
+Client --> Subject
+@enduml

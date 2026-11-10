@@ -1,0 +1,19 @@
+@startuml
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 16
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+class Client {
+- email : string
++ getEmail() : string {query}
+}
+class AnonymousClient {
++ getEmail() : string
+}
+AnonymousClient --|> Client
+note right of AnonymousClient
+原图：getEmail() 抛 RuntimeException
+
+end note
+@enduml
