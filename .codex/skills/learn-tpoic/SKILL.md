@@ -35,19 +35,21 @@ The final result should be suitable for:
 
 ## Input format
 
+The first argument after `$learn-topic` is the target Markdown file. Quote the path if it contains spaces. Resolve relative paths from the repository root.
+
 Primary format:
 
-`$learn-topic notes <file> <topic1> <topic2> ... [--requirements <additional demands>]`
+`$learn-topic <file> <topic1> <topic2> ... [--requirements <additional demands>]`
 
 Examples:
 
-`$learn-topic notes docs/notes/procom/dvb-s2/DVB-S2.md DVB-S2`
+`$learn-topic docs/notes/procom/dvb-s2/DVB-S2.md DVB-S2`
 
-`$learn-topic notes docs/notes/procom/dvb-s2/DVB-S2.md DVB-S2 Interleaver LLR`
+`$learn-topic docs/notes/procom/dvb-s2/DVB-S2.md DVB-S2 Interleaver LLR`
 
-`$learn-topic notes docs/notes/procom/dvb-s2/DVB-S2.md DVB-S2 --requirements include derivations, worked examples, diagrams, and sufficient mathematical depth`
+`$learn-topic docs/notes/procom/dvb-s2/DVB-S2.md DVB-S2 --requirements include derivations, worked examples, diagrams, and sufficient mathematical depth`
 
-`$learn-topic notes docs/notes/procom/versal/Versal-AIE.md Versal AI Engine --requirements start from zero and include architecture, memory, streams, kernels, SIMD, and practical examples`
+`$learn-topic docs/notes/procom/versal/Versal-AIE.md Versal AI Engine --requirements start from zero and include architecture, memory, streams, kernels, SIMD, and practical examples`
 
 Multiple topics are allowed.
 
@@ -129,7 +131,7 @@ It should:
 
 Typical request:
 
-`$learn-topic notes docs/notes/procom/dvb-s2/DVB-S2.md DVB-S2`
+`$learn-topic docs/notes/procom/dvb-s2/DVB-S2.md DVB-S2`
 
 ## add-knowledge
 
@@ -883,15 +885,16 @@ If the file exists:
 
 Do not blindly overwrite it.
 
-### Clearly new file
+### Clearly new file or directory tree
 
-If the file does not exist and the path appears intentional:
+If the requested Markdown file does not exist and the path is clear:
 
-- create missing parent directories
-- create the file automatically
-- do not ask for confirmation merely because the path is new
+- Create all missing parent directories recursively, including when several consecutive levels are new. Reuse any existing parent directories.
+- Create the Markdown file at the requested path and write the learning material into it. If only the file is missing, create it directly in the existing directory.
+- Proceed without confirmation when the destination is clear. For example, `docs/notes/嵌入式/FPGA/Zynq/Boot/startup.md` requires creating `Zynq/Boot/` if both directories are absent.
+- If a parent path is occupied by a file, or the requested file path is occupied by a directory, report the conflict and preserve the existing item.
 
-### Suspected typo or missing directory
+### Suspected typo or ambiguous destination
 
 If the requested path does not exist and nearby repository structure strongly suggests a typo or omitted directory level:
 

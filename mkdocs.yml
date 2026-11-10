@@ -89,13 +89,36 @@ nav:
           - 嵌入式面试汇总表: notes/面试/嵌入式面试汇总表.md
           - 高频题深度解析: notes/面试/高频题深度解析.md
           - 项目经历问答面试: notes/面试/项目经历问答面试.md
-      - Arduino:
-          - basics: notes/Arduino/basics.md
-          - projet:
-              - projet: notes/Arduino/projet/projet.md
-              - pre: notes/Arduino/projet/pre.md
-              - code: notes/Arduino/projet/code.md
-              - thoughts: notes/Arduino/projet/thoughts.md
+      - 嵌入式:
+          - Arduino:
+              - basics: notes/嵌入式/Arduino/basics.md
+              - projet:
+                  - projet: notes/嵌入式/Arduino/projet/projet.md
+                  - pre: notes/嵌入式/Arduino/projet/pre.md
+                  - code: notes/嵌入式/Arduino/projet/code.md
+                  - thoughts: notes/嵌入式/Arduino/projet/thoughts.md
+          - BeagleBone:
+              - basic: notes/嵌入式/beaglebone/basic.md
+              - TP:
+                  - README: notes/嵌入式/beaglebone/TP/README.md
+          - stm32:
+              - stm32_knowledge_notes: notes/嵌入式/stm32/stm32_knowledge_notes.md
+              - RTOS / FreeRTOS 知识整理: notes/嵌入式/stm32/rtos_freertos_notes_compact.md
+              - 外设: notes/嵌入式/stm32/外设.md
+              - 寄存器: notes/嵌入式/stm32/寄存器.md
+          - FPGA:
+              - basics: notes/嵌入式/FPGA/basics.md
+              - Zynq 硬件乘法加速器: notes/嵌入式/FPGA/zynq-hardware-acceleration-intro.md
+              - Zynq 嵌入式 Linux: notes/嵌入式/FPGA/Zynq/embedded-linux.md
+          - linux:
+              - basic: notes/嵌入式/linux/basic.md
+              - linux驱动:
+                  - 下载资料: notes/嵌入式/linux/linux驱动/00_下载资料.md
+                  - 搭建开发环境: notes/嵌入式/linux/linux驱动/01_搭建开发环境.md
+                  - 通用的驱动框架: notes/嵌入式/linux/linux驱动/02_通用的驱动框架.md
+                  - 使用模板操作硬件: notes/嵌入式/linux/linux驱动/03_使用模板操作硬件.md
+                  - 平台总线设备模型和设备树: notes/嵌入式/linux/linux驱动/04_平台总线设备模型和设备树.md
+                  - I2C驱动程序模板: notes/嵌入式/linux/linux驱动/05_I2C驱动程序模板.md
       - Cpp:
           - basics: notes/Cpp/basics.md
           - Makefile 与 GNU Make: notes/Cpp/Makefile.md
@@ -105,31 +128,10 @@ nav:
               - 分类与图解速查: notes/Cpp/UML/UML-Cheatsheet.md
           - 设计模式详解: notes/Cpp/design_pattern/Design-Patterns.md
           - 设计模式速查: notes/Cpp/design_pattern/Design-Patterns-Cheatsheet.md
-      - embedded_system:
-          - basic: notes/embedded_system/basic.md
-          - TP:
-              - README: notes/embedded_system/TP/README.md
-      - FPGA:
-          - basics: notes/FPGA/basics.md
-          - Zynq 硬件乘法加速器: notes/FPGA/zynq-hardware-acceleration-intro.md
       - gazebo:
           - basic: notes/ros/gazebo/basic.md
-      - linux:
-          - basic: notes/linux/basic.md
-          - linux驱动:
-              - 下载资料: notes/linux/linux驱动/00_下载资料.md
-              - 搭建开发环境: notes/linux/linux驱动/01_搭建开发环境.md
-              - 通用的驱动框架: notes/linux/linux驱动/02_通用的驱动框架.md
-              - 使用模板操作硬件: notes/linux/linux驱动/03_使用模板操作硬件.md
-              - 平台总线设备模型和设备树: notes/linux/linux驱动/04_平台总线设备模型和设备树.md
-              - I2C驱动程序模板: notes/linux/linux驱动/05_I2C驱动程序模板.md
       - LVGL:
           - basic: notes/LVGL/basic.md
       - ros:
           - basic: notes/ros/basic.md
           - code: notes/ros/code.md
-      - stm32:
-          - stm32_knowledge_notes: notes/stm32/stm32_knowledge_notes.md
-          - RTOS / FreeRTOS 知识整理: notes/stm32/rtos_freertos_notes_compact.md
-          - 外设: notes/stm32/外设.md
-          - 寄存器: notes/stm32/寄存器.md
